@@ -38,7 +38,7 @@ const PortfolioSection = () => {
                   : 'bg-white text-gray-700 hover:bg-gray-100'
               }`}
             >
-              {t(`portfolio.tabs.${tab.toLowerCase().replace(' ', '')}`)}
+              {t(`portfolio.tabs.${tab.toLowerCase().replace(/ /g, '')}`)}
             </button>
           ))}
         </div>
