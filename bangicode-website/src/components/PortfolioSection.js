@@ -13,9 +13,9 @@ const PortfolioSection = () => {
 
   const filteredProjects = activeTab === 'All Projects'
     ? projects
-    : projects.filter(project => t(`portfolio.tabs.${project.category.toLowerCase().replace(' ', '')}`) === activeTab);
+    : projects.filter(project => project.category === activeTab);
 
-  const tabs = ['all', 'software', 'ecommerce', 'web', 'social'].map(tabKey => t(`portfolio.tabs.${tabKey}`));
+  const tabs = ['All Projects', 'Custom Software', 'E-commerce', 'Web Development', 'Social Media'];
 
   return (
     <section id="portfolio" className="py-20 bg-gray-50">
@@ -31,14 +31,14 @@ const PortfolioSection = () => {
           {tabs.map((tab) => (
             <button
               key={tab}
-              onClick={() => setActiveTab(tab === t('portfolio.tabs.all') ? 'All Projects' : tab)}
+              onClick={() => setActiveTab(tab)}
               className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap ${
-                activeTab === (tab === t('portfolio.tabs.all') ? 'All Projects' : tab)
+                activeTab === tab
                   ? 'bg-blue-600 text-white'
                   : 'bg-white text-gray-700 hover:bg-gray-100'
               }`}
             >
-              {tab}
+              {t(`portfolio.tabs.${tab.toLowerCase().replace(' ', '')}`)}
             </button>
           ))}
         </div>

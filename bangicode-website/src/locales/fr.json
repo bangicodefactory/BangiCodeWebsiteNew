@@ -83,46 +83,46 @@
     "title": "Notre portefeuille",
     "subtitle": "Découvrez nos projets réussis qui démontrent notre expertise et notre engagement à fournir des solutions numériques exceptionnelles",
     "tabs": {
-      "all": "Tous les projets",
-      "software": "Logiciel personnalisé",
+      "allprojects": "Tous les projets",
+      "customsoftware": "Logiciel personnalisé",
       "ecommerce": "Commerce électronique",
-      "web": "Développement web",
-      "social": "Médias sociaux"
+      "webdevelopment": "Développement web",
+      "socialmedia": "Médias sociaux"
     },
     "projects": [
       {
         "title": "Plateforme de commerce électronique TechRetail",
-        "category": "Commerce électronique",
+        "category": "E-commerce",
         "description": "Le client avait besoin d'une plate-forme de commerce électronique évolutive pour gérer son catalogue de produits et sa clientèle en pleine croissance...",
         "technologies": ["React", "Node.js", "MongoDB"]
       },
       {
         "title": "Système de gestion de location de voitures RentCar",
-        "category": "Logiciel personnalisé",
+        "category": "Custom Software",
         "description": "Le client avait besoin d'une plate-forme complète pour gérer les locations de voitures, y compris la réservation, les paiements et la gestion de la flotte...",
         "technologies": ["Angular", "Django", "PostgreSQL"]
       },
       {
         "title": "Application Web de livraison de nourriture Friterie.ma",
-        "category": "Logiciel personnalisé",
+        "category": "Custom Software",
         "description": "Le client avait besoin d'une application Web de livraison de nourriture conviviale pour gérer la demande croissante de ses produits et sa clientèle...",
         "technologies": ["Html/CSS", "Laravel", "PHP"]
       },
       {
         "title": "Gestion de campagne SocialMedia Fujiwara",
-        "category": "Médias sociaux",
+        "category": "Social Media",
         "description": "Le client souhaitait renforcer sa présence sur les réseaux sociaux et rationaliser la gestion de ses campagnes sur plusieurs plateformes...",
         "technologies": ["Html/CSS", "Laravel", "PHP"]
       },
       {
         "title": "Conception et développement du site Web CafeImperial",
-        "category": "Développement web",
+        "category": "Web Development",
         "description": "Le client avait besoin d'un site Web moderne et réactif pour présenter le menu, l'ambiance et les services de son café...",
         "technologies": ["React", "Node.js", "HTML/CSS"]
       },
       {
         "title": "Système de gestion de l'apprentissage Classkom",
-        "category": "Développement web",
+        "category": "Web Development",
         "description": "L'établissement d'enseignement avait besoin d'un système de gestion de l'apprentissage robuste pour gérer les cours en ligne, les inscriptions des étudiants et les évaluations...",
         "technologies": ["React", "Laravel", "MySQL"]
       }

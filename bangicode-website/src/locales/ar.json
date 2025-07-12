@@ -83,46 +83,46 @@
     "title": "مجموعة أعمالنا",
     "subtitle": "استكشف مشاريعنا الناجحة التي تثبت خبرتنا والتزامنا بتقديم حلول رقمية استثنائية",
     "tabs": {
-      "all": "כל הפרויקטים",
-      "software": "תוכנה מותאמת אישית",
+      "allprojects": "כל הפרויקטים",
+      "customsoftware": "תוכנה מותאמת אישית",
       "ecommerce": "מסחר אלקטרוני",
-      "web": "פיתוח אתרים",
-      "social": "מדיה חברתית"
+      "webdevelopment": "פיתוח אתרים",
+      "socialmedia": "מדיה חברתית"
     },
     "projects": [
       {
         "title": "منصة التجارة الإلكترونية TechRetail",
-        "category": "מסחר אלקטרוני",
+        "category": "E-commerce",
         "description": "احتاج العميل إلى منصة تجارة إلكترونية قابلة للتطوير للتعامل مع كتالوج منتجاته المتنامي وقاعدة عملائه ...",
         "technologies": ["React", "Node.js", "MongoDB"]
       },
       {
         "title": "نظام إدارة تأجير السيارات RentCar",
-        "category": "תוכנה מותאמת אישית",
+        "category": "Custom Software",
         "description": "احتاج العميل إلى منصة شاملة لإدارة تأجير السيارات ، بما في ذلك الحجز والمدفوعات وإدارة الأسطول ...",
         "technologies": ["Angular", "Django", "PostgreSQL"]
       },
       {
         "title": "تطبيق ويب توصيل الطعام Friterie.ma",
-        "category": "תוכנה מותאמת אישית",
+        "category": "Custom Software",
         "description": "احتاج العميل إلى تطبيق ويب سهل الاستخدام لتوصيل الطعام للتعامل مع الطلب المتزايد على منتجاته وقاعدة عملائه ...",
         "technologies": ["Html/CSS", "Laravel", "PHP"]
       },
       {
         "title": "إدارة حملة Fujiwara SocialMedia",
-        "category": "מדיה חברתית",
+        "category": "Social Media",
         "description": "أراد العميل تعزيز وجوده على وسائل التواصل الاجتماعي وتبسيط إدارة الحملات عبر منصات متعددة ...",
         "technologies": ["Html/CSS", "Laravel", "PHP"]
       },
       {
         "title": "تصميم وتطوير موقع CafeImperial",
-        "category": "פיתוח אתרים",
+        "category": "Web Development",
         "description": "احتاج العميل إلى موقع ويب حديث وسريع الاستجابة لعرض قائمة المقهى وأجواءه وخدماته ...",
         "technologies": ["React", "Node.js", "HTML/CSS"]
       },
       {
         "title": "نظام إدارة التعلم Classkom",
-        "category": "פיתוח אתרים",
+        "category": "Web Development",
         "description": "احتاجت المؤسسة التعليمية إلى نظام إدارة تعلم قوي لإدارة الدورات التدريبية عبر الإنترنت وتسجيل الطلاب والتقييمات ...",
         "technologies": ["React", "Laravel", "MySQL"]
       }

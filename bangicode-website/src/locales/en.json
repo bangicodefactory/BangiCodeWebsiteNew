@@ -83,11 +83,11 @@
     "title": "Our Portfolio",
     "subtitle": "Explore our successful projects that demonstrate our expertise and commitment to delivering exceptional digital solutions",
     "tabs": {
-      "all": "All Projects",
-      "software": "Custom Software",
+      "allprojects": "All Projects",
+      "customsoftware": "Custom Software",
       "ecommerce": "E-commerce",
-      "web": "Web Development",
-      "social": "Social Media"
+      "webdevelopment": "Web Development",
+      "socialmedia": "Social Media"
     },
     "projects": [
       {
