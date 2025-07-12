@@ -13,39 +13,39 @@ const PortfolioSection = () => {
       image: 'https://placehold.co/600x400?text=TechRetail+E-commerce+Platform'
     },
     {
-      title: 'HealthTrack Patient Management System',
+      title: 'RentCar Cars Rental Management System',
       category: 'Custom Software',
-      description: 'The healthcare provider struggled with inefficient patient record management and appointment scheduling...',
+      description: 'The client needed a comprehensive platform to manage car rentals, including booking, payments, and fleet management...',
       technologies: ['Angular', 'Django', 'PostgreSQL'],
       image: ' https://placehold.co/600x400?text=HealthTrack+Patient+System'
     },
     {
-      title: 'FoodDelivery Mobile App',
+      title: 'Friterie.ma Food Delivery Web App',
       category: 'Custom Software',
-      description: 'The startup needed a user-friendly food delivery app with real-time order tracking...',
-      technologies: ['React Native', 'Firebase', 'Google Maps API'],
-      image: ' https://placehold.co/600x400?text=FoodDelivery+Mobile+App'
+      description: 'The client needed a user-friendly food delivery web app to handle their growing product demand and customer base...',
+      technologies: ['Html/CSS', 'Laravel', 'PHP'],
+      image: ' https://placehold.co/600x400?text=Friterie.ma+Food+Delivery+Web+App'
     },
     {
-      title: 'SocialBoost Campaign Management',
+      title: 'Fujiwara SocialMedia Campaign Management',
       category: 'Social Media',
-      description: 'The marketing agency needed a unified platform to manage social media campaigns across multiple platforms...',
-      technologies: ['Vue.js', 'Python', 'TensorFlow'],
-      image: ' https://placehold.co/600x400?text=SocialBoost+Campaign+Tool'
+      description: 'The client wanted to enhance their social media presence and streamline campaign management across multiple platforms...',
+      technologies: ['Html/CSS', 'Laravel', 'PHP'],
+      image: ' https://placehold.co/600x400?text=Fujiwara+SocialMedia+Campaign+Management'
     },
     {
-      title: 'LuxBrands Online Boutique',
-      category: 'E-commerce',
-      description: 'The luxury fashion retailer wanted to translate their exclusive in-store experience to an online platform...',
-      technologies: ['Shopify Plus', 'Three.js', 'AWS'],
-      image: ' https://placehold.co/600x400?text=LuxBrands+Online+Boutique'
-    },
-    {
-      title: 'EduLearn Learning Management System',
+      title: 'CafeImperial Website Design and Development',
       category: 'Web Development',
-      description: 'The educational institution needed a robust learning management system to deliver courses online...',
-      technologies: ['React', 'Express.js', 'MySQL'],
-      image: ' https://placehold.co/600x400?text=EduLearn+LMS'
+      description: 'The client needed a modern and responsive website to showcase their cafe\'s menu, ambiance, and services...',
+      technologies: ['React', 'Node.js', 'HTML/CSS'],
+      image: ' https://placehold.co/600x400?text=CafeImperial+Website+Design+and+Development'
+    },
+    {
+      title: 'Classkom Learning Management System',
+      category: 'Web Development',
+      description: 'The educational institution needed a robust learning management system to manage online courses, student registrations, and assessments...',
+      technologies: ['React', 'Laravel', 'MySQL'],
+      image: ' https://placehold.co/600x400?text=Classkom+LMS'
     }
   ];
 

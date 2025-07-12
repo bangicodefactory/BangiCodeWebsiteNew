@@ -13,7 +13,7 @@ const AboutSection = () => {
             </p>
 
             <p className="text-gray-600 mb-6">
-              Founded in 2015, Bangicode was born from a simple yet powerful idea: to help businesses of all sizes leverage technology to achieve their full potential. What began as a small team of passionate developers has grown into a comprehensive digital solutions provider with expertise across multiple domains.
+              Founded in 2020, Bangicode was born from a simple yet powerful idea: to help businesses of all sizes leverage technology to achieve their full potential. What began as a small team of passionate developers has grown into a comprehensive digital solutions provider with expertise across multiple domains.
             </p>
 
             <p className="text-gray-600 mb-6">
@@ -22,15 +22,15 @@ const AboutSection = () => {
 
             <div className="grid grid-cols-2 gap-4 mt-8">
               <div>
-                <div className="text-3xl font-bold text-blue-600">100+</div>
+                <div className="text-3xl font-bold text-blue-600">20+</div>
                 <div className="text-gray-600">Satisfied Clients</div>
               </div>
               <div>
-                <div className="text-3xl font-bold text-blue-600">150+</div>
+                <div className="text-3xl font-bold text-blue-600">24+</div>
                 <div className="text-gray-600">Completed Projects</div>
               </div>
               <div>
-                <div className="text-3xl font-bold text-blue-600">10+</div>
+                <div className="text-3xl font-bold text-blue-600">5+</div>
                 <div className="text-gray-600">Years of Experience</div>
               </div>
               <div>
