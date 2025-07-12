@@ -2,7 +2,8 @@ import { useTranslation } from 'react-i18next';
 
 const TestimonialsSection = () => {
   const { t } = useTranslation();
-  const testimonials = [t('testimonials.testimonial1'), t('testimonials.testimonial2'), t('testimonials.testimonial3')];
+  const testimonials = t('testimonials', { returnObjects: true }) || {};
+  const testimonialList = Object.values(testimonials).slice(0, 3);
 
   return (
     <section id="testimonials" className="py-20 bg-white">
@@ -15,10 +16,10 @@ const TestimonialsSection = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {testimonials.map((testimonial, index) => (
+          {testimonialList.map((testimonial, index) => (
             <div key={index} className="bg-gray-50 p-8 rounded-lg shadow-md">
               <div className="flex items-center mb-4">
-                <img src={`https://placehold.co/100x100?text=${testimonial.name.split(' ').map(n => n[0]).join('')}`} alt={testimonial.name} className="w-12 h-12 rounded-full mr-4" />
+                <img src={`https://placehold.co/100x100?text=${testimonial.name ? testimonial.name.split(' ').map(n => n[0]).join('') : ''}`} alt={testimonial.name} className="w-12 h-12 rounded-full mr-4" />
                 <div>
                   <h4 className="font-semibold text-gray-900">{testimonial.name}</h4>
                   <p className="text-sm text-gray-600">{testimonial.title}</p>
