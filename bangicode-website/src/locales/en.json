@@ -12,5 +12,204 @@
     "subtitle": "We help businesses transform ideas into powerful digital solutions that drive growth and innovation.",
     "explore": "Explore Our Services",
     "contact": "Contact Us"
+  },
+  "services": {
+    "title": "Our Services",
+    "subtitle": "We provide comprehensive digital solutions tailored to your business needs",
+    "software": {
+      "title": "Custom Software Development",
+      "description": "Bespoke software solutions designed to address your specific business challenges and streamline operations.",
+      "item1": "Streamlined business processes",
+      "item2": "Increased operational efficiency",
+      "item3": "Reduced costs and improved ROI"
+    },
+    "ecommerce": {
+      "title": "E-commerce Development",
+      "description": "Powerful online stores with seamless payment processing, inventory management, and user-friendly interfaces.",
+      "item1": "User-friendly customer interfaces",
+      "item2": "Secure payment processing",
+      "item3": "Inventory and order management"
+    },
+    "training": {
+      "title": "Technical Training",
+      "description": "Comprehensive training programs to empower your team with the latest technical skills and knowledge.",
+      "item1": "Customized curriculum for your team",
+      "item2": "Hands-on workshops and practical exercises",
+      "item3": "Expert instructors with industry experience"
+    },
+    "social": {
+      "title": "Social Media Management",
+      "description": "Strategic social media campaigns to boost your brand presence and engage with your target audience.",
+      "item1": "Strategic content planning and creation",
+      "item2": "Community engagement and growth",
+      "item3": "Performance analytics and reporting"
+    },
+    "learnMore": "Learn More →"
+  },
+  "process": {
+    "title": "Our Service Process",
+    "subtitle": "We follow a structured approach to deliver exceptional results for every project",
+    "step1": {
+      "title": "Discovery & Planning",
+      "description": "We begin by understanding your business objectives, requirements, and challenges..."
+    },
+    "step2": {
+      "title": "Design & Development",
+      "description": "Our team designs and develops tailored solutions, keeping you involved..."
+    },
+    "step3": {
+      "title": "Testing & Refinement",
+      "description": "We thoroughly test all aspects of the solution to ensure quality..."
+    },
+    "step4": {
+      "title": "Deployment & Support",
+      "description": "After successful deployment, we provide ongoing support, maintenance..."
+    },
+    "discuss": "Ready to discuss your project?"
+  },
+  "about": {
+    "title": "About Bangicode",
+    "p1": "We're a dedicated team of technology enthusiasts committed to helping businesses harness the power of digital solutions.",
+    "p2": "Founded in 2020, Bangicode was born from a simple yet powerful idea: to help businesses of all sizes leverage technology to achieve their full potential. What began as a small team of passionate developers has grown into a comprehensive digital solutions provider with expertise across multiple domains.",
+    "p3": "We understand that in today's fast-paced digital landscape, businesses need reliable partners who can translate complex technical requirements into effective, user-friendly solutions. That's why we focus on combining technical excellence with a deep understanding of business needs.",
+    "stats": {
+      "clients": "Satisfied Clients",
+      "projects": "Completed Projects",
+      "experience": "Years of Experience",
+      "support": "Support & Maintenance"
+    }
+  },
+  "portfolio": {
+    "title": "Our Portfolio",
+    "subtitle": "Explore our successful projects that demonstrate our expertise and commitment to delivering exceptional digital solutions",
+    "tabs": {
+      "all": "All Projects",
+      "software": "Custom Software",
+      "ecommerce": "E-commerce",
+      "web": "Web Development",
+      "social": "Social Media"
+    },
+    "projects": [
+      {
+        "title": "TechRetail E-commerce Platform",
+        "category": "E-commerce",
+        "description": "The client needed a scalable e-commerce platform to handle their growing product catalog and customer base...",
+        "technologies": ["React", "Node.js", "MongoDB"]
+      },
+      {
+        "title": "RentCar Cars Rental Management System",
+        "category": "Custom Software",
+        "description": "The client needed a comprehensive platform to manage car rentals, including booking, payments, and fleet management...",
+        "technologies": ["Angular", "Django", "PostgreSQL"]
+      },
+      {
+        "title": "Friterie.ma Food Delivery Web App",
+        "category": "Custom Software",
+        "description": "The client needed a user-friendly food delivery web app to handle their growing product demand and customer base...",
+        "technologies": ["Html/CSS", "Laravel", "PHP"]
+      },
+      {
+        "title": "Fujiwara SocialMedia Campaign Management",
+        "category": "Social Media",
+        "description": "The client wanted to enhance their social media presence and streamline campaign management across multiple platforms...",
+        "technologies": ["Html/CSS", "Laravel", "PHP"]
+      },
+      {
+        "title": "CafeImperial Website Design and Development",
+        "category": "Web Development",
+        "description": "The client needed a modern and responsive website to showcase their cafe's menu, ambiance, and services...",
+        "technologies": ["React", "Node.js", "HTML/CSS"]
+      },
+      {
+        "title": "Classkom Learning Management System",
+        "category": "Web Development",
+        "description": "The educational institution needed a robust learning management system to manage online courses, student registrations, and assessments...",
+        "technologies": ["React", "Laravel", "MySQL"]
+      }
+    ]
+  },
+  "testimonials": {
+    "title": "What Our Clients Say",
+    "subtitle": "Don't just take our word for it. Here's what our clients have to say about working with Bangicode.",
+    "testimonial1": {
+      "name": "Sarah Johnson",
+      "title": "CEO, StyleTech",
+      "quote": "Bangicode transformed our online presence with an exceptional e-commerce platform that exceeded our expectations."
+    },
+    "testimonial2": {
+      "name": "Michael Chen",
+      "title": "CTO, Innovate Inc",
+      "quote": "Their custom software solution streamlined our operations and increased productivity by over 40%. Highly recommended!"
+    },
+    "testimonial3": {
+      "name": "Amanda Rodriguez",
+      "title": "Marketing Director, Elevate",
+      "quote": "The social media management services provided by Bangicode have significantly boosted our online engagement and brand awareness."
+    },
+    "trusted": "Trusted by innovative companies"
+  },
+  "cta": {
+    "title": "Ready to Start Your Project?",
+    "subtitle": "Let us help you transform your business with innovative digital solutions tailored to your specific needs and goals.",
+    "getInTouch": "Get in Touch",
+    "exploreServices": "Explore Services",
+    "stats": {
+      "projects": "Projects Completed",
+      "clients": "Happy Clients",
+      "experience": "Years Experience",
+      "support": "Support"
+    }
+  },
+  "contact": {
+    "title": "Get In Touch",
+    "subtitle": "Have a project in mind or want to learn more about our services? Reach out to us, and our team will get back to you as soon as possible.",
+    "info": {
+      "title": "Contact Information",
+      "location": "Our Location",
+      "address": "Av. Ali Yaeta, Centre Commercial Wilaya Center, Etage 6, N69",
+      "phone": "Phone Number",
+      "email": "Email Address",
+      "hours": "Working Hours",
+      "weekdays": "Monday - Friday: 9am - 6pm",
+      "saturday": "Saturday: 10am - 2pm"
+    },
+    "social": "Connect With Us",
+    "form": {
+      "name": "Your Name *",
+      "namePlaceholder": "John Doe",
+      "email": "Your Email *",
+      "emailPlaceholder": "john@example.com",
+      "subject": "Subject *",
+      "subjectPlaceholder": "How can we help you?",
+      "message": "Message *",
+      "messagePlaceholder": "Tell us about your project or inquiry...",
+      "send": "Send Message"
+    }
+  },
+  "footer": {
+    "description": "Delivering exceptional digital solutions to help businesses thrive in the digital era.",
+    "services": {
+      "title": "Our Services",
+      "item1": "Custom Software Development",
+      "item2": "E-commerce Development",
+      "item3": "Technical Training",
+      "item4": "Social Media Management"
+    },
+    "about": {
+      "title": "About Us",
+      "item1": "About Us",
+      "item2": "Portfolio",
+      "item3": "Careers",
+      "item4": "Contact"
+    },
+    "contact": {
+      "title": "Contact Us"
+    },
+    "legal": {
+      "copy": "© 2025 Bangicode. All rights reserved.",
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Service",
+      "cookie": "Cookie Policy"
+    }
   }
 }
