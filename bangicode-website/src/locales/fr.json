@@ -1,0 +1,16 @@
+{
+  "navigation": {
+    "services": "Services",
+    "about": "À propos de nous",
+    "portfolio": "Portefeuille",
+    "testimonials": "Témoignages",
+    "contact": "Contact",
+    "getStarted": "Commencer"
+  },
+  "hero": {
+    "title": "Transformer les idées en solutions numériques puissantes",
+    "subtitle": "Nous aidons les entreprises à transformer leurs idées en solutions numériques puissantes qui stimulent la croissance et l'innovation.",
+    "explore": "Découvrez nos services",
+    "contact": "Contactez-nous"
+  }
+}

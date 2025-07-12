@@ -1,0 +1,16 @@
+{
+  "navigation": {
+    "services": "Services",
+    "about": "About Us",
+    "portfolio": "Portfolio",
+    "testimonials": "Testimonials",
+    "contact": "Contact",
+    "getStarted": "Get Started"
+  },
+  "hero": {
+    "title": "Transforming Ideas into Powerful Digital Solutions",
+    "subtitle": "We help businesses transform ideas into powerful digital solutions that drive growth and innovation.",
+    "explore": "Explore Our Services",
+    "contact": "Contact Us"
+  }
+}
