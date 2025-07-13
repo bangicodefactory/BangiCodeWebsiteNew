@@ -21,7 +21,7 @@ const Navigation = () => {
             <a href="#services" className="text-gray-700 hover:text-blue-600 transition">{t('navigation.services')}</a>
             <a href="#about" className="text-gray-700 hover:text-blue-600 transition">{t('navigation.about')}</a>
             <a href="#portfolio" className="text-gray-700 hover:text-blue-600 transition">{t('navigation.portfolio')}</a>
-            <a href="#testimonials" className="text-gray-700 hover:text-blue-600 transition">{t('navigation.testimonials')}</a>
+            {/* <a href="#testimonials" className="text-gray-700 hover:text-blue-600 transition">{t('navigation.testimonials')}</a> */}
             <a href="#contact" className="text-gray-700 hover:text-blue-600 transition">{t('navigation.contact')}</a>
             <button className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">
               {t('navigation.getStarted')}
