@@ -83,11 +83,11 @@
     "title": "مجموعة أعمالنا",
     "subtitle": "استكشف مشاريعنا الناجحة التي تثبت خبرتنا والتزامنا بتقديم حلول رقمية استثنائية",
     "tabs": {
-      "allprojects": "כל הפרויקטים",
-      "customsoftware": "תוכנה מותאמת אישית",
-      "ecommerce": "מסחר אלקטרוני",
-      "webdevelopment": "פיתוח אתרים",
-      "socialmedia": "מדיה חברתית"
+      "allprojects": "جميع المشاريع",
+      "customsoftware": "البرمجيات المخصصة",
+      "ecommerce": "التجارة الإلكترونية",
+      "webdevelopment": "تطوير الويب",
+      "socialmedia": "وسائل التواصل الاجتماعي"
     },
     "projects": [
       {

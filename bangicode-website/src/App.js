@@ -5,7 +5,7 @@ import ServicesSection from './components/ServicesSection';
 import ProcessSection from './components/ProcessSection';
 import AboutSection from './components/AboutSection';
 import PortfolioSection from './components/PortfolioSection';
-import TestimonialsSection from './components/TestimonialsSection';
+//import TestimonialsSection from './components/TestimonialsSection';
 import CTASection from './components/CTASection';
 import ContactSection from './components/ContactSection';
 import Footer from './components/Footer';
@@ -22,7 +22,7 @@ const App = () => {
         <ProcessSection />
         <AboutSection />
         <PortfolioSection />
-        <TestimonialsSection />
+        {/* <TestimonialsSection /> */}
         <CTASection />
         <ContactSection />
         <Footer />
