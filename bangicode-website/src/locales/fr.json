@@ -1,0 +1,215 @@
+{
+  "navigation": {
+    "services": "Services",
+    "about": "À propos de nous",
+    "portfolio": "Portefeuille",
+    "testimonials": "Témoignages",
+    "contact": "Contact",
+    "getStarted": "Commencer"
+  },
+  "hero": {
+    "title": "Transformer les idées en solutions numériques puissantes",
+    "subtitle": "Nous aidons les entreprises à transformer leurs idées en solutions numériques puissantes qui stimulent la croissance et l'innovation.",
+    "explore": "Découvrez nos services",
+    "contact": "Contactez-nous"
+  },
+  "services": {
+    "title": "Nos Services",
+    "subtitle": "Nous fournissons des solutions numériques complètes adaptées aux besoins de votre entreprise",
+    "software": {
+      "title": "Développement de logiciels personnalisés",
+      "description": "Solutions logicielles sur mesure conçues pour répondre à vos défis commerciaux spécifiques et rationaliser vos opérations.",
+      "item1": "Processus métier rationalisés",
+      "item2": "Efficacité opérationnelle accrue",
+      "item3": "Coûts réduits et retour sur investissement amélioré"
+    },
+    "ecommerce": {
+      "title": "Développement du commerce électronique",
+      "description": "Boutiques en ligne puissantes avec un traitement des paiements, une gestion des stocks et des interfaces conviviales transparents.",
+      "item1": "Interfaces client conviviales",
+      "item2": "Traitement des paiements sécurisé",
+      "item3": "Gestion des stocks et des commandes"
+    },
+    "training": {
+      "title": "Formation technique",
+      "description": "Programmes de formation complets pour doter votre équipe des dernières compétences et connaissances techniques.",
+      "item1": "Programme personnalisé pour votre équipe",
+      "item2": "Ateliers pratiques et exercices pratiques",
+      "item3": "Instructeurs experts ayant une expérience de l'industrie"
+    },
+    "social": {
+      "title": "Gestion des médias sociaux",
+      "description": "Campagnes stratégiques sur les réseaux sociaux pour renforcer la présence de votre marque et interagir avec votre public cible.",
+      "item1": "Planification et création de contenu stratégique",
+      "item2": "Engagement et croissance de la communauté",
+      "item3": "Analyse des performances et rapports"
+    },
+    "learnMore": "En savoir plus →"
+  },
+  "process": {
+    "title": "Notre processus de service",
+    "subtitle": "Nous suivons une approche structurée pour obtenir des résultats exceptionnels pour chaque projet",
+    "step1": {
+      "title": "Découverte et planification",
+      "description": "Nous commençons par comprendre vos objectifs commerciaux, vos exigences et vos défis..."
+    },
+    "step2": {
+      "title": "Conception et développement",
+      "description": "Notre équipe conçoit et développe des solutions sur mesure, en vous impliquant..."
+    },
+    "step3": {
+      "title": "Tests et affinements",
+      "description": "Nous testons minutieusement tous les aspects de la solution pour garantir la qualité..."
+    },
+    "step4": {
+      "title": "Déploiement et assistance",
+      "description": "Après un déploiement réussi, nous fournissons un support continu, une maintenance..."
+    },
+    "discuss": "Prêt à discuter de votre projet ?"
+  },
+  "about": {
+    "title": "À propos de Bangicode",
+    "p1": "Nous sommes une équipe dévouée de passionnés de technologie qui s'engagent à aider les entreprises à exploiter la puissance des solutions numériques.",
+    "p2": "Fondée en 2020, Bangicode est née d'une idée simple mais puissante : aider les entreprises de toutes tailles à tirer parti de la technologie pour réaliser leur plein potentiel. Ce qui a commencé comme une petite équipe de développeurs passionnés est devenu un fournisseur complet de solutions numériques avec une expertise dans plusieurs domaines.",
+    "p3": "Nous comprenons que dans le paysage numérique actuel en évolution rapide, les entreprises ont besoin de partenaires fiables capables de traduire des exigences techniques complexes en solutions efficaces et conviviales. C'est pourquoi nous nous concentrons sur la combinaison de l'excellence technique avec une compréhension approfondie des besoins de l'entreprise.",
+    "stats": {
+      "clients": "Clients satisfaits",
+      "projects": "Projets achevés",
+      "experience": "Années d'expérience",
+      "support": "Support et maintenance"
+    }
+  },
+  "portfolio": {
+    "title": "Notre portefeuille",
+    "subtitle": "Découvrez nos projets réussis qui démontrent notre expertise et notre engagement à fournir des solutions numériques exceptionnelles",
+    "tabs": {
+      "allprojects": "Tous les projets",
+      "customsoftware": "Logiciel personnalisé",
+      "ecommerce": "Commerce électronique",
+      "webdevelopment": "Développement web",
+      "socialmedia": "Médias sociaux"
+    },
+    "projects": [
+      {
+        "title": "Plateforme de commerce électronique TechRetail",
+        "category": "E-commerce",
+        "description": "Le client avait besoin d'une plate-forme de commerce électronique évolutive pour gérer son catalogue de produits et sa clientèle en pleine croissance...",
+        "technologies": ["React", "Node.js", "MongoDB"]
+      },
+      {
+        "title": "Système de gestion de location de voitures RentCar",
+        "category": "Custom Software",
+        "description": "Le client avait besoin d'une plate-forme complète pour gérer les locations de voitures, y compris la réservation, les paiements et la gestion de la flotte...",
+        "technologies": ["Angular", "Django", "PostgreSQL"]
+      },
+      {
+        "title": "Application Web de livraison de nourriture Friterie.ma",
+        "category": "Custom Software",
+        "description": "Le client avait besoin d'une application Web de livraison de nourriture conviviale pour gérer la demande croissante de ses produits et sa clientèle...",
+        "technologies": ["Html/CSS", "Laravel", "PHP"]
+      },
+      {
+        "title": "Gestion de campagne SocialMedia Fujiwara",
+        "category": "Social Media",
+        "description": "Le client souhaitait renforcer sa présence sur les réseaux sociaux et rationaliser la gestion de ses campagnes sur plusieurs plateformes...",
+        "technologies": ["Html/CSS", "Laravel", "PHP"]
+      },
+      {
+        "title": "Conception et développement du site Web CafeImperial",
+        "category": "Web Development",
+        "description": "Le client avait besoin d'un site Web moderne et réactif pour présenter le menu, l'ambiance et les services de son café...",
+        "technologies": ["React", "Node.js", "HTML/CSS"]
+      },
+      {
+        "title": "Système de gestion de l'apprentissage Classkom",
+        "category": "Web Development",
+        "description": "L'établissement d'enseignement avait besoin d'un système de gestion de l'apprentissage robuste pour gérer les cours en ligne, les inscriptions des étudiants et les évaluations...",
+        "technologies": ["React", "Laravel", "MySQL"]
+      }
+    ]
+  },
+  "testimonials": {
+    "title": "Ce que disent nos clients",
+    "subtitle": "Ne nous croyez pas sur parole. Voici ce que nos clients ont à dire sur leur collaboration avec Bangicode.",
+    "testimonial1": {
+      "name": "Sarah Johnson",
+      "title": "PDG, StyleTech",
+      "quote": "Bangicode a transformé notre présence en ligne avec une plateforme de commerce électronique exceptionnelle qui a dépassé nos attentes."
+    },
+    "testimonial2": {
+      "name": "Michael Chen",
+      "title": "CTO, Innovate Inc",
+      "quote": "Leur solution logicielle personnalisée a rationalisé nos opérations et augmenté la productivité de plus de 40 %. Hautement recommandé !"
+    },
+    "testimonial3": {
+      "name": "Amanda Rodriguez",
+      "title": "Directrice marketing, Elevate",
+      "quote": "Les services de gestion des médias sociaux fournis par Bangicode ont considérablement augmenté notre engagement en ligne et la notoriété de notre marque."
+    },
+    "trusted": "Reconnu par des entreprises innovantes"
+  },
+  "cta": {
+    "title": "Prêt à démarrer votre projet ?",
+    "subtitle": "Laissez-nous vous aider à transformer votre entreprise avec des solutions numériques innovantes adaptées à vos besoins et objectifs spécifiques.",
+    "getInTouch": "Contactez-nous",
+    "exploreServices": "Découvrez nos services",
+    "stats": {
+      "projects": "Projets achevés",
+      "clients": "Clients satisfaits",
+      "experience": "Années d'expérience",
+      "support": "Support"
+    }
+  },
+  "contact": {
+    "title": "Contactez-nous",
+    "subtitle": "Vous avez un projet en tête ou souhaitez en savoir plus sur nos services ? Contactez-nous et notre équipe vous répondra dans les plus brefs délais.",
+    "info": {
+      "title": "Coordonnées",
+      "location": "Notre emplacement",
+      "address": "Av. Ali Yaeta, Centre Commercial Wilaya Center, Etage 6, N69",
+      "phone": "Numéro de téléphone",
+      "email": "Adresse e-mail",
+      "hours": "Heures de travail",
+      "weekdays": "Lundi - Vendredi : 9h - 18h",
+      "saturday": "Samedi : 10h - 14h"
+    },
+    "social": "Connectez-vous avec nous",
+    "form": {
+      "name": "Votre nom *",
+      "namePlaceholder": "John Doe",
+      "email": "Votre e-mail *",
+      "emailPlaceholder": "john@example.com",
+      "subject": "Sujet *",
+      "subjectPlaceholder": "Comment pouvons-nous vous aider ?",
+      "message": "Message *",
+      "messagePlaceholder": "Parlez-nous de votre projet ou de votre demande...",
+      "send": "Envoyer le message"
+    }
+  },
+  "footer": {
+    "description": "Fournir des solutions numériques exceptionnelles pour aider les entreprises à prospérer à l'ère numérique.",
+    "services": {
+      "title": "Nos Services",
+      "item1": "Développement de logiciels personnalisés",
+      "item2": "Développement du commerce électronique",
+      "item3": "Formation technique",
+      "item4": "Gestion des médias sociaux"
+    },
+    "about": {
+      "title": "À propos de nous",
+      "item1": "À propos de nous",
+      "item2": "Portefeuille",
+      "item3": "Carrières",
+      "item4": "Contact"
+    },
+    "contact": {
+      "title": "Contactez-nous"
+    },
+    "legal": {
+      "copy": "© 2025 Bangicode. Tous les droits sont réservés.",
+      "privacy": "Politique de confidentialité",
+      "terms": "Conditions d'utilisation",
+      "cookie": "Politique en matière de cookies"
+    }
+  }
+}

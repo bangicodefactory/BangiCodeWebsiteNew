@@ -1,18 +1,22 @@
+import { useTranslation } from 'react-i18next';
+
 const ContactSection = () => {
+  const { t } = useTranslation();
+
   return (
     <section id="contact" className="py-20 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-3xl font-bold text-gray-900">Get In Touch</h2>
+          <h2 className="text-3xl font-bold text-gray-900">{t('contact.title')}</h2>
           <p className="mt-4 max-w-2xl mx-auto text-lg text-gray-600">
-            Have a project in mind or want to learn more about our services? Reach out to us, and our team will get back to you as soon as possible.
+            {t('contact.subtitle')}
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
           <div>
             <div className="mb-8">
-              <h3 className="text-xl font-semibold mb-4">Contact Information</h3>
+              <h3 className="text-xl font-semibold mb-4">{t('contact.info.title')}</h3>
               <div className="space-y-4">
                 <div className="flex items-start">
                   <svg className="w-6 h-6 mr-3 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -20,8 +24,8 @@ const ContactSection = () => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
                   <div>
-                    <p className="font-medium">Our Location</p>
-                    <p className="text-gray-600">Av. Ali Yaeta, Centre Commercial Wilaya Center, Etage 6, N69</p>
+                    <p className="font-medium">{t('contact.info.location')}</p>
+                    <p className="text-gray-600">{t('contact.info.address')}</p>
                   </div>
                 </div>
 
@@ -30,7 +34,7 @@ const ContactSection = () => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                   </svg>
                   <div>
-                    <p className="font-medium">Phone Number</p>
+                    <p className="font-medium">{t('contact.info.phone')}</p>
                     <p className="text-gray-600">+212 6645 71370</p>
                   </div>
                 </div>
@@ -40,7 +44,7 @@ const ContactSection = () => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>
                   <div>
-                    <p className="font-medium">Email Address</p>
+                    <p className="font-medium">{t('contact.info.email')}</p>
                     <p className="text-gray-600">admin@bangicode.ma</p>
                   </div>
                 </div>
@@ -50,16 +54,16 @@ const ContactSection = () => {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                   </svg>
                   <div>
-                    <p className="font-medium">Working Hours</p>
-                    <p className="text-gray-600">Monday - Friday: 9am - 6pm</p>
-                    <p className="text-gray-600">Saturday: 10am - 2pm</p>
+                    <p className="font-medium">{t('contact.info.hours')}</p>
+                    <p className="text-gray-600">{t('contact.info.weekdays')}</p>
+                    <p className="text-gray-600">{t('contact.info.saturday')}</p>
                   </div>
                 </div>
               </div>
             </div>
 
             <div className="mt-8">
-              <h3 className="text-xl font-semibold mb-4">Connect With Us</h3>
+              <h3 className="text-xl font-semibold mb-4">{t('contact.social')}</h3>
               <div className="flex space-x-4">
                 <a href="#" className="text-gray-500 hover:text-blue-600 transition">
                   <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
@@ -88,27 +92,27 @@ const ContactSection = () => {
           <div>
             <form className="space-y-6">
               <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Your Name *</label>
-                <input type="text" id="name" placeholder="John Doe" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">{t('contact.form.name')}</label>
+                <input type="text" id="name" placeholder={t('contact.form.namePlaceholder')} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
               </div>
 
               <div>
-                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">Your Email *</label>
-                <input type="email" id="email" placeholder="john@example.com" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">{t('contact.form.email')}</label>
+                <input type="email" id="email" placeholder={t('contact.form.emailPlaceholder')} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
               </div>
 
               <div>
-                <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-1">Subject *</label>
-                <input type="text" id="subject" placeholder="How can we help you?" className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-1">{t('contact.form.subject')}</label>
+                <input type="text" id="subject" placeholder={t('contact.form.subjectPlaceholder')} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
               </div>
 
               <div>
-                <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">Message *</label>
-                <textarea id="message" rows="5" placeholder="Tell us about your project or inquiry..." className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
+                <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">{t('contact.form.message')}</label>
+                <textarea id="message" rows="5" placeholder={t('contact.form.messagePlaceholder')} className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
               </div>
 
               <button type="submit" className="w-full bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 transition">
-                Send Message
+                {t('contact.form.send')}
               </button>
             </form>
           </div>

@@ -1,7 +1,13 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 const Navigation = () => {
+  const { t, i18n } = useTranslation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const changeLanguage = (lng) => {
+    i18n.changeLanguage(lng);
+  };
 
   return (
     <nav className="bg-white shadow-sm sticky top-0 z-50">
@@ -12,14 +18,21 @@ const Navigation = () => {
           </div>
 
           <div className="hidden md:flex items-center space-x-8">
-            <a href="#services" className="text-gray-700 hover:text-blue-600 transition">Services</a>
-            <a href="#about" className="text-gray-700 hover:text-blue-600 transition">About Us</a>
-            <a href="#portfolio" className="text-gray-700 hover:text-blue-600 transition">Portfolio</a>
-            <a href="#testimonials" className="text-gray-700 hover:text-blue-600 transition">Testimonials</a>
-            <a href="#contact" className="text-gray-700 hover:text-blue-600 transition">Contact</a>
+            <a href="#services" className="text-gray-700 hover:text-blue-600 transition">{t('navigation.services')}</a>
+            <a href="#about" className="text-gray-700 hover:text-blue-600 transition">{t('navigation.about')}</a>
+            <a href="#portfolio" className="text-gray-700 hover:text-blue-600 transition">{t('navigation.portfolio')}</a>
+            {/* <a href="#testimonials" className="text-gray-700 hover:text-blue-600 transition">{t('navigation.testimonials')}</a> */}
+            <a href="#contact" className="text-gray-700 hover:text-blue-600 transition">{t('navigation.contact')}</a>
             <button className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">
-              Get Started
+              {t('navigation.getStarted')}
             </button>
+            <div className="flex items-center">
+              <button onClick={() => changeLanguage('en')} className="text-gray-700 hover:text-blue-600 transition">EN</button>
+              <span className="mx-2 text-gray-300">|</span>
+              <button onClick={() => changeLanguage('fr')} className="text-gray-700 hover:text-blue-600 transition">FR</button>
+              <span className="mx-2 text-gray-300">|</span>
+              <button onClick={() => changeLanguage('ar')} className="text-gray-700 hover:text-blue-600 transition">AR</button>
+            </div>
           </div>
 
           <div className="md:hidden flex items-center">
@@ -36,13 +49,13 @@ const Navigation = () => {
       {mobileMenuOpen && (
         <div className="md:hidden bg-white shadow-lg">
           <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-            <a href="#services" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">Services</a>
-            <a href="#about" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">About Us</a>
-            <a href="#portfolio" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">Portfolio</a>
-            <a href="#testimonials" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">Testimonials</a>
-            <a href="#contact" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">Contact</a>
+            <a href="#services" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">{t('navigation.services')}</a>
+            <a href="#about" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">{t('navigation.about')}</a>
+            <a href="#portfolio" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">{t('navigation.portfolio')}</a>
+            <a href="#testimonials" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">{t('navigation.testimonials')}</a>
+            <a href="#contact" className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">{t('navigation.contact')}</a>
             <button className="mt-2 w-full text-center bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">
-              Get Started
+              {t('navigation.getStarted')}
             </button>
           </div>
         </div>
