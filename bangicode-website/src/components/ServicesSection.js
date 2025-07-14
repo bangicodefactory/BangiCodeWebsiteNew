@@ -44,9 +44,9 @@ const ServicesSection = () => {
                 {t('services.software.item3')}
               </li>
             </ul>
-            <button className="mt-6 text-blue-600 font-medium hover:text-blue-800 flex items-center">
+            {/* <button className="mt-6 text-blue-600 font-medium hover:text-blue-800 flex items-center">
               {t('services.learnMore')}
-            </button>
+            </button> */}
           </div>
 
           <div className="bg-gray-50 p-8 rounded-lg shadow-md hover:shadow-lg transition">
@@ -79,9 +79,9 @@ const ServicesSection = () => {
                 {t('services.ecommerce.item3')}
               </li>
             </ul>
-            <button className="mt-6 text-blue-600 font-medium hover:text-blue-800 flex items-center">
+            {/* <button className="mt-6 text-blue-600 font-medium hover:text-blue-800 flex items-center">
               {t('services.learnMore')}
-            </button>
+            </button> */}
           </div>
 
           <div className="bg-gray-50 p-8 rounded-lg shadow-md hover:shadow-lg transition">
@@ -114,9 +114,9 @@ const ServicesSection = () => {
                 {t('services.training.item3')}
               </li>
             </ul>
-            <button className="mt-6 text-blue-600 font-medium hover:text-blue-800 flex items-center">
+            {/* <button className="mt-6 text-blue-600 font-medium hover:text-blue-800 flex items-center">
               {t('services.learnMore')}
-            </button>
+            </button> */}
           </div>
 
           <div className="bg-gray-50 p-8 rounded-lg shadow-md hover:shadow-lg transition">
@@ -149,9 +149,9 @@ const ServicesSection = () => {
                 {t('services.social.item3')}
               </li>
             </ul>
-            <button className="mt-6 text-blue-600 font-medium hover:text-blue-800 flex items-center">
+            {/* <button className="mt-6 text-blue-600 font-medium hover:text-blue-800 flex items-center">
               {t('services.learnMore')}
-            </button>
+            </button> */}
           </div>
         </div>
       </div>
