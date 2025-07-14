@@ -3,6 +3,13 @@ import { useTranslation } from 'react-i18next';
 const CTASection = () => {
   const { t } = useTranslation();
 
+  const handleGetInTouchClick = () => {
+    const contactSection = document.getElementById('contact');
+    if (contactSection) {
+      contactSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <section className="py-20 bg-blue-600 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -11,10 +18,21 @@ const CTASection = () => {
           {t('cta.subtitle')}
         </p>
         <div className="flex flex-wrap justify-center gap-6">
-          <button className="bg-white text-blue-600 px-8 py-3 rounded-md hover:bg-gray-100 transition">
+          <button
+            className="bg-white text-blue-600 px-8 py-3 rounded-md hover:bg-gray-100 transition"
+            onClick={handleGetInTouchClick}
+          >
             {t('cta.getInTouch')}
           </button>
-          <button className="bg-transparent border-2 border-white text-white px-8 py-3 rounded-md hover:bg-blue-700 transition">
+          <button
+            className="bg-transparent border-2 border-white text-white px-8 py-3 rounded-md hover:bg-blue-700 transition"
+            onClick={() => {
+              const servicesSection = document.getElementById('services');
+              if (servicesSection) {
+                servicesSection.scrollIntoView({ behavior: 'smooth' });
+              }
+            }}
+          >
             {t('cta.exploreServices')}
           </button>
         </div>
