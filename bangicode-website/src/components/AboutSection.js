@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import teamImage from '../assets/images/Team.PNG';
 
 const AboutSection = () => {
   const { t } = useTranslation();
@@ -8,7 +9,7 @@ const AboutSection = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-col md:flex-row items-center">
           <div className="md:w-1/2 mb-10 md:mb-0">
-            <img src=" https://placehold.co/600x400?text=Bangicode+Team" alt="Bangicode Team" className="rounded-lg shadow-lg" />
+            <img src={teamImage} alt="Bangicode Team" className="rounded-lg shadow-lg" />
           </div>
           <div className="md:w-1/2 md:pl-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">{t('about.title')}</h2>

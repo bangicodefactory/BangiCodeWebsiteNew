@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import digitalSolutions from '../assets/images/digital-solutions.avif';
 
 const HeroSection = () => {
   const { t } = useTranslation();
@@ -23,7 +24,7 @@ const HeroSection = () => {
           </div>
         </div>
         <div className="md:w-1/2">
-          <img src=" https://placehold.co/600x400?text=Digital+Solutions" alt="Digital Solutions" className="rounded-lg shadow-lg" />
+          <img src={digitalSolutions} alt="Digital Solutions" className="rounded-lg shadow-lg" />
         </div>
       </div>
     </section>
