@@ -15,7 +15,7 @@ const PortfolioSection = () => {
     ? projects
     : projects.filter(project => project.category === activeTab);
 
-  const tabs = ['All Projects', 'Custom Software', 'E commerce', 'Web Development', 'Social Media'];
+  const tabs = ['All Projects', 'Custom Software', 'Ecommerce', 'Web Development', 'Social Media'];
 
   return (
     <section id="portfolio" className="py-20 bg-gray-50">

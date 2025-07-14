@@ -85,14 +85,14 @@
     "tabs": {
       "allprojects": "All Projects",
       "customsoftware": "Custom Software",
-      "ecommerce": "E-commerce",
+      "ecommerce": "Ecommerce",
       "webdevelopment": "Web Development",
       "socialmedia": "Social Media"
     },
     "projects": [
       {
         "title": "TechRetail E-commerce Platform",
-        "category": "E-commerce",
+        "category": "Ecommerce",
         "description": "The client needed a scalable e-commerce platform to handle their growing product catalog and customer base...",
         "technologies": ["React", "Node.js", "MongoDB"]
       },
