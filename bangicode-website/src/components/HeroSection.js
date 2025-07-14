@@ -15,10 +15,20 @@ const HeroSection = () => {
             {t('hero.subtitle')}
           </p>
           <div className="flex space-x-4">
-            <button className="bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 transition">
+            <button onClick={() => {
+              const servicesSection = document.getElementById('services');
+              if (servicesSection) {
+                servicesSection.scrollIntoView({ behavior: 'smooth' });
+              }
+            }}className="bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 transition">
               {t('hero.explore')}
             </button>
-            <button className="border border-blue-600 text-blue-600 px-6 py-3 rounded-md hover:bg-blue-50 transition">
+            <button onClick={() => {
+              const contactSection = document.getElementById('contact');
+              if (contactSection) {
+                contactSection.scrollIntoView({ behavior: 'smooth' });
+              }
+            }}className="border border-blue-600 text-blue-600 px-6 py-3 rounded-md hover:bg-blue-50 transition">
               {t('hero.contact')}
             </button>
           </div>
