@@ -125,6 +125,34 @@
         "category": "Web Development",
         "description": "احتاجت المؤسسة التعليمية إلى نظام إدارة تعلم قوي لإدارة الدورات التدريبية عبر الإنترنت وتسجيل الطلاب والتقييمات ...",
         "technologies": ["React", "Laravel", "MySQL"]
+      },
+      {
+        "title": "coinluminaire",
+        "category": "E-commerce",
+        "description": "كان العميل بحاجة إلى منصة تجارة إلكترونية قابلة للتطوير للتعامل مع كتالوج منتجاته المتنامي وقاعدة عملائه...",
+        "technologies": ["React", "Node.js", "MongoDB"],
+        "website": "https://main--coinluminaire.netlify.app/"
+      },
+      {
+        "title": "Overtaille",
+        "category": "E-commerce",
+        "description": "كان العميل بحاجة إلى منصة تجارة إلكترونية قابلة للتطوير للتعامل مع كتالوج منتجاته المتنامي وقاعدة عملائه...",
+        "technologies": ["React", "Node.js", "MongoDB"],
+        "website": "https://overtaille.com/"
+      },
+      {
+        "title": "nortecoffeeco",
+        "category": "Custom Software",
+        "description": "كان العميل بحاجة إلى منصة شاملة لإدارة تأجير السيارات ، بما في ذلك الحجز والمدفوعات وإدارة الأسطول...",
+        "technologies": ["Angular", "Django", "PostgreSQL"],
+        "website": "https://nortecoffeeco.com/"
+      },
+      {
+        "title": "ayaalmadian",
+        "category": "Custom Software",
+        "description": "كان العميل بحاجة إلى منصة شاملة لإدارة تأجير السيارات ، بما في ذلك الحجز والمدفوعات وإدارة الأسطول...",
+        "technologies": ["Angular", "Django", "PostgreSQL"],
+        "website": "https://ayaalmadian.com/"
       }
     ]
   },

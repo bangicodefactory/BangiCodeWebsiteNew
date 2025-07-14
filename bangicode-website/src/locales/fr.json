@@ -125,6 +125,34 @@
         "category": "Web Development",
         "description": "L'établissement d'enseignement avait besoin d'un système de gestion de l'apprentissage robuste pour gérer les cours en ligne, les inscriptions des étudiants et les évaluations...",
         "technologies": ["React", "Laravel", "MySQL"]
+      },
+      {
+        "title": "coinluminaire",
+        "category": "E-commerce",
+        "description": "Le client avait besoin d'une plateforme de commerce électronique évolutive pour gérer son catalogue de produits et sa clientèle en pleine croissance...",
+        "technologies": ["React", "Node.js", "MongoDB"],
+        "website": "https://main--coinluminaire.netlify.app/"
+      },
+      {
+        "title": "Overtaille",
+        "category": "E-commerce",
+        "description": "Le client avait besoin d'une plateforme de commerce électronique évolutive pour gérer son catalogue de produits et sa clientèle en pleine croissance...",
+        "technologies": ["React", "Node.js", "MongoDB"],
+        "website": "https://overtaille.com/"
+      },
+      {
+        "title": "nortecoffeeco",
+        "category": "Custom Software",
+        "description": "Le client avait besoin d'une plateforme complète pour gérer la location de voitures, y compris la réservation, les paiements et la gestion de la flotte...",
+        "technologies": ["Angular", "Django", "PostgreSQL"],
+        "website": "https://nortecoffeeco.com/"
+      },
+      {
+        "title": "ayaalmadian",
+        "category": "Custom Software",
+        "description": "Le client avait besoin d'une plateforme complète pour gérer la location de voitures, y compris la réservation, les paiements et la gestion de la flotte...",
+        "technologies": ["Angular", "Django", "PostgreSQL"],
+        "website": "https://ayaalmadian.com/"
       }
     ]
   },

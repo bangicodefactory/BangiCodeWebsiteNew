@@ -125,6 +125,34 @@
         "category": "Web Development",
         "description": "The educational institution needed a robust learning management system to manage online courses, student registrations, and assessments...",
         "technologies": ["React", "Laravel", "MySQL"]
+      },
+      {
+        "title": "coinluminaire",
+        "category": "E-commerce",
+        "description": "The client needed a scalable e-commerce platform to handle their growing product catalog and customer base...",
+        "technologies": ["React", "Node.js", "MongoDB"],
+        "website": "https://main--coinluminaire.netlify.app/"
+      },
+      {
+        "title": "Overtaille",
+        "category": "E-commerce",
+        "description": "The client needed a scalable e-commerce platform to handle their growing product catalog and customer base...",
+        "technologies": ["React", "Node.js", "MongoDB"],
+        "website": "https://overtaille.com/"
+      },
+      {
+        "title": "nortecoffeeco",
+        "category": "Custom Software",
+        "description": "The client needed a comprehensive platform to manage car rentals, including booking, payments, and fleet management...",
+        "technologies": ["Angular", "Django", "PostgreSQL"],
+        "website": "https://nortecoffeeco.com/"
+      },
+      {
+        "title": "ayaalmadian",
+        "category": "Custom Software",
+        "description": "The client needed a comprehensive platform to manage car rentals, including booking, payments, and fleet management...",
+        "technologies": ["Angular", "Django", "PostgreSQL"],
+        "website": "https://ayaalmadian.com/"
       }
     ]
   },
