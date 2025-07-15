@@ -126,7 +126,7 @@
         "website": "https://classkom.ma/"
       },
       {
-        "title": "coinluminaire",
+        "title": "Coinluminaire",
         "category": "E-commerce",
         "description": "كان العميل بحاجة إلى منصة تجارة إلكترونية قابلة للتطوير للتعامل مع كتالوج منتجاته المتنامي وقاعدة عملائه...",
         "technologies": ["React", "Node.js", "MongoDB"],
@@ -140,40 +140,20 @@
         "website": "https://overtaille.ma/"
       },
       {
-        "title": "nortecoffeeco",
+        "title": "نظام نقاط البيع Nortecoffeeco",
         "category": "Custom Software",
         "description": "كان العميل بحاجة إلى نظام شامل لإدارة عمليات القهوة ، بما في ذلك الطلبات والمخزون والتقارير ...",
         "technologies": ["Laravel", "PHP", "MySQL"],
         "website": "https://pos.nortecoffeeco.com/"
       },
       {
-        "title": "ayaalmadian",
+        "title": "Ayaalmadina School",
         "category": "Custom Software",
         "description": "كان العميل بحاجة إلى منصة شاملة لإدارة عمليات المدرسة، بما في ذلك تسجيل الطلاب، وتتبع الحضور، وإدارة الدرجات.",
         "technologies": ["Laravel", "PHP", "MySQL"],
         "website": "https://ayaalmadina.ma/"
       }
     ]
-  },
-  "testimonials": {
-    "title": "ماذا يقول عملاؤنا",
-    "subtitle": "لا تأخذ كلمتنا فقط. إليك ما يقوله عملاؤنا عن العمل مع Bangicode.",
-    "testimonial1": {
-      "name": "سارة جونسون",
-      "title": "الرئيس التنفيذي ، StyleTech",
-      "quote": "لقد حولت Bangicode وجودنا عبر الإنترنت من خلال منصة تجارة إلكترونية استثنائية فاقت توقعاتنا."
-    },
-    "testimonial2": {
-      "name": "مايكل تشين",
-      "title": "CTO ، Innovate Inc",
-      "quote": "لقد أدى حل البرامج المخصص الخاص بهم إلى تبسيط عملياتنا وزيادة الإنتاجية بنسبة تزيد عن 40٪. موصى به للغاية!"
-    },
-    "testimonial3": {
-      "name": "أماندا رودريغيز",
-      "title": "مدير التسويق ، Elevate",
-      "quote": "لقد عززت خدمات إدارة وسائل التواصل الاجتماعي التي تقدمها Bangicode بشكل كبير تفاعلنا عبر الإنترنت والوعي بالعلامة التجارية."
-    },
-    "trusted": "موثوق به من قبل الشركات المبتكرة"
   },
   "cta": {
     "title": "هل أنت مستعد لبدء مشروعك؟",

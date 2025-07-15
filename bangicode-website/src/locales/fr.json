@@ -126,7 +126,7 @@
         "website": "https://classkom.ma/"
       },
       {
-        "title": "coinluminaire",
+        "title": "Coinluminaire",
         "category": "E-commerce",
         "description": "Le client avait besoin d'une plateforme de commerce électronique évolutive pour gérer son catalogue de produits et sa clientèle en pleine croissance...",
         "technologies": ["React", "Node.js", "MongoDB"],
@@ -140,18 +140,18 @@
         "website": "https://overtaille.ma/"
       },
       {
-        "title": "nortecoffeeco",
+        "title": "Système de point de vente Nortecoffeeco",
         "category": "Custom Software",
         "description": "Le client avait besoin d'un système complet pour gérer les opérations de café, y compris les commandes, l'inventaire et les rapports...",
         "technologies": ["Laravel", "PHP", "MySQL"],
         "website": "https://pos.nortecoffeeco.com/"
       },
       {
-        "title": "ayaalmadian",
+        "title": "Ayaalmadina Ecole",
         "category": "Custom Software",
         "description": "Le client avait besoin d'une plateforme complète pour gérer la location de voitures, y compris la réservation, les paiements et la gestion de la flotte...",
         "technologies": ["Laravel", "PHP", "MySQL"],
-        "website": "https://ayaalmadian.ma/"
+        "website": "https://ayaalmadina.ma/"
       }
     ]
   },

@@ -127,7 +127,7 @@
         "website": "https://classkom.ma/"
       },
       {
-        "title": "coinluminaire",
+        "title": "Coinluminaire",
         "category": "E-commerce",
         "description": "The client needed a scalable e-commerce platform to handle their growing product catalog and customer base...",
         "technologies": ["React", "Node.js", "MongoDB"],
@@ -141,40 +141,20 @@
         "website": "https://overtaille.ma/"
       },
       {
-        "title": "nortecoffeeco POS System",
+        "title": "Nortecoffeeco POS System",
         "category": "Custom Software",
         "description": "The client needed a comprehensive POS system to manage their coffee shop operations, including sales, inventory, and customer management.",
         "technologies": ["Laravel", "PHP", "MySQL"],
         "website": "https://pos.nortecoffeeco.com/"
       },
       {
-        "title": "ayaalmadina school",
+        "title": "Ayaalmadina school",
         "category": "Custom Software",
         "description": "The client needed a comprehensive platform to manage school operations, including student enrollment, attendance tracking, and grade management.",
         "technologies": ["Laravel", "Vue.js", "MySQL"],
         "website": "https://ayaalmadina.ma/"
       }
     ]
-  },
-  "testimonials": {
-    "title": "What Our Clients Say",
-    "subtitle": "Don't just take our word for it. Here's what our clients have to say about working with Bangicode.",
-    "testimonial1": {
-      "name": "Sarah Johnson",
-      "title": "CEO, StyleTech",
-      "quote": "Bangicode transformed our online presence with an exceptional e-commerce platform that exceeded our expectations."
-    },
-    "testimonial2": {
-      "name": "Michael Chen",
-      "title": "CTO, Innovate Inc",
-      "quote": "Their custom software solution streamlined our operations and increased productivity by over 40%. Highly recommended!"
-    },
-    "testimonial3": {
-      "name": "Amanda Rodriguez",
-      "title": "Marketing Director, Elevate",
-      "quote": "The social media management services provided by Bangicode have significantly boosted our online engagement and brand awareness."
-    },
-    "trusted": "Trusted by innovative companies"
   },
   "cta": {
     "title": "Ready to Start Your Project?",
