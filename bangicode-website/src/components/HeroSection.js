@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import digitalSolutions from '../assets/images/digital-solutions.avif';
+// import digitalSolutions from '../assets/images/digital-solutions.avif';
 
 const HeroSection = () => {
   const { t } = useTranslation();
@@ -34,7 +34,19 @@ const HeroSection = () => {
           </div>
         </div>
         <div className="md:w-1/2">
-          <img src={digitalSolutions} alt="Digital Solutions" className="rounded-lg shadow-lg" />
+          {/* <img src={digitalSolutions} alt="Digital Solutions" className="rounded-lg shadow-lg" /> */}
+          <video 
+            className="rounded-lg shadow-lg object-cover"
+            style={{ width: '800px', height: '450px' }}
+            autoPlay 
+            loop 
+            muted 
+            playsInline
+          >
+            <source src="/videos/video1.mp4" type="video/mp4" />
+            <source src="/videos/video1.webm" type="video/webm" />
+            Your browser does not support the video tag.
+          </video>
         </div>
       </div>
     </section>
