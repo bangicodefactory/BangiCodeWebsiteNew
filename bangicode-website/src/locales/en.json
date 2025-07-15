@@ -90,69 +90,69 @@
       "socialmedia": "Social Media"
     },
     "projects": [
-      {
-        "title": "TechRetail E-commerce Platform",
-        "category": "E-commerce",
-        "description": "The client needed a scalable e-commerce platform to handle their growing product catalog and customer base...",
-        "technologies": ["React", "Node.js", "MongoDB"]
-      },
+      
       {
         "title": "RentCar Cars Rental Management System",
         "category": "Custom Software",
         "description": "The client needed a comprehensive platform to manage car rentals, including booking, payments, and fleet management...",
-        "technologies": ["Angular", "Django", "PostgreSQL"]
+        "technologies": ["Laravel", "PHP", "PostgreSQL"],
+        "website": "https://directonderweg.ma/"
       },
       {
         "title": "Friterie.ma Food Delivery Web App",
         "category": "Custom Software",
         "description": "The client needed a user-friendly food delivery web app to handle their growing product demand and customer base...",
-        "technologies": ["Html/CSS", "Laravel", "PHP"]
+        "technologies": ["Html/CSS", "Laravel", "PHP"],
+        "website": "https://friterie.ma/"
       },
       {
         "title": "Fujiwara SocialMedia Campaign Management",
         "category": "Social Media",
         "description": "The client wanted to enhance their social media presence and streamline campaign management across multiple platforms...",
-        "technologies": ["Html/CSS", "Laravel", "PHP"]
+        "technologies": ["Html/CSS", "Laravel", "PHP"],
+        "website": "https://www.instagram.com/fujiwaratetouan/"
       },
       {
         "title": "CafeImperial Website Design and Development",
         "category": "Web Development",
         "description": "The client needed a modern and responsive website to showcase their cafe's menu, ambiance, and services...",
-        "technologies": ["React", "Node.js", "HTML/CSS"]
+        "technologies": ["React", "Node.js", "HTML/CSS"],
+        "website": "https://cafeimperial.ma/"
       },
       {
         "title": "Classkom Learning Management System",
         "category": "Web Development",
         "description": "The educational institution needed a robust learning management system to manage online courses, student registrations, and assessments...",
-        "technologies": ["React", "Laravel", "MySQL"]
+        "technologies": ["React", "Laravel", "MySQL"],
+        "website": "https://classkom.ma/"
       },
       {
         "title": "coinluminaire",
         "category": "E-commerce",
         "description": "The client needed a scalable e-commerce platform to handle their growing product catalog and customer base...",
         "technologies": ["React", "Node.js", "MongoDB"],
-        "website": "https://main--coinluminaire.netlify.app/"
+        "website": "https://coinluminaire.com/"
       },
       {
         "title": "Overtaille",
         "category": "E-commerce",
         "description": "The client needed a scalable e-commerce platform to handle their growing product catalog and customer base...",
-        "technologies": ["React", "Node.js", "MongoDB"],
-        "website": "https://overtaille.com/"
+        "technologies": ["PHP", "Bootstrap", "MongoDB"],
+        "website": "https://overtaille.ma/"
       },
       {
-        "title": "nortecoffeeco",
+        "title": "nortecoffeeco POS System",
         "category": "Custom Software",
-        "description": "The client needed a comprehensive platform to manage car rentals, including booking, payments, and fleet management...",
-        "technologies": ["Angular", "Django", "PostgreSQL"],
-        "website": "https://nortecoffeeco.com/"
+        "description": "The client needed a comprehensive POS system to manage their coffee shop operations, including sales, inventory, and customer management.",
+        "technologies": ["Laravel", "PHP", "MySQL"],
+        "website": "https://pos.nortecoffeeco.com/"
       },
       {
-        "title": "ayaalmadian",
+        "title": "ayaalmadina school",
         "category": "Custom Software",
-        "description": "The client needed a comprehensive platform to manage car rentals, including booking, payments, and fleet management...",
-        "technologies": ["Angular", "Django", "PostgreSQL"],
-        "website": "https://ayaalmadian.com/"
+        "description": "The client needed a comprehensive platform to manage school operations, including student enrollment, attendance tracking, and grade management.",
+        "technologies": ["Laravel", "Vue.js", "MySQL"],
+        "website": "https://ayaalmadina.ma/"
       }
     ]
   },

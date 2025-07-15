@@ -91,68 +91,67 @@
     },
     "projects": [
       {
-        "title": "Plateforme de commerce électronique TechRetail",
-        "category": "E-commerce",
-        "description": "Le client avait besoin d'une plate-forme de commerce électronique évolutive pour gérer son catalogue de produits et sa clientèle en pleine croissance...",
-        "technologies": ["React", "Node.js", "MongoDB"]
-      },
-      {
         "title": "Système de gestion de location de voitures RentCar",
         "category": "Custom Software",
         "description": "Le client avait besoin d'une plate-forme complète pour gérer les locations de voitures, y compris la réservation, les paiements et la gestion de la flotte...",
-        "technologies": ["Angular", "Django", "PostgreSQL"]
+        "technologies": ["Laravel", "PHP", "PostgreSQL"],
+        "website": "https://directonderweg.ma/"
       },
       {
         "title": "Application Web de livraison de nourriture Friterie.ma",
         "category": "Custom Software",
         "description": "Le client avait besoin d'une application Web de livraison de nourriture conviviale pour gérer la demande croissante de ses produits et sa clientèle...",
-        "technologies": ["Html/CSS", "Laravel", "PHP"]
+        "technologies": ["Html/CSS", "Laravel", "PHP"],
+        "website": "https://friterie.ma/"
       },
       {
         "title": "Gestion de campagne SocialMedia Fujiwara",
         "category": "Social Media",
         "description": "Le client souhaitait renforcer sa présence sur les réseaux sociaux et rationaliser la gestion de ses campagnes sur plusieurs plateformes...",
-        "technologies": ["Html/CSS", "Laravel", "PHP"]
+        "technologies": ["Instagram", "Facebook"],
+        "website": "https://www.instagram.com/fujiwaratetouan/"
       },
       {
         "title": "Conception et développement du site Web CafeImperial",
         "category": "Web Development",
         "description": "Le client avait besoin d'un site Web moderne et réactif pour présenter le menu, l'ambiance et les services de son café...",
-        "technologies": ["React", "Node.js", "HTML/CSS"]
+        "technologies": ["React", "Node.js", "HTML/CSS"],
+        "website": "https://cafeimperial.ma/"
       },
       {
         "title": "Système de gestion de l'apprentissage Classkom",
         "category": "Web Development",
         "description": "L'établissement d'enseignement avait besoin d'un système de gestion de l'apprentissage robuste pour gérer les cours en ligne, les inscriptions des étudiants et les évaluations...",
-        "technologies": ["React", "Laravel", "MySQL"]
+        "technologies": ["React", "Laravel", "MySQL"],
+        "website": "https://classkom.ma/"
       },
       {
         "title": "coinluminaire",
         "category": "E-commerce",
         "description": "Le client avait besoin d'une plateforme de commerce électronique évolutive pour gérer son catalogue de produits et sa clientèle en pleine croissance...",
         "technologies": ["React", "Node.js", "MongoDB"],
-        "website": "https://main--coinluminaire.netlify.app/"
+        "website": "https://coinluminaire.com/"
       },
       {
         "title": "Overtaille",
         "category": "E-commerce",
         "description": "Le client avait besoin d'une plateforme de commerce électronique évolutive pour gérer son catalogue de produits et sa clientèle en pleine croissance...",
-        "technologies": ["React", "Node.js", "MongoDB"],
-        "website": "https://overtaille.com/"
+        "technologies": ["Laravel", "PHP", "MySQL"],
+        "website": "https://overtaille.ma/"
       },
       {
         "title": "nortecoffeeco",
         "category": "Custom Software",
-        "description": "Le client avait besoin d'une plateforme complète pour gérer la location de voitures, y compris la réservation, les paiements et la gestion de la flotte...",
-        "technologies": ["Angular", "Django", "PostgreSQL"],
-        "website": "https://nortecoffeeco.com/"
+        "description": "Le client avait besoin d'un système complet pour gérer les opérations de café, y compris les commandes, l'inventaire et les rapports...",
+        "technologies": ["Laravel", "PHP", "MySQL"],
+        "website": "https://pos.nortecoffeeco.com/"
       },
       {
         "title": "ayaalmadian",
         "category": "Custom Software",
         "description": "Le client avait besoin d'une plateforme complète pour gérer la location de voitures, y compris la réservation, les paiements et la gestion de la flotte...",
-        "technologies": ["Angular", "Django", "PostgreSQL"],
-        "website": "https://ayaalmadian.com/"
+        "technologies": ["Laravel", "PHP", "MySQL"],
+        "website": "https://ayaalmadian.ma/"
       }
     ]
   },
