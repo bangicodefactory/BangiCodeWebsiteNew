@@ -91,40 +91,67 @@
     },
     "projects": [
       {
-        "title": "منصة التجارة الإلكترونية TechRetail",
-        "category": "E-commerce",
-        "description": "احتاج العميل إلى منصة تجارة إلكترونية قابلة للتطوير للتعامل مع كتالوج منتجاته المتنامي وقاعدة عملائه ...",
-        "technologies": ["React", "Node.js", "MongoDB"]
-      },
-      {
         "title": "نظام إدارة تأجير السيارات RentCar",
         "category": "Custom Software",
         "description": "احتاج العميل إلى منصة شاملة لإدارة تأجير السيارات ، بما في ذلك الحجز والمدفوعات وإدارة الأسطول ...",
-        "technologies": ["Angular", "Django", "PostgreSQL"]
+        "technologies": ["Laravel", "PHP", "PostgreSQL"],
+        "website": "https://directonderweg.ma/"
       },
       {
         "title": "تطبيق ويب توصيل الطعام Friterie.ma",
         "category": "Custom Software",
         "description": "احتاج العميل إلى تطبيق ويب سهل الاستخدام لتوصيل الطعام للتعامل مع الطلب المتزايد على منتجاته وقاعدة عملائه ...",
-        "technologies": ["Html/CSS", "Laravel", "PHP"]
+        "technologies": ["Html/CSS", "Laravel", "PHP"],
+        "website": "https://friterie.ma/"
       },
       {
         "title": "إدارة حملة Fujiwara SocialMedia",
         "category": "Social Media",
         "description": "أراد العميل تعزيز وجوده على وسائل التواصل الاجتماعي وتبسيط إدارة الحملات عبر منصات متعددة ...",
-        "technologies": ["Html/CSS", "Laravel", "PHP"]
+        "technologies": ["Instagram", "Facebook"],
+        "website": "https://www.instagram.com/fujiwaratetouan/"
       },
       {
         "title": "تصميم وتطوير موقع CafeImperial",
         "category": "Web Development",
         "description": "احتاج العميل إلى موقع ويب حديث وسريع الاستجابة لعرض قائمة المقهى وأجواءه وخدماته ...",
-        "technologies": ["React", "Node.js", "HTML/CSS"]
+        "technologies": ["React", "Node.js", "HTML/CSS"],
+        "website": "https://cafeimperial.ma/"
       },
       {
         "title": "نظام إدارة التعلم Classkom",
         "category": "Web Development",
         "description": "احتاجت المؤسسة التعليمية إلى نظام إدارة تعلم قوي لإدارة الدورات التدريبية عبر الإنترنت وتسجيل الطلاب والتقييمات ...",
-        "technologies": ["React", "Laravel", "MySQL"]
+        "technologies": ["React", "Laravel", "MySQL"],
+        "website": "https://classkom.ma/"
+      },
+      {
+        "title": "coinluminaire",
+        "category": "E-commerce",
+        "description": "كان العميل بحاجة إلى منصة تجارة إلكترونية قابلة للتطوير للتعامل مع كتالوج منتجاته المتنامي وقاعدة عملائه...",
+        "technologies": ["React", "Node.js", "MongoDB"],
+        "website": "https://coinluminaire.com/"
+      },
+      {
+        "title": "Overtaille",
+        "category": "E-commerce",
+        "description": "كان العميل بحاجة إلى منصة تجارة إلكترونية قابلة للتطوير للتعامل مع كتالوج منتجاته المتنامي وقاعدة عملائه...",
+        "technologies": ["Laravel", "PHP", "MySQL"],
+        "website": "https://overtaille.ma/"
+      },
+      {
+        "title": "nortecoffeeco",
+        "category": "Custom Software",
+        "description": "كان العميل بحاجة إلى نظام شامل لإدارة عمليات القهوة ، بما في ذلك الطلبات والمخزون والتقارير ...",
+        "technologies": ["Laravel", "PHP", "MySQL"],
+        "website": "https://pos.nortecoffeeco.com/"
+      },
+      {
+        "title": "ayaalmadian",
+        "category": "Custom Software",
+        "description": "كان العميل بحاجة إلى منصة شاملة لإدارة عمليات المدرسة، بما في ذلك تسجيل الطلاب، وتتبع الحضور، وإدارة الدرجات.",
+        "technologies": ["Laravel", "PHP", "MySQL"],
+        "website": "https://ayaalmadina.ma/"
       }
     ]
   },

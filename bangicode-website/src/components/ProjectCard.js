@@ -13,9 +13,16 @@ const ProjectCard = ({ project }) => {
             </span>
           ))}
         </div>
-        <button className="mt-4 text-blue-600 font-medium hover:text-blue-800 flex items-center">
-          View Case Study →
-        </button>
+        {project.website && (
+          <a
+            href={project.website}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-4 text-blue-600 font-medium hover:text-blue-800 flex items-center"
+          >
+            View Case Study →
+          </a>
+        )}
       </div>
     </div>
   );
