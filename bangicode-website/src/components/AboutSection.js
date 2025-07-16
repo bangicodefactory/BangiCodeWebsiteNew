@@ -11,7 +11,7 @@ const AboutSection = () => {
           <div className="md:w-1/2 mb-10 md:mb-0">
             <img src={teamImage} alt="Bangicode Team" className="rounded-lg shadow-lg" />
           </div>
-          <div className="md:w-1/2 md:pl-12">
+          <div className="md:w-1/2 md:pl-12 rtl:md:pl-0 rtl:md:pr-12">
             <h2 className="text-3xl font-bold text-gray-900 mb-4">{t('about.title')}</h2>
             <p className="text-gray-600 mb-6">
               {t('about.p1')}

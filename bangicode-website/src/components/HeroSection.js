@@ -14,7 +14,7 @@ const HeroSection = () => {
           <p className="text-lg text-gray-600 mb-8">
             {t('hero.subtitle')}
           </p>
-          <div className="flex space-x-4">
+          <div className="flex space-x-4 rtl:space-x-reverse">
             <button onClick={() => {
               const servicesSection = document.getElementById('services');
               if (servicesSection) {
