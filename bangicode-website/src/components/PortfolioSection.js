@@ -6,9 +6,13 @@ const PortfolioSection = () => {
   const { t } = useTranslation();
   const [activeTab, setActiveTab] = useState('All Projects');
 
+  // const projects = t('portfolio.projects', { returnObjects: true }).map(project => ({
+  //   ...project,
+  //   image: `https://placehold.co/600x400?text=${project.title.replace(/\s/g, '+')}`
+  // }));
   const projects = t('portfolio.projects', { returnObjects: true }).map(project => ({
     ...project,
-    image: `https://placehold.co/600x400?text=${project.title.replace(/\s/g, '+')}`
+    image: project.image || `https://placehold.co/600x400?text=${project.title.replace(/\s/g, '+')}`
   }));
 
   const filteredProjects = activeTab === 'All Projects'

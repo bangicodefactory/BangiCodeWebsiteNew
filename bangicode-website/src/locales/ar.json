@@ -95,7 +95,7 @@
         "category": "Custom Software",
         "description": "احتاج العميل إلى منصة شاملة لإدارة تأجير السيارات ، بما في ذلك الحجز والمدفوعات وإدارة الأسطول ...",
         "technologies": ["Laravel", "PHP", "PostgreSQL"],
-        "website": "https://directonderweg.ma/"
+        "website": "https://rentcar.bangicode.ma/"
       },
       {
         "title": "تطبيق ويب توصيل الطعام Friterie.ma",
@@ -116,7 +116,8 @@
         "category": "Web Development",
         "description": "احتاج العميل إلى موقع ويب حديث وسريع الاستجابة لعرض قائمة المقهى وأجواءه وخدماته ...",
         "technologies": ["React", "Node.js", "HTML/CSS"],
-        "website": "https://cafeimperial.ma/"
+        "website": "https://cafeimperial.ma/",
+        "image": "/images/projects/cafeimperial.png" 
       },
       {
         "title": "نظام إدارة التعلم Classkom",
