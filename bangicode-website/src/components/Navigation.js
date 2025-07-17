@@ -68,7 +68,7 @@ const Navigation = () => {
             <a href="#services" onClick={e => handleSmoothScroll(e, 'services')} className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">{t('navigation.services')}</a>
             <a href="#about" onClick={e => handleSmoothScroll(e, 'about')} className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">{t('navigation.about')}</a>
             <a href="#portfolio" onClick={e => handleSmoothScroll(e, 'portfolio')} className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">{t('navigation.portfolio')}</a>
-            <a href="#testimonials" onClick={e => handleSmoothScroll(e, 'testimonials')} className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">{t('navigation.testimonials')}</a>
+            {/* <a href="#testimonials" onClick={e => handleSmoothScroll(e, 'testimonials')} className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">{t('navigation.testimonials')}</a> */}
             <a href="#contact" onClick={e => handleSmoothScroll(e, 'contact')} className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:bg-gray-100">{t('navigation.contact')}</a>
             
             {/* Language Buttons in Mobile Menu */}
