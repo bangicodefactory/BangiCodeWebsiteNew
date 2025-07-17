@@ -139,12 +139,12 @@
     "image": "/images/coinluminaire.png" 
   },
   {
-    "title": "Tharae",
-    "category": "E-commerce",
-    "description": "The client needed a scalable e-commerce platform to handle their growing product catalog and customer base...",
+    "title": "Aqarchamal",
+    "category": "Real Estate",
+    "description": "is a modern real estate agency serving the Tanger‑Tetouan region, specializing in residential and commercial properties.",
     "technologies": ["PHP", "Bootstrap", "MongoDB","Laravel"],
-    "website": "https://tharae.ma/",
-    "image": "/images/logo_imperial.jpg" 
+    "website": "https://aqarchamal.ma/",
+    "image": "/images/aqarchamal.png" 
   },
   {
     "title": "Nortecoffeeco POS System",
@@ -192,9 +192,9 @@
     "social": "Connect With Us",
     "form": {
       "name": "Your Name *",
-      "namePlaceholder": "John Doe",
+      "namePlaceholder": "Ahmed",
       "email": "Your Email *",
-      "emailPlaceholder": "john@example.com",
+      "emailPlaceholder": "ahmed@example.com",
       "subject": "Subject *",
       "subjectPlaceholder": "How can we help you?",
       "message": "Message *",

@@ -90,71 +90,79 @@
       "socialmedia": "وسائل التواصل الاجتماعي"
     },
     "projects": [
-      {
-        "title": "نظام إدارة تأجير السيارات RentCar",
-        "category": "Custom Software",
-        "description": "احتاج العميل إلى منصة شاملة لإدارة تأجير السيارات ، بما في ذلك الحجز والمدفوعات وإدارة الأسطول ...",
-        "technologies": ["Laravel", "PHP", "PostgreSQL"],
-        "website": "https://rentcar.bangicode.ma/"
-      },
-      {
-        "title": "تطبيق ويب توصيل الطعام Friterie.ma",
-        "category": "Custom Software",
-        "description": "احتاج العميل إلى تطبيق ويب سهل الاستخدام لتوصيل الطعام للتعامل مع الطلب المتزايد على منتجاته وقاعدة عملائه ...",
-        "technologies": ["Html/CSS", "Laravel", "PHP"],
-        "website": "https://friterie.ma/"
-      },
-      {
-        "title": "إدارة حملة Fujiwara SocialMedia",
-        "category": "Social Media",
-        "description": "أراد العميل تعزيز وجوده على وسائل التواصل الاجتماعي وتبسيط إدارة الحملات عبر منصات متعددة ...",
-        "technologies": ["Instagram", "Facebook"],
-        "website": "https://www.instagram.com/fujiwaratetouan/"
-      },
-      {
-        "title": "تصميم وتطوير موقع CafeImperial",
-        "category": "Web Development",
-        "description": "احتاج العميل إلى موقع ويب حديث وسريع الاستجابة لعرض قائمة المقهى وأجواءه وخدماته ...",
-        "technologies": ["React", "Node.js", "HTML/CSS"],
-        "website": "https://cafeimperial.ma/",
-        "image": "/images/projects/cafeimperial.png" 
-      },
-      {
-        "title": "نظام إدارة التعلم Classkom",
-        "category": "Web Development",
-        "description": "احتاجت المؤسسة التعليمية إلى نظام إدارة تعلم قوي لإدارة الدورات التدريبية عبر الإنترنت وتسجيل الطلاب والتقييمات ...",
-        "technologies": ["React", "Laravel", "MySQL"],
-        "website": "https://classkom.ma/"
-      },
-      {
-        "title": "Coinluminaire",
-        "category": "E-commerce",
-        "description": "كان العميل بحاجة إلى منصة تجارة إلكترونية قابلة للتطوير للتعامل مع كتالوج منتجاته المتنامي وقاعدة عملائه...",
-        "technologies": ["React", "Node.js", "MongoDB"],
-        "website": "https://coinluminaire.com/"
-      },
-      {
-        "title": "Overtaille",
-        "category": "E-commerce",
-        "description": "كان العميل بحاجة إلى منصة تجارة إلكترونية قابلة للتطوير للتعامل مع كتالوج منتجاته المتنامي وقاعدة عملائه...",
-        "technologies": ["Laravel", "PHP", "MySQL"],
-        "website": "https://overtaille.ma/"
-      },
-      {
-        "title": "نظام نقاط البيع Nortecoffeeco",
-        "category": "Custom Software",
-        "description": "كان العميل بحاجة إلى نظام شامل لإدارة عمليات القهوة ، بما في ذلك الطلبات والمخزون والتقارير ...",
-        "technologies": ["Laravel", "PHP", "MySQL"],
-        "website": "https://pos.nortecoffeeco.com/"
-      },
-      {
-        "title": "Ayaalmadina School",
-        "category": "Custom Software",
-        "description": "كان العميل بحاجة إلى منصة شاملة لإدارة عمليات المدرسة، بما في ذلك تسجيل الطلاب، وتتبع الحضور، وإدارة الدرجات.",
-        "technologies": ["Laravel", "PHP", "MySQL"],
-        "website": "https://ayaalmadina.ma/"
-      }
-    ]
+  {
+    "title": "نظام إدارة تأجير السيارات RentCar",
+    "category": "برمجيات مخصصة",
+    "description": "احتاج العميل إلى منصة شاملة لإدارة تأجير السيارات، بما في ذلك الحجز والمدفوعات وإدارة الأسطول...",
+    "technologies": ["Laravel", "PHP", "PostgreSQL"],
+    "website": "https://rentcar.bangicode.ma/",
+    "image": "/images/rentcar.png" 
+  },
+  {
+    "title": "تطبيق ويب توصيل الطعام Friterie.ma",
+    "category": "برمجيات مخصصة",
+    "description": "احتاج العميل إلى تطبيق ويب سهل الاستخدام لتوصيل الطعام للتعامل مع الطلب المتزايد على منتجاته وقاعدة عملائه...",
+    "technologies": ["Html/CSS", "Laravel", "PHP"],
+    "website": "https://friterie.ma/",
+    "image": "/images/frite.png" 
+  },
+  {
+    "title": "إدارة حملات وسائل التواصل الاجتماعي Fujiwara",
+    "category": "وسائل التواصل الاجتماعي",
+    "description": "أراد العميل تعزيز حضوره على وسائل التواصل الاجتماعي وتبسيط إدارة الحملات عبر منصات متعددة...",
+    "technologies": ["Html/CSS", "Laravel", "PHP"],
+    "website": "https://www.instagram.com/fujiwaratetouan/",
+    "image": "/images/fujiwara.jpeg" 
+  },
+  {
+    "title": "تصميم وتطوير موقع CafeImperial",
+    "category": "تطوير الويب",
+    "description": "احتاج العميل إلى موقع ويب حديث ومتجاوب لعرض قائمة المقهى وأجوائه وخدماته...",
+    "technologies": ["React", "Node.js", "HTML/CSS"],
+    "website": "https://cafeimperial.ma/",
+    "image": "/images/logo_imperial.jpg" 
+  },
+  {
+    "title": "نظام إدارة التعلم Classkom",
+    "category": "تطوير الويب",
+    "description": "احتاجت المؤسسة التعليمية إلى نظام إدارة تعلم قوي لإدارة الدورات الإلكترونية وتسجيل الطلاب والتقييمات...",
+    "technologies": ["React", "Laravel", "MySQL"],
+    "website": "https://classkom.ma/",
+    "image": "/images/classkom.png" 
+  },
+  {
+    "title": "Coinluminaire",
+    "category": "التجارة الإلكترونية",
+    "description": "احتاج العميل إلى منصة تجارة إلكترونية قابلة للتطوير للتعامل مع كتالوج المنتجات وقاعدة العملاء المتنامية...",
+    "technologies": ["React", "Node.js", "MongoDB"],
+    "website": "https://coinluminaire.com/",
+    "image": "/images/coinluminaire.png" 
+  },
+  {
+    "title": "Aqarchamal",
+    "category": "العقارات",
+    "description": "وكالة عقارية حديثة تخدم منطقة طنجة-تطوان، متخصصة في العقارات السكنية والتجارية.",
+    "technologies": ["PHP", "Bootstrap", "MongoDB","Laravel"],
+    "website": "https://aqarchamal.ma/",
+    "image": "/images/aqarchamal.png" 
+  },
+  {
+    "title": "نظام نقاط البيع Nortecoffeeco",
+    "category": "برمجيات مخصصة",
+    "description": "احتاج العميل إلى نظام نقاط بيع شامل لإدارة عمليات المقهى، بما في ذلك المبيعات والمخزون وإدارة العملاء.",
+    "technologies": ["Laravel", "PHP", "MySQL"],
+    "website": "https://pos.nortecoffeeco.com/",
+    "image": "/images/norte.png" 
+  },
+  {
+    "title": "مدرسة آية المدينة",
+    "category": "برمجيات مخصصة",
+    "description": "احتاج العميل إلى منصة شاملة لإدارة عمليات المدرسة، بما في ذلك تسجيل الطلاب وتتبع الحضور وإدارة الدرجات.",
+    "technologies": ["Laravel", "Vue.js", "MySQL"],
+    "website": "https://ayaalmadina.ma/",
+    "image": "/images/ayaalmadina.png" 
+  }
+]
   },
   "cta": {
     "title": "هل أنت مستعد لبدء مشروعك؟",
@@ -184,9 +192,9 @@
     "social": "اتصل بنا",
     "form": {
       "name": "اسمك *",
-      "namePlaceholder": "John Doe",
+      "namePlaceholder": "أحمد",
       "email": "بريدك الإلكتروني *",
-      "emailPlaceholder": "john@example.com",
+      "emailPlaceholder": "ahmed@example.com",
       "subject": "الموضوع *",
       "subjectPlaceholder": "كيف يمكننا مساعدتك؟",
       "message": "رسالة *",
