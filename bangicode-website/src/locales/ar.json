@@ -1,8 +1,8 @@
 {
   "navigation": {
-    "services": "خدمات",
+    "services": "خدماتنا",
     "about": "معلومات عنا ",
-    "portfolio": "ملف الأعمال",
+    "portfolio": "مشاريعنا المنجزة",
     "testimonials": "الشهادات - التوصيات",
     "contact": "اتصال",
     "getStarted": "البدء"
@@ -84,8 +84,8 @@
     "subtitle": "استكشف مشاريعنا الناجحة التي تثبت خبرتنا والتزامنا بتقديم حلول رقمية استثنائية",
     "tabs": {
       "allprojects": "جميع المشاريع",
-      "customsoftware": "البرمجيات المخصصة",
-      "e-commerce": "التجارة الإلكترونية",
+      "customsoftware": "برمجيات مخصصة",
+      "ecommerce": "تجارة إلكترونية",
       "webdevelopment": "تطوير الويب",
       "socialmedia": "وسائل التواصل الاجتماعي"
     },
@@ -132,7 +132,7 @@
   },
   {
     "title": "Coinluminaire",
-    "category": "التجارة الإلكترونية",
+    "category": "تجارة إلكترونية",
     "description": "احتاج العميل إلى منصة تجارة إلكترونية قابلة للتطوير للتعامل مع كتالوج المنتجات وقاعدة العملاء المتنامية...",
     "technologies": ["React", "Node.js", "MongoDB"],
     "website": "https://coinluminaire.com/",
@@ -140,7 +140,7 @@
   },
   {
     "title": "Aqarchamal",
-    "category": "العقارات",
+    "category": "تطوير الويب",
     "description": "وكالة عقارية حديثة تخدم منطقة طنجة-تطوان، متخصصة في العقارات السكنية والتجارية.",
     "technologies": ["PHP", "Bootstrap", "MongoDB","Laravel"],
     "website": "https://aqarchamal.ma/",
@@ -192,9 +192,9 @@
     "social": "اتصل بنا",
     "form": {
       "name": "اسمك *",
-      "namePlaceholder": "أحمد",
+      "namePlaceholder": "أدخل اسمك",
       "email": "بريدك الإلكتروني *",
-      "emailPlaceholder": "ahmed@example.com",
+      "emailPlaceholder": "example@example.com",
       "subject": "الموضوع *",
       "subjectPlaceholder": "كيف يمكننا مساعدتك؟",
       "message": "رسالة *",

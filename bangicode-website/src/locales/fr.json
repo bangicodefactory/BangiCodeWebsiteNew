@@ -84,10 +84,10 @@
     "subtitle": "Découvrez nos projets réussis qui démontrent notre expertise et notre engagement à fournir des solutions numériques exceptionnelles",
     "tabs": {
       "allprojects": "Tous les projets",
-      "customsoftware": "Logiciel personnalisé",
-      "e-commerce": "Commerce électronique",
-      "webdevelopment": "Développement web",
-      "socialmedia": "Médias sociaux"
+      "customsoftware": "Logiciel Personnalisé",
+      "ecommerce": "Commerce électronique",
+      "webdevelopment": "Développement Web",
+      "socialmedia": "Réseaux Sociaux"
     },
     "projects": [
   {
@@ -212,9 +212,9 @@
     "social": "Connectez-vous avec nous",
     "form": {
       "name": "Votre nom *",
-      "namePlaceholder": "Ahmed",
+      "namePlaceholder": "Entrez votre nom",
       "email": "Votre e-mail *",
-      "emailPlaceholder": "ahmed@example.com",
+      "emailPlaceholder": "example@example.com",
       "subject": "Sujet *",
       "subjectPlaceholder": "Comment pouvons-nous vous aider ?",
       "message": "Message *",

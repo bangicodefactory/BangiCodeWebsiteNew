@@ -85,7 +85,7 @@
     "tabs": {
       "allprojects": "All Projects",
       "customsoftware": "Custom Software",
-      "e-commerce": "E-commerce",
+      "ecommerce": "E-commerce",
       "webdevelopment": "Web Development",
       "socialmedia": "Social Media"
     },
@@ -192,9 +192,9 @@
     "social": "Connect With Us",
     "form": {
       "name": "Your Name *",
-      "namePlaceholder": "Ahmed",
+      "namePlaceholder": "Enter your name",
       "email": "Your Email *",
-      "emailPlaceholder": "ahmed@example.com",
+      "emailPlaceholder": "example@example.com",
       "subject": "Subject *",
       "subjectPlaceholder": "How can we help you?",
       "message": "Message *",
