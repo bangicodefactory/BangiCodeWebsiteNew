@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 const PortfolioSection = () => {
   const { t } = useTranslation();
-  const [activeTab, setActiveTab] = useState('All Projects');
+  const [activeTab, setActiveTab] = useState('allprojects');
 
   // const projects = t('portfolio.projects', { returnObjects: true }).map(project => ({
   //   ...project,
@@ -15,11 +15,11 @@ const PortfolioSection = () => {
     image: project.image || `https://placehold.co/600x400?text=${project.title.replace(/\s/g, '+')}`
   }));
 
-  const filteredProjects = activeTab === 'All Projects'
+  const filteredProjects = activeTab === 'allprojects'
     ? projects
-    : projects.filter(project => project.category === activeTab);
+    : projects.filter(project => project.category.toLowerCase().replace(/ /g, '') === activeTab);
 
-  const tabs = ['All Projects', 'Custom Software', 'E-commerce', 'Web Development', 'Social Media'];
+  const tabs = ['allprojects', 'customsoftware', 'e-commerce', 'webdevelopment', 'socialmedia'];
 
   return (
     <section id="portfolio" className="py-20 bg-gray-50">
@@ -42,7 +42,7 @@ const PortfolioSection = () => {
                   : 'bg-white text-gray-700 hover:bg-gray-100'
               }`}
             >
-              {t(`portfolio.tabs.${tab.toLowerCase().replace(/ /g, '')}`)}
+              {t(`portfolio.tabs.${tab}`)}
             </button>
           ))}
         </div>
