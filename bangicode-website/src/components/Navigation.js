@@ -34,7 +34,7 @@ const Navigation = () => {
 
           </div>
 
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-8 rtl:space-x-reverse">
             <a href="#services" onClick={e => handleSmoothScroll(e, 'services')} className="text-gray-700 hover:text-blue-600 transition">{t('navigation.services')}</a>
             <a href="#about" onClick={e => handleSmoothScroll(e, 'about')} className="text-gray-700 hover:text-blue-600 transition">{t('navigation.about')}</a>
             <a href="#portfolio" onClick={e => handleSmoothScroll(e, 'portfolio')} className="text-gray-700 hover:text-blue-600 transition">{t('navigation.portfolio')}</a>
