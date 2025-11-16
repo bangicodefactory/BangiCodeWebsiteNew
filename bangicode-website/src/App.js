@@ -22,9 +22,9 @@ const App = () => {
         <Navigation />
         <HeroSection />
         <ServicesSection />
+        <PortfolioSection />
         <ProcessSection />
         <AboutSection />
-        <PortfolioSection />
         {/* <TestimonialsSection /> */}
         <CTASection />
         <ContactSection />

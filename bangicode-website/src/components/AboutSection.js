@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import SplitText from './SplitText';
 import teamImage from '../assets/images/Team.PNG';
 
 const AboutSection = () => {
@@ -12,18 +13,65 @@ const AboutSection = () => {
             <img src={teamImage} alt="Bangicode Team" className="rounded-lg shadow-lg" />
           </div>
           <div className="md:w-1/2 md:pl-12 rtl:md:pl-0 rtl:md:pr-12">
-            <h2 className="text-3xl font-bold text-gray-900 mb-4">{t('about.title')}</h2>
-            <p className="text-gray-600 mb-6">
-              {t('about.p1')}
-            </p>
+            <div className="mb-4 text-center">
+              <SplitText
+                text={t('about.title')}
+                tag="h2"
+                className="text-3xl font-bold text-gray-900"
+                delay={40}
+                duration={0.7}
+                ease="power3.out"
+                splitType="chars"
+                from={{ opacity: 0, y: 40 }}
+                to={{ opacity: 1, y: 0 }}
+                threshold={0.2}
+              />
+            </div>
+            
+            <div className="mb-6">
+              <SplitText
+                text={t('about.p1')}
+                tag="p"
+                className="text-gray-600"
+                delay={20}
+                duration={0.5}
+                ease="power2.out"
+                splitType="words"
+                from={{ opacity: 0, y: 20 }}
+                to={{ opacity: 1, y: 0 }}
+                threshold={0.2}
+              />
+            </div>
 
-            <p className="text-gray-600 mb-6">
-              {t('about.p2')}
-            </p>
+            <div className="mb-6">
+              <SplitText
+                text={t('about.p2')}
+                tag="p"
+                className="text-gray-600"
+                delay={20}
+                duration={0.5}
+                ease="power2.out"
+                splitType="words"
+                from={{ opacity: 0, y: 20 }}
+                to={{ opacity: 1, y: 0 }}
+                threshold={0.2}
+              />
+            </div>
 
-            <p className="text-gray-600 mb-6">
-              {t('about.p3')}
-            </p>
+            <div className="mb-6">
+              <SplitText
+                text={t('about.p3')}
+                tag="p"
+                className="text-gray-600"
+                delay={20}
+                duration={0.5}
+                ease="power2.out"
+                splitType="words"
+                from={{ opacity: 0, y: 20 }}
+                to={{ opacity: 1, y: 0 }}
+                threshold={0.2}
+              />
+            </div>
 
             <div className="grid grid-cols-2 gap-4 mt-8">
               <div>

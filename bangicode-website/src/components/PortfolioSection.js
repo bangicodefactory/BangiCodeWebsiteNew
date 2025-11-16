@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import ProjectCard from './ProjectCard';
 import { useTranslation } from 'react-i18next';
+import LightRays from './LightRays';
 
 const PortfolioSection = () => {
   const { t } = useTranslation();
@@ -32,13 +33,31 @@ const PortfolioSection = () => {
       });
 
   return (
-    <section id="portfolio" className="py-16 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="portfolio" className="py-16 bg-gradient-to-br from-gray-900 via-black to-gray-900 relative overflow-hidden min-h-screen">
+      {/* LightRays Background */}
+      <div className="absolute inset-0 w-full h-full">
+        <LightRays
+          raysOrigin="top-center"
+          raysColor="#3b82f6"
+          raysSpeed={0.8}
+          lightSpread={1.2}
+          rayLength={1.5}
+          pulsating={false}
+          fadeDistance={1.2}
+          saturation={0.9}
+          followMouse={true}
+          mouseInfluence={0.15}
+          noiseAmount={0.1}
+          distortion={0.05}
+        />
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">
+          <h2 className="text-3xl font-bold text-white mb-4">
             {t('portfolio.title')}
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
             {t('portfolio.subtitle')}
           </p>
         </div>
@@ -51,7 +70,7 @@ const PortfolioSection = () => {
               className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
                 activeTab === tabKey
                   ? 'bg-blue-600 text-white'
-                  : 'bg-white text-gray-700 hover:bg-gray-100'
+                  : 'bg-white/10 backdrop-blur-md text-white hover:bg-white/20 border border-white/20'
               }`}
             >
               {t(`portfolio.tabs.${tabKey}`)}
