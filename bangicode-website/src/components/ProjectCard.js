@@ -1,72 +1,4 @@
-import { useRef, useEffect } from 'react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-
-gsap.registerPlugin(ScrollTrigger);
-
 const ProjectCard = ({ project }) => {
-  const cardRef = useRef(null);
-  console.log('Project image path:', project.image); // Debug log
-
-  useEffect(() => {
-    if (!cardRef.current) return;
-
-    gsap.fromTo(
-      cardRef.current,
-      {
-        opacity: 0,
-        y: 60,
-        scale: 0.95
-      },
-      {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        duration: 0.5,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: cardRef.current,
-          start: 'top 85%',
-          once: true
-        }
-      }
-    );
-  }, []);
-
-  const handleMouseMove = (e) => {
-    if (!cardRef.current) return;
-    
-    const card = cardRef.current;
-    const rect = card.getBoundingClientRect();
-    const x = e.clientX - rect.left;
-    const y = e.clientY - rect.top;
-    
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-    
-    const rotateX = ((y - centerY) / centerY) * -10;
-    const rotateY = ((x - centerX) / centerX) * 10;
-    
-    gsap.to(card, {
-      rotateX: rotateX,
-      rotateY: rotateY,
-      transformPerspective: 800,
-      duration: 0.20,
-      ease: 'power2.out'
-    });
-  };
-
-  const handleMouseLeave = () => {
-    if (!cardRef.current) return;
-    
-    gsap.to(cardRef.current, {
-      rotateX: 0,
-      rotateY: 0,
-      duration: 0.3,
-      ease: 'power2.out'
-    });
-  };
-
   const handleImageError = (e) => {
     console.error('Image failed to load:', project.image);
     console.error('Error event:', e);
@@ -78,11 +10,7 @@ const ProjectCard = ({ project }) => {
 
   return (
     <div 
-      ref={cardRef} 
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      className="bg-white/10 backdrop-blur-md rounded-lg overflow-hidden shadow-xl hover:shadow-2xl transition duration-500 border border-white/20"
-      style={{ transformStyle: 'preserve-3d' }}
+      className="bg-white/10 backdrop-blur-md rounded-lg overflow-hidden shadow-xl hover:shadow-2xl transition-shadow duration-300 border border-white/20"
     >
       <img 
         src={project.image} 

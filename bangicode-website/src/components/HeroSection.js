@@ -1,45 +1,11 @@
 import { useTranslation } from 'react-i18next';
-import { useRef, useEffect } from 'react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import FloatingLines from './FloatingLines';
 import SplitText from './SplitText';
-
-gsap.registerPlugin(ScrollTrigger);
 
 // import digitalSolutions from '../assets/images/digital-solutions.avif';
 
 const HeroSection = () => {
   const { t } = useTranslation();
-  const buttonsRef = useRef(null);
-
-  useEffect(() => {
-    if (!buttonsRef.current) return;
-
-    const buttons = buttonsRef.current.querySelectorAll('button');
-    
-    gsap.fromTo(
-      buttons,
-      { 
-        opacity: 0, 
-        y: 30,
-        scale: 0.9
-      },
-      {
-        opacity: 1,
-        y: 0,
-        scale: 1,
-        duration: 0.8,
-        ease: 'power3.out',
-        stagger: 0.15,
-        scrollTrigger: {
-          trigger: buttonsRef.current,
-          start: 'top 90%',
-          once: true
-        }
-      }
-    );
-  }, []);
 
   return (
     <section className="relative bg-black py-20 overflow-hidden min-h-screen flex items-center">
@@ -87,7 +53,7 @@ const HeroSection = () => {
             to={{ opacity: 1, y: 0 }}
             threshold={0.2}
           />
-          <div ref={buttonsRef} className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <button onClick={() => {
               const servicesSection = document.getElementById('services');
               if (servicesSection) {
