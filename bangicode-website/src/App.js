@@ -26,7 +26,7 @@ const App = () => {
         <ProcessSection />
         <AboutSection />
         {/* <TestimonialsSection /> */}
-        <CTASection />
+        {/* <CTASection /> */}
         <ContactSection />
         <Footer />
         <WhatsAppButton phoneNumber="+212664571370" message="Hi! I'd like to know more about your services." />
