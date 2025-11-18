@@ -363,6 +363,8 @@ export default function FloatingLines({
 
     const setSize = () => {
       const el = containerRef.current;
+      if (!el) return; // Add null check
+      
       const width = el.clientWidth || 1;
       const height = el.clientHeight || 1;
 

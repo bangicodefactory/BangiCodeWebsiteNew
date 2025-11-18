@@ -232,7 +232,7 @@ const hyperspeedPresets = {
 const ServicesSection = () => {
   const { t } = useTranslation();
   const cardsRef = useRef([]);
-const divRef = useRef(null);
+  const divRef = useRef(null);
   // useEffect(() => {
   //   const observer = new IntersectionObserver(
   //     (entries) => {
@@ -283,6 +283,7 @@ useEffect(() => {
 
     <section id="services" className="py-20 bg-gradient-to-br from-gray-900 via-black to-gray-900 relative overflow-hidden min-h-screen">
 
+      {/* Hyperspeed animation */}
       <div className="absolute inset-0 w-full h-full">
         <Hyperspeed effectOptions={hyperspeedPresets.four} />
       </div>

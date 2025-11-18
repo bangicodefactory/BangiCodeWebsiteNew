@@ -608,8 +608,10 @@ const Hyperspeed = ({
         if (this.disposed || !this) return;
         if (resizeRendererToDisplaySize(this.renderer, this.setSize)) {
           const canvas = this.renderer.domElement;
-          this.camera.aspect = canvas.clientWidth / canvas.clientHeight;
-          this.camera.updateProjectionMatrix();
+          if (canvas) { // Add null check
+            this.camera.aspect = canvas.clientWidth / canvas.clientHeight;
+            this.camera.updateProjectionMatrix();
+          }
         }
         const delta = this.clock.getDelta();
         this.render(delta);
@@ -1089,6 +1091,8 @@ const Hyperspeed = ({
 
     function resizeRendererToDisplaySize(renderer, setSize) {
       const canvas = renderer.domElement;
+      if (!canvas) return false; // Add null check
+      
       const width = canvas.clientWidth;
       const height = canvas.clientHeight;
       const needResize = canvas.width !== width || canvas.height !== height;
