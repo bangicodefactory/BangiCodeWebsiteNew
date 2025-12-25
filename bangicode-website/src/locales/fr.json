@@ -161,6 +161,30 @@
     "technologies": ["Laravel", "Vue.js", "MySQL"],
     "website": "https://ayaalmadina.ma/",
     "image": "/images/ayaalmadina.png" 
+  },
+  {
+    "title": "Alaturco",
+    "category": "Réseaux Sociaux",
+    "description": "Le client souhaitait renforcer sa présence sur les réseaux sociaux grâce à des visuels de haute qualité et un contenu engageant. Nous avons géré la photographie professionnelle",
+    "technologies": ["photographie", "Gestion des Réseaux Sociaux", "menu en ligne"],
+    "website": "https://alaturco.ma/",
+    "image": "/images/alaturco.jpg"
+  },
+  {
+    "title": "Riha.ma",
+    "category": "Réseaux Sociaux",
+    "description": "Le client voulait renforcer la présence en ligne de sa marque sur les réseaux sociaux et les plateformes web",
+    "technologies": ["Laravel", "Gestion des Réseaux Sociaux", "Wordpress"],
+    "website": "https://riha.ma/",
+    "image": "/images/riha.png"
+  },
+  {
+    "title": "Cosas Buenas",
+    "category": "Réseaux Sociaux",
+    "description": "Le client voulait renforcer la présence en ligne de sa marque sur les réseaux sociaux et les plateformes web",
+    "technologies": ["Laravel", "Gestion des Réseaux Sociaux", "Wordpress"],
+    "website": "https://www.instagram.com/cosas_buenas_officiel/",
+    "image": "/images/cosasbuenas.png"
   }
 ]
   },

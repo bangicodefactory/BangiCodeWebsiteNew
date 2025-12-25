@@ -161,6 +161,30 @@
     "technologies": ["Laravel", "Vue.js", "MySQL"],
     "website": "https://ayaalmadina.ma/",
     "image": "/images/ayaalmadina.png" 
+  },
+  {
+    "title": "ألتركوا",
+    "category": "وسائل التواصل الاجتماعي",
+    "description": "سعى العميل إلى تعزيز حضوره على وسائل التواصل الاجتماعي من خلال صور عالية الجودة ومحتوى جذاب. قمنا بإدارة التصوير الفوتوغرافي الاحترافي",
+    "technologies": ["التصوير الفوتوغرافي", "إدارة وسائل التواصل الاجتماعي", "قائمة طعام عبر الإنترنت"],
+    "website": "https://alaturco.ma/",
+    "image": "/images/alaturco.jpg"
+  },
+  {
+    "title": "ريها.ما",
+    "category": "وسائل التواصل الاجتماعي",
+    "description": "أراد العميل تعزيز حضور علامته التجارية عبر وسائل التواصل الاجتماعي ومنصات الويب",
+    "technologies": ["لارافيل", "إدارة وسائل التواصل الاجتماعي", "ووردبريس"],
+    "website": "https://riha.ma/",
+    "image": "/images/riha.png"
+  },
+  {
+    "title": "كوساس بويناس",
+    "category": "وسائل التواصل الاجتماعي",
+    "description": "أراد العميل تعزيز حضور علامته التجارية عبر وسائل التواصل الاجتماعي ومنصات الويب",
+    "technologies": ["لارافيل", "إدارة وسائل التواصل الاجتماعي", "ووردبريس"],
+    "website": "https://www.instagram.com/cosas_buenas_officiel/",
+    "image": "/images/cosasbuenas.png"
   }
 ]
   },

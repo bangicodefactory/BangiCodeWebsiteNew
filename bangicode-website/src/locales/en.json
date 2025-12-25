@@ -151,7 +151,7 @@
     "category": "Custom Software",
     "description": "The client needed a comprehensive POS system to manage their coffee shop operations, including sales, inventory, and customer management.",
     "technologies": ["Laravel", "PHP", "MySQL"],
-    "website": "https://pos.nortecoffeeco.com/",
+    "website": "https://nortecoffeeco.com/",
     "image": "/images/norte.png" 
   },
   {
@@ -161,6 +161,30 @@
     "technologies": ["Laravel", "Vue.js", "MySQL"],
     "website": "https://ayaalmadina.ma/",
     "image": "/images/ayaalmadina.png" 
+  },
+  {
+    "title": "Alaturco",
+    "category": "Social Media",
+    "description": "The client aimed to enhance their social media presence through high-quality visuals and engaging content. We handled professional photography",
+    "technologies": ["photography", "SocialMedia Management", "online menu"],
+    "website": "https://alaturco.ma/",
+    "image": "/images/alaturco.jpg" 
+  },
+  {
+    "title": "Riha.ma",
+    "category": "Social Media",
+    "description": "The client wanted to strengthen their brand’s online presence across social media and web platforms",
+    "technologies": ["Laravel", "SocialMedia Management", "Wordpress"],
+    "website": "https://riha.ma/",
+    "image": "/images/riha.png" 
+  },
+  {
+    "title": "Cosas Buenas",
+    "category": "Social Media",
+    "description": "The client wanted to strengthen their brand’s online presence across social media and web platforms",
+    "technologies": ["Laravel", "SocialMedia Management", "Drone photography"],
+    "website": "https://www.instagram.com/cosas_buenas_officiel/",
+    "image": "/images/cosasbuenas.png" 
   }
 ]
   },
