@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Bangicode - Software Studio in Tetouan</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&amp;family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;family=Montserrat:ital,wght@0,100..900;1,100..900&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-tint": "#465d96",
+                      "background": "#f7f9ff",
+                      "on-tertiary": "#ffffff",
+                      "error": "#ba1a1a",
+                      "on-tertiary-container": "#dc6857",
+                      "on-error": "#ffffff",
+                      "surface-container": "#eceef4",
+                      "surface-variant": "#e0e2e8",
+                      "tertiary-fixed-dim": "#ffb4a8",
+                      "surface-container-high": "#e6e8ee",
+                      "surface-bright": "#f7f9ff",
+                      "secondary-fixed-dim": "#93ccff",
+                      "on-error-container": "#93000a",
+                      "tertiary-container": "#510000",
+                      "surface": "#f7f9ff",
+                      "surface-container-lowest": "#ffffff",
+                      "primary-fixed-dim": "#b2c5ff",
+                      "on-primary-container": "#7389c7",
+                      "on-secondary-fixed": "#001d31",
+                      "inverse-primary": "#b2c5ff",
+                      "secondary-fixed": "#cce5ff",
+                      "on-primary-fixed-variant": "#2d457d",
+                      "surface-dim": "#d8dae0",
+                      "outline": "#757781",
+                      "inverse-on-surface": "#eff1f7",
+                      "tertiary-fixed": "#ffdad4",
+                      "inverse-surface": "#2d3135",
+                      "surface-container-highest": "#e0e2e8",
+                      "on-secondary": "#ffffff",
+                      "on-primary-fixed": "#001847",
+                      "surface-container-low": "#f1f3f9",
+                      "on-tertiary-fixed": "#410000",
+                      "outline-variant": "#c5c6d1",
+                      "on-secondary-container": "#00517d",
+                      "secondary-container": "#80c5fe",
+                      "primary": "#000c2c",
+                      "on-tertiary-fixed-variant": "#83251b",
+                      "primary-fixed": "#dae2ff",
+                      "tertiary": "#280000",
+                      "on-surface-variant": "#444650",
+                      "on-secondary-fixed-variant": "#004b73",
+                      "on-surface": "#181c20",
+                      "on-primary": "#ffffff",
+                      "error-container": "#ffdad6",
+                      "primary-container": "#002058",
+                      "secondary": "#016397",
+                      "on-background": "#181c20"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "space-lg": "24px",
+                      "gutter": "24px",
+                      "space-2xl": "48px",
+                      "space-xl": "32px",
+                      "space-sm": "8px",
+                      "container-max": "1280px",
+                      "space-3xl": "64px",
+                      "space-xs": "4px",
+                      "space-md": "16px",
+                      "base": "8px"
+              },
+              "fontFamily": {
+                      "display-lg-mobile": [
+                              "Montserrat"
+                      ],
+                      "headline-lg": [
+                              "Montserrat"
+                      ],
+                      "body-lg": [
+                              "Hanken Grotesk"
+                      ],
+                      "label-mono": [
+                              "JetBrains Mono"
+                      ],
+                      "body-md": [
+                              "Hanken Grotesk"
+                      ],
+                      "label-caps": [
+                              "JetBrains Mono"
+                      ],
+                      "headline-md": [
+                              "Montserrat"
+                      ],
+                      "display-lg": [
+                              "Montserrat"
+                      ],
+                      "body-sm": [
+                              "Hanken Grotesk"
+                      ],
+                      "headline-sm": [
+                              "Montserrat"
+                      ]
+              },
+              "fontSize": {
+                      "display-lg-mobile": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-lg": [
+                              "32px",
+                              {
+                                      "lineHeight": "40px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "body-lg": [
+                              "18px",
+                              {
+                                      "lineHeight": "28px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-mono": [
+                              "13px",
+                              {
+                                      "lineHeight": "16px",
+                                      "letterSpacing": "0.05em",
+                                      "fontWeight": "500"
+                              }
+                      ],
+                      "body-md": [
+                              "16px",
+                              {
+                                      "lineHeight": "24px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "label-caps": [
+                              "11px",
+                              {
+                                      "lineHeight": "14px",
+                                      "letterSpacing": "0.08em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "headline-md": [
+                              "24px",
+                              {
+                                      "lineHeight": "32px",
+                                      "letterSpacing": "-0.01em",
+                                      "fontWeight": "600"
+                              }
+                      ],
+                      "display-lg": [
+                              "48px",
+                              {
+                                      "lineHeight": "56px",
+                                      "letterSpacing": "-0.02em",
+                                      "fontWeight": "700"
+                              }
+                      ],
+                      "body-sm": [
+                              "14px",
+                              {
+                                      "lineHeight": "20px",
+                                      "fontWeight": "400"
+                              }
+                      ],
+                      "headline-sm": [
+                              "20px",
+                              {
+                                      "lineHeight": "28px",
+                                      "letterSpacing": "0em",
+                                      "fontWeight": "500"
+                              }
+                      ]
+              }
+      },
+          },
+        }
+      </script>
+<style>
+        body {
+            background-color: theme('colors.background');
+            color: theme('colors.on-background');
+        }
+        .material-symbols-outlined {
+          font-variation-settings:
+          'FILL' 0,
+          'wght' 400,
+          'GRAD' 0,
+          'opsz' 24
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="antialiased w-full">
+<!-- TopNavBar -->
+<header class="bg-surface dark:bg-primary border-b border-outline-variant dark:border-primary-container docked full-width top-0 z-50 sticky">
+<div class="flex justify-between items-center w-full px-gutter max-w-container-max mx-auto h-16">
+<a class="font-display-lg text-headline-sm font-bold tracking-tight text-primary dark:text-primary-fixed" href="#">bangicode</a>
+<button aria-label="Open menu" class="md:hidden text-primary dark:text-primary-fixed">
+<span class="material-symbols-outlined" style="font-size: 24px;">menu</span>
+</button>
+<nav class="hidden md:flex items-center space-x-space-xl">
+<a class="text-on-surface-variant dark:text-outline-variant font-medium font-body-md text-body-md hover:text-secondary dark:hover:text-secondary-container transition-colors duration-200" href="#">Services</a>
+<a class="text-on-surface-variant dark:text-outline-variant font-medium font-body-md text-body-md hover:text-secondary dark:hover:text-secondary-container transition-colors duration-200" href="#">Work</a>
+<a class="text-on-surface-variant dark:text-outline-variant font-medium font-body-md text-body-md hover:text-secondary dark:hover:text-secondary-container transition-colors duration-200" href="#">Industries</a>
+<a class="text-on-surface-variant dark:text-outline-variant font-medium font-body-md text-body-md hover:text-secondary dark:hover:text-secondary-container transition-colors duration-200" href="#">Process</a>
+<a class="text-on-surface-variant dark:text-outline-variant font-medium font-body-md text-body-md hover:text-secondary dark:hover:text-secondary-container transition-colors duration-200" href="#">About</a>
+<a class="text-on-surface-variant dark:text-outline-variant font-medium font-body-md text-body-md hover:text-secondary dark:hover:text-secondary-container transition-colors duration-200" href="#">Contact</a>
+<div class="flex items-center space-x-space-md ml-space-lg border-l border-outline-variant dark:border-primary-container pl-space-lg">
+<span class="font-label-caps text-label-caps text-on-surface-variant lowercase">en · fr · ar</span>
+<a class="bg-primary-container text-on-primary font-body-md text-body-md px-space-md py-space-sm rounded hover:bg-secondary transition-colors duration-200" href="#">Start a project</a>
+</div>
+</nav>
+</div>
+</header>
+<main class="w-full">
+<!-- Hero Section -->
+<section class="px-space-md py-space-2xl md:py-space-3xl md:px-gutter max-w-container-max mx-auto flex flex-col md:flex-row gap-space-2xl items-start">
+<div class="flex-1 flex flex-col gap-space-lg w-full">
+<div class="font-label-mono text-label-mono text-secondary lowercase">software studio · tetouan, morocco</div>
+<h1 class="font-display-lg-mobile text-display-lg-mobile md:font-display-lg md:text-display-lg text-primary">
+                    Software studio<br/>in Tetouan.<br/>
+<span class="text-secondary">Code that ages well.</span>
+</h1>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-xl">
+                    Five years shipping software for clients across Morocco and Europe. Small senior team — opinionated, accountable end to end. Custom software, e-commerce, training, and social.
+                </p>
+<div class="flex flex-col sm:flex-row gap-space-md mt-space-sm w-full">
+<a class="inline-flex justify-center items-center px-space-xl py-space-md bg-primary text-on-primary font-body-md text-body-md font-medium rounded hover:bg-primary-container transition-colors w-full sm:w-auto" href="#">
+                        Start a project <span class="material-symbols-outlined ml-space-sm" style="font-size: 18px;">arrow_forward</span>
+</a>
+<a class="inline-flex justify-center items-center px-space-xl py-space-md bg-surface text-primary border border-outline-variant font-body-md text-body-md font-medium rounded hover:bg-surface-container transition-colors w-full sm:w-auto" href="#">
+                        See our work
+                    </a>
+</div>
+<div class="font-label-mono text-label-mono text-outline lowercase mt-space-xs">
+                    30-min discovery call · we reply within 24h
+                </div>
+</div>
+<!-- Terminal Block -->
+<div class="w-full md:w-80 lg:w-96 bg-primary text-on-primary rounded-xl p-space-lg flex flex-col gap-space-lg shadow-sm">
+<div class="flex justify-between items-center border-b border-on-primary-fixed-variant pb-space-sm">
+<div class="font-label-mono text-label-mono text-inverse-primary opacity-70 lowercase">// studio · live</div>
+<div class="flex items-center gap-space-xs font-label-mono text-label-mono text-tertiary-fixed-dim lowercase">
+<span class="w-2 h-2 rounded-full bg-tertiary-fixed-dim"></span> online
+                    </div>
+</div>
+<div class="flex flex-col gap-space-md">
+<div>
+<div class="font-label-mono text-label-caps text-secondary-fixed-dim lowercase mb-1">current sprint</div>
+<div class="font-label-mono text-label-mono">Friterie.ma iOS app</div>
+</div>
+<div>
+<div class="font-label-mono text-label-caps text-secondary-fixed-dim lowercase mb-1">next availability</div>
+<div class="font-label-mono text-label-mono">late july 2026</div>
+</div>
+<div>
+<div class="font-label-mono text-label-caps text-secondary-fixed-dim lowercase mb-1">team</div>
+<div class="font-label-mono text-label-mono">12 people · 4 practices</div>
+</div>
+<div>
+<div class="font-label-mono text-label-caps text-secondary-fixed-dim lowercase mb-1">local time</div>
+<div class="font-label-mono text-label-mono">14:32 · gmt+1</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Stats Section -->
+<section class="px-space-md pb-space-2xl md:px-gutter max-w-container-max mx-auto">
+<div class="font-label-mono text-label-mono text-secondary lowercase mb-space-sm">// the thesis</div>
+<h2 class="font-headline-md text-headline-md text-primary mb-space-xl">Senior engineers. Honest timelines. Code that lasts.</h2>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-space-md">
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-space-lg flex flex-col justify-center">
+<div class="font-display-lg-mobile text-display-lg-mobile text-primary mb-1">24+</div>
+<div class="font-label-mono text-label-caps text-on-surface-variant lowercase">projects shipped</div>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-space-lg flex flex-col justify-center">
+<div class="font-display-lg-mobile text-display-lg-mobile text-primary mb-1">20+</div>
+<div class="font-label-mono text-label-caps text-on-surface-variant lowercase">active clients</div>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-space-lg flex flex-col justify-center">
+<div class="font-display-lg-mobile text-display-lg-mobile text-primary mb-1">5y</div>
+<div class="font-label-mono text-label-caps text-on-surface-variant lowercase">shipping since 2020</div>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-space-lg flex flex-col justify-center">
+<div class="font-display-lg-mobile text-display-lg-mobile text-primary mb-1">24/7</div>
+<div class="font-label-mono text-label-caps text-on-surface-variant lowercase">support window</div>
+</div>
+</div>
+</section>
+<!-- Trust Bar -->
+<section class="w-full border-y border-outline-variant bg-surface-container-low py-space-md overflow-x-auto no-scrollbar">
+<div class="px-space-md md:px-gutter max-w-container-max mx-auto flex items-center min-w-max">
+<span class="font-label-mono text-label-caps text-outline mr-space-xl lowercase whitespace-nowrap">trusted by</span>
+<div class="flex items-center space-x-space-xl font-body-md text-body-md text-on-surface-variant whitespace-nowrap">
+<span>Cafe Imperial</span>
+<span class="text-outline-variant text-xs">•</span>
+<span>Friterie.ma</span>
+<span class="text-outline-variant text-xs">•</span>
+<span>Aqarchamal</span>
+<span class="text-outline-variant text-xs">•</span>
+<span>Classkom</span>
+<span class="text-outline-variant text-xs">•</span>
+<span>Coinluminaire</span>
+<span class="text-outline-variant text-xs">•</span>
+<span>Riha</span>
+</div>
+</div>
+</section>
+<!-- Services Section -->
+<section class="px-space-md py-space-2xl md:px-gutter max-w-container-max mx-auto">
+<div class="font-label-mono text-label-mono text-secondary lowercase mb-space-sm">// what we build</div>
+<h2 class="font-headline-md text-headline-md text-primary mb-space-xl">Four practices, one team.</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-md">
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-space-lg flex flex-col hover:border-secondary transition-colors group cursor-pointer">
+<div class="flex justify-between items-start mb-space-md w-full">
+<div class="font-label-mono text-label-caps text-outline lowercase">01 · software</div>
+<div class="font-label-mono text-label-caps text-secondary lowercase flex items-center group-hover:underline">
+                            12 projects <span class="material-symbols-outlined ml-1" style="font-size: 14px;">arrow_forward</span>
+</div>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-primary mb-space-sm">Custom software</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Internal tools, ERPs, POS, school platforms. Laravel · Node · PostgreSQL.</p>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-space-lg flex flex-col hover:border-secondary transition-colors group cursor-pointer">
+<div class="flex justify-between items-start mb-space-md w-full">
+<div class="font-label-mono text-label-caps text-outline lowercase">02 · ecommerce</div>
+<div class="font-label-mono text-label-caps text-secondary lowercase flex items-center group-hover:underline">
+                            5 projects <span class="material-symbols-outlined ml-1" style="font-size: 14px;">arrow_forward</span>
+</div>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-primary mb-space-sm">E-commerce</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Storefronts, checkout, inventory. Built for Moroccan and EU rails.</p>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-space-lg flex flex-col hover:border-secondary transition-colors group cursor-pointer">
+<div class="flex justify-between items-start mb-space-md w-full">
+<div class="font-label-mono text-label-caps text-outline lowercase">03 · training</div>
+<div class="font-label-mono text-label-caps text-secondary lowercase flex items-center group-hover:underline">
+                            3 cohorts <span class="material-symbols-outlined ml-1" style="font-size: 14px;">arrow_forward</span>
+</div>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-primary mb-space-sm">Technical training</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Cohort programs for engineering teams. Hands-on, outcome-graded.</p>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-space-lg flex flex-col hover:border-secondary transition-colors group cursor-pointer">
+<div class="flex justify-between items-start mb-space-md w-full">
+<div class="font-label-mono text-label-caps text-outline lowercase">04 · social</div>
+<div class="font-label-mono text-label-caps text-secondary lowercase flex items-center group-hover:underline">
+                            4 brands <span class="material-symbols-outlined ml-1" style="font-size: 14px;">arrow_forward</span>
+</div>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-primary mb-space-sm">Social presence</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Brand-led content, paid acquisition, community. Measured, not vanity.</p>
+</div>
+</div>
+</section>
+<!-- Featured Case Study -->
+<section class="px-space-md pb-space-2xl md:px-gutter max-w-container-max mx-auto">
+<div class="bg-primary rounded-xl p-space-lg md:p-space-2xl flex flex-col lg:flex-row gap-space-2xl text-on-primary">
+<div class="flex-1 flex flex-col justify-center w-full">
+<div class="font-label-mono text-label-caps text-secondary-fixed-dim lowercase mb-space-md">featured case · custom software</div>
+<h3 class="font-display-lg-mobile text-display-lg-mobile md:font-headline-lg md:text-headline-lg mb-space-md">RentCar — a complete rental ops platform for a Tangier fleet.</h3>
+<p class="font-body-md text-body-md text-inverse-primary mb-space-xl max-w-2xl">
+                        Booking, payments, fleet management in one stack. Replaced three vendor systems and cut 60% of the team's daily admin time.
+                    </p>
+<div class="flex flex-wrap gap-space-sm mb-space-xl w-full">
+<span class="px-2 py-1 bg-on-primary-fixed-variant bg-opacity-50 border border-outline rounded text-label-caps font-label-mono lowercase">laravel</span>
+<span class="px-2 py-1 bg-on-primary-fixed-variant bg-opacity-50 border border-outline rounded text-label-caps font-label-mono lowercase">postgresql</span>
+<span class="px-2 py-1 bg-on-primary-fixed-variant bg-opacity-50 border border-outline rounded text-label-caps font-label-mono lowercase">stripe</span>
+<span class="px-2 py-1 bg-tertiary-container bg-opacity-50 border border-outline rounded text-label-caps font-label-mono text-tertiary-fixed-dim lowercase">mobility</span>
+</div>
+<a class="font-label-mono text-label-mono text-secondary-fixed-dim hover:text-secondary-fixed flex items-center lowercase group w-fit" href="#">
+                        read the case study <span class="material-symbols-outlined ml-1 group-hover:translate-x-1 transition-transform" style="font-size: 16px;">arrow_forward</span>
+</a>
+</div>
+<div class="w-full lg:w-80 grid grid-cols-2 gap-space-sm">
+<div class="bg-on-primary-fixed-variant bg-opacity-30 border border-on-primary-fixed-variant rounded-lg p-space-md flex flex-col justify-center h-32">
+<div class="font-headline-lg text-headline-lg mb-1">-60%</div>
+<div class="font-label-mono text-label-caps text-inverse-primary lowercase">admin time</div>
+</div>
+<div class="bg-on-primary-fixed-variant bg-opacity-30 border border-on-primary-fixed-variant rounded-lg p-space-md flex flex-col justify-center h-32">
+<div class="font-headline-lg text-headline-lg mb-1">3→1</div>
+<div class="font-label-mono text-label-caps text-inverse-primary lowercase">vendor systems</div>
+</div>
+<div class="bg-on-primary-fixed-variant bg-opacity-30 border border-on-primary-fixed-variant rounded-lg p-space-md flex flex-col justify-center h-32">
+<div class="font-headline-lg text-headline-lg mb-1">14mo</div>
+<div class="font-label-mono text-label-caps text-inverse-primary lowercase">still maintaining</div>
+</div>
+<div class="bg-on-primary-fixed-variant bg-opacity-30 border border-on-primary-fixed-variant rounded-lg p-space-md flex flex-col justify-center h-32">
+<div class="font-headline-lg text-headline-lg mb-1">99.9%</div>
+<div class="font-label-mono text-label-caps text-inverse-primary lowercase">uptime</div>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-space-md mt-space-md w-full">
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-space-lg">
+<h4 class="font-headline-sm text-headline-sm text-primary mb-2">Coinluminaire</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-space-md">Scalable storefront for a growing catalog.</p>
+<div class="flex flex-wrap gap-space-sm w-full">
+<span class="px-2 py-1 bg-surface-container border border-outline-variant rounded text-[10px] font-label-mono text-on-surface-variant lowercase">react</span>
+<span class="px-2 py-1 bg-surface-container border border-outline-variant rounded text-[10px] font-label-mono text-on-surface-variant lowercase">mongo</span>
+<span class="px-2 py-1 bg-tertiary-fixed bg-opacity-50 border border-outline-variant rounded text-[10px] font-label-mono text-on-tertiary-fixed-variant lowercase">retail</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-space-lg">
+<h4 class="font-headline-sm text-headline-sm text-primary mb-2">Classkom LMS</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-space-md">Courses, students, grades — one system.</p>
+<div class="flex flex-wrap gap-space-sm w-full">
+<span class="px-2 py-1 bg-surface-container border border-outline-variant rounded text-[10px] font-label-mono text-on-surface-variant lowercase">react</span>
+<span class="px-2 py-1 bg-surface-container border border-outline-variant rounded text-[10px] font-label-mono text-on-surface-variant lowercase">laravel</span>
+<span class="px-2 py-1 bg-tertiary-fixed bg-opacity-50 border border-outline-variant rounded text-[10px] font-label-mono text-on-tertiary-fixed-variant lowercase">education</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-space-lg">
+<h4 class="font-headline-sm text-headline-sm text-primary mb-2">Aqarchamal</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-space-md">Real estate platform for Tanger-Tetouan.</p>
+<div class="flex flex-wrap gap-space-sm w-full">
+<span class="px-2 py-1 bg-surface-container border border-outline-variant rounded text-[10px] font-label-mono text-on-surface-variant lowercase">laravel</span>
+<span class="px-2 py-1 bg-surface-container border border-outline-variant rounded text-[10px] font-label-mono text-on-surface-variant lowercase">bootstrap</span>
+<span class="px-2 py-1 bg-tertiary-fixed bg-opacity-50 border border-outline-variant rounded text-[10px] font-label-mono text-on-tertiary-fixed-variant lowercase">real estate</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Testimonial -->
+<section class="px-space-md pb-space-2xl md:px-gutter max-w-container-max mx-auto">
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-space-xl flex flex-col md:flex-row gap-space-lg items-start">
+<div class="w-16 h-16 rounded-full bg-primary-fixed flex items-center justify-center text-primary-container font-headline-md text-headline-md shrink-0">
+                    YB
+                </div>
+<div class="flex-1 flex flex-col w-full">
+<blockquote class="font-headline-sm text-headline-sm text-primary mb-space-lg">
+                        "They shipped what they promised, on the date they promised, and the system has run for two years without us calling them once for a fix. That's rarer than it should be."
+                    </blockquote>
+<div class="flex flex-col sm:flex-row sm:items-center justify-between w-full gap-space-md">
+<div>
+<div class="font-body-md text-body-md font-medium text-primary">Youssef B.</div>
+<div class="font-label-mono text-label-caps text-outline lowercase">director, friterie.ma</div>
+</div>
+<a class="font-label-mono text-label-mono text-secondary hover:underline flex items-center lowercase w-fit" href="#">
+                            read case study <span class="material-symbols-outlined ml-1" style="font-size: 14px;">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+</section>
+<!-- Process Section -->
+<section class="px-space-md pb-space-2xl md:px-gutter max-w-container-max mx-auto w-full">
+<div class="font-label-mono text-label-mono text-secondary lowercase mb-space-sm">// what happens next</div>
+<h2 class="font-headline-md text-headline-md text-primary mb-space-xl">From hello to kickoff, in two weeks or less.</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-space-md w-full">
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-space-lg flex flex-col w-full">
+<div class="font-label-mono text-label-caps text-secondary lowercase mb-space-sm">step 01</div>
+<h4 class="font-headline-sm text-headline-sm text-primary mb-2">Tell us your problem</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-space-xl flex-grow">A short form. No NDAs, no sales calls scheduled blind.</p>
+<div class="font-label-mono text-label-caps text-outline lowercase border-t border-outline-variant pt-space-md mt-auto">~ 5 min</div>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-space-lg flex flex-col w-full">
+<div class="font-label-mono text-label-caps text-secondary lowercase mb-space-sm">step 02</div>
+<h4 class="font-headline-sm text-headline-sm text-primary mb-2">Discovery call</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-space-xl flex-grow">30 minutes with a senior engineer. Constraints, success criteria, fit.</p>
+<div class="font-label-mono text-label-caps text-outline lowercase border-t border-outline-variant pt-space-md mt-auto">within 24h</div>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-space-lg flex flex-col w-full">
+<div class="font-label-mono text-label-caps text-secondary lowercase mb-space-sm">step 03</div>
+<h4 class="font-headline-sm text-headline-sm text-primary mb-2">Custom proposal</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-space-xl flex-grow">Scope, milestones, fixed price, team. Written, not pitched.</p>
+<div class="font-label-mono text-label-caps text-outline lowercase border-t border-outline-variant pt-space-md mt-auto">5 working days</div>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg p-space-lg flex flex-col w-full">
+<div class="font-label-mono text-label-caps text-secondary lowercase mb-space-sm">step 04</div>
+<h4 class="font-headline-sm text-headline-sm text-primary mb-2">Kickoff</h4>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-space-xl flex-grow">Repo, ticket board, weekly demos. You're in the loop from day zero.</p>
+<div class="font-label-mono text-label-caps text-outline lowercase border-t border-outline-variant pt-space-md mt-auto">within 2 weeks</div>
+</div>
+</div>
+</section>
+<!-- Contact CTA -->
+<section class="px-space-md pb-space-3xl md:px-gutter max-w-container-max mx-auto w-full">
+<div class="bg-surface-container-low rounded-xl p-space-xl md:p-space-2xl flex flex-col md:flex-row items-center md:items-start gap-space-lg md:gap-space-2xl w-full">
+<div class="w-20 h-20 rounded-full bg-primary flex items-center justify-center text-on-primary font-display-lg text-display-lg shrink-0">
+                    A
+                </div>
+<div class="flex-1 flex flex-col w-full text-center md:text-left">
+<div class="font-label-mono text-label-mono text-secondary lowercase mb-2">your point of contact</div>
+<h3 class="font-headline-md text-headline-md text-primary mb-space-sm">Talk to Ahmed — founder.</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-space-xl max-w-2xl">
+                        Skip the form. 30-min call, every Tuesday and Thursday. I'll tell you straight whether we're the right team for your project.
+                    </p>
+</div>
+<div class="flex flex-col items-center md:items-end shrink-0 w-full md:w-auto">
+<a class="inline-flex justify-center items-center px-space-2xl py-space-md bg-primary text-on-primary font-body-md text-body-md font-medium rounded-lg hover:bg-primary-container transition-colors w-full md:w-auto mb-space-sm" href="#">
+                        Book 30 min <span class="material-symbols-outlined ml-2" style="font-size: 18px;">arrow_forward</span>
+</a>
+<div class="font-label-mono text-[10px] text-outline lowercase text-center md:text-right w-full">
+                        or whatsapp · admin@bangicode.ma
+                    </div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-lowest dark:bg-primary border-t border-outline-variant dark:border-primary-container full-width">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-space-xl px-gutter py-space-3xl max-w-container-max mx-auto">
+<div class="flex flex-col">
+<a class="font-display-lg text-headline-md font-bold text-primary dark:text-primary-fixed mb-space-md" href="#">bangicode</a>
+<p class="font-body-sm text-body-sm text-on-surface-variant dark:text-outline-variant mb-space-sm">
+                    Software studio in Tetouan, Morocco. Code that ages well.
+                </p>
+<div class="font-label-mono text-label-caps text-on-surface-variant lowercase mb-space-lg">en · fr · ar</div>
+<p class="font-body-sm text-body-sm text-on-surface-variant dark:text-outline-variant mt-auto">
+                    © 2020-2026 Bangicode. Crafted with Moroccan precision.
+                </p>
+</div>
+<div class="flex flex-col gap-space-sm">
+<h4 class="font-label-mono text-label-caps text-on-surface-variant mb-space-xs lowercase">// services</h4>
+<a class="text-on-surface-variant dark:text-outline-variant font-body-sm text-body-sm hover:text-secondary dark:hover:text-secondary-container transition-colors focus:ring-2 focus:ring-secondary w-fit" href="#">Custom software</a>
+<a class="text-on-surface-variant dark:text-outline-variant font-body-sm text-body-sm hover:text-secondary dark:hover:text-secondary-container transition-colors focus:ring-2 focus:ring-secondary w-fit" href="#">E-commerce</a>
+<a class="text-on-surface-variant dark:text-outline-variant font-body-sm text-body-sm hover:text-secondary dark:hover:text-secondary-container transition-colors focus:ring-2 focus:ring-secondary w-fit" href="#">Technical training</a>
+<a class="text-on-surface-variant dark:text-outline-variant font-body-sm text-body-sm hover:text-secondary dark:hover:text-secondary-container transition-colors focus:ring-2 focus:ring-secondary w-fit" href="#">Social presence</a>
+</div>
+<div class="flex flex-col gap-space-sm">
+<h4 class="font-label-mono text-label-caps text-on-surface-variant mb-space-xs lowercase">// company</h4>
+<a class="text-on-surface-variant dark:text-outline-variant font-body-sm text-body-sm hover:text-secondary dark:hover:text-secondary-container transition-colors focus:ring-2 focus:ring-secondary w-fit" href="#">About</a>
+<a class="text-on-surface-variant dark:text-outline-variant font-body-sm text-body-sm hover:text-secondary dark:hover:text-secondary-container transition-colors focus:ring-2 focus:ring-secondary w-fit" href="#">Work</a>
+<a class="text-on-surface-variant dark:text-outline-variant font-body-sm text-body-sm hover:text-secondary dark:hover:text-secondary-container transition-colors focus:ring-2 focus:ring-secondary w-fit" href="#">Industries</a>
+<a class="text-on-surface-variant dark:text-outline-variant font-body-sm text-body-sm hover:text-secondary dark:hover:text-secondary-container transition-colors focus:ring-2 focus:ring-secondary w-fit" href="#">Process</a>
+<a class="text-on-surface-variant dark:text-outline-variant font-body-sm text-body-sm hover:text-secondary dark:hover:text-secondary-container transition-colors focus:ring-2 focus:ring-secondary w-fit" href="#">Careers</a>
+<a class="text-on-surface-variant dark:text-outline-variant font-body-sm text-body-sm hover:text-secondary dark:hover:text-secondary-container transition-colors focus:ring-2 focus:ring-secondary w-fit" href="#">Contact</a>
+</div>
+<div class="flex flex-col gap-space-sm">
+<h4 class="font-label-mono text-label-caps text-on-surface-variant mb-space-xs lowercase">// location</h4>
+<p class="text-on-surface-variant dark:text-outline-variant font-body-sm text-body-sm">
+                    Av. Ali Yaeta<br/>Centre Commercial Wilaya Center<br/>Etage 6, N69<br/>Tetouan, Morocco
+                </p>
+<p class="text-on-surface-variant dark:text-outline-variant font-label-mono text-label-mono mt-space-sm lowercase">
+                    +212 6645 71370<br/>admin@bangicode.ma
+                </p>
+</div>
+</div>
+<div class="px-gutter pb-space-lg max-w-container-max mx-auto flex gap-space-md font-label-mono text-label-caps text-on-surface-variant lowercase">
+<a class="hover:text-secondary" href="#">privacy</a>
+<a class="hover:text-secondary" href="#">terms</a>
+<a class="hover:text-secondary" href="#">cookies</a>
+<span>·</span>
+<a class="hover:text-secondary" href="#">linkedin</a>
+<a class="hover:text-secondary" href="#">github</a>
+<a class="hover:text-secondary" href="#">whatsapp</a>
+</div>
+</footer>
+</body></html>
