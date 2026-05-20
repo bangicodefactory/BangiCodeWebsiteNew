@@ -73,7 +73,15 @@
   --shadow-tech: 0 4px 12px rgba(26, 54, 115, 0.08);
 }
 
-/* ── Dynamic font tokens (resolved at runtime via next/font CSS vars) ─────── */
+/*
+ * Dynamic font tokens — @theme inline so Tailwind emits var() references instead
+ * of inlining the value at build time. The chain at runtime:
+ *   font-display class → font-family: var(--font-display)
+ *                      → var(--font-montserrat)          [set by next/font on <html>]
+ *                      → 'Montserrat', sans-serif
+ * Same pattern for font-body → Hanken Grotesk, font-mono → JetBrains Mono.
+ * Requires the font variables to be present on <html> via layout.tsx className.
+ */
 @theme inline {
   --font-display: var(--font-montserrat);
   --font-body: var(--font-hanken-grotesk);

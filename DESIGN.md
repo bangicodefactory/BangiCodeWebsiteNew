@@ -1,6 +1,9 @@
 ---
-# Brand tokens — source of truth for @theme wiring
-# All values here override the prototype (prototypes/v4-stitch.html) which has drifted
+# YAML frontmatter — machine-readable brand tokens consumed by next-app/src/app/globals.css.
+# Format: YAML map, not parsed by Jekyll/Hugo. A future design-token script may extract
+# these values directly. Keep the indentation consistent (2-space YAML).
+#
+# All values here override the prototype (prototypes/v4-stitch.html) which has drifted.
 
 colors:
   # Surface scale

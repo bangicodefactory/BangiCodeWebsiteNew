@@ -40,5 +40,11 @@ export default async function LocaleLayout({
     notFound();
   }
 
-  return <>{children}</>;
+  const dir = locale === "ar" ? "rtl" : "ltr";
+
+  return (
+    <div lang={locale} dir={dir} className="contents">
+      {children}
+    </div>
+  );
 }

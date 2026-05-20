@@ -22,13 +22,9 @@ export default async function LocalePage({
 }) {
   const { locale } = await params;
   const copy = labels[locale as Locale] ?? labels.en;
-  const isRTL = locale === "ar";
 
   return (
-    <main
-      dir={isRTL ? "rtl" : "ltr"}
-      className="bg-surface text-on-surface flex min-h-screen flex-col items-center justify-center gap-4 px-6"
-    >
+    <main className="bg-surface text-on-surface flex min-h-screen flex-col items-center justify-center gap-4 px-6">
       <p className="text-secondary font-mono text-sm tracking-widest">
         bangicode.ma — scaffold
       </p>
