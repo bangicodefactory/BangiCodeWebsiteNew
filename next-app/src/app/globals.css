@@ -1,0 +1,42 @@
+@import "tailwindcss";
+
+/*
+ * Token CSS arrives through the Company brand registry components (IST-120).
+ * Do NOT author DESIGN.md tokens here — consume via `npx shadcn add @bangicode/<name>`.
+ * The @theme block below is intentionally empty until IST-120 wires the registry.
+ */
+@theme {
+  /* populated by @bangicode/* registry components — see IST-120 */
+}
+
+/*
+ * Font token bridge: maps next/font CSS variables (set on <html> by layout.tsx)
+ * to Tailwind utility classes (font-display, font-body, font-mono).
+ * Uses @theme inline so Tailwind emits var() references rather than inlining.
+ */
+@theme inline {
+  --font-display: var(--font-montserrat);
+  --font-body: var(--font-hanken-grotesk);
+  --font-mono: var(--font-jetbrains-mono);
+}
+
+/* ── Base styles ──────────────────────────────────────────────────────────── */
+body {
+  font-family: var(--font-body), "Hanken Grotesk", sans-serif;
+}
+
+/* 2px sky-blue focus ring on all interactive elements (WCAG 2.2 AA) */
+:focus-visible {
+  outline: 2px solid var(--color-secondary-container);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
