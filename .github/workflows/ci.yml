@@ -17,9 +17,11 @@ concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 
-# Prevent husky from running install hooks in CI
+# Opt into Node.js 24 runner for all JS actions (mandatory from 2026-06-02)
+# https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
 env:
   HUSKY: "0"
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
 
 # All run steps execute inside next-app/ by default
 defaults:
