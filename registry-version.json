@@ -1,0 +1,10 @@
+{
+  "$comment": "Pins the Company brand registry version consumed by next-app/. Update each time npx shadcn add @bangicode/* is run. CI fails if stale > 14 days (IST-123 / IST-200).",
+  "status": "pending",
+  "reason": "Registry endpoint https://design.bangicode.ma/r/{name}.json returns 404 — design.bangicode.ma not yet deployed. Re-run `npx shadcn add @bangicode/*` once live and update this file.",
+  "libraryRepo": "https://github.com/bangicodefactory/bangicode-design-system",
+  "libraryVersion": null,
+  "libraryGitSha": null,
+  "installedAt": null,
+  "components": []
+}

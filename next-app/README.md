@@ -46,12 +46,50 @@ Root `/` redirects to `/en`.
 | Linting    | ESLint 9 + eslint-config-next + eslint-plugin-jsx-a11y                 |
 | Formatting | Prettier 3 + prettier-plugin-tailwindcss (root `.prettierrc`)          |
 
-## Design system
+## Company brand registry
 
-Brand tokens (`--color-*`, `--radius-*`, `--font-*`, `--shadow-*`) are **not** authored
-locally. They arrive through installed `@bangicode/*` registry components. Do not port
-values from `../prototypes/v4-stitch.html` or author a local `@theme` block — the registry
-is the bridge from `DESIGN.md` to Tailwind v4.
+Components come from the private `@bangicode` shadcn registry, not from local authoring.
+Brand tokens flow in through the installed components — there is no local `@theme` block.
 
-See the [Company brand library](https://github.com/bangicodefactory/bangicode-design-system)
-and `CLAUDE.md §Component library` for the consumption workflow.
+### Install a component
+
+```bash
+# Install one component
+npx shadcn add @bangicode/button
+
+# Install all initial components (run once when registry is live)
+npx shadcn add @bangicode/button @bangicode/card @bangicode/input \
+  @bangicode/label @bangicode/textarea @bangicode/select @bangicode/form \
+  @bangicode/badge @bangicode/sheet @bangicode/dialog @bangicode/dropdown-menu \
+  @bangicode/separator @bangicode/avatar @bangicode/site-footer @bangicode/hero \
+  @bangicode/feature-grid @bangicode/cta @bangicode/testimonials \
+  @bangicode/logo-cloud @bangicode/faq
+```
+
+Components land in `src/components/ui/<name>.tsx`. After installing or refreshing,
+update `../registry-version.json` with the library's git SHA, version, and timestamp.
+
+### What `@bangicode/<name>` means
+
+`@bangicode` is the registry namespace configured in `components.json`. The shadcn CLI
+resolves it to `https://design.bangicode.ma/r/<name>.json`. Components are identical
+to shadcn/ui primitives but pre-wired to the Bangicode DESIGN.md token pipeline.
+
+### Updating a component
+
+```bash
+npx shadcn add @bangicode/<name>   # re-runs the install, overwriting the local file
+```
+
+Review the diff before committing — the library may have changed the component's API
+or styling. Update `../registry-version.json` after any refresh.
+
+### Docs
+
+Library source: [github.com/bangicodefactory/bangicode-design-system](https://github.com/bangicodefactory/bangicode-design-system)
+Registry docs: `design.bangicode.ma`
+
+### Smoke test
+
+Visit `/smoke` after installing components to verify the token pipeline is working
+(navy primary, sky-blue secondary-container, JetBrains Mono on badge text).
