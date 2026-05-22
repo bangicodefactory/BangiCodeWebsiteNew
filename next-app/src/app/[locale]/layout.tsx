@@ -1,7 +1,12 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { notFound } from "next/navigation";
-import { Montserrat, Hanken_Grotesk, JetBrains_Mono } from "next/font/google";
+import {
+  Montserrat,
+  Hanken_Grotesk,
+  JetBrains_Mono,
+  Noto_Sans_Arabic,
+} from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { routing } from "@/i18n/routing";
@@ -26,6 +31,16 @@ const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
   weight: ["400", "500"],
   display: "swap",
+});
+
+// Loaded only for the /ar locale — preload: false avoids downloading it on en/fr routes.
+// Sets --font-noto-arabic; globals.css [lang="ar"] rule maps it to --font-display.
+const notoSansArabic = Noto_Sans_Arabic({
+  variable: "--font-noto-arabic",
+  subsets: ["arabic"],
+  weight: ["400", "500", "600", "700", "800"],
+  display: "swap",
+  preload: false,
 });
 
 type Props = {
@@ -69,11 +84,16 @@ export default async function LocaleLayout({ children, params }: Props) {
   const messages = await getMessages();
   const dir = locale === "ar" ? "rtl" : "ltr";
 
+  // For AR: swap the display font class to Noto Sans Arabic.
+  // globals.css [lang="ar"] then redirects --font-display → var(--font-noto-arabic).
+  const displayFontClass =
+    locale === "ar" ? notoSansArabic.variable : montserrat.variable;
+
   return (
     <html
       lang={locale}
       dir={dir}
-      className={`${montserrat.variable} ${hankenGrotesk.variable} ${jetbrainsMono.variable} h-full`}
+      className={`${displayFontClass} ${hankenGrotesk.variable} ${jetbrainsMono.variable} h-full`}
     >
       <body className="min-h-full antialiased">
         <NextIntlClientProvider messages={messages}>
