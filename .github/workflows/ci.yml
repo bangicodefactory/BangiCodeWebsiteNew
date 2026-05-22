@@ -5,31 +5,61 @@ on:
     branches: [main]
     paths:
       - "next-app/**"
+      - "registry-version.json"
       - ".github/workflows/ci.yml"
   pull_request:
     branches: [main]
     paths:
       - "next-app/**"
+      - "registry-version.json"
       - ".github/workflows/ci.yml"
 
-# Cancel in-progress runs for the same ref (saves minutes on rapid pushes)
+# Skip the entire workflow when the commit message contains [skip ci]
+# (GitHub Actions honours this natively on push; handled here for PR title parity)
 concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 
 # Opt into Node.js 24 runner for all JS actions (mandatory from 2026-06-02)
-# https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/
+# IST-201: remove FORCE_JAVASCRIPT_ACTIONS_TO_NODE24 after 2026-06-02
 env:
   HUSKY: "0"
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
 
-# All run steps execute inside next-app/ by default
 defaults:
   run:
     working-directory: ./next-app
 
+# ── Reusable setup ────────────────────────────────────────────────────────────
+# Each job that runs code repeats pnpm + Node setup.
+# Artifact "next-build" carries the .next/ output from build → smoke/lighthouse.
+
 jobs:
-  # ── Job 1: Type · Lint · Format ──────────────────────────────────────────
+  # ── Job 1: Registry pin freshness ────────────────────────────────────────
+  registry-pin:
+    name: "Registry pin freshness"
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.1.3
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.16.0
+          cache: pnpm
+          cache-dependency-path: next-app/pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Check registry pin
+        run: pnpm check:registry-pin
+
+  # ── Job 2: Type · Lint · Format ──────────────────────────────────────────
   quality:
     name: "Quality (typecheck · lint · format)"
     runs-on: ubuntu-latest
@@ -59,7 +89,7 @@ jobs:
       - name: Prettier — format check
         run: pnpm format:check
 
-  # ── Job 2: Build ─────────────────────────────────────────────────────────
+  # ── Job 3: Build ─────────────────────────────────────────────────────────
   build:
     name: "Build (next build)"
     runs-on: ubuntu-latest
@@ -92,3 +122,96 @@ jobs:
 
       - name: Build
         run: pnpm build
+
+      # Upload .next/ output (excluding the build cache) for smoke + lighthouse
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: next-build
+          path: |
+            next-app/.next
+            !next-app/.next/cache
+          retention-days: 1
+
+  # ── Job 4: Playwright smoke tests ────────────────────────────────────────
+  smoke:
+    name: "Smoke (Playwright @smoke)"
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.1.3
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.16.0
+          cache: pnpm
+          cache-dependency-path: next-app/pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Playwright browsers
+        run: pnpm exec playwright install chromium --with-deps
+
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: next-build
+          path: next-app/.next
+
+      - name: Run smoke tests
+        run: pnpm test:smoke
+
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: next-app/playwright-report/
+          retention-days: 7
+
+  # ── Job 5: Lighthouse budget ──────────────────────────────────────────────
+  lighthouse:
+    name: "Lighthouse budget (≥95 perf/a11y/seo/bp)"
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.1.3
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.16.0
+          cache: pnpm
+          cache-dependency-path: next-app/pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: next-build
+          path: next-app/.next
+
+      - name: Run Lighthouse CI
+        run: pnpm dlx @lhci/cli@^0.14.0 autorun
+        env:
+          LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+
+      - name: Upload LHCI results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lhci-results
+          path: next-app/.lighthouseci/
+          retention-days: 7

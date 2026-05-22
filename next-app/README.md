@@ -1,5 +1,7 @@
 # Bangicode — next-app
 
+[![CI](https://github.com/bangicodefactory/BangiCodeWebsiteNew/actions/workflows/ci.yml/badge.svg)](https://github.com/bangicodefactory/BangiCodeWebsiteNew/actions/workflows/ci.yml)
+
 Next.js 16 (App Router) · TypeScript strict · Tailwind v4 · Company brand registry
 
 IST-119: scaffold. This app consumes the Company brand registry — see
