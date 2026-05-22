@@ -15,6 +15,7 @@
  *   npx shadcn add @bangicode/button @bangicode/card ... (see IST-120)
  */
 
+import Link from "next/link";
 import { existsSync } from "fs";
 import path from "path";
 
@@ -101,7 +102,8 @@ export default function SmokePage() {
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4">
           {EXPECTED_COMPONENTS.map((name) => {
             const installed = isInstalled(name);
-            return (
+            const smokeHref = installed ? `/smoke/${name}` : null;
+            const inner = (
               <div
                 key={name}
                 className="flex items-center justify-between rounded border border-gray-200 px-3 py-2"
@@ -117,6 +119,13 @@ export default function SmokePage() {
                   {installed ? "✓" : "pending"}
                 </span>
               </div>
+            );
+            return smokeHref ? (
+              <Link key={name} href={smokeHref} className="hover:opacity-80">
+                {inner}
+              </Link>
+            ) : (
+              <div key={name}>{inner}</div>
             );
           })}
         </div>

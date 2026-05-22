@@ -1,5 +1,6 @@
 import { routing, type Locale } from "@/i18n/routing";
 import { LocaleSwitcher } from "@/components/LocaleSwitcher";
+import { Button } from "@/components/ui/button";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -38,6 +39,9 @@ export default async function LocalePage({
         {copy.heading}
       </h1>
       <p className="font-body text-lg text-gray-600">{copy.sub}</p>
+      <Button variant="primary" size="lg" type="button" className="mt-4">
+        Start a project
+      </Button>
       <p className="mt-8 font-mono text-xs text-gray-400">
         BAN-124 · next-intl locale routing + RTL middleware
       </p>
