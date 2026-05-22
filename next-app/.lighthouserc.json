@@ -2,14 +2,14 @@
   "ci": {
     "collect": {
       "startServerCommand": "pnpm start",
-      "startServerReadyPattern": "localhost",
+      "startServerReadyPattern": "Local:",
       "startServerReadyTimeout": 60000,
       "url": [
         "http://localhost:3000/en",
         "http://localhost:3000/fr",
         "http://localhost:3000/ar"
       ],
-      "numberOfRuns": 1,
+      "numberOfRuns": 3,
       "settings": {
         "preset": "desktop",
         "onlyCategories": [
