@@ -123,6 +123,7 @@ jobs:
             next-app/.next
             !next-app/.next/cache
           retention-days: 1
+          include-hidden-files: true
 
   # ── Job 4: Playwright smoke tests ────────────────────────────────────────
   smoke:
