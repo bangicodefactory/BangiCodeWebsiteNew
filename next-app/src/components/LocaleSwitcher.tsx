@@ -24,6 +24,7 @@ export function LocaleSwitcher({ currentLocale }: { currentLocale: string }) {
       {routing.locales.map((locale) => (
         <button
           key={locale}
+          type="button"
           onClick={() => switchLocale(locale)}
           aria-current={locale === currentLocale ? "true" : undefined}
           className={`rounded px-2 py-1 font-mono text-xs transition-colors focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:outline-none ${
