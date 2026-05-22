@@ -4,10 +4,6 @@ import type { Metadata } from "next";
 export const locales = ["en", "fr", "ar"] as const;
 export type Locale = (typeof locales)[number];
 
-export function generateStaticParams() {
-  return locales.map((locale) => ({ locale }));
-}
-
 export async function generateMetadata({
   params,
 }: {

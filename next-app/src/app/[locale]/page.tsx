@@ -1,4 +1,9 @@
 import type { Locale } from "./layout";
+import { locales } from "./layout";
+
+export function generateStaticParams() {
+  return locales.map((locale) => ({ locale }));
+}
 
 const labels: Record<Locale, { heading: string; sub: string }> = {
   en: {
