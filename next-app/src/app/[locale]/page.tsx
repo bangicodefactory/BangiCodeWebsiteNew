@@ -39,6 +39,7 @@ export default async function LocalePage({
         {copy.heading}
       </h1>
       <p className="font-body text-lg text-gray-600">{copy.sub}</p>
+      {/* copy locked — "Start a project" on all locales per CLAUDE.md */}
       <Button variant="primary" size="lg" type="button" className="mt-4">
         Start a project
       </Button>

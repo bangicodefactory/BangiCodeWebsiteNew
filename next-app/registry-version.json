@@ -4,7 +4,7 @@
   "reason": "Registry endpoint https://design.bangicode.ma/r/{name}.json returns 404 — design.bangicode.ma not yet deployed. Components below were manually sourced from the library GitHub repo (develop branch). Re-run `npx shadcn add @bangicode/*` once live to get the registry-distributed versions.",
   "libraryRepo": "https://github.com/bangicodefactory/bangicode-design-system",
   "libraryVersion": null,
-  "libraryGitSha": null,
+  "libraryGitSha": "cbd8d334d2951158f8cad7f9d78be6d08e22f043",
   "installedAt": null,
   "components": [
     {

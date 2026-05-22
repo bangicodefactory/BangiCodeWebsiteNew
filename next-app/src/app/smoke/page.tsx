@@ -102,12 +102,13 @@ export default function SmokePage() {
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 md:grid-cols-4">
           {EXPECTED_COMPONENTS.map((name) => {
             const installed = isInstalled(name);
-            const smokeHref = installed ? `/smoke/${name}` : null;
+            // NOTE: only link when a /smoke/<name>/page.tsx sub-page exists.
+            // Add the sub-page first, then install the component — not the other way.
+            const SMOKE_SUBPAGES = new Set<ComponentName>(["button"]);
+            const smokeHref =
+              installed && SMOKE_SUBPAGES.has(name) ? `/smoke/${name}` : null;
             const inner = (
-              <div
-                key={name}
-                className="flex items-center justify-between rounded border border-gray-200 px-3 py-2"
-              >
+              <div className="flex items-center justify-between rounded border border-gray-200 px-3 py-2">
                 <span className="text-sm text-gray-700">@bangicode/{name}</span>
                 <span
                   className={`ml-2 rounded-full px-2 py-0.5 text-xs ${

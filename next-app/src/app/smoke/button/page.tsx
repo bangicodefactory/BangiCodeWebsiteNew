@@ -9,7 +9,7 @@
  */
 
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, ArrowRight, Plus } from "lucide-react";
 import { Button, type ButtonProps } from "@/components/ui/button";
 
 const VARIANTS: NonNullable<ButtonProps["variant"]>[] = [
@@ -52,6 +52,33 @@ export default function SmokeButtonPage() {
         </p>
       </header>
 
+      {/* Token gap warning */}
+      <section className="mb-10">
+        <div className="space-y-2 rounded border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+          <p>
+            <strong>Tokens pending (IST-120):</strong> brand colour classes (
+            <code className="rounded bg-amber-100 px-1">bg-primary</code>,{" "}
+            <code className="rounded bg-amber-100 px-1">border-secondary</code>,
+            etc.) resolve to browser defaults until the registry{" "}
+            <code className="rounded bg-amber-100 px-1">@theme</code> is wired.
+          </p>
+          <p>
+            <strong>Focus ring invisible:</strong>{" "}
+            <code className="rounded bg-amber-100 px-1">
+              focus-visible:ring-ring
+            </code>{" "}
+            requires{" "}
+            <code className="rounded bg-amber-100 px-1">--color-ring</code>. The
+            button suppresses the global outline via{" "}
+            <code className="rounded bg-amber-100 px-1">
+              focus-visible:outline-none
+            </code>{" "}
+            — there is currently <strong>no visible focus indicator</strong>{" "}
+            until IST-120 ships.
+          </p>
+        </div>
+      </section>
+
       {/* Variants × sizes grid */}
       <section className="mb-12">
         <h2 className="mb-6 text-sm font-semibold tracking-widest text-gray-500 uppercase">
@@ -81,7 +108,11 @@ export default function SmokeButtonPage() {
                   {SIZES.map((size) => (
                     <td key={size} className="py-4 pr-6">
                       <Button variant={variant} size={size} type="button">
-                        {size === "icon" ? "B" : "Label"}
+                        {size === "icon" ? (
+                          <Plus className="size-4" />
+                        ) : (
+                          "Label"
+                        )}
                       </Button>
                     </td>
                   ))}
@@ -98,7 +129,8 @@ export default function SmokeButtonPage() {
           Focus ring (WCAG 2.2 AA — 2px sky-blue + 2px offset)
         </h2>
         <p className="mb-4 text-xs text-gray-400">
-          Tab to each button and verify the 2px sky-blue focus ring appears.
+          Tab to each button. Ring is currently invisible (see token warning
+          above) — verify it becomes sky-blue once IST-120 ships.
         </p>
         <div className="flex flex-wrap gap-3">
           {VARIANTS.map((variant) => (
@@ -115,8 +147,10 @@ export default function SmokeButtonPage() {
           RTL — dir=&quot;rtl&quot;
         </h2>
         <p className="mb-4 text-xs text-gray-400">
-          Icon-left becomes icon-right via logical properties. No manual
-          mirroring needed.
+          The{" "}
+          <code className="rounded bg-gray-100 px-1">&lt;ArrowRight&gt;</code>{" "}
+          icon flips to the inline-end side via CSS logical properties — no
+          manual mirroring needed.
         </p>
         <div
           dir="rtl"
@@ -124,7 +158,8 @@ export default function SmokeButtonPage() {
         >
           {VARIANTS.map((variant) => (
             <Button key={variant} variant={variant} size="md" type="button">
-              {variant} →
+              <ArrowRight className="size-4" />
+              {variant}
             </Button>
           ))}
         </div>
