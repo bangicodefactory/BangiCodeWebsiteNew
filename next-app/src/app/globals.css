@@ -11,8 +11,9 @@
 
 /*
  * Font token bridge: maps next/font CSS variables (set on <html> by layout.tsx)
- * to Tailwind utility classes (font-display, font-body, font-mono).
- * Uses @theme inline so Tailwind emits var() references rather than inlining.
+ * to the canonical --font-display / --font-body / --font-mono tokens that
+ * Tailwind utilities and registry components reference.
+ * Uses @theme inline so Tailwind emits var() references at runtime.
  */
 @theme inline {
   --font-display: var(--font-montserrat);
@@ -20,9 +21,18 @@
   --font-mono: var(--font-jetbrains-mono);
 }
 
+/*
+ * Arabic locale: swap the display stack to Noto Sans Arabic.
+ * --font-noto-arabic is set on <html> by the Noto_Sans_Arabic next/font instance
+ * (applied only for /ar routes). Body and mono stacks are unchanged.
+ */
+[lang="ar"] {
+  --font-display: var(--font-noto-arabic);
+}
+
 /* ── Base styles ──────────────────────────────────────────────────────────── */
 body {
-  font-family: var(--font-body), "Hanken Grotesk", sans-serif;
+  font-family: var(--font-body);
 }
 
 /* 2px sky-blue focus ring on all interactive elements (WCAG 2.2 AA) */
