@@ -4,5 +4,7 @@
   "tabWidth": 2,
   "trailingComma": "all",
   "printWidth": 80,
-  "plugins": ["prettier-plugin-tailwindcss"]
+  "plugins": ["prettier-plugin-tailwindcss"],
+  "$schema": "https://json.schemastore.org/prettierrc",
+  "$comment": "prettier-plugin-tailwindcss is in next-app/devDependencies — run prettier from within next-app/ (CI and lint-staged both do this via 'defaults: run: working-directory: ./next-app' and 'cd next-app && pnpm lint-staged')"
 }
