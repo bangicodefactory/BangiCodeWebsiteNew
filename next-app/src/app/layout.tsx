@@ -38,9 +38,10 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // lang/dir set per-locale by [locale]/layout.tsx wrapper; IST-151 migrates to next-intl
   return (
-    // lang/dir set per-locale by [locale]/layout.tsx wrapper; IST-3 migrates this to next-intl
     <html
+      lang="en"
       className={`${montserrat.variable} ${hankenGrotesk.variable} ${jetbrainsMono.variable} h-full`}
     >
       <body className="min-h-full antialiased">{children}</body>

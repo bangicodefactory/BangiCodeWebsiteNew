@@ -24,15 +24,15 @@ export default async function LocalePage({
   const copy = labels[locale as Locale] ?? labels.en;
 
   return (
-    <main className="bg-surface text-on-surface flex min-h-screen flex-col items-center justify-center gap-4 px-6">
-      <p className="text-secondary font-mono text-sm tracking-widest">
+    <main className="flex min-h-screen flex-col items-center justify-center gap-4 bg-white px-6 text-gray-900">
+      <p className="font-mono text-sm tracking-widest text-blue-600">
         bangicode.ma — scaffold
       </p>
       <h1 className="font-display text-4xl font-bold tracking-tight">
         {copy.heading}
       </h1>
-      <p className="font-body text-on-surface-variant text-lg">{copy.sub}</p>
-      <p className="text-outline mt-8 font-mono text-xs">
+      <p className="font-body text-lg text-gray-600">{copy.sub}</p>
+      <p className="mt-8 font-mono text-xs text-gray-400">
         IST-119 · Next.js 16 + TypeScript + Tailwind v4
       </p>
     </main>

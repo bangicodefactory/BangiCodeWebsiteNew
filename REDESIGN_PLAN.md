@@ -13,8 +13,8 @@
 |---|---|
 | Framework | **Next.js 16.2.6** (App Router, RSC, image optimization, ISR) |
 | Language | **TypeScript** (strict mode) |
-| Component library | **shadcn/ui** (Radix primitives + Tailwind) |
-| Styling | **Tailwind CSS 4** wired to `DESIGN.md` tokens via CSS variables |
+| Component library | **Company brand private shadcn registry** at https://github.com/bangicodefactory/bangicode-design-system. Consumer pulls components via `npx shadcn add @bangicode/<name>`. No local re-implementation of shadcn primitives. See §4 + IST-120 + IST-200. |
+| Styling | **Tailwind CSS 4**. Token CSS reaches `next-app/` THROUGH the registry — DESIGN.md is authored in the library repo, not here. No local `@theme` block. |
 | Animation | **Refined, lightweight motion** — Framer Motion + Tailwind transitions. WebGL/Three.js components (Hyperspeed, LightRays, FloatingLines) **removed**. |
 | Copy | **Full rewrite** in EN / FR / AR, plus legal pages (Privacy, Terms, Cookies) |
 | i18n | **next-intl** with `[locale]` route segments; RTL for AR |
@@ -159,56 +159,55 @@ Locales: `/en`, `/fr`, `/ar` — AR auto-applies RTL via `dir="rtl"` on `<html>`
 
 ---
 
-## 4. Design system wiring (DESIGN.md → code)
+## 4. Design system wiring — Company brand registry (registry-driven, not local)
 
-The `DESIGN.md` you uploaded is the source of truth. Concrete mapping:
+**This section was rewritten 2026-05-22.** The redesign now consumes the Bangicode design system as a private shadcn registry. Tokens and primitives are no longer authored in `next-app/`; they ship in from the library.
 
-**Tailwind v4 `@theme` block (CSS-first):**
-```css
-@theme {
-  --color-surface: #f7f9ff;
-  --color-surface-container: #e3efff;
-  --color-on-surface: #091d2e;
-  --color-primary: #002058;          /* deep navy — brand foundation */
-  --color-primary-container: #1a3673;
-  --color-secondary: #006397;        /* sky blue — interactive */
-  --color-secondary-container: #5cb8fd;
-  --color-tertiary: #500000;         /* tech red — accent only */
-  --color-error: #ba1a1a;
-  --color-outline: #757781;
-  --color-outline-variant: #c4c6d1;
-  /* …full surface/on-surface/fixed scales per DESIGN.md frontmatter… */
+### Where the design system lives
 
-  --font-display: 'Montserrat', sans-serif;     /* headlines */
-  --font-body: 'Hanken Grotesk', sans-serif;    /* body + UI */
-  --font-mono: 'JetBrains Mono', monospace;     /* technical/labels */
+- **Library repo:** https://github.com/bangicodefactory/bangicode-design-system (private)
+- **Library docs site:** `design.bangicode.ma`
+- **Registry namespace in consumer:** `@bangicode`
+- **Registry URL:** `https://design.bangicode.ma/r/<name>.json`
 
-  --radius-sm: 0.125rem;
-  --radius: 0.25rem;
-  --radius-md: 0.375rem;
-  --radius-lg: 0.5rem;
-  --radius-xl: 0.75rem;
+### How `next-app/` consumes it
 
-  --shadow-tech: 0 4px 12px rgba(26, 54, 115, 0.08);
-}
-```
+1. `components.json` declares two registries: `@shadcn` (public) and `@bangicode` (private).
+2. Initial install pulls every component the redesign needs in one batch via `npx shadcn add @bangicode/...` (full list in IST-120).
+3. Token CSS arrives THROUGH the installed components — there is no local `@theme` block to maintain.
+4. `next-app/registry-version.json` pins the library's git SHA + `package.json` version. CI fails if it's stale > 14 days (IST-123 + IST-200).
+5. When the library publishes a new version, refresh per-component: `npx shadcn add @bangicode/<name>` again, read the diff, commit. Verify against `/_smoke` (IST-129).
 
-**shadcn config (`components.json`):** point CSS variables at the tokens above so `Button`, `Card`, `Input`, `Dialog`, `Badge`, etc. inherit the brand automatically. Override `Button` variants to match DESIGN.md's three styles (Primary = secondary token / Sky Blue, Secondary = navy outline, Ghost = sky-blue text).
+### What's in the registry (v0.1.0)
 
-**8px baseline grid:** enforce via Tailwind spacing scale already aligned to 4/8 multiples. Section vertical rhythm uses `py-16 md:py-24` (= 64/96px).
+34 components across 6 categories — see the library's `CHANGELOG.md`. Notable ones the redesign relies on:
 
-**Type scale:**
-- `display-lg` (48/56, -0.02em) → hero only
-- `headline-lg` (32/40) → section titles, scales to 24/32 on mobile per DESIGN.md
-- `headline-md` (24/32) → card titles
-- `body-lg` (18/28) → marketing prose
-- `body-md` (16/24) → UI default
-- `label-mono` (14/20, 0.05em, JetBrains Mono) → tech tags, project stack chips, stats
-- `label-sm` (12/16, uppercase) → form labels
+- **Forms:** `@bangicode/form` (RHF + Zod wrapper) plus all primitives — consumed by IST-126, IST-143, IST-156.
+- **Marketing:** `@bangicode/hero` · `@bangicode/feature-grid` · `@bangicode/cta` · `@bangicode/testimonials` · `@bangicode/logo-cloud` · `@bangicode/faq` · `@bangicode/site-footer` — consumed by IST-132, IST-135, IST-136, IST-137-140, IST-141, IST-144.
+- **Disclosure / containers:** `@bangicode/dialog` · `@bangicode/sheet` · `@bangicode/popover` · `@bangicode/card` · `@bangicode/badge` — consumed across the shell, work index, and cookie banner.
 
-**Elevation:** flat-plus aesthetic. 1px outline-variant borders by default; the soft tech shadow only on modals, dropdowns, and card hover. 2px sky-blue focus ring on all interactive elements (a11y win).
+### What's NOT in the registry (build consumer-side)
 
-**Shapes:** 4px radius default; `rounded-lg` (8px) on cards/containers; pill on search/tags only.
+Tracked in IST-127 (NavigationMenu) and IST-199 (bespoke sections — StudioStatusPanel, ThesisLineStats, TrustedByRow, RentCarFeaturedCase, PeekCards, WhatHappensNext, FounderCard). These use ONLY library token classes; no raw hex except the documented `tertiary-fixed-dim #ffb4a9` for the online dot.
+
+### Rules
+
+- **No local `@theme` block.** Token CSS comes from the library.
+- **No patching installed component source.** Improvements go upstream as a library issue. Page-level wrappers are fine.
+- **No local re-implementation of shadcn primitives.** If a primitive is missing from the library, propose it upstream; build a thin local version in the meantime only if blocking, and track the upstream issue in the consumer ticket.
+
+### Why this changed
+
+Originally (pre-2026-05-22), §4 documented a local `@theme` block and a shadcn variable bridge to be authored in `next-app/`. The Company brand library has since shipped v0.1.0 with 34 components plus the full DESIGN.md → Tailwind v4 token pipeline (per its own `CLAUDE.md` + `CHANGELOG.md`). Re-implementing that work in the consumer would duplicate it; consuming the registry keeps both projects in lockstep. IST-120 wires it; IST-200 documents the workflow; IST-198 (in the `bangicode component library` Linear project) tracks library-side version freshness.
+
+### Type scale, baseline grid, elevation, shapes
+
+All still per DESIGN.md — but they reach the consumer through the registry components, not through a local `@theme` block. The values below are kept here as a sanity reference (e.g., for the bespoke IST-199 sections that compose library tokens with custom layout):
+
+- **8px baseline grid:** section vertical rhythm uses `py-16 md:py-24` (= 64/96px).
+- **Type scale:** `display-lg` 48/56 (-0.02em) hero only · `headline-lg` 32/40 (24/32 mobile) · `headline-md` 24/32 cards · `body-lg` 18/28 marketing · `body-md` 16/24 UI · `label-mono` 14/20 (0.05em, JetBrains Mono) tech tags · `label-sm` 12/16 uppercase form labels.
+- **Elevation:** flat-plus. 1px outline-variant border default; soft tech shadow on modals / dropdowns / card hover. 2px sky-blue focus ring on every interactive element.
+- **Shapes:** 4px radius default; 8px on cards/containers; full pill on search/tags only.
 
 ---
 

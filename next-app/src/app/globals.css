@@ -1,86 +1,18 @@
 @import "tailwindcss";
 
-/* ── Static brand tokens (ported from DESIGN.md) ─────────────────────────── */
+/*
+ * Token CSS arrives through the Company brand registry components (IST-120).
+ * Do NOT author DESIGN.md tokens here — consume via `npx shadcn add @bangicode/<name>`.
+ * The @theme block below is intentionally empty until IST-120 wires the registry.
+ */
 @theme {
-  /* Surface scale */
-  --color-surface: #f7f9ff;
-  --color-surface-bright: #f7f9ff;
-  --color-surface-dim: #d8dae0;
-  --color-surface-container-lowest: #ffffff;
-  --color-surface-container-low: #f1f3f9;
-  --color-surface-container: #e3efff;
-  --color-surface-container-high: #e6e8ee;
-  --color-surface-container-highest: #e0e2e8;
-  --color-surface-variant: #d1e4fb;
-  --color-on-surface: #091d2e;
-  --color-on-surface-variant: #444650;
-  --color-inverse-surface: #2d3135;
-  --color-inverse-on-surface: #eff1f7;
-  --color-outline: #757781;
-  --color-outline-variant: #c4c6d1;
-
-  /* Primary — deep navy */
-  --color-primary: #002058;
-  --color-on-primary: #ffffff;
-  --color-primary-container: #1a3673;
-  --color-on-primary-container: #7389c7;
-  --color-primary-fixed: #dae2ff;
-  --color-primary-fixed-dim: #b2c5ff;
-  --color-on-primary-fixed: #001847;
-  --color-on-primary-fixed-variant: #2d457d;
-  --color-inverse-primary: #b2c5ff;
-  --color-surface-tint: #465d96;
-
-  /* Secondary — sky blue (interactive) */
-  --color-secondary: #006397;
-  --color-on-secondary: #ffffff;
-  --color-secondary-container: #5cb8fd;
-  --color-on-secondary-container: #00517d;
-  --color-secondary-fixed: #cce5ff;
-  --color-secondary-fixed-dim: #93ccff;
-  --color-on-secondary-fixed: #001d31;
-  --color-on-secondary-fixed-variant: #004b73;
-
-  /* Tertiary — tech red (accent only; studio ● online indicator) */
-  --color-tertiary: #500000;
-  --color-on-tertiary: #ffffff;
-  --color-tertiary-container: #510000;
-  --color-on-tertiary-container: #dc6857;
-  --color-tertiary-fixed: #ffdad4;
-  --color-tertiary-fixed-dim: #ffb4a9;
-  --color-on-tertiary-fixed: #410000;
-  --color-on-tertiary-fixed-variant: #83251b;
-
-  /* Error */
-  --color-error: #ba1a1a;
-  --color-on-error: #ffffff;
-  --color-error-container: #ffdad6;
-  --color-on-error-container: #93000a;
-
-  /* Background aliases */
-  --color-background: #f7f9ff;
-  --color-on-background: #181c20;
-
-  /* Border radius — full must be 9999px for pills */
-  --radius-sm: 0.125rem;
-  --radius: 0.25rem;
-  --radius-md: 0.375rem;
-  --radius-lg: 0.5rem;
-  --radius-xl: 0.75rem;
-  --radius-full: 9999px;
-
-  /* Shadows */
-  --shadow-tech: 0 4px 12px rgba(26, 54, 115, 0.08);
+  /* populated by @bangicode/* registry components — see IST-120 */
 }
 
 /*
- * Dynamic font tokens — @theme inline so Tailwind emits var() references instead
- * of inlining the value at build time. The chain at runtime:
- *   font-display class → font-family: var(--font-display)
- *                      → var(--font-montserrat)          [set by next/font on <html>]
- *                      → 'Montserrat', sans-serif
- * Same pattern for font-body → Hanken Grotesk, font-mono → JetBrains Mono.
- * Requires the font variables to be present on <html> via layout.tsx className.
+ * Font token bridge: maps next/font CSS variables (set on <html> by layout.tsx)
+ * to Tailwind utility classes (font-display, font-body, font-mono).
+ * Uses @theme inline so Tailwind emits var() references rather than inlining.
  */
 @theme inline {
   --font-display: var(--font-montserrat);
@@ -90,8 +22,6 @@
 
 /* ── Base styles ──────────────────────────────────────────────────────────── */
 body {
-  background-color: var(--color-background);
-  color: var(--color-on-surface);
   font-family: var(--font-body), "Hanken Grotesk", sans-serif;
 }
 
