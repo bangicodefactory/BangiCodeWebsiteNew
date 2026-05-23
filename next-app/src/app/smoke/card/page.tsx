@@ -146,7 +146,9 @@ export default function SmokeCardPage() {
           on the anchor — no nested interactive elements inside the card.
         </p>
         <div className="max-w-sm">
-          <Card className={`relative cursor-pointer ${hoverCard}`}>
+          <Card
+            className={`relative cursor-pointer ${hoverCard} has-[a:focus-visible]:ring-2 has-[a:focus-visible]:ring-sky-400 has-[a:focus-visible]:ring-offset-2`}
+          >
             <CardHeader>
               <CardTitle>
                 <Link

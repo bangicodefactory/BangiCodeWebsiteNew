@@ -28,6 +28,8 @@ const CardHeader = React.forwardRef<
 ));
 CardHeader.displayName = "CardHeader";
 
+// children destructured explicitly (upstream uses ...props spread) to satisfy
+// jsx-a11y/heading-has-content — preserve this delta when refreshing via npx shadcn add.
 const CardTitle = React.forwardRef<
   HTMLParagraphElement,
   React.HTMLAttributes<HTMLHeadingElement>
