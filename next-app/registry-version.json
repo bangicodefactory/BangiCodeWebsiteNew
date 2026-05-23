@@ -12,6 +12,12 @@
       "path": "src/components/ui/button.tsx",
       "sourcedFrom": "github:bangicodefactory/bangicode-design-system/registry/bangicode/ui/button.tsx@develop",
       "note": "Manually sourced — replace via `npx shadcn add @bangicode/button` once registry is live (BAN-127)"
+    },
+    {
+      "name": "card",
+      "path": "src/components/ui/card.tsx",
+      "sourcedFrom": "github:bangicodefactory/bangicode-design-system/registry/bangicode/ui/card.tsx@develop",
+      "note": "Manually sourced — replace via `npx shadcn add @bangicode/card` once registry is live (BAN-128). Hover state (sky-blue border + tech shadow) added via wrapper class in smoke/card page — upstream PR pending."
     }
   ]
 }

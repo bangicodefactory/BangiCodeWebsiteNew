@@ -104,7 +104,7 @@ export default function SmokePage() {
             const installed = isInstalled(name);
             // NOTE: only link when a /smoke/<name>/page.tsx sub-page exists.
             // Add the sub-page first, then install the component — not the other way.
-            const SMOKE_SUBPAGES = new Set<ComponentName>(["button"]);
+            const SMOKE_SUBPAGES = new Set<ComponentName>(["button", "card"]);
             const smokeHref =
               installed && SMOKE_SUBPAGES.has(name) ? `/smoke/${name}` : null;
             const inner = (
