@@ -17,5 +17,30 @@
     "mobileTitle": "Navigation",
     "desktopNav": "Navigation principale",
     "mobileNav": "Navigation mobile"
+  },
+  "Footer": {
+    "tagline": "Studio logiciel à Tétouan, Maroc. Code qui vieillit bien.",
+    "servicesTitle": "// services",
+    "companyTitle": "// entreprise",
+    "locationTitle": "// localisation",
+    "customSoftware": "Logiciel sur mesure",
+    "ecommerce": "E-commerce",
+    "training": "Formation technique",
+    "socialPresence": "Présence sociale",
+    "about": "À propos",
+    "process": "Processus",
+    "work": "Réalisations",
+    "careers": "Carrières",
+    "contact": "Contact",
+    "address": "Av. Ali Yaeta\nCentre Commercial Wilaya Center\nEtage 6, N69\nTétouan, Maroc",
+    "hours": "Lun–Ven 9h–18h",
+    "whatsapp": "WhatsApp",
+    "copyright": "© 2020–2026 Bangicode SARL. Crafted with Moroccan precision.",
+    "privacy": "Confidentialité",
+    "terms": "Conditions",
+    "cookies": "Cookies",
+    "legalNav": "Légal",
+    "linkedin": "LinkedIn",
+    "github": "GitHub"
   }
 }

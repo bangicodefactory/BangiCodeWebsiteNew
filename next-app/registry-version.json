@@ -78,6 +78,18 @@
       "path": "src/components/ui/badge.tsx",
       "sourcedFrom": "github:bangicodefactory/bangicode-design-system/registry/bangicode/ui/badge.tsx@develop",
       "note": "Manually sourced — replace via `npx shadcn add @bangicode/badge` once registry is live (BAN-131). No consumer-side deltas."
+    },
+    {
+      "name": "separator",
+      "path": "src/components/ui/separator.tsx",
+      "sourcedFrom": "github:bangicodefactory/bangicode-design-system/registry/bangicode/ui/separator.tsx@develop",
+      "note": "Manually sourced — replace via `npx shadcn add @bangicode/separator` once registry is live (BAN-135)."
+    },
+    {
+      "name": "site-footer",
+      "path": "src/components/ui/site-footer.tsx",
+      "sourcedFrom": "github:bangicodefactory/bangicode-design-system/registry/bangicode/ui/site-footer.tsx@develop",
+      "note": "Manually sourced — replace via `npx shadcn add @bangicode/site-footer` once registry is live (BAN-135). Import path fixed: @/registry/bangicode/ui/separator → @/components/ui/separator. Consumer section at src/components/sections/site-footer.tsx implements 4-column layout not directly expressible via library component props."
     }
   ]
 }

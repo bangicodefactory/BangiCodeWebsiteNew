@@ -17,5 +17,30 @@
     "mobileTitle": "Navigation",
     "desktopNav": "Main navigation",
     "mobileNav": "Mobile navigation"
+  },
+  "Footer": {
+    "tagline": "Software studio in Tetouan, Morocco. Code that ages well.",
+    "servicesTitle": "// services",
+    "companyTitle": "// company",
+    "locationTitle": "// location",
+    "customSoftware": "Custom software",
+    "ecommerce": "E-commerce",
+    "training": "Technical training",
+    "socialPresence": "Social presence",
+    "about": "About",
+    "process": "Process",
+    "work": "Work",
+    "careers": "Careers",
+    "contact": "Contact",
+    "address": "Av. Ali Yaeta\nCentre Commercial Wilaya Center\nEtage 6, N69\nTetouan, Morocco",
+    "hours": "Mon–Fri 9h–18h",
+    "whatsapp": "WhatsApp",
+    "copyright": "© 2020–2026 Bangicode SARL. Crafted with Moroccan precision.",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "cookies": "Cookies",
+    "legalNav": "Legal",
+    "linkedin": "LinkedIn",
+    "github": "GitHub"
   }
 }
