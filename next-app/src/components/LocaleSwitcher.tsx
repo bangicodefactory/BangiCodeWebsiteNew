@@ -27,7 +27,7 @@ export function LocaleSwitcher({ currentLocale }: { currentLocale: string }) {
           type="button"
           onClick={() => switchLocale(locale)}
           aria-current={locale === currentLocale ? "true" : undefined}
-          className={`rounded px-2 py-1 font-mono text-xs transition-colors focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:outline-none ${
+          className={`inline-flex h-12 min-w-[48px] items-center justify-center rounded px-3 font-mono text-xs transition-colors focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:outline-none ${
             locale === currentLocale
               ? "bg-gray-900 text-white"
               : "text-gray-500 hover:text-gray-900"
