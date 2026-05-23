@@ -9,6 +9,7 @@ import {
 } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
+import { ThemeProvider } from "next-themes";
 import { routing } from "@/i18n/routing";
 import "../globals.css";
 
@@ -76,6 +77,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
+const SKIP_LABEL: Record<string, string> = {
+  ar: "الانتقال إلى المحتوى",
+  fr: "Aller au contenu",
+  en: "Skip to content",
+};
+
 export default async function LocaleLayout({ children, params }: Props) {
   const { locale } = await params;
 
@@ -95,12 +102,31 @@ export default async function LocaleLayout({ children, params }: Props) {
     <html
       lang={locale}
       dir={dir}
+      suppressHydrationWarning
       className={`${displayFontClass} ${hankenGrotesk.variable} ${jetbrainsMono.variable} h-full`}
     >
       <body className="min-h-full antialiased">
-        <NextIntlClientProvider messages={messages}>
-          {children}
-        </NextIntlClientProvider>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="light"
+          enableSystem={false}
+        >
+          <a
+            href="#main-content"
+            className="focus:bg-primary focus:text-primary-foreground sr-only focus:not-sr-only focus:fixed focus:start-4 focus:top-4 focus:z-50 focus:rounded-sm focus:px-4 focus:py-2 focus:outline-none"
+          >
+            {SKIP_LABEL[locale] ?? SKIP_LABEL.en}
+          </a>
+          {/* BAN-134: <SiteNav /> */}
+          <NextIntlClientProvider messages={messages}>
+            <div id="main-content" tabIndex={-1} className="outline-none">
+              {children}
+            </div>
+          </NextIntlClientProvider>
+          {/* BAN-135: <SiteFooter /> */}
+          {/* BAN-159: <CookieBanner /> */}
+          {/* BAN-136: <WhatsAppCta /> */}
+        </ThemeProvider>
       </body>
     </html>
   );
