@@ -125,7 +125,7 @@ export default async function LocaleLayout({ children, params }: Props) {
             <div id="main-content" tabIndex={-1} className="outline-none">
               {children}
             </div>
-            <SiteFooter locale={locale as Locale} />
+            <SiteFooter />
             {/* BAN-159: <CookieBanner /> */}
             {/* BAN-136: <WhatsAppCta /> */}
           </NextIntlClientProvider>

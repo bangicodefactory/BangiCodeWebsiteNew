@@ -2,12 +2,6 @@ import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { Separator } from "@/components/ui/separator";
-import { LocaleSwitcher } from "@/components/LocaleSwitcher";
-import type { Locale } from "@/i18n/routing";
-
-interface SiteFooterProps {
-  locale: Locale;
-}
 
 const LINK_CLASS =
   "font-hanken-grotesk text-sm text-foreground/80 transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm";
@@ -15,7 +9,7 @@ const LINK_CLASS =
 const MONO_LINK_CLASS =
   "font-jetbrains-mono text-xs text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm";
 
-export async function SiteFooter({ locale }: SiteFooterProps) {
+export async function SiteFooter() {
   const t = await getTranslations("Footer");
 
   const services: Array<{ label: string; href: string }> = [
@@ -68,7 +62,6 @@ export async function SiteFooter({ locale }: SiteFooterProps) {
                 {t("github")}
               </a>
             </div>
-            <LocaleSwitcher currentLocale={locale} />
           </div>
 
           <div className="flex flex-col gap-4">
