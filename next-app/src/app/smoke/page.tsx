@@ -45,7 +45,12 @@ const EXPECTED_COMPONENTS = [
 type ComponentName = (typeof EXPECTED_COMPONENTS)[number];
 
 // Only add to this set when a corresponding /smoke/<name>/page.tsx exists.
-const SMOKE_SUBPAGES = new Set<ComponentName>(["button", "card", "form"]);
+const SMOKE_SUBPAGES = new Set<ComponentName>([
+  "button",
+  "card",
+  "form",
+  "sheet",
+]);
 
 function isInstalled(name: ComponentName): boolean {
   return existsSync(

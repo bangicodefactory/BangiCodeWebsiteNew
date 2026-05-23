@@ -66,6 +66,12 @@
       "path": "src/components/ui/form.tsx",
       "sourcedFrom": "github:bangicodefactory/bangicode-design-system/registry/bangicode/ui/form.tsx@develop",
       "note": "Manually sourced — replace via `npx shadcn add @bangicode/form` once registry is live (BAN-129). Import path fixed: @/registry/bangicode/ui/label → @/components/ui/label."
+    },
+    {
+      "name": "sheet",
+      "path": "src/components/ui/sheet.tsx",
+      "sourcedFrom": "github:bangicodefactory/bangicode-design-system/registry/bangicode/ui/sheet.tsx@develop",
+      "note": "Manually sourced — replace via `npx shadcn add @bangicode/sheet` once registry is live (BAN-130). close-button uses absolute right-4 — RTL close button flip is a known upstream delta (right-4 → end-4) — file upstream issue."
     }
   ]
 }
