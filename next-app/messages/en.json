@@ -244,6 +244,32 @@
       "ctaButton": "Get in touch"
     }
   },
+  "About": {
+    "eyebrow": "// about us",
+    "h1": "The studio behind the code.",
+    "subhead": "A small team of senior engineers building honest software from Tetouan, Morocco.",
+    "storyEyebrow": "// our story",
+    "storyHeadline": "Five years of shipping software that lasts.",
+    "storyBody": "Bangicode was founded in 2020 by Ahmed Chioua, a full-stack engineer who wanted to build a studio that treats clients the way he'd want to be treated — fixed prices, honest timelines, and code he'd be happy to maintain five years later. We've grown to 12 people across four practices: custom software, e-commerce, technical training, and social presence. Every project starts with a 30-minute call and ends with clean documentation.",
+    "storySince": "In business since",
+    "storySinceValue": "2020",
+    "storySize": "Team",
+    "storySizeValue": "12 people",
+    "storyPractices": "Practices",
+    "storyPracticesValue": "4",
+    "valuesEyebrow": "// how we work",
+    "val01Title": "Senior craft",
+    "val01Body": "Every project is led by a senior engineer. No juniors billing as seniors, no offshore surprises.",
+    "val02Title": "Honest timelines",
+    "val02Body": "Fixed-scope, fixed-price. We scope carefully upfront — then we deliver what we said, when we said.",
+    "val03Title": "Code that ages well",
+    "val03Body": "We write code we'd be happy to maintain in three years. Documentation, tests, clean architecture.",
+    "teamEyebrow": "// the team",
+    "teamHeadline": "12 people · 4 practices.",
+    "teamBody": "Based in Tetouan, Morocco. Serving clients across Morocco, France, and the MENA region.",
+    "ctaHeadline": "Want to work with us?",
+    "ctaButton": "Start a project"
+  },
   "LocaleSwitcher": {
     "label": "Language",
     "en": "English",
