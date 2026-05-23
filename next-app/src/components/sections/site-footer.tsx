@@ -37,7 +37,6 @@ export async function SiteFooter({ locale }: SiteFooterProps) {
     <footer className="border-border bg-background w-full border-t">
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
-          {/* Brand */}
           <div className="flex flex-col gap-4">
             <Link href="/" aria-label="Bangicode — home">
               <Image
@@ -56,7 +55,7 @@ export async function SiteFooter({ locale }: SiteFooterProps) {
                 href="https://linkedin.com/company/bangicode"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-jetbrains-mono text-muted-foreground hover:text-foreground focus-visible:ring-ring rounded-sm text-xs transition-colors focus-visible:ring-2 focus-visible:outline-none"
+                className={MONO_LINK_CLASS}
               >
                 {t("linkedin")}
               </a>
@@ -64,7 +63,7 @@ export async function SiteFooter({ locale }: SiteFooterProps) {
                 href="https://github.com/bangicodefactory"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="font-jetbrains-mono text-muted-foreground hover:text-foreground focus-visible:ring-ring rounded-sm text-xs transition-colors focus-visible:ring-2 focus-visible:outline-none"
+                className={MONO_LINK_CLASS}
               >
                 {t("github")}
               </a>
@@ -72,7 +71,6 @@ export async function SiteFooter({ locale }: SiteFooterProps) {
             <LocaleSwitcher currentLocale={locale} />
           </div>
 
-          {/* Services */}
           <div className="flex flex-col gap-4">
             <p
               dir="ltr"
@@ -91,7 +89,6 @@ export async function SiteFooter({ locale }: SiteFooterProps) {
             </ul>
           </div>
 
-          {/* Company */}
           <div className="flex flex-col gap-4">
             <p
               dir="ltr"
@@ -110,7 +107,6 @@ export async function SiteFooter({ locale }: SiteFooterProps) {
             </ul>
           </div>
 
-          {/* Location */}
           <div className="flex flex-col gap-4">
             <p
               dir="ltr"

@@ -1,3 +1,8 @@
+// Bookkeeping install only — the library's props interface (columns/logo/legal) doesn't
+// support the Brand-as-first-column layout required by BAN-135. The consumer section at
+// src/components/sections/site-footer.tsx builds the full layout directly.
+// Replace with `npx shadcn add @bangicode/site-footer` once the registry ships a version
+// that supports slot-based brand/location columns, then migrate the section wrapper.
 import * as React from "react";
 import { cn } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
