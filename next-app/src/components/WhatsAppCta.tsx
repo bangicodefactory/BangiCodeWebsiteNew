@@ -72,6 +72,7 @@ export function WhatsAppCta() {
       target="_blank"
       rel="noopener noreferrer"
       aria-label={t("ariaLabel")}
+      data-testid="whatsapp-cta"
       className={cn(
         "fixed end-5 bottom-5 z-40",
         "flex h-14 w-14 items-center justify-center rounded-full",

@@ -40,6 +40,6 @@ test("@smoke locale switcher — renders three locale buttons", async ({
 test("@smoke WhatsApp CTA — visible on each locale", async ({ page }) => {
   for (const locale of ["en", "fr", "ar"]) {
     await page.goto(`/${locale}`);
-    await expect(page.getByRole("link", { name: /whatsapp/i })).toBeVisible();
+    await expect(page.getByTestId("whatsapp-cta")).toBeVisible();
   }
 });
