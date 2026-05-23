@@ -64,8 +64,8 @@ export default async function ContactPage() {
                 </p>
                 {t("officeAddress")
                   .split("\n")
-                  .map((line, i) => (
-                    <p key={i} className="text-sm">
+                  .map((line) => (
+                    <p key={line} className="text-sm">
                       {line}
                     </p>
                   ))}
@@ -99,6 +99,7 @@ export default async function ContactPage() {
                   className="border-border block border"
                   loading="lazy"
                   referrerPolicy="no-referrer"
+                  sandbox="allow-scripts allow-same-origin"
                 />
               </div>
             </aside>

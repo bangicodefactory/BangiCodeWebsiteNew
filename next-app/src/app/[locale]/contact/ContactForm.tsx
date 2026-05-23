@@ -38,9 +38,17 @@ export function ContactForm() {
         role="status"
         className="bg-surface-container rounded-sm p-8 text-center"
       >
-        <p className="font-body text-foreground text-base">
+        <p className="font-body text-foreground mb-4 text-base">
           {t("formSuccess")}
         </p>
+        <Button
+          type="button"
+          variant="secondary"
+          size="sm"
+          onClick={() => window.location.reload()}
+        >
+          {t("formReset")}
+        </Button>
       </div>
     );
   }

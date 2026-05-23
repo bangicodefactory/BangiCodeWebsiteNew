@@ -337,6 +337,7 @@
     "formSubmit": "Envoyer le message",
     "formSubmitting": "Envoi en cours…",
     "formSuccess": "Message envoyé ! Nous vous répondrons en un jour ouvré.",
+    "formReset": "Envoyer un autre message",
     "formError": "Une erreur s'est produite. Réessayez ou envoyez-nous un e-mail directement.",
     "formValidName": "Le nom doit comporter au moins 2 caractères.",
     "formValidEmail": "Veuillez saisir une adresse e-mail valide.",

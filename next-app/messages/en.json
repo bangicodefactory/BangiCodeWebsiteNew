@@ -337,6 +337,7 @@
     "formSubmit": "Send message",
     "formSubmitting": "Sending…",
     "formSuccess": "Message sent! We'll be in touch within one business day.",
+    "formReset": "Send another message",
     "formError": "Something went wrong. Please try again or email us directly.",
     "formValidName": "Name must be at least 2 characters.",
     "formValidEmail": "Please enter a valid email address.",
