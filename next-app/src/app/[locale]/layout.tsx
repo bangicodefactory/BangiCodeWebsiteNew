@@ -11,6 +11,7 @@ import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { ThemeProvider } from "next-themes";
 import { routing, type Locale } from "@/i18n/routing";
+import { SiteNav } from "@/components/sections/site-nav";
 import "../globals.css";
 
 const montserrat = Montserrat({
@@ -112,21 +113,21 @@ export default async function LocaleLayout({ children, params }: Props) {
           enableSystem={false}
           disableTransitionOnChange
         >
-          <a
-            href="#main-content"
-            className="focus:bg-primary focus:text-primary-foreground sr-only focus:fixed focus:start-4 focus:top-4 focus:z-50 focus:h-auto focus:w-auto focus:overflow-visible focus:rounded-sm focus:px-4 focus:py-2 focus:outline-none"
-          >
-            {SKIP_LABEL[locale as Locale]}
-          </a>
-          {/* BAN-134: <SiteNav /> */}
           <NextIntlClientProvider messages={messages}>
+            <a
+              href="#main-content"
+              className="focus:bg-primary focus:text-primary-foreground sr-only focus:fixed focus:start-4 focus:top-4 focus:z-50 focus:h-auto focus:w-auto focus:overflow-visible focus:rounded-sm focus:px-4 focus:py-2 focus:outline-none"
+            >
+              {SKIP_LABEL[locale as Locale]}
+            </a>
+            <SiteNav locale={locale as Locale} />
             <div id="main-content" tabIndex={-1} className="outline-none">
               {children}
             </div>
+            {/* BAN-135: <SiteFooter /> */}
+            {/* BAN-159: <CookieBanner /> */}
+            {/* BAN-136: <WhatsAppCta /> */}
           </NextIntlClientProvider>
-          {/* BAN-135: <SiteFooter /> */}
-          {/* BAN-159: <CookieBanner /> */}
-          {/* BAN-136: <WhatsAppCta /> */}
         </ThemeProvider>
       </body>
     </html>

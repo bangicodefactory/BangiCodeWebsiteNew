@@ -4,5 +4,16 @@
     "en": "English",
     "fr": "French",
     "ar": "Arabic"
+  },
+  "Nav": {
+    "services": "Services",
+    "work": "Work",
+    "about": "About",
+    "process": "Process",
+    "careers": "Careers",
+    "contact": "Contact",
+    "openMenu": "Open menu",
+    "startProject": "Start a project",
+    "mobileTitle": "Navigation"
   }
 }
