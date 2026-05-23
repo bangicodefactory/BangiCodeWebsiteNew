@@ -125,7 +125,7 @@ export function SiteNav({ locale }: SiteNavProps) {
                 ))}
               </nav>
               <div className="border-border mt-auto border-t pt-4">
-                <LocaleSwitcher currentLocale={locale} />
+                <LocaleSwitcher currentLocale={locale} hideNavRole />
                 <div className="mt-3">
                   <Button
                     variant="primary"
