@@ -44,6 +44,7 @@ export function SiteNav({ locale }: SiteNavProps) {
     { label: t("contact"), href: "/contact" },
   ];
 
+  const dir = locale === "ar" ? "rtl" : "ltr";
   const sheetSide = locale === "ar" ? "left" : "right";
 
   return (
@@ -66,8 +67,11 @@ export function SiteNav({ locale }: SiteNavProps) {
           />
         </Link>
 
-        <nav className="hidden items-center gap-2 md:flex">
-          <NavigationMenu items={navItems} />
+        <nav
+          className="hidden items-center gap-2 md:flex"
+          aria-label={t("desktopNav")}
+        >
+          <NavigationMenu items={navItems} dir={dir} />
           <LocaleSwitcher currentLocale={locale} />
           <Button variant="primary" size="sm" asChild>
             <Link href="/contact">{t("startProject")}</Link>
@@ -94,7 +98,10 @@ export function SiteNav({ locale }: SiteNavProps) {
                 </Link>
                 <SheetTitle className="sr-only">{t("mobileTitle")}</SheetTitle>
               </SheetHeader>
-              <nav className="mt-4 flex flex-col gap-1">
+              <nav
+                className="mt-4 flex flex-col gap-1"
+                aria-label={t("mobileNav")}
+              >
                 {navItems.map((item) => (
                   <Link
                     key={item.href}
