@@ -244,6 +244,32 @@
       "ctaButton": "Prendre contact"
     }
   },
+  "About": {
+    "eyebrow": "// à propos",
+    "h1": "Le studio derrière le code.",
+    "subhead": "Une petite équipe d'ingénieurs seniors qui construit des logiciels honnêtes depuis Tétouan, Maroc.",
+    "storyEyebrow": "// notre histoire",
+    "storyHeadline": "Cinq ans à livrer des logiciels qui durent.",
+    "storyBody": "Bangicode a été fondé en 2020 par Ahmed Chioua, un ingénieur full-stack qui voulait créer un studio qui traite ses clients comme il aimerait être traité — prix fixes, délais honnêtes, et un code qu'il serait fier de maintenir cinq ans plus tard. Nous sommes passés à 12 personnes réparties sur quatre expertises : logiciel sur mesure, e-commerce, formation technique et présence sociale. Chaque projet commence par un appel de 30 minutes et se termine par une documentation propre.",
+    "storySince": "En activité depuis",
+    "storySinceValue": "2020",
+    "storySize": "Équipe",
+    "storySizeValue": "12 personnes",
+    "storyPractices": "Expertises",
+    "storyPracticesValue": "4",
+    "valuesEyebrow": "// comment nous travaillons",
+    "val01Title": "Artisanat senior",
+    "val01Body": "Chaque projet est mené par un ingénieur senior. Pas de juniors facturés comme des seniors, pas de surprises offshore.",
+    "val02Title": "Délais honnêtes",
+    "val02Body": "Périmètre fixe, prix fixe. Nous cadrons soigneusement en amont — puis nous livrons ce que nous avons dit, quand nous l'avons dit.",
+    "val03Title": "Code qui dure",
+    "val03Body": "Nous écrivons du code que nous serions heureux de maintenir dans trois ans. Documentation, tests, architecture propre.",
+    "teamEyebrow": "// l'équipe",
+    "teamHeadline": "12 personnes · 4 expertises.",
+    "teamBody": "Basés à Tétouan, Maroc. Nous servons des clients au Maroc, en France et dans la région MENA.",
+    "ctaHeadline": "Vous voulez travailler avec nous ?",
+    "ctaButton": "Démarrer un projet"
+  },
   "LocaleSwitcher": {
     "label": "Langue",
     "en": "Anglais",
