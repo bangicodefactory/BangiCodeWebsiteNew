@@ -80,6 +80,18 @@ export default function SmokePage() {
         </p>
       </header>
 
+      <section className="mb-6">
+        <div className="inline-flex items-center gap-2 rounded border border-gray-300 bg-gray-50 px-3 py-2 text-xs text-gray-600">
+          <span className="font-semibold">Internal — not for users.</span>
+          <span>
+            Gated in production via{" "}
+            <code className="rounded bg-gray-100 px-1">SMOKE_GALLERY=1</code>{" "}
+            env flag · disallowed in{" "}
+            <code className="rounded bg-gray-100 px-1">robots.txt</code>
+          </span>
+        </div>
+      </section>
+
       {registryOffline && (
         <section className="mb-10">
           <div className="inline-flex items-center gap-2 rounded border border-amber-300 bg-amber-50 px-3 py-2 text-sm text-amber-800">

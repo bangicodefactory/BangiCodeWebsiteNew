@@ -1,16 +1,7 @@
-/**
- * /smoke/button — Verifies all Button variants × sizes from @bangicode/button.
- * BAN-127: install + verify Button from Company brand registry.
- *
- * NOTE: token CSS variables (--color-primary, --color-secondary, etc.) are
- * pending the registry deployment (IST-120). Buttons will render with browser
- * fallback colours until `npx shadcn add @bangicode/*` runs against the live
- * registry and wires the @theme block.
- */
-
 import Link from "next/link";
 import { ArrowLeft, ArrowRight, Plus } from "lucide-react";
 import { Button, type ButtonProps } from "@/components/ui/button";
+import { SmokeVersionStrip } from "@/components/smoke/smoke-version-strip";
 
 const VARIANTS: NonNullable<ButtonProps["variant"]>[] = [
   "primary",
@@ -39,17 +30,8 @@ export default function SmokeButtonPage() {
         <h1 className="text-2xl font-bold text-gray-900">
           @bangicode/button — 5 variants × 4 sizes
         </h1>
-        <p className="mt-2 text-sm text-gray-500">
-          Source:{" "}
-          <code className="rounded bg-gray-100 px-1">
-            src/components/ui/button.tsx
-          </code>{" "}
-          (manually sourced from library GitHub — replace via{" "}
-          <code className="rounded bg-gray-100 px-1">
-            npx shadcn add @bangicode/button
-          </code>{" "}
-          once registry is live)
-        </p>
+        <p className="mt-2 text-sm text-gray-500">5 variants × 4 sizes</p>
+        <SmokeVersionStrip name="button" />
       </header>
 
       {/* Token gap warning */}
@@ -79,7 +61,6 @@ export default function SmokeButtonPage() {
         </div>
       </section>
 
-      {/* Variants × sizes grid */}
       <section className="mb-12">
         <h2 className="mb-6 text-sm font-semibold tracking-widest text-gray-500 uppercase">
           Variants × sizes
@@ -123,7 +104,6 @@ export default function SmokeButtonPage() {
         </div>
       </section>
 
-      {/* Focus ring */}
       <section className="mb-12">
         <h2 className="mb-4 text-sm font-semibold tracking-widest text-gray-500 uppercase">
           Focus ring (WCAG 2.2 AA — 2px sky-blue + 2px offset)
@@ -141,7 +121,6 @@ export default function SmokeButtonPage() {
         </div>
       </section>
 
-      {/* RTL */}
       <section className="mb-12">
         <h2 className="mb-4 text-sm font-semibold tracking-widest text-gray-500 uppercase">
           RTL — dir=&quot;rtl&quot;
@@ -165,7 +144,6 @@ export default function SmokeButtonPage() {
         </div>
       </section>
 
-      {/* Hero CTA preview */}
       <section className="mb-12">
         <h2 className="mb-4 text-sm font-semibold tracking-widest text-gray-500 uppercase">
           Hero CTA — locked copy per CLAUDE.md
@@ -179,7 +157,6 @@ export default function SmokeButtonPage() {
         </Button>
       </section>
 
-      {/* prefers-reduced-motion note */}
       <section>
         <h2 className="mb-4 text-sm font-semibold tracking-widest text-gray-500 uppercase">
           prefers-reduced-motion

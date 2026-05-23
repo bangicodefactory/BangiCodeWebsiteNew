@@ -14,6 +14,7 @@ import {
   SheetClose,
 } from "@/components/ui/sheet";
 import { NavigationMenu, type NavLink } from "@/components/nav/navigation-menu";
+import { SmokeVersionStrip } from "@/components/smoke/smoke-version-strip";
 
 const NAV_ITEMS: NavLink[] = [
   { label: "Services", href: "/services" },
@@ -42,6 +43,7 @@ export default function SmokeSheetPage() {
         <p className="mt-2 text-sm text-gray-500">
           Sheet (registry) · NavigationMenu (local, Radix-based)
         </p>
+        <SmokeVersionStrip name="sheet" />
       </header>
 
       <section className="mb-10">
