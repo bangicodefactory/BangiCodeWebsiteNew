@@ -32,7 +32,7 @@ test("@smoke locale switcher — renders three locale buttons", async ({
   page,
 }) => {
   await page.goto("/en");
-  const nav = page.getByRole("navigation", { name: /locale/i });
+  const nav = page.getByRole("navigation", { name: /language/i });
   await expect(nav).toBeVisible();
   await expect(nav.getByRole("button")).toHaveCount(3);
 });
