@@ -142,8 +142,14 @@ export default async function WorkPage({
       </section>
 
       {/* Filter + grid */}
-      <section className="border-border border-t py-16 sm:py-20">
+      <section
+        aria-labelledby="work-grid-heading"
+        className="border-border border-t py-16 sm:py-20"
+      >
         <div className="mx-auto max-w-7xl px-4 sm:px-6">
+          <h2 id="work-grid-heading" className="sr-only">
+            {t("h1")}
+          </h2>
           <WorkFilter
             currentFilter={activeFilter}
             labels={filterLabels}
@@ -167,7 +173,7 @@ export default async function WorkPage({
               {filtered.map((project) => (
                 <article
                   key={project.slug}
-                  className="border-border bg-background hover:border-secondary-container group flex flex-col rounded-sm border p-6 transition-shadow hover:shadow-md"
+                  className="border-border bg-background hover:border-secondary-container flex flex-col rounded-sm border p-6 transition hover:shadow-md"
                 >
                   <h2 className="font-display text-foreground mb-2 text-lg font-semibold">
                     <Link

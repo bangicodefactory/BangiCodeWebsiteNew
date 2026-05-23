@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter, usePathname } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 export const FILTER_VALUES = [
   "all",
@@ -40,12 +41,12 @@ export function WorkFilter({
             type="button"
             aria-pressed={isActive}
             onClick={() => setFilter(value)}
-            className={[
+            className={cn(
               "focus-visible:ring-ring rounded-sm px-4 py-1.5 font-mono text-xs tracking-widest uppercase transition-colors focus-visible:ring-2 focus-visible:outline-none",
               isActive
                 ? "bg-primary text-primary-foreground"
                 : "bg-surface-variant text-muted-foreground hover:bg-surface-container",
-            ].join(" ")}
+            )}
           >
             {labels[value]}
           </button>
