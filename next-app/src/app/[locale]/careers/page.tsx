@@ -21,6 +21,13 @@ export async function generateMetadata({
 
 const HIRE_STEPS = ["hire01", "hire02", "hire03"] as const;
 const WORK_ITEMS = ["work01", "work02", "work03", "work04"] as const;
+const PRACTICES = ["software", "ecommerce", "training", "social"] as const;
+const PRACTICE_KEYS = {
+  software: "practiceSoftware",
+  ecommerce: "practiceEcommerce",
+  training: "practiceTraining",
+  social: "practiceSocial",
+} as const;
 
 export default async function CareersPage() {
   const t = await getTranslations("Careers");
@@ -63,7 +70,7 @@ export default async function CareersPage() {
                   aria-hidden="true"
                   className="text-muted-foreground font-mono text-4xl font-bold tabular-nums"
                 >
-                  0{i + 1}
+                  {String(i + 1).padStart(2, "0")}
                 </span>
                 <h3 className="font-display text-foreground text-lg font-semibold">
                   {t(`${key}Title`)}
@@ -122,15 +129,11 @@ export default async function CareersPage() {
           <div className="bg-surface-container rounded-sm p-8 sm:p-12">
             <div className="mx-auto max-w-xl text-center">
               <div className="mb-4 flex flex-wrap justify-center gap-2">
-                {(["software", "ecommerce", "training", "social"] as const).map(
-                  (practice) => (
-                    <Badge key={practice} variant="secondary">
-                      {t(
-                        `practice${practice.charAt(0).toUpperCase()}${practice.slice(1)}`,
-                      )}
-                    </Badge>
-                  ),
-                )}
+                {PRACTICES.map((practice) => (
+                  <Badge key={practice} variant="secondary">
+                    {t(PRACTICE_KEYS[practice])}
+                  </Badge>
+                ))}
               </div>
               <p className="font-body text-muted-foreground text-base leading-relaxed">
                 {t("rolesEmpty")}
