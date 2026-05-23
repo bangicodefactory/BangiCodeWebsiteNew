@@ -65,7 +65,7 @@ export default async function AboutPage() {
               </p>
             </div>
 
-            <aside className="bg-surface-container flex flex-col gap-8 p-8">
+            <aside className="bg-surface-container p-8">
               <dl className="flex flex-col gap-6">
                 <div>
                   <dt className="text-muted-foreground mb-1 font-mono text-xs">
