@@ -1,4 +1,117 @@
 {
+  "Home": {
+    "hero": {
+      "eyebrow": "استوديو برمجيات · تطوان، المغرب",
+      "h1": "استوديو برمجيات في تطوان.",
+      "tagline": "كود يصمد أمام الزمن.",
+      "body": "نبني برمجيات مخصصة ومنصات تجارة إلكترونية وبرامج تدريب تقني — من تطوان، لأعمال تريد كوداً قابلاً للصيانة لسنوات قادمة.",
+      "ctaPrimary": "ابدأ مشروعاً",
+      "ctaSecondary": "اطلع على أعمالنا",
+      "microcopy": "مكالمة استكشافية 30 دقيقة · نرد خلال 24 ساعة"
+    },
+    "status": {
+      "online": "متاح",
+      "sprintLabel": "السبرينت الحالي",
+      "sprint": "Friterie.ma iOS",
+      "availabilityLabel": "أقرب موعد متاح",
+      "availability": "أواخر يوليو 2026",
+      "teamLabel": "الفريق",
+      "team": "12 شخصاً · 4 تخصصات",
+      "timeLabel": "التوقيت المحلي"
+    },
+    "thesis": {
+      "eyebrow": "// الفلسفة",
+      "headline": "مهندسون متمرسون. جداول زمنية صادقة. كود يدوم.",
+      "projectsValue": "+24",
+      "projectsLabel": "مشروع مُسلَّم",
+      "clientsValue": "+20",
+      "clientsLabel": "عميل",
+      "yearsValue": "5 سنوات",
+      "yearsLabel": "في المجال",
+      "supportValue": "24/7",
+      "supportLabel": "دعم العملاء"
+    },
+    "trustedBy": {
+      "label": "يثق بنا"
+    },
+    "services": {
+      "eyebrow": "// ما نبنيه",
+      "headline": "أربعة تخصصات، فريق واحد.",
+      "s01Number": "01",
+      "s01Title": "برمجيات مخصصة",
+      "s01Body": "تطبيقات ويب وأدوات داخلية وتكاملات API وتطبيقات جوال مبنية لتدوم.",
+      "s02Number": "02",
+      "s02Title": "التجارة الإلكترونية",
+      "s02Body": "متاجر إلكترونية عالية الأداء مع دفع وإدارة مخزون وتوصيل مخصصين.",
+      "s03Number": "03",
+      "s03Title": "التدريب التقني",
+      "s03Body": "معسكرات تدريبية وورش عمل للفرق والأفراد — React وNode وLaravel وأكثر.",
+      "s04Number": "04",
+      "s04Title": "الحضور الرقمي",
+      "s04Body": "محتوى متسق مع الهوية البصرية وإدارة مجتمع واستراتيجية رقمية."
+    },
+    "featuredCase": {
+      "eyebrow": "// دراسة حالة",
+      "client": "RentCar.ma",
+      "headline": "إدارة أسطول متكاملة لأكبر شركة تأجير سيارات في المغرب.",
+      "industry": "السيارات",
+      "adminTimeValue": "60%-",
+      "adminTimeLabel": "وقت إداري",
+      "vendorsValue": "3→1",
+      "vendorsLabel": "أنظمة موردين",
+      "maintainedValue": "14 شهراً",
+      "maintainedLabel": "في الصيانة",
+      "uptimeValue": "99.9%",
+      "uptimeLabel": "وقت التشغيل",
+      "cta": "دراسة الحالة الكاملة متاحة عند الطلب — تواصل معنا"
+    },
+    "peekCards": {
+      "eyebrow": "// مشاريع أخرى",
+      "coinluminaireClient": "Coinluminaire",
+      "coinluminaireDesc": "منصة تجارة إلكترونية لإضاءة LED مع محدد منتجات مخصص.",
+      "coinluminaireIndustry": "التجزئة",
+      "classkomClient": "Classkom LMS",
+      "classkomDesc": "نظام إدارة تعلم لأكثر من 3000 طالب في ISTA تطوان.",
+      "classkomIndustry": "التعليم",
+      "aqarchamalClient": "Aqarchamal",
+      "aqarchamalDesc": "سوق عقارية تربط المشترين والبائعين في شمال المغرب.",
+      "aqarchamalIndustry": "العقارات"
+    },
+    "testimonial": {
+      "quote": "سلّم Bangicode تطبيقاً جاهزاً للإنتاج في الوقت والميزانية المحددين. جودة الكود رائعة — نشغّله منذ أكثر من عام دون أي حوادث كبرى.",
+      "author": "يوسف ب.",
+      "company": "Friterie.ma"
+    },
+    "process": {
+      "eyebrow": "// ما يحدث بعد ذلك",
+      "headline": "من التواصل الأول إلى الانطلاق، في أسبوعين أو أقل.",
+      "step01Number": "01",
+      "step01Title": "أخبرنا بمشكلتك",
+      "step01Time": "~5 دقائق",
+      "step01Body": "أرسل نموذجاً قصيراً أو راسلنا عبر واتساب. لا طلبات عروض ولا عروض تقديمية.",
+      "step02Number": "02",
+      "step02Title": "مكالمة استكشافية",
+      "step02Time": "خلال 24 ساعة",
+      "step02Body": "مكالمة 30 دقيقة مع أحمد لتحديد نطاق المشروع والإجابة عن أسئلتك.",
+      "step03Number": "03",
+      "step03Title": "عرض مخصص",
+      "step03Time": "5 أيام عمل",
+      "step03Body": "سعر ثابت مع جدول زمني وفريق وتقنية — بدون مفاجآت.",
+      "step04Number": "04",
+      "step04Title": "الانطلاق",
+      "step04Time": "خلال أسبوعين",
+      "step04Body": "تبدأ السبرينت الأولى. تحصل على قناة Slack وفضاء Notion وعروض أسبوعية."
+    },
+    "founder": {
+      "label": "جهة التواصل",
+      "headline": "تحدث مع أحمد — المؤسس.",
+      "avatarAlt": "أحمد، مؤسس Bangicode",
+      "ctaPrimary": "احجز 30 دقيقة",
+      "ctaSecondaryPrefix": "أو",
+      "whatsapp": "واتساب",
+      "email": "admin@bangicode.ma"
+    }
+  },
   "LocaleSwitcher": {
     "label": "اللغة",
     "en": "الإنجليزية",

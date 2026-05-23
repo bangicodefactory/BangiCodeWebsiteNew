@@ -1,49 +1,45 @@
-import { routing, type Locale } from "@/i18n/routing";
-import { Button } from "@/components/ui/button";
+import type { Metadata } from "next";
+import { getTranslations } from "next-intl/server";
+import { routing } from "@/i18n/routing";
+import { HeroSection } from "@/components/sections/HeroSection";
+import { ThesisLineStats } from "@/components/sections/ThesisLineStats";
+import { TrustedByRow } from "@/components/sections/TrustedByRow";
+import { ServicesSection } from "@/components/sections/ServicesSection";
+import { FeaturedCase } from "@/components/sections/FeaturedCase";
+import { PeekCards } from "@/components/sections/PeekCards";
+import { TestimonialsSection } from "@/components/sections/TestimonialsSection";
+import { WhatHappensNext } from "@/components/sections/WhatHappensNext";
+import { FounderCard } from "@/components/sections/FounderCard";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
-const LABELS: Record<Locale, { heading: string; sub: string }> = {
-  en: {
-    heading: "Software studio in Tetouan.",
-    sub: "Custom software · E-commerce · Technical training · Social presence",
-  },
-  fr: {
-    heading: "Studio logiciel à Tétouan.",
-    sub: "Logiciels sur mesure · E-commerce · Formation technique · Présence sociale",
-  },
-  ar: {
-    heading: "استوديو برمجيات في تطوان.",
-    sub: "برمجيات مخصصة · تجارة إلكترونية · تدريب تقني · حضور رقمي",
-  },
-};
-
-export default async function LocalePage({
+export async function generateMetadata({
   params,
 }: {
   params: Promise<{ locale: string }>;
-}) {
+}): Promise<Metadata> {
   const { locale } = await params;
-  const copy = LABELS[locale as Locale] ?? LABELS.en;
+  const t = await getTranslations({ locale, namespace: "Home.hero" });
+  return {
+    title: "Bangicode — Software Studio in Tetouan",
+    description: t("body"),
+  };
+}
 
+export default async function LocalePage() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center gap-4 bg-white px-6 text-gray-900">
-      <p className="font-mono text-sm tracking-widest text-blue-600">
-        bangicode.ma — scaffold
-      </p>
-      <h1 className="font-display text-4xl font-bold tracking-tight">
-        {copy.heading}
-      </h1>
-      <p className="font-body text-lg text-gray-600">{copy.sub}</p>
-      {/* copy locked — "Start a project" on all locales per CLAUDE.md */}
-      <Button variant="primary" size="lg" type="button" className="mt-4">
-        Start a project
-      </Button>
-      <p className="mt-8 font-mono text-xs text-gray-600">
-        BAN-124 · next-intl locale routing + RTL middleware
-      </p>
-    </main>
+    <>
+      <HeroSection />
+      <ThesisLineStats />
+      <TrustedByRow />
+      <ServicesSection />
+      <FeaturedCase />
+      <PeekCards />
+      <TestimonialsSection />
+      <WhatHappensNext />
+      <FounderCard />
+    </>
   );
 }
