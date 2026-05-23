@@ -10,7 +10,13 @@ const LOCALE_LABELS: Record<Locale, string> = {
   ar: "AR",
 };
 
-export function LocaleSwitcher({ currentLocale }: { currentLocale: string }) {
+export function LocaleSwitcher({
+  currentLocale,
+  hideNavRole = false,
+}: {
+  currentLocale: string;
+  hideNavRole?: boolean;
+}) {
   const t = useTranslations("LocaleSwitcher");
   const pathname = usePathname();
   const router = useRouter();
@@ -19,8 +25,11 @@ export function LocaleSwitcher({ currentLocale }: { currentLocale: string }) {
     router.replace(pathname, { locale: nextLocale });
   }
 
+  const Wrapper = hideNavRole ? "div" : "nav";
+  const wrapperProps = hideNavRole ? {} : { "aria-label": t("label") };
+
   return (
-    <nav aria-label={t("label")} className="flex gap-1">
+    <Wrapper {...wrapperProps} className="flex gap-1">
       {routing.locales.map((locale) => (
         <button
           key={locale}
@@ -36,6 +45,6 @@ export function LocaleSwitcher({ currentLocale }: { currentLocale: string }) {
           {LOCALE_LABELS[locale]}
         </button>
       ))}
-    </nav>
+    </Wrapper>
   );
 }

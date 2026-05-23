@@ -12,6 +12,7 @@ import { getMessages } from "next-intl/server";
 import { ThemeProvider } from "next-themes";
 import { routing, type Locale } from "@/i18n/routing";
 import { SiteNav } from "@/components/sections/site-nav";
+import { SiteFooter } from "@/components/sections/site-footer";
 import "../globals.css";
 
 const montserrat = Montserrat({
@@ -124,7 +125,7 @@ export default async function LocaleLayout({ children, params }: Props) {
             <div id="main-content" tabIndex={-1} className="outline-none">
               {children}
             </div>
-            {/* BAN-135: <SiteFooter /> */}
+            <SiteFooter />
             {/* BAN-159: <CookieBanner /> */}
             {/* BAN-136: <WhatsAppCta /> */}
           </NextIntlClientProvider>

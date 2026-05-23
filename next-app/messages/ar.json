@@ -17,5 +17,30 @@
     "mobileTitle": "التنقل",
     "desktopNav": "التنقل الرئيسي",
     "mobileNav": "التنقل للجوال"
+  },
+  "Footer": {
+    "tagline": "استوديو برمجيات في تطوان، المغرب.",
+    "servicesTitle": "// services",
+    "companyTitle": "// company",
+    "locationTitle": "// location",
+    "customSoftware": "برمجيات مخصصة",
+    "ecommerce": "التجارة الإلكترونية",
+    "training": "التدريب التقني",
+    "socialPresence": "الحضور الرقمي",
+    "about": "من نحن",
+    "process": "المنهجية",
+    "work": "أعمالنا",
+    "careers": "الوظائف",
+    "contact": "تواصل",
+    "address": "ش. علي الياتا\nالمركز التجاري ولاية سنتر\nالطابق 6، رقم 69\nتطوان، المغرب",
+    "hours": "الاثنين–الجمعة 9–18",
+    "whatsapp": "واتساب",
+    "copyright": "© 2020–2026 Bangicode SARL. Crafted with Moroccan precision.",
+    "privacy": "الخصوصية",
+    "terms": "الشروط",
+    "cookies": "ملفات تعريف الارتباط",
+    "legalNav": "قانوني",
+    "linkedin": "LinkedIn",
+    "github": "GitHub"
   }
 }

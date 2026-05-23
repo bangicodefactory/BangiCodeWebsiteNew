@@ -1,8 +1,13 @@
 "use client";
 
 import * as NavigationMenuPrimitive from "@radix-ui/react-navigation-menu";
-import { usePathname, Link } from "@/i18n/navigation";
+import { usePathname } from "next/navigation";
+import { Link } from "@/i18n/navigation";
+import { routing } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
+
+// Compiled once — strips /en|fr|ar prefix so /en/services → /services.
+const LOCALE_PREFIX_RE = new RegExp(`^/(${routing.locales.join("|")})(/|$)`);
 
 export interface NavLink {
   label: string;
@@ -23,7 +28,8 @@ export function NavigationMenu({
   dir,
   className,
 }: NavigationMenuProps) {
-  const pathname = usePathname();
+  const rawPathname = usePathname();
+  const pathname = rawPathname.replace(LOCALE_PREFIX_RE, "/");
 
   return (
     <NavigationMenuPrimitive.Root
