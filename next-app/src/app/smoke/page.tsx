@@ -1,20 +1,3 @@
-/**
- * /smoke — Component registry smoke gallery (dev only).
- *
- * Renders one instance of each @bangicode/* component installed from the
- * Company brand registry. The offline banner is shown only when the sentinel
- * component (button.tsx) hasn't been installed yet — it disappears automatically
- * once `npx shadcn add @bangicode/*` runs.
- *
- * URL: /smoke  (Next.js App Router does not route _-prefixed folders; this
- * route is intentionally at /smoke — add a next.config rewrite if /_smoke
- * is required by tooling).
- *
- * To install components:
- *   cd next-app
- *   npx shadcn add @bangicode/button @bangicode/card ... (see IST-120)
- */
-
 import Link from "next/link";
 import { existsSync } from "fs";
 import path from "path";

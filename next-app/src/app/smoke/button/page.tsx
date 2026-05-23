@@ -27,9 +27,7 @@ export default function SmokeButtonPage() {
         <p className="mb-2 text-xs tracking-widest text-blue-600 uppercase">
           {"// _smoke / button"}
         </p>
-        <h1 className="text-2xl font-bold text-gray-900">
-          @bangicode/button — 5 variants × 4 sizes
-        </h1>
+        <h1 className="text-2xl font-bold text-gray-900">@bangicode/button</h1>
         <p className="mt-2 text-sm text-gray-500">5 variants × 4 sizes</p>
         <SmokeVersionStrip name="button" />
       </header>
