@@ -34,7 +34,6 @@ export default function SmokeButtonPage() {
         <SmokeVersionStrip name="button" />
       </header>
 
-      {/* Token gap warning */}
       <section className="mb-10">
         <div className="space-y-2 rounded border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-800">
           <p>
