@@ -23,8 +23,10 @@ export default async function BookPage({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  // Redirect back to the home page after booking so BookedToast can fire.
-  const redirectUrl = `/${locale}?booked=true`;
+  // Cal.com may require an absolute URL for redirectUrl depending on its hosting mode.
+  // SITE_URL is set by CI/production; falls back to the live domain.
+  const siteUrl = process.env.SITE_URL ?? "https://bangicode.ma";
+  const redirectUrl = `${siteUrl}/${locale}?booked=true`;
 
   return (
     <main

@@ -2,6 +2,7 @@
 
 import { Component, type ReactNode, useEffect, useRef } from "react";
 import Cal, { getCalApi } from "@calcom/embed-react";
+import { useTranslations } from "next-intl";
 
 export const CAL_EVENT_SLUG =
   process.env.NEXT_PUBLIC_CAL_EVENT_SLUG ?? "bangicode/30min-discovery";
@@ -31,17 +32,25 @@ class CalErrorBoundary extends Component<
   }
 }
 
-function CalFallback() {
+interface CalFallbackProps {
+  message: string;
+  contactLabel: string;
+  whatsAppLabel: string;
+}
+
+function CalFallback({
+  message,
+  contactLabel,
+  whatsAppLabel,
+}: CalFallbackProps) {
   return (
     <div className="flex flex-col items-center gap-3 py-12 text-center">
-      <p className="text-muted-foreground text-sm">
-        Booking widget unavailable.
-      </p>
+      <p className="text-muted-foreground text-sm">{message}</p>
       <a
         href={`mailto:${FALLBACK_EMAIL}`}
         className="text-primary text-sm underline"
       >
-        {FALLBACK_EMAIL}
+        {contactLabel} {FALLBACK_EMAIL}
       </a>
       <a
         href={FALLBACK_WA}
@@ -49,7 +58,7 @@ function CalFallback() {
         rel="noopener noreferrer"
         className="text-primary text-sm underline"
       >
-        WhatsApp
+        {whatsAppLabel}
       </a>
     </div>
   );
@@ -71,7 +80,13 @@ export function CalInline({
   redirectUrl,
   onBooked,
 }: CalInlineProps) {
+  const t = useTranslations("Booking");
   const initialized = useRef(false);
+  // Latest-ref: keeps onBooked current across re-renders without restarting the embed effect.
+  const onBookedRef = useRef(onBooked);
+  useEffect(() => {
+    onBookedRef.current = onBooked;
+  }, [onBooked]);
 
   useEffect(() => {
     if (initialized.current) return;
@@ -82,20 +97,32 @@ export function CalInline({
           action: "bookingSuccessful",
           callback: () => {
             fireGA4Booking();
-            onBooked?.();
+            onBookedRef.current?.();
           },
         });
       })
       .catch(() => {
         // Embed script failed to load — CalFallback handles the UI.
       });
-  }, [onBooked]);
+  }, []);
 
+  // Cal.com's PrefillAndIframeAttrsConfig extends Record<string, string | ...> so
+  // arbitrary prefill keys (like redirectUrl) are valid even though they're not
+  // in KnownConfig. Using Record<string, string> avoids the import while retaining
+  // the open-ended shape of the real type.
   const config: Record<string, string> = { locale, layout: "month_view" };
   if (redirectUrl) config.redirectUrl = redirectUrl;
 
   return (
-    <CalErrorBoundary fallback={<CalFallback />}>
+    <CalErrorBoundary
+      fallback={
+        <CalFallback
+          message={t("fallback")}
+          contactLabel={t("fallbackContact")}
+          whatsAppLabel={t("fallbackWhatsApp")}
+        />
+      }
+    >
       <Cal
         namespace="inline"
         calLink={eventSlug}
@@ -111,7 +138,7 @@ export function CalInline({
 interface CalBookButtonProps {
   eventSlug?: string;
   locale: string;
-  onBooked?: () => void;
+  // onBooked is NOT wired here — pass it to <CalModalInit> in the same component tree.
   children: ReactNode;
   className?: string;
 }
@@ -143,6 +170,7 @@ export function CalBookButton({
 /**
  * Mount once in a layout/page alongside `<CalBookButton>`.
  * Preloads the modal namespace and wires the bookingSuccessful handler.
+ * Pass `onBooked` here (not on CalBookButton) to receive the confirmation callback.
  */
 export function CalModalInit({
   eventSlug = CAL_EVENT_SLUG,
@@ -150,6 +178,11 @@ export function CalModalInit({
   onBooked,
 }: Omit<CalInlineProps, "redirectUrl">) {
   const initialized = useRef(false);
+  // Latest-ref keeps onBooked current across re-renders without restarting the embed effect.
+  const onBookedRef = useRef(onBooked);
+  useEffect(() => {
+    onBookedRef.current = onBooked;
+  }, [onBooked]);
 
   useEffect(() => {
     if (initialized.current) return;
@@ -161,14 +194,13 @@ export function CalModalInit({
           action: "bookingSuccessful",
           callback: () => {
             fireGA4Booking();
-            onBooked?.();
+            onBookedRef.current?.();
           },
         });
       })
       .catch(() => {
         // Script failed to load — silent; button falls back to href gracefully.
       });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Invisible seed element that initialises the namespace.

@@ -37,6 +37,13 @@ test("@smoke locale switcher — renders three locale buttons", async ({
   await expect(nav.getByRole("button")).toHaveCount(3);
 });
 
+test("@smoke /book — renders booking page with correct title", async ({
+  page,
+}) => {
+  await page.goto("/en/book");
+  await expect(page).toHaveTitle(/Book a 30-min/);
+});
+
 test("@smoke WhatsApp CTA — visible on each locale", async ({ page }) => {
   for (const locale of ["en", "fr", "ar"]) {
     await page.goto(`/${locale}`);
