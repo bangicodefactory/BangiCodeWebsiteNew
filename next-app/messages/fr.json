@@ -18,6 +18,16 @@
     "desktopNav": "Navigation principale",
     "mobileNav": "Navigation mobile"
   },
+  "Booking": {
+    "pageTitle": "Réserver un appel découverte de 30 min",
+    "booked": {
+      "title": "Réservation confirmée !",
+      "description": "À bientôt. Vérifiez votre email pour l'invitation au calendrier."
+    },
+    "fallback": "Le widget de réservation n'a pas pu charger.",
+    "fallbackContact": "Écrivez-nous à",
+    "fallbackWhatsApp": "ou contactez-nous sur WhatsApp"
+  },
   "WhatsAppCta": {
     "ariaLabel": "Contactez-nous sur WhatsApp",
     "prefill": "Bonjour ! Je suis intéressé(e) par vos services."
