@@ -29,12 +29,12 @@ export async function ThesisLineStats() {
 
         <dl className="grid grid-cols-2 gap-8 sm:grid-cols-4">
           {stats.map((stat) => (
-            <div key={stat.label} className="flex flex-col gap-1">
-              <dt className="font-display text-primary text-4xl font-bold tracking-tight sm:text-5xl">
-                {stat.value}
-              </dt>
-              <dd className="text-muted-foreground font-mono text-xs">
+            <div key={stat.label} className="flex flex-col-reverse gap-1">
+              <dt className="text-muted-foreground font-mono text-xs">
                 {stat.label}
+              </dt>
+              <dd className="font-display text-primary text-4xl font-bold tracking-tight sm:text-5xl">
+                {stat.value}
               </dd>
             </div>
           ))}

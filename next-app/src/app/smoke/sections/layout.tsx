@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { NextIntlClientProvider } from "next-intl";
-import enMessages from "../../../../messages/en.json";
+import enMessages from "@/../messages/en.json";
 
 export default function SectionsSmokeLayout({
   children,

@@ -46,10 +46,6 @@ export async function FeaturedCase() {
               </span>
             </div>
 
-            <p className="font-body text-primary-foreground/60 text-sm">
-              {t("cta")}
-            </p>
-
             <Link
               href="/contact"
               className="text-secondary-container focus-visible:ring-ring w-fit rounded-sm font-mono text-sm underline underline-offset-4 hover:opacity-80 focus-visible:ring-2 focus-visible:outline-none"
