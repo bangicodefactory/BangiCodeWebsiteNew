@@ -72,6 +72,12 @@
       "path": "src/components/ui/sheet.tsx",
       "sourcedFrom": "github:bangicodefactory/bangicode-design-system/registry/bangicode/ui/sheet.tsx@develop",
       "note": "Manually sourced — replace via `npx shadcn add @bangicode/sheet` once registry is live (BAN-130). close-button uses absolute right-4 — RTL close button flip is a known upstream delta (right-4 → end-4) — file upstream issue."
+    },
+    {
+      "name": "badge",
+      "path": "src/components/ui/badge.tsx",
+      "sourcedFrom": "github:bangicodefactory/bangicode-design-system/registry/bangicode/ui/badge.tsx@develop",
+      "note": "Manually sourced — replace via `npx shadcn add @bangicode/badge` once registry is live (BAN-131). No consumer-side deltas."
     }
   ]
 }

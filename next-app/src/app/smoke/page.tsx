@@ -50,6 +50,7 @@ const SMOKE_SUBPAGES = new Set<ComponentName>([
   "card",
   "form",
   "sheet",
+  "badge",
 ]);
 
 function isInstalled(name: ComponentName): boolean {
