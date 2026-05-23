@@ -199,6 +199,7 @@ jobs:
         run: pnpm dlx @lhci/cli@^0.14.0 autorun
         env:
           LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+          SITE_URL: http://localhost:3000
 
       - name: Upload LHCI results
         if: always()

@@ -48,7 +48,9 @@ type Props = {
   params: Promise<{ locale: string }>;
 };
 
-const BASE_URL = "https://bangicode.ma";
+// SITE_URL lets CI override the origin so the canonical matches the test server.
+// In production this env var is unset and falls back to the live domain.
+const BASE_URL = process.env.SITE_URL ?? "https://bangicode.ma";
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
