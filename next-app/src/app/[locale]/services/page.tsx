@@ -93,8 +93,11 @@ export default async function ServicesPage() {
                     </Badge>
                   ))}
                 </div>
-                <span className="text-secondary-container font-mono text-xs">
-                  {t(`${key}Title`)} →
+                <span
+                  className="text-secondary-container font-mono text-xs"
+                  aria-hidden="true"
+                >
+                  →
                 </span>
               </article>
             </Link>

@@ -47,6 +47,7 @@ export default async function TrainingPage() {
       caseEyebrow={t("caseEyebrow")}
       caseClient={t("caseClient")}
       caseDesc={t("caseDesc")}
+      caseCtaLabel={t("caseCtaLabel")}
       ctaHeadline={t("ctaHeadline")}
       ctaButton={t("ctaButton")}
     />

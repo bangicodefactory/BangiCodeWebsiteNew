@@ -40,6 +40,7 @@ export default async function SocialPage() {
       caseEyebrow={t("caseEyebrow")}
       caseClient={t("caseClient")}
       caseDesc={t("caseDesc")}
+      caseCtaLabel={t("caseCtaLabel")}
       ctaHeadline={t("ctaHeadline")}
       ctaButton={t("ctaButton")}
     />

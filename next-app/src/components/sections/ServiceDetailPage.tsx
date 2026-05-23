@@ -15,6 +15,7 @@ interface ServiceDetailPageProps {
   caseEyebrow: string;
   caseClient: string;
   caseDesc: string;
+  caseCtaLabel: string;
   ctaHeadline: string;
   ctaButton: string;
   contactHref?: string;
@@ -33,6 +34,7 @@ export function ServiceDetailPage({
   caseEyebrow,
   caseClient,
   caseDesc,
+  caseCtaLabel,
   ctaHeadline,
   ctaButton,
   contactHref = "/contact",
@@ -112,7 +114,7 @@ export function ServiceDetailPage({
           </p>
           <ol className="bg-border grid grid-cols-1 gap-px sm:grid-cols-2 lg:grid-cols-4">
             {steps.map((step, i) => (
-              <li key={i} className="bg-background flex flex-col gap-3 p-8">
+              <li key={step} className="bg-background flex flex-col gap-3 p-8">
                 <span
                   dir="ltr"
                   className="text-secondary-container font-mono text-xs"
@@ -144,10 +146,10 @@ export function ServiceDetailPage({
             {caseDesc}
           </p>
           <Link
-            href="/contact"
+            href={contactHref}
             className="text-secondary-container focus-visible:ring-ring rounded-sm font-mono text-sm underline underline-offset-4 hover:opacity-80 focus-visible:ring-2 focus-visible:outline-none"
           >
-            Full case study available on request →
+            {caseCtaLabel}
           </Link>
         </div>
       </section>

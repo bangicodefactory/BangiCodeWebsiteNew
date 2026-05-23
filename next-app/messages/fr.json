@@ -123,6 +123,7 @@
       "ctaHeadline": "Prêt à démarrer ?",
       "ctaBody": "Dites-nous ce que vous construisez. Nous le cadrerons, le chiffrerons et le livrerons.",
       "ctaButton": "Démarrer un projet",
+      "learnMore": "En savoir plus →",
       "s01Title": "Logiciel sur mesure",
       "s01Body": "Applications web, outils internes, intégrations API et apps mobiles conçus pour durer.",
       "s01Tags": "Laravel · Next.js · Postgres · Inertia",
@@ -166,6 +167,7 @@
       "caseEyebrow": "// réalisation phare",
       "caseClient": "RentCar.ma",
       "caseDesc": "Gestion de flotte de bout en bout pour le plus grand loueur de voitures du Maroc. -60% temps admin, 99,9% disponibilité sur 14 mois.",
+      "caseCtaLabel": "Étude de cas complète disponible sur demande →",
       "ctaHeadline": "Démarrer un projet logiciel",
       "ctaButton": "Obtenir un devis"
     },
@@ -189,6 +191,7 @@
       "caseEyebrow": "// réalisation phare",
       "caseClient": "Coinluminaire",
       "caseDesc": "Plateforme e-commerce pour éclairage LED avec configurateur de produits. 1 200+ commandes mensuelles traitées depuis le lancement.",
+      "caseCtaLabel": "Étude de cas complète disponible sur demande →",
       "ctaHeadline": "Démarrer un projet e-commerce",
       "ctaButton": "Obtenir un devis"
     },
@@ -212,6 +215,7 @@
       "caseEyebrow": "// réalisation phare",
       "caseClient": "Classkom LMS",
       "caseDesc": "Système de gestion d'apprentissage pour 3 000+ étudiants à l'ISTA Tétouan. Construit, déployé et maintenu par la même équipe qui forme.",
+      "caseCtaLabel": "Étude de cas complète disponible sur demande →",
       "ctaHeadline": "Réserver une session de formation",
       "ctaButton": "Prendre contact"
     },
@@ -235,6 +239,7 @@
       "caseEyebrow": "// réalisation phare",
       "caseClient": "Riha.ma",
       "caseDesc": "Stratégie de présence sociale et contenu pour une marque touristique marocaine. Abonnés Instagram × 3 en six mois.",
+      "caseCtaLabel": "Étude de cas complète disponible sur demande →",
       "ctaHeadline": "Construire une présence sociale",
       "ctaButton": "Prendre contact"
     }

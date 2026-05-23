@@ -123,6 +123,7 @@
       "ctaHeadline": "Ready to start?",
       "ctaBody": "Tell us what you're building. We'll scope it, price it, and deliver it.",
       "ctaButton": "Start a project",
+      "learnMore": "Learn more →",
       "s01Title": "Custom software",
       "s01Body": "Web apps, internal tools, API integrations, and mobile apps built to last.",
       "s01Tags": "Laravel · Next.js · Postgres · Inertia",
@@ -154,8 +155,8 @@
       "cap01Title": "Web applications",
       "cap01Body": "Full-stack web apps from auth to deployment. Laravel + Next.js or Inertia.js — whichever fits the project.",
       "cap02Title": "Internal tools",
-      "cap03Title": "API integrations",
       "cap02Body": "Admin panels, dashboards, and ops tools that replace spreadsheets and manual processes.",
+      "cap03Title": "API integrations",
       "cap03Body": "Third-party API integrations, webhooks, and automated pipelines.",
       "stackEyebrow": "// our stack",
       "processEyebrow": "// how a project runs",
@@ -166,6 +167,7 @@
       "caseEyebrow": "// featured work",
       "caseClient": "RentCar.ma",
       "caseDesc": "End-to-end fleet management for Morocco's largest car rental operator. -60% admin time, 99.9% uptime over 14 months.",
+      "caseCtaLabel": "Full case study available on request →",
       "ctaHeadline": "Start a software project",
       "ctaButton": "Get a quote"
     },
@@ -189,6 +191,7 @@
       "caseEyebrow": "// featured work",
       "caseClient": "Coinluminaire",
       "caseDesc": "E-commerce platform for LED lighting with a custom product configurator. 1,200+ monthly orders processed since launch.",
+      "caseCtaLabel": "Full case study available on request →",
       "ctaHeadline": "Start an e-commerce project",
       "ctaButton": "Get a quote"
     },
@@ -212,6 +215,7 @@
       "caseEyebrow": "// featured work",
       "caseClient": "Classkom LMS",
       "caseDesc": "Learning management system for 3,000+ students at ISTA Tetouan. Built, deployed, and maintained by the same team that trains.",
+      "caseCtaLabel": "Full case study available on request →",
       "ctaHeadline": "Book a training session",
       "ctaButton": "Get in touch"
     },
@@ -235,6 +239,7 @@
       "caseEyebrow": "// featured work",
       "caseClient": "Riha.ma",
       "caseDesc": "Social presence strategy and content for a Moroccan travel brand. Grew Instagram following 3× in six months.",
+      "caseCtaLabel": "Full case study available on request →",
       "ctaHeadline": "Build a social presence",
       "ctaButton": "Get in touch"
     }
