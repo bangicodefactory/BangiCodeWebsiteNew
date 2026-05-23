@@ -41,7 +41,7 @@ export default async function LocalePage({
       <Button variant="primary" size="lg" type="button" className="mt-4">
         Start a project
       </Button>
-      <p className="mt-8 font-mono text-xs text-gray-400">
+      <p className="mt-8 font-mono text-xs text-gray-600">
         BAN-124 · next-intl locale routing + RTL middleware
       </p>
     </main>
