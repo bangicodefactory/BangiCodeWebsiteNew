@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 
-const WA_NUMBER = "212664571370";
+const WA_NUMBER = process.env.NEXT_PUBLIC_WA_NUMBER ?? "212664571370";
 
 export function WhatsAppCta() {
   const t = useTranslations("WhatsAppCta");
@@ -12,6 +12,16 @@ export function WhatsAppCta() {
   const [inputFocused, setInputFocused] = useState(false);
   const lastScrollY = useRef(0);
   const ticking = useRef(false);
+
+  // Sync initial visibility with any scroll position already restored by the browser.
+  // rAF keeps setState out of the effect body, satisfying react-hooks/set-state-in-effect.
+  useEffect(() => {
+    const id = requestAnimationFrame(() => {
+      lastScrollY.current = window.scrollY;
+      setVisible(window.scrollY < 80);
+    });
+    return () => cancelAnimationFrame(id);
+  }, []);
 
   useEffect(() => {
     function onScroll() {
@@ -37,8 +47,13 @@ export function WhatsAppCta() {
         setInputFocused(true);
     }
     function onFocusOut(e: FocusEvent) {
-      if (e.target instanceof Element && e.target.matches(INPUT_SELECTOR))
-        setInputFocused(false);
+      if (e.target instanceof Element && e.target.matches(INPUT_SELECTOR)) {
+        // Defer so that focusin on the next input fires first during tab navigation.
+        setTimeout(() => {
+          if (!document.activeElement?.matches(INPUT_SELECTOR))
+            setInputFocused(false);
+        }, 0);
+      }
     }
     document.addEventListener("focusin", onFocusIn);
     document.addEventListener("focusout", onFocusOut);
@@ -58,7 +73,7 @@ export function WhatsAppCta() {
       rel="noopener noreferrer"
       aria-label={t("ariaLabel")}
       className={cn(
-        "fixed end-5 bottom-5 z-50",
+        "fixed end-5 bottom-5 z-40",
         "flex h-14 w-14 items-center justify-center rounded-full",
         "bg-[#25D366] text-white shadow-lg",
         "transition-[transform,opacity] duration-300 motion-reduce:transition-none",
