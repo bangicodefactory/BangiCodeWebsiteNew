@@ -29,6 +29,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
+import { SmokeVersionStrip } from "@/components/smoke/smoke-version-strip";
 
 const schema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters."),
@@ -189,6 +190,7 @@ export default function SmokeFormsPage() {
           Input · Textarea · Select · Label · Checkbox · RadioGroup · Switch ·
           Form (RHF + Zod)
         </p>
+        <SmokeVersionStrip name="form" />
       </header>
 
       <section className="mb-10">

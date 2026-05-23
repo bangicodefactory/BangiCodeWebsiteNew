@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowLeft, X } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
+import { SmokeVersionStrip } from "@/components/smoke/smoke-version-strip";
 
 const TECH_TAGS = [
   "Laravel",
@@ -58,6 +59,7 @@ export default function SmokeBadgePage() {
         <p className="mt-2 text-sm text-gray-500">
           JetBrains Mono · uppercase · 4px radius · 5 variants
         </p>
+        <SmokeVersionStrip name="badge" />
       </header>
 
       <section className="mb-10">

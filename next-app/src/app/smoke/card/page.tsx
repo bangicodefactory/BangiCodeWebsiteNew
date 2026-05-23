@@ -1,16 +1,6 @@
-/**
- * /smoke/card — Verifies @bangicode/card install + hover behaviour.
- * BAN-128: install + verify Card from Company brand registry.
- *
- * Hover state (outline → sky-blue + tech shadow) is not yet shipped by the
- * library (IST-120 blocks the @theme wiring). Applied here via a thin
- * `hoverCard` className wrapper so CI smoke passes today.
- * Remove the wrapper and rely purely on the library class once the upstream
- * PR merges and IST-120 ships the token layer.
- */
-
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import { SmokeVersionStrip } from "@/components/smoke/smoke-version-strip";
 import {
   Card,
   CardHeader,
@@ -43,20 +33,10 @@ export default function SmokeCardPage() {
         <h1 className="text-2xl font-bold text-gray-900">
           @bangicode/card — anatomy + hover
         </h1>
-        <p className="mt-2 text-sm text-gray-500">
-          Source:{" "}
-          <code className="rounded bg-gray-100 px-1">
-            src/components/ui/card.tsx
-          </code>{" "}
-          (manually sourced from library GitHub — replace via{" "}
-          <code className="rounded bg-gray-100 px-1">
-            npx shadcn add @bangicode/card
-          </code>{" "}
-          once registry is live)
-        </p>
+        <p className="mt-2 text-sm text-gray-500">Anatomy + hover state</p>
+        <SmokeVersionStrip name="card" />
       </header>
 
-      {/* Token gap warning */}
       <section className="mb-10">
         <div className="space-y-2 rounded border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-800">
           <p>
@@ -77,7 +57,6 @@ export default function SmokeCardPage() {
         </div>
       </section>
 
-      {/* Default card anatomy */}
       <section className="mb-12">
         <h2 className="mb-6 text-sm font-semibold tracking-widest text-gray-500 uppercase">
           Default anatomy
@@ -104,7 +83,6 @@ export default function SmokeCardPage() {
         </div>
       </section>
 
-      {/* Hover state */}
       <section className="mb-12">
         <h2 className="mb-4 text-sm font-semibold tracking-widest text-gray-500 uppercase">
           Hover state — outline → sky-blue + tech shadow
@@ -133,7 +111,6 @@ export default function SmokeCardPage() {
         </div>
       </section>
 
-      {/* Full-card link — a11y: single tap target, no nested links */}
       <section className="mb-12">
         <h2 className="mb-4 text-sm font-semibold tracking-widest text-gray-500 uppercase">
           A11y — full-card link (no nested links)
@@ -175,7 +152,6 @@ export default function SmokeCardPage() {
         </div>
       </section>
 
-      {/* RTL */}
       <section className="mb-12">
         <h2 className="mb-4 text-sm font-semibold tracking-widest text-gray-500 uppercase">
           RTL — dir=&quot;rtl&quot;
