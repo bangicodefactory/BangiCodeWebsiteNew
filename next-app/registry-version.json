@@ -18,6 +18,54 @@
       "path": "src/components/ui/card.tsx",
       "sourcedFrom": "github:bangicodefactory/bangicode-design-system/registry/bangicode/ui/card.tsx@develop",
       "note": "Manually sourced — replace via `npx shadcn add @bangicode/card` once registry is live (BAN-128). Hover state (sky-blue border + tech shadow) added via wrapper class in smoke/card page — upstream PR pending."
+    },
+    {
+      "name": "input",
+      "path": "src/components/ui/input.tsx",
+      "sourcedFrom": "github:bangicodefactory/bangicode-design-system/registry/bangicode/ui/input.tsx@develop",
+      "note": "Manually sourced — replace via `npx shadcn add @bangicode/input` once registry is live (BAN-129)"
+    },
+    {
+      "name": "textarea",
+      "path": "src/components/ui/textarea.tsx",
+      "sourcedFrom": "github:bangicodefactory/bangicode-design-system/registry/bangicode/ui/textarea.tsx@develop",
+      "note": "Manually sourced — replace via `npx shadcn add @bangicode/textarea` once registry is live (BAN-129)"
+    },
+    {
+      "name": "select",
+      "path": "src/components/ui/select.tsx",
+      "sourcedFrom": "github:bangicodefactory/bangicode-design-system/registry/bangicode/ui/select.tsx@develop",
+      "note": "Manually sourced — replace via `npx shadcn add @bangicode/select` once registry is live (BAN-129)"
+    },
+    {
+      "name": "label",
+      "path": "src/components/ui/label.tsx",
+      "sourcedFrom": "github:bangicodefactory/bangicode-design-system/registry/bangicode/ui/label.tsx@develop",
+      "note": "Manually sourced — replace via `npx shadcn add @bangicode/label` once registry is live (BAN-129)"
+    },
+    {
+      "name": "checkbox",
+      "path": "src/components/ui/checkbox.tsx",
+      "sourcedFrom": "github:bangicodefactory/bangicode-design-system/registry/bangicode/ui/checkbox.tsx@develop",
+      "note": "Manually sourced — replace via `npx shadcn add @bangicode/checkbox` once registry is live (BAN-129)"
+    },
+    {
+      "name": "radio-group",
+      "path": "src/components/ui/radio-group.tsx",
+      "sourcedFrom": "github:bangicodefactory/bangicode-design-system/registry/bangicode/ui/radio-group.tsx@develop",
+      "note": "Manually sourced — replace via `npx shadcn add @bangicode/radio-group` once registry is live (BAN-129)"
+    },
+    {
+      "name": "switch",
+      "path": "src/components/ui/switch.tsx",
+      "sourcedFrom": "github:bangicodefactory/bangicode-design-system/registry/bangicode/ui/switch.tsx@develop",
+      "note": "Manually sourced — replace via `npx shadcn add @bangicode/switch` once registry is live (BAN-129)"
+    },
+    {
+      "name": "form",
+      "path": "src/components/ui/form.tsx",
+      "sourcedFrom": "github:bangicodefactory/bangicode-design-system/registry/bangicode/ui/form.tsx@develop",
+      "note": "Manually sourced — replace via `npx shadcn add @bangicode/form` once registry is live (BAN-129). Import path fixed: @/registry/bangicode/ui/label → @/components/ui/label."
     }
   ]
 }
