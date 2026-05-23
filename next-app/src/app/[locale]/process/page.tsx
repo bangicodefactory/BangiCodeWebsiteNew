@@ -3,6 +3,7 @@ import { getTranslations } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
+import { Check } from "lucide-react";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -19,6 +20,7 @@ export async function generateMetadata({
 }
 
 const STEPS = ["step01", "step02", "step03", "step04"] as const;
+const DETAILS = ["Detail01", "Detail02", "Detail03"] as const;
 const PRINCIPLES = ["prin01", "prin02", "prin03"] as const;
 
 export default async function ProcessPage() {
@@ -64,7 +66,7 @@ export default async function ProcessPage() {
 
             {/* Step sections */}
             <div className="flex flex-col gap-0 lg:col-span-3">
-              {STEPS.map((key, i) => (
+              {STEPS.map((key) => (
                 <article
                   key={key}
                   id={key}
@@ -88,23 +90,18 @@ export default async function ProcessPage() {
                     {t(`${key}Body`)}
                   </p>
                   <ul className="flex flex-col gap-3">
-                    {(["Detail01", "Detail02", "Detail03"] as const).map(
-                      (d) => (
-                        <li
-                          key={d}
-                          className="text-muted-foreground flex items-start gap-3 font-mono text-sm"
-                        >
-                          <span
-                            dir="ltr"
-                            className="text-secondary-container mt-0.5 shrink-0"
-                            aria-hidden="true"
-                          >
-                            ✓
-                          </span>
-                          {t(`${key}${d}`)}
-                        </li>
-                      ),
-                    )}
+                    {DETAILS.map((d) => (
+                      <li
+                        key={d}
+                        className="text-muted-foreground flex items-start gap-3 font-mono text-sm"
+                      >
+                        <Check
+                          className="text-secondary-container mt-0.5 h-3.5 w-3.5 shrink-0"
+                          aria-hidden="true"
+                        />
+                        {t(`${key}${d}`)}
+                      </li>
+                    ))}
                   </ul>
                 </article>
               ))}
