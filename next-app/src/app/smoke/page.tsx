@@ -44,6 +44,9 @@ const EXPECTED_COMPONENTS = [
 
 type ComponentName = (typeof EXPECTED_COMPONENTS)[number];
 
+// Only add to this set when a corresponding /smoke/<name>/page.tsx exists.
+const SMOKE_SUBPAGES = new Set<ComponentName>(["button", "card", "form"]);
+
 function isInstalled(name: ComponentName): boolean {
   return existsSync(
     path.join(process.cwd(), "src", "components", "ui", `${name}.tsx`),
@@ -104,11 +107,6 @@ export default function SmokePage() {
             const installed = isInstalled(name);
             // NOTE: only link when a /smoke/<name>/page.tsx sub-page exists.
             // Add the sub-page first, then install the component — not the other way.
-            const SMOKE_SUBPAGES = new Set<ComponentName>([
-              "button",
-              "card",
-              "form",
-            ]);
             const smokeHref =
               installed && SMOKE_SUBPAGES.has(name) ? `/smoke/${name}` : null;
             const inner = (

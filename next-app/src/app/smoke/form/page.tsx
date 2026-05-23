@@ -1,15 +1,3 @@
-/**
- * /smoke/forms — Verifies all form primitives from @bangicode/* registry.
- * BAN-129: install + verify Form primitives from Company brand registry.
- *
- * Covers: Input · Textarea · Select · Label · Checkbox · RadioGroup · Switch
- * Each shown in default / focus / error / disabled states.
- * Error colour uses text-destructive (tech red = tertiary) per DESIGN.md.
- * Focus ring: 2px ring-ring with 2px offset — pending IST-120 token wiring.
- * RTL section validates label alignment + input direction under dir="rtl".
- * Zod-validated form demonstrates FormMessage rendering under field.
- */
-
 "use client";
 
 import Link from "next/link";
@@ -42,7 +30,6 @@ import {
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 
-// ── Zod schema for the validation demo ───────────────────────────────────────
 const schema = z.object({
   name: z.string().min(2, "Name must be at least 2 characters."),
   email: z.string().email("Enter a valid email address."),
@@ -55,7 +42,6 @@ const schema = z.object({
 
 type FormValues = z.infer<typeof schema>;
 
-// ── Sub-component: Zod-wired demo form ───────────────────────────────────────
 function ValidationDemo() {
   const form = useForm<FormValues>({
     resolver: zodResolver(schema),
@@ -81,7 +67,6 @@ function ValidationDemo() {
         className="max-w-md space-y-6"
         noValidate
       >
-        {/* Name */}
         <FormField
           control={form.control}
           name="name"
@@ -97,7 +82,6 @@ function ValidationDemo() {
           )}
         />
 
-        {/* Email */}
         <FormField
           control={form.control}
           name="email"
@@ -112,7 +96,6 @@ function ValidationDemo() {
           )}
         />
 
-        {/* Message */}
         <FormField
           control={form.control}
           name="message"
@@ -131,7 +114,6 @@ function ValidationDemo() {
           )}
         />
 
-        {/* Service select */}
         <FormField
           control={form.control}
           name="service"
@@ -156,7 +138,6 @@ function ValidationDemo() {
           )}
         />
 
-        {/* Terms checkbox */}
         <FormField
           control={form.control}
           name="terms"
@@ -187,7 +168,6 @@ function ValidationDemo() {
   );
 }
 
-// ── Main page ─────────────────────────────────────────────────────────────────
 export default function SmokeFormsPage() {
   return (
     <main className="min-h-screen bg-white px-6 py-12 font-mono">
@@ -211,7 +191,6 @@ export default function SmokeFormsPage() {
         </p>
       </header>
 
-      {/* Token warning */}
       <section className="mb-10">
         <div className="space-y-1 rounded border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-800">
           <p>
@@ -226,14 +205,12 @@ export default function SmokeFormsPage() {
         </div>
       </section>
 
-      {/* Individual primitive states */}
       <section className="mb-12">
         <h2 className="mb-6 text-sm font-semibold tracking-widest text-gray-500 uppercase">
           Primitive states
         </h2>
 
         <div className="grid max-w-2xl grid-cols-1 gap-8 sm:grid-cols-2">
-          {/* Input */}
           <div className="space-y-3">
             <p className="text-xs font-semibold text-gray-400">Input</p>
             <div className="space-y-2">
@@ -248,7 +225,10 @@ export default function SmokeFormsPage() {
                 defaultValue="bad@"
                 placeholder="Error state"
               />
-              <p className="font-hanken-grotesk text-destructive text-sm font-medium">
+              <p
+                role="alert"
+                className="font-hanken-grotesk text-destructive text-sm font-medium"
+              >
                 Enter a valid email address.
               </p>
             </div>
@@ -258,7 +238,6 @@ export default function SmokeFormsPage() {
             </div>
           </div>
 
-          {/* Textarea */}
           <div className="space-y-3">
             <p className="text-xs font-semibold text-gray-400">Textarea</p>
             <div className="space-y-2">
@@ -273,7 +252,10 @@ export default function SmokeFormsPage() {
                 defaultValue="too short"
                 placeholder="Error"
               />
-              <p className="font-hanken-grotesk text-destructive text-sm font-medium">
+              <p
+                role="alert"
+                className="font-hanken-grotesk text-destructive text-sm font-medium"
+              >
                 Must be at least 10 characters.
               </p>
             </div>
@@ -287,7 +269,6 @@ export default function SmokeFormsPage() {
             </div>
           </div>
 
-          {/* Select */}
           <div className="space-y-3">
             <p className="text-xs font-semibold text-gray-400">Select</p>
             <div className="space-y-2">
@@ -305,9 +286,26 @@ export default function SmokeFormsPage() {
               </Select>
             </div>
             <div className="space-y-2">
-              <Label>Disabled</Label>
+              <Label htmlFor="select-error">Error</Label>
+              <Select>
+                <SelectTrigger id="select-error" aria-invalid>
+                  <SelectValue placeholder="Pick a service" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="software">Custom software</SelectItem>
+                </SelectContent>
+              </Select>
+              <p
+                role="alert"
+                className="font-hanken-grotesk text-destructive text-sm font-medium"
+              >
+                Please select a service.
+              </p>
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="select-disabled">Disabled</Label>
               <Select disabled>
-                <SelectTrigger>
+                <SelectTrigger id="select-disabled">
                   <SelectValue placeholder="Disabled" />
                 </SelectTrigger>
                 <SelectContent>
@@ -317,7 +315,6 @@ export default function SmokeFormsPage() {
             </div>
           </div>
 
-          {/* Checkbox + RadioGroup + Switch */}
           <div className="space-y-3">
             <p className="text-xs font-semibold text-gray-400">
               Checkbox · RadioGroup · Switch
@@ -337,14 +334,18 @@ export default function SmokeFormsPage() {
             </div>
 
             <RadioGroup defaultValue="software" className="mt-2">
-              {["software", "ecommerce", "training"].map((v) => (
-                <div key={v} className="flex items-center gap-2">
-                  <RadioGroupItem value={v} id={`rg-${v}`} />
-                  <Label htmlFor={`rg-${v}`} className="capitalize">
-                    {v}
-                  </Label>
-                </div>
-              ))}
+              <div className="flex items-center gap-2">
+                <RadioGroupItem value="software" id="rg-software" />
+                <Label htmlFor="rg-software">Software</Label>
+              </div>
+              <div className="flex items-center gap-2">
+                <RadioGroupItem value="ecommerce" id="rg-ecommerce" />
+                <Label htmlFor="rg-ecommerce">E-commerce</Label>
+              </div>
+              <div className="flex items-center gap-2">
+                <RadioGroupItem value="training" id="rg-training" disabled />
+                <Label htmlFor="rg-training">Training (disabled)</Label>
+              </div>
             </RadioGroup>
 
             <div className="mt-2 flex items-center gap-2">
@@ -363,7 +364,6 @@ export default function SmokeFormsPage() {
         </div>
       </section>
 
-      {/* Zod validation demo */}
       <section className="mb-12">
         <h2 className="mb-2 text-sm font-semibold tracking-widest text-gray-500 uppercase">
           Zod validation — submit empty to trigger errors
@@ -377,7 +377,6 @@ export default function SmokeFormsPage() {
         <ValidationDemo />
       </section>
 
-      {/* RTL */}
       <section className="mb-12">
         <h2 className="mb-4 text-sm font-semibold tracking-widest text-gray-500 uppercase">
           RTL — dir=&quot;rtl&quot;
