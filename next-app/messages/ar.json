@@ -18,6 +18,10 @@
     "desktopNav": "التنقل الرئيسي",
     "mobileNav": "التنقل للجوال"
   },
+  "WhatsAppCta": {
+    "ariaLabel": "تواصل معنا عبر واتساب",
+    "prefill": "مرحباً! أود الاستفسار عن خدماتكم."
+  },
   "Footer": {
     "tagline": "استوديو برمجيات في تطوان، المغرب.",
     "servicesTitle": "// services",

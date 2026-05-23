@@ -18,6 +18,10 @@
     "desktopNav": "Main navigation",
     "mobileNav": "Mobile navigation"
   },
+  "WhatsAppCta": {
+    "ariaLabel": "Contact us on WhatsApp",
+    "prefill": "Hello! I'm interested in your services."
+  },
   "Footer": {
     "tagline": "Software studio in Tetouan, Morocco. Code that ages well.",
     "servicesTitle": "// services",

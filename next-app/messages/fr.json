@@ -18,6 +18,10 @@
     "desktopNav": "Navigation principale",
     "mobileNav": "Navigation mobile"
   },
+  "WhatsAppCta": {
+    "ariaLabel": "Contactez-nous sur WhatsApp",
+    "prefill": "Bonjour ! Je suis intéressé(e) par vos services."
+  },
   "Footer": {
     "tagline": "Studio logiciel à Tétouan, Maroc. Code qui vieillit bien.",
     "servicesTitle": "// services",
