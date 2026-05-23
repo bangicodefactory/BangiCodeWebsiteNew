@@ -1,5 +1,4 @@
 import { routing, type Locale } from "@/i18n/routing";
-import { LocaleSwitcher } from "@/components/LocaleSwitcher";
 import { Button } from "@/components/ui/button";
 
 export function generateStaticParams() {
@@ -31,7 +30,6 @@ export default async function LocalePage({
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center gap-4 bg-white px-6 text-gray-900">
-      <LocaleSwitcher currentLocale={locale} />
       <p className="font-mono text-sm tracking-widest text-blue-600">
         bangicode.ma — scaffold
       </p>
