@@ -18,6 +18,16 @@
     "desktopNav": "Main navigation",
     "mobileNav": "Mobile navigation"
   },
+  "Booking": {
+    "pageTitle": "Book a 30-min discovery call",
+    "booked": {
+      "title": "Booking confirmed!",
+      "description": "We'll see you soon. Check your email for the calendar invite."
+    },
+    "fallback": "Booking widget unavailable.",
+    "fallbackContact": "Email us at",
+    "fallbackWhatsApp": "or message us on WhatsApp"
+  },
   "WhatsAppCta": {
     "ariaLabel": "Contact us on WhatsApp",
     "prefill": "Hello! I'm interested in your services."

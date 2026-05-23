@@ -10,10 +10,13 @@ import {
 import { NextIntlClientProvider } from "next-intl";
 import { getMessages } from "next-intl/server";
 import { ThemeProvider } from "next-themes";
+import { Suspense } from "react";
+import { Toaster } from "sonner";
 import { routing, type Locale } from "@/i18n/routing";
 import { SiteNav } from "@/components/sections/site-nav";
 import { SiteFooter } from "@/components/sections/site-footer";
 import { WhatsAppCta } from "@/components/WhatsAppCta";
+import { BookedToast } from "@/components/BookedToast";
 import "../globals.css";
 
 const montserrat = Montserrat({
@@ -129,6 +132,10 @@ export default async function LocaleLayout({ children, params }: Props) {
             <SiteFooter />
             {/* BAN-159: <CookieBanner /> */}
             <WhatsAppCta />
+            <Suspense>
+              <BookedToast />
+            </Suspense>
+            <Toaster position="bottom-center" richColors />
           </NextIntlClientProvider>
         </ThemeProvider>
       </body>
