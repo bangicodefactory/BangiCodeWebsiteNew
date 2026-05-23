@@ -4,5 +4,18 @@
     "en": "Anglais",
     "fr": "Français",
     "ar": "Arabe"
+  },
+  "Nav": {
+    "services": "Services",
+    "work": "Réalisations",
+    "about": "À propos",
+    "process": "Processus",
+    "careers": "Carrières",
+    "contact": "Contact",
+    "openMenu": "Ouvrir le menu",
+    "startProject": "Démarrer un projet",
+    "mobileTitle": "Navigation",
+    "desktopNav": "Navigation principale",
+    "mobileNav": "Navigation mobile"
   }
 }

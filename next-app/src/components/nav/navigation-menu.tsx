@@ -1,8 +1,7 @@
 "use client";
 
 import * as NavigationMenuPrimitive from "@radix-ui/react-navigation-menu";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 
 export interface NavLink {
@@ -49,7 +48,6 @@ export function NavigationMenu({
                     "text-foreground text-sm font-medium transition-colors",
                     "hover:bg-muted hover:text-foreground",
                     "focus-visible:ring-ring focus-visible:ring-offset-background focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
-                    // Active: 2px sky-blue underline per DESIGN.md §Components active state
                     isActive && [
                       "after:absolute after:inset-x-3 after:bottom-0",
                       "after:bg-secondary-container after:h-0.5 after:rounded-full",
