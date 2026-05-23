@@ -186,8 +186,19 @@ export default function SmokeBadgePage() {
       </section>
 
       <footer className="mt-12 border-t border-gray-100 pt-6 text-xs text-gray-400">
-        BAN-131 · IST-120 (token wiring) · BAN-148 (portfolio filter) · BAN-149
-        (case-study tech stacks)
+        <p>
+          BAN-131 · IST-120 (token wiring) · BAN-148 (portfolio filter) ·
+          BAN-149 (case-study tech stacks)
+        </p>
+        <p className="mt-1">
+          Note: <code className="rounded bg-gray-100 px-1">{"<Badge>"}</code>{" "}
+          renders as a{" "}
+          <code className="rounded bg-gray-100 px-1">{"<div>"}</code> — avoid
+          nesting inside{" "}
+          <code className="rounded bg-gray-100 px-1">{"<p>"}</code> or{" "}
+          <code className="rounded bg-gray-100 px-1">{"<span>"}</code> (block
+          inside inline is invalid HTML).
+        </p>
       </footer>
     </main>
   );
