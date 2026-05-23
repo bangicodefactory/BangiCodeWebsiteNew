@@ -1,4 +1,117 @@
 {
+  "Home": {
+    "hero": {
+      "eyebrow": "software studio · tétouan, maroc",
+      "h1": "Studio logiciel à Tétouan.",
+      "tagline": "Code qui vieillit bien.",
+      "body": "Nous créons des logiciels sur mesure, des plateformes e-commerce et des formations techniques — depuis Tétouan, pour les entreprises qui veulent un code maintenable des années plus tard.",
+      "ctaPrimary": "Démarrer un projet",
+      "ctaSecondary": "Voir nos réalisations",
+      "microcopy": "Appel découverte de 30 min · réponse sous 24h"
+    },
+    "status": {
+      "online": "en ligne",
+      "sprintLabel": "sprint actuel",
+      "sprint": "Friterie.ma iOS",
+      "availabilityLabel": "prochaine disponibilité",
+      "availability": "fin juillet 2026",
+      "teamLabel": "équipe",
+      "team": "12 personnes · 4 expertises",
+      "timeLabel": "heure locale"
+    },
+    "thesis": {
+      "eyebrow": "// la thèse",
+      "headline": "Ingénieurs seniors. Délais honnêtes. Code qui dure.",
+      "projectsValue": "24+",
+      "projectsLabel": "projets livrés",
+      "clientsValue": "20+",
+      "clientsLabel": "clients servis",
+      "yearsValue": "5y",
+      "yearsLabel": "années d'expérience",
+      "supportValue": "24/7",
+      "supportLabel": "support client"
+    },
+    "trustedBy": {
+      "label": "ils nous font confiance"
+    },
+    "services": {
+      "eyebrow": "// ce que nous créons",
+      "headline": "Quatre expertises, une équipe.",
+      "s01Number": "01",
+      "s01Title": "Logiciel sur mesure",
+      "s01Body": "Applications web, outils internes, intégrations API et apps mobiles conçus pour durer.",
+      "s02Number": "02",
+      "s02Title": "E-commerce",
+      "s02Body": "Boutiques en ligne performantes avec paiement, gestion de stock et livraison personnalisés.",
+      "s03Number": "03",
+      "s03Title": "Formation technique",
+      "s03Body": "Bootcamps et ateliers pour équipes et individus — React, Node, Laravel et plus.",
+      "s04Number": "04",
+      "s04Title": "Présence sociale",
+      "s04Body": "Contenu cohérent avec la marque, gestion de communauté et stratégie digitale."
+    },
+    "featuredCase": {
+      "eyebrow": "// cas emblématique",
+      "client": "RentCar.ma",
+      "headline": "Gestion de flotte de bout en bout pour le plus grand loueur de voitures du Maroc.",
+      "industry": "Automobile",
+      "adminTimeValue": "-60%",
+      "adminTimeLabel": "temps admin",
+      "vendorsValue": "3→1",
+      "vendorsLabel": "systèmes fournisseurs",
+      "maintainedValue": "14mo",
+      "maintainedLabel": "en maintenance",
+      "uptimeValue": "99,9%",
+      "uptimeLabel": "disponibilité",
+      "cta": "Étude de cas complète disponible sur demande — contactez-nous"
+    },
+    "peekCards": {
+      "eyebrow": "// autres réalisations",
+      "coinluminaireClient": "Coinluminaire",
+      "coinluminaireDesc": "Plateforme e-commerce pour éclairage LED avec configurateur de produits personnalisé.",
+      "coinluminaireIndustry": "Commerce",
+      "classkomClient": "Classkom LMS",
+      "classkomDesc": "Système de gestion d'apprentissage pour 3 000+ étudiants à l'ISTA Tétouan.",
+      "classkomIndustry": "Éducation",
+      "aqarchamalClient": "Aqarchamal",
+      "aqarchamalDesc": "Marketplace immobilière connectant acheteurs et vendeurs au nord du Maroc.",
+      "aqarchamalIndustry": "Immobilier"
+    },
+    "testimonial": {
+      "quote": "Bangicode a livré une app prête pour la production dans les délais et le budget. La qualité du code est remarquable — nous la faisons tourner depuis plus d'un an sans incident majeur.",
+      "author": "Youssef B.",
+      "company": "Friterie.ma"
+    },
+    "process": {
+      "eyebrow": "// ce qui se passe ensuite",
+      "headline": "Du premier contact au démarrage, en deux semaines maximum.",
+      "step01Number": "01",
+      "step01Title": "Décrivez votre problème",
+      "step01Time": "~5 min",
+      "step01Body": "Remplissez un court formulaire ou envoyez-nous un message WhatsApp. Pas de RFP, pas de présentations.",
+      "step02Number": "02",
+      "step02Title": "Appel découverte",
+      "step02Time": "sous 24h",
+      "step02Body": "Un appel de 30 minutes avec Ahmed pour cadrer le projet et répondre à vos questions.",
+      "step03Number": "03",
+      "step03Title": "Proposition personnalisée",
+      "step03Time": "5 jours ouvrés",
+      "step03Body": "Devis à prix fixe avec calendrier, équipe et stack technique — sans surprise.",
+      "step04Number": "04",
+      "step04Title": "Démarrage",
+      "step04Time": "sous 2 semaines",
+      "step04Body": "Le premier sprint commence. Vous obtenez un canal Slack, un espace Notion et des démos hebdomadaires."
+    },
+    "founder": {
+      "label": "votre interlocuteur",
+      "headline": "Parlez à Ahmed — fondateur.",
+      "avatarAlt": "Ahmed, fondateur de Bangicode",
+      "ctaPrimary": "Réserver 30 min",
+      "ctaSecondaryPrefix": "ou",
+      "whatsapp": "whatsapp",
+      "email": "admin@bangicode.ma"
+    }
+  },
   "LocaleSwitcher": {
     "label": "Langue",
     "en": "Anglais",
