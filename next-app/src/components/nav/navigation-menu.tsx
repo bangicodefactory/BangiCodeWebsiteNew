@@ -1,6 +1,5 @@
 "use client";
 
-import * as React from "react";
 import * as NavigationMenuPrimitive from "@radix-ui/react-navigation-menu";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -13,11 +12,18 @@ export interface NavLink {
 
 interface NavigationMenuProps {
   items: NavLink[];
+  /** Overrides pathname-based active detection. Useful for demos and SSR pre-render. */
+  activeHref?: string;
   dir?: "ltr" | "rtl";
   className?: string;
 }
 
-export function NavigationMenu({ items, dir, className }: NavigationMenuProps) {
+export function NavigationMenu({
+  items,
+  activeHref,
+  dir,
+  className,
+}: NavigationMenuProps) {
   const pathname = usePathname();
 
   return (
@@ -28,13 +34,16 @@ export function NavigationMenu({ items, dir, className }: NavigationMenuProps) {
       <NavigationMenuPrimitive.List className="m-0 flex list-none items-center gap-1 p-0">
         {items.map((item) => {
           const isActive =
-            pathname === item.href || pathname.startsWith(item.href + "/");
+            activeHref !== undefined
+              ? activeHref === item.href
+              : pathname === item.href || pathname.startsWith(item.href + "/");
 
           return (
             <NavigationMenuPrimitive.Item key={item.href}>
               <NavigationMenuPrimitive.Link asChild active={isActive}>
                 <Link
                   href={item.href}
+                  aria-current={isActive ? "page" : undefined}
                   className={cn(
                     "font-hanken-grotesk relative inline-flex items-center rounded-sm px-3 py-2",
                     "text-foreground text-sm font-medium transition-colors",

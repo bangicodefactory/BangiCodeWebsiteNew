@@ -60,7 +60,6 @@ export default function SmokeSheetPage() {
         </div>
       </section>
 
-      {/* Desktop NavigationMenu */}
       <section className="mb-12">
         <h2 className="mb-6 text-sm font-semibold tracking-widest text-gray-500 uppercase">
           NavigationMenu — desktop
@@ -69,8 +68,11 @@ export default function SmokeSheetPage() {
           Tab / Shift+Tab to move between items. Arrow keys also supported by
           Radix. Active item shows 2px{" "}
           <code className="rounded bg-gray-100 px-1">secondary-container</code>{" "}
-          underline. No active match on this page — navigate to a linked route
-          to see active state.
+          underline and{" "}
+          <code className="rounded bg-gray-100 px-1">
+            aria-current=&quot;page&quot;
+          </code>
+          .
         </p>
 
         <div className="rounded border border-gray-200 bg-gray-50 p-6">
@@ -87,16 +89,10 @@ export default function SmokeSheetPage() {
           <p className="mb-2 text-xs font-semibold text-gray-400">
             Simulated active state — Services
           </p>
-          <NavigationMenu
-            items={NAV_ITEMS.map((item) => ({
-              ...item,
-              href: item.label === "Services" ? "/" : item.href,
-            }))}
-          />
+          <NavigationMenu items={NAV_ITEMS} activeHref="/services" />
         </div>
       </section>
 
-      {/* NavigationMenu RTL */}
       <section className="mb-12">
         <h2 className="mb-4 text-sm font-semibold tracking-widest text-gray-500 uppercase">
           NavigationMenu — RTL
@@ -115,6 +111,7 @@ export default function SmokeSheetPage() {
             </Button>
             <NavigationMenu
               dir="rtl"
+              activeHref="/services"
               items={[
                 { label: "الخدمات", href: "/services" },
                 { label: "المحفظة", href: "/portfolio" },
@@ -127,7 +124,6 @@ export default function SmokeSheetPage() {
         </div>
       </section>
 
-      {/* Sheet — 4 sides */}
       <section className="mb-12">
         <h2 className="mb-6 text-sm font-semibold tracking-widest text-gray-500 uppercase">
           Sheet — 4 sides
@@ -157,7 +153,6 @@ export default function SmokeSheetPage() {
         </div>
       </section>
 
-      {/* Mobile nav pattern — Sheet + NavigationMenu */}
       <section className="mb-12">
         <h2 className="mb-4 text-sm font-semibold tracking-widest text-gray-500 uppercase">
           Mobile nav pattern
