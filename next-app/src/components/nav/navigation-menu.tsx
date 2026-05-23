@@ -6,6 +6,9 @@ import { Link } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
 
+// Compiled once — strips /en|fr|ar prefix so /en/services → /services.
+const LOCALE_PREFIX_RE = new RegExp(`^/(${routing.locales.join("|")})(/|$)`);
+
 export interface NavLink {
   label: string;
   href: string;
@@ -26,12 +29,7 @@ export function NavigationMenu({
   className,
 }: NavigationMenuProps) {
   const rawPathname = usePathname();
-  // Strip locale prefix (/en/services → /services) so active detection works
-  // in both [locale] routes and non-locale contexts (e.g. /smoke/*).
-  const pathname = rawPathname.replace(
-    new RegExp(`^/(${routing.locales.join("|")})(/|$)`),
-    "/",
-  );
+  const pathname = rawPathname.replace(LOCALE_PREFIX_RE, "/");
 
   return (
     <NavigationMenuPrimitive.Root
