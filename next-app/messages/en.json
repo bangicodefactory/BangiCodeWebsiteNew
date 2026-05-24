@@ -501,6 +501,17 @@
     "lastUpdatedLabel": "Last updated",
     "backToHome": "Back to home",
     "termsTitle": "Terms of service",
-    "termsMetaDescription": "The terms that govern your use of bangicode.ma and engagements with Bangicode SARL."
+    "termsMetaDescription": "The terms that govern your use of bangicode.ma and engagements with Bangicode SARL.",
+    "cookiesTitle": "Cookie policy",
+    "cookiesMetaDescription": "What cookies bangicode.ma uses and how to manage your preferences.",
+    "cookiesManageLabel": "Change your cookie preferences:"
+  },
+  "CookieBanner": {
+    "label": "Cookie consent",
+    "body": "We use cookies to understand how visitors use our site. Analytics cookies are optional.",
+    "learnMore": "Learn more",
+    "accept": "Accept analytics",
+    "decline": "Decline",
+    "managePreferences": "Manage cookie preferences"
   }
 }

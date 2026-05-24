@@ -15,6 +15,7 @@ import { Toaster } from "sonner";
 import { routing, type Locale } from "@/i18n/routing";
 import { SiteNav } from "@/components/sections/site-nav";
 import { SiteFooter } from "@/components/sections/site-footer";
+import { CookieBanner } from "@/components/sections/CookieBanner";
 import { WhatsAppCta } from "@/components/WhatsAppCta";
 import { BookedToast } from "@/components/BookedToast";
 import "../globals.css";
@@ -130,7 +131,7 @@ export default async function LocaleLayout({ children, params }: Props) {
               {children}
             </div>
             <SiteFooter />
-            {/* BAN-159: <CookieBanner /> */}
+            <CookieBanner />
             <WhatsAppCta />
             <Suspense>
               <BookedToast />

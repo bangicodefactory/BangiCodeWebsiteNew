@@ -501,6 +501,17 @@
     "lastUpdatedLabel": "آخر تحديث",
     "backToHome": "العودة إلى الرئيسية",
     "termsTitle": "شروط الاستخدام",
-    "termsMetaDescription": "الشروط التي تحكم استخدامك لموقع bangicode.ma وتعاملاتك مع بانجيكود ش.م.م."
+    "termsMetaDescription": "الشروط التي تحكم استخدامك لموقع bangicode.ma وتعاملاتك مع بانجيكود ش.م.م.",
+    "cookiesTitle": "سياسة ملفات الارتباط",
+    "cookiesMetaDescription": "ملفات الارتباط التي يستخدمها bangicode.ma وكيفية إدارة تفضيلاتك.",
+    "cookiesManageLabel": "تغيير تفضيلات ملفات الارتباط:"
+  },
+  "CookieBanner": {
+    "label": "الموافقة على ملفات الارتباط",
+    "body": "نستخدم ملفات الارتباط لفهم كيفية استخدام الزوار لموقعنا. ملفات ارتباط التحليلات اختيارية.",
+    "learnMore": "معرفة المزيد",
+    "accept": "قبول التحليلات",
+    "decline": "رفض",
+    "managePreferences": "إدارة تفضيلات ملفات الارتباط"
   }
 }
