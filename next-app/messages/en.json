@@ -510,7 +510,7 @@
   "CookieBanner": {
     "label": "Cookie consent",
     "body": "We use cookies to understand how visitors use our site. Analytics cookies are optional.",
-    "learnMore": "Learn more",
+    "learnMore": "Cookie policy",
     "accept": "Accept analytics",
     "decline": "Decline",
     "managePreferences": "Manage cookie preferences"
