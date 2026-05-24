@@ -1,0 +1,35 @@
+---
+title: "Aqarchamal"
+practice: "web"
+industry: "Real Estate"
+date: "2023–2024"
+stack: ["Laravel", "Bootstrap", "MongoDB"]
+heroImage: "/work/aqarchamal/hero.webp"
+metrics:
+  - { value: "300+", label: "active listings at launch", placeholder: true }
+  - { value: "3→1", label: "systems replaced" }
+  - { value: "same day", label: "listing go-live time" }
+  - { value: "2", label: "regions covered" }
+---
+
+## The client
+
+Aqarchamal is a real estate platform serving the Tanger-Tetouan region of northern Morocco. The platform aggregates property listings — apartments, villas, and commercial units — from multiple agencies and individual sellers, giving buyers a single place to search across the region.
+
+## The problem
+
+The team behind Aqarchamal was aggregating listings manually — collecting details from agencies by phone and email, then publishing them to a static site one by one. The process was slow, error-prone, and impossible to scale. Agencies had no way to manage their own listings directly, so every update required the Aqarchamal team to act as a middleman. Buyers had limited filtering options and no map view, which made it hard to evaluate properties by location.
+
+## What we built
+
+We built a full property listing platform on Laravel and MongoDB, with Bootstrap as the frontend layer. Agencies get their own authenticated portal where they can publish listings, add photos, set pricing, and mark units as available or reserved — without involving the Aqarchamal team. The buyer-facing site has faceted search: filter by property type, price range, number of rooms, and location, with results plotted on an interactive map view.
+
+MongoDB was chosen for the property data model: listing attributes vary significantly across property types, and a document-based schema lets the platform accommodate new fields and categories without schema migrations. The admin dashboard gives the Aqarchamal team a consolidated view across all agencies and regions.
+
+## Outcome
+
+At launch, the platform carried over 300 active listings across the Tanger and Tetouan regions. Listing go-live time dropped from days to the same day — agencies publish directly without waiting for manual entry. The three-system patchwork (static site, spreadsheet, email inbox) was replaced by a single platform. The team now focuses on growing the agency network rather than managing data entry.
+
+---
+
+*Full case study available on request. [Contact us →](/contact)*
