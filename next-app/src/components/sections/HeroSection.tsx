@@ -1,41 +1,7 @@
-"use client";
-
-import { useEffect, useState } from "react";
-import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
-
-function LocalClock({ timeLabel }: { timeLabel: string }) {
-  const [time, setTime] = useState<string | null>(null);
-
-  useEffect(() => {
-    function format() {
-      return new Date().toLocaleTimeString("en-GB", {
-        timeZone: "Africa/Casablanca",
-        hour: "2-digit",
-        minute: "2-digit",
-      });
-    }
-    // Initial sync via rAF (satisfies react-hooks/set-state-in-effect)
-    const rafId = requestAnimationFrame(() => setTime(format()));
-    const id = setInterval(() => setTime(format()), 60_000);
-    return () => {
-      cancelAnimationFrame(rafId);
-      clearInterval(id);
-    };
-  }, []);
-
-  return (
-    <div className="flex items-center justify-between">
-      <span className="text-primary-foreground/60 font-mono text-xs">
-        {timeLabel}
-      </span>
-      <span className="text-primary-foreground font-mono text-xs">
-        {time ?? "--:--"}
-      </span>
-    </div>
-  );
-}
+import { LocalClock } from "@/components/LocalClock";
 
 interface StudioStatusPanelProps {
   online: string;
@@ -106,9 +72,9 @@ function StudioStatusPanel({
   );
 }
 
-export function HeroSection() {
-  const t = useTranslations("Home.hero");
-  const ts = useTranslations("Home.status");
+export async function HeroSection() {
+  const t = await getTranslations("Home.hero");
+  const ts = await getTranslations("Home.status");
 
   return (
     <section
