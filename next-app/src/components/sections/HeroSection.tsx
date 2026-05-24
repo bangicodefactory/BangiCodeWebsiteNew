@@ -136,16 +136,12 @@ export function HeroSection() {
           </p>
 
           <div className="flex flex-wrap items-center gap-3">
-            <Link href="/book">
-              <Button variant="primary" size="lg">
-                {t("ctaPrimary")}
-              </Button>
-            </Link>
-            <Link href="#work">
-              <Button variant="secondary" size="lg">
-                {t("ctaSecondary")}
-              </Button>
-            </Link>
+            <Button asChild variant="primary" size="lg">
+              <Link href="/book">{t("ctaPrimary")}</Link>
+            </Button>
+            <Button asChild variant="secondary" size="lg">
+              <Link href="#work">{t("ctaSecondary")}</Link>
+            </Button>
           </div>
 
           <p className="text-muted-foreground font-mono text-xs">

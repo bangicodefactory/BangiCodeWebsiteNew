@@ -160,11 +160,9 @@ export function ServiceDetailPage({
           <h2 className="font-display text-foreground mb-8 text-2xl font-bold tracking-tight sm:text-3xl">
             {ctaHeadline}
           </h2>
-          <Link href={contactHref}>
-            <Button variant="primary" size="lg">
-              {ctaButton}
-            </Button>
-          </Link>
+          <Button asChild variant="primary" size="lg">
+            <Link href={contactHref}>{ctaButton}</Link>
+          </Button>
         </div>
       </section>
     </main>
