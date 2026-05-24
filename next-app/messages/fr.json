@@ -17,7 +17,8 @@
       "availability": "fin juillet 2026",
       "teamLabel": "équipe",
       "team": "12 personnes · 4 expertises",
-      "timeLabel": "heure locale"
+      "timeLabel": "heure locale",
+      "ariaLabel": "Statut du studio"
     },
     "thesis": {
       "eyebrow": "// la thèse",

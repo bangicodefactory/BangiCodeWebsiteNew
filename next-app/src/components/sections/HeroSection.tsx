@@ -1,76 +1,7 @@
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
-import { LocalClock } from "@/components/LocalClock";
-
-interface StudioStatusPanelProps {
-  online: string;
-  sprintLabel: string;
-  sprint: string;
-  availabilityLabel: string;
-  availability: string;
-  teamLabel: string;
-  team: string;
-  timeLabel: string;
-}
-
-function StudioStatusPanel({
-  online,
-  sprintLabel,
-  sprint,
-  availabilityLabel,
-  availability,
-  teamLabel,
-  team,
-  timeLabel,
-}: StudioStatusPanelProps) {
-  return (
-    <aside
-      aria-label="Studio status"
-      className="bg-primary space-y-4 rounded-sm p-5 text-sm"
-    >
-      <div className="flex items-center gap-2">
-        {/* tertiary-fixed-dim — the single legitimate raw hex per CLAUDE.md */}
-        <span
-          className="h-2 w-2 flex-shrink-0 rounded-full"
-          style={{ backgroundColor: "#ffb4a9" }}
-          aria-hidden="true"
-        />
-        <span className="text-primary-foreground font-mono text-xs tracking-widest uppercase">
-          {online}
-        </span>
-      </div>
-
-      <div className="space-y-3">
-        <div className="flex items-center justify-between gap-4">
-          <span className="text-primary-foreground/60 font-mono text-xs">
-            {sprintLabel}
-          </span>
-          <span className="text-primary-foreground text-right font-mono text-xs">
-            {sprint}
-          </span>
-        </div>
-        <div className="flex items-center justify-between gap-4">
-          <span className="text-primary-foreground/60 font-mono text-xs">
-            {availabilityLabel}
-          </span>
-          <span className="text-primary-foreground text-right font-mono text-xs">
-            {availability}
-          </span>
-        </div>
-        <div className="flex items-center justify-between gap-4">
-          <span className="text-primary-foreground/60 font-mono text-xs">
-            {teamLabel}
-          </span>
-          <span className="text-primary-foreground text-right font-mono text-xs">
-            {team}
-          </span>
-        </div>
-        <LocalClock timeLabel={timeLabel} />
-      </div>
-    </aside>
-  );
-}
+import { StudioStatusPanel } from "@/components/sections/StudioStatusPanel";
 
 export async function HeroSection() {
   const t = await getTranslations("Home.hero");
@@ -118,6 +49,7 @@ export async function HeroSection() {
         {/* Right column — studio status panel (desktop only) */}
         <div className="hidden lg:block">
           <StudioStatusPanel
+            ariaLabel={ts("ariaLabel")}
             online={ts("online")}
             sprintLabel={ts("sprintLabel")}
             sprint={ts("sprint")}
@@ -133,6 +65,7 @@ export async function HeroSection() {
       {/* Mobile status panel — below CTAs, collapsed */}
       <div className="mt-10 block lg:hidden">
         <StudioStatusPanel
+          ariaLabel={ts("ariaLabel")}
           online={ts("online")}
           sprintLabel={ts("sprintLabel")}
           sprint={ts("sprint")}
