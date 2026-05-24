@@ -64,7 +64,7 @@ Vercel provides these records — get exact values from **Vercel Dashboard → P
 
 ```
 bangicode.ma      A        76.76.21.21       ; Vercel Anycast IP
-bangicode.ma      AAAA     2606:4700::6810:…  ; Vercel IPv6 (if available)
+bangicode.ma      AAAA     <get-from-vercel-dashboard>  ; Vercel IPv6 (if available)
 www.bangicode.ma  CNAME    cname.vercel-dns.com
 ```
 
