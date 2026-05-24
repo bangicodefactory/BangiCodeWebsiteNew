@@ -148,11 +148,9 @@ export default async function ServicesPage() {
           <p className="font-body text-primary-foreground/70 mb-8 text-lg">
             {t("ctaBody")}
           </p>
-          <Link href="/contact">
-            <Button variant="secondary" size="lg">
-              {t("ctaButton")}
-            </Button>
-          </Link>
+          <Button asChild variant="secondary" size="lg">
+            <Link href="/contact">{t("ctaButton")}</Link>
+          </Button>
         </div>
       </section>
     </main>

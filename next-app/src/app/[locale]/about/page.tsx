@@ -155,11 +155,9 @@ export default async function AboutPage() {
           <h2 className="font-display text-foreground mb-8 text-2xl font-bold tracking-tight sm:text-3xl">
             {t("ctaHeadline")}
           </h2>
-          <Link href="/contact">
-            <Button variant="primary" size="lg">
-              {t("ctaButton")}
-            </Button>
-          </Link>
+          <Button asChild variant="primary" size="lg">
+            <Link href="/contact">{t("ctaButton")}</Link>
+          </Button>
         </div>
       </section>
 
