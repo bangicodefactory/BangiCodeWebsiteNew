@@ -6,6 +6,7 @@ import {
   websiteSchema,
   localBusinessSchema,
 } from "@/lib/json-ld";
+import { LegacyHashRedirect } from "@/components/LegacyHashRedirect";
 import { HeroSection } from "@/components/sections/HeroSection";
 import { ThesisLineStats } from "@/components/sections/ThesisLineStats";
 import { TrustedByRow } from "@/components/sections/TrustedByRow";
@@ -46,6 +47,7 @@ export default async function LocalePage() {
           ]),
         }}
       />
+      <LegacyHashRedirect />
       <HeroSection />
       <ThesisLineStats />
       <TrustedByRow />

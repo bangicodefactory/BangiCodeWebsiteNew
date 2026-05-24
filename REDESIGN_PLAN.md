@@ -465,7 +465,7 @@ Tickets grouped by epic. Each story includes acceptance criteria.
 3. ~~Testimonials~~ → **RESOLVED**: keep Youssef B. / Friterie.ma placeholder until Ahmed replaces manually.
 4. ~~Case-study depth~~ → **RESOLVED**: short 1-screen summaries + "available on request" CTA. Major scope reduction (saves ~5–7 days).
 5. ~~Analytics~~ → **RESOLVED**: Google Analytics 4. Cookie banner must use opt-in consent flow for GDPR.
-6. **Hosting** — STILL OPEN. Vercel vs. EU provider vs. Moroccan provider.
+6. ~~Hosting~~ → **RESOLVED**: **Vercel** (Hobby → Pro when traffic warrants). Rationale: native Next.js support, auto-preview deployments per PR, edge CDN with MENA PoP, TLS auto-renewing, 0-config ISR/SSR. Full cutover plan in `docs/cutover-runbook.md`.
 7. ~~Existing Linear conventions~~ → **RESOLVED via API**: team `ISTA3` (key `IST`), workspace labels reusable: `shadcn-ui`, `migration`, `perf`, `docs`, `Feature`, `Improvement`, `Bug`. Project-specific labels to create: `i18n`, `copy`, `legal`, `a11y`, `design`, `seo`.
 
 ### Still parked
@@ -473,7 +473,7 @@ Tickets grouped by epic. Each story includes acceptance criteria.
 - **"Late July 2026" studio status availability** — placeholder in the design. Replace with real next opening, or strip the field.
 - **Founder is "Ahmed"** in the contact card — confirmed implicitly by user keeping it in v3/v4 with no pushback. Use Ahmed Chioua's real name in production.
 - **Cal.com event URL** — once Ahmed creates a Cal.com booking event for "30-min discovery call," the URL gets wired into the "Book 30 min →" CTA. Until then, link to a placeholder `/book` route.
-- **Hosting decision** above.
+- ~~Hosting decision~~ — resolved, see item 6 above.
 
 ---
 
