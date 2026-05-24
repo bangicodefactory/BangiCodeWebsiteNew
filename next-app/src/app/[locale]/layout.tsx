@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { notFound } from "next/navigation";
-import dynamic from "next/dynamic";
 import {
   Montserrat,
   Hanken_Grotesk,
@@ -17,30 +16,8 @@ import { routing, type Locale } from "@/i18n/routing";
 import { SiteNav } from "@/components/sections/site-nav";
 import { SiteFooter } from "@/components/sections/site-footer";
 import { BookedToast } from "@/components/BookedToast";
+import { DeferredClientUI } from "@/components/DeferredClientUI";
 import "../globals.css";
-
-// Deferred — all three start hidden/invisible so deferring avoids blocking the
-// initial JS bundle with scroll-tracking, consent logic, and analytics loading.
-const GaLoader = dynamic(
-  () => import("@/components/GaLoader").then((m) => ({ default: m.GaLoader })),
-  { ssr: false },
-);
-
-const CookieBanner = dynamic(
-  () =>
-    import("@/components/sections/CookieBanner").then((m) => ({
-      default: m.CookieBanner,
-    })),
-  { ssr: false },
-);
-
-const WhatsAppCta = dynamic(
-  () =>
-    import("@/components/WhatsAppCta").then((m) => ({
-      default: m.WhatsAppCta,
-    })),
-  { ssr: false },
-);
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
@@ -153,9 +130,7 @@ export default async function LocaleLayout({ children, params }: Props) {
               {children}
             </div>
             <SiteFooter />
-            <GaLoader />
-            <CookieBanner />
-            <WhatsAppCta />
+            <DeferredClientUI />
             <Suspense>
               <BookedToast />
             </Suspense>
