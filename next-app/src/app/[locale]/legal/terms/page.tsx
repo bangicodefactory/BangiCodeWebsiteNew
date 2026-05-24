@@ -18,18 +18,18 @@ export async function generateMetadata({
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "Legal" });
   return {
-    title: t("privacyTitle"),
-    description: t("privacyMetaDescription"),
+    title: t("termsTitle"),
+    description: t("termsMetaDescription"),
   };
 }
 
-export default async function PrivacyPolicyPage({
+export default async function TermsOfServicePage({
   params,
 }: {
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  const result = await getLegalContent("privacy", locale);
+  const result = await getLegalContent("terms", locale);
   if (!result) notFound();
 
   const t = await getTranslations({ locale, namespace: "Legal" });
@@ -50,7 +50,7 @@ export default async function PrivacyPolicyPage({
             {t("legalEyebrow")}
           </p>
           <h1 className="font-display text-foreground mb-4 text-4xl font-bold tracking-tight sm:text-5xl">
-            {t("privacyTitle")}
+            {t("termsTitle")}
           </h1>
           {lastUpdated && (
             <p

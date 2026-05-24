@@ -499,6 +499,8 @@
     "privacyTitle": "Politique de confidentialité",
     "privacyMetaDescription": "Comment Bangicode SARL collecte, utilise et protège vos données personnelles.",
     "lastUpdatedLabel": "Dernière mise à jour",
-    "backToHome": "Retour à l’accueil"
+    "backToHome": "Retour à l’accueil",
+    "termsTitle": "Conditions générales d'utilisation",
+    "termsMetaDescription": "Les conditions régissant votre utilisation de bangicode.ma et vos missions avec Bangicode SARL."
   }
 }
