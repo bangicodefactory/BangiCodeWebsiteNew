@@ -465,7 +465,7 @@ Tickets grouped by epic. Each story includes acceptance criteria.
 3. ~~Testimonials~~ → **RESOLVED**: keep Youssef B. / Friterie.ma placeholder until Ahmed replaces manually.
 4. ~~Case-study depth~~ → **RESOLVED**: short 1-screen summaries + "available on request" CTA. Major scope reduction (saves ~5–7 days).
 5. ~~Analytics~~ → **RESOLVED**: Google Analytics 4. Cookie banner must use opt-in consent flow for GDPR.
-6. ~~Hosting~~ → **RESOLVED**: **Vercel** (Hobby → Pro when traffic warrants). Rationale: native Next.js support, auto-preview deployments per PR, edge CDN with MENA PoP, TLS auto-renewing, 0-config ISR/SSR. Full cutover plan in `docs/cutover-runbook.md`.
+6. ~~Hosting~~ → **RESOLVED**: **Shared hosting with Node.js** (cPanel + PM2 + reverse proxy). Rationale: existing hosting contract, Node.js 20+ support available, PM2 for process management. Requires `next start` — not static export. Full cutover plan in `docs/cutover-runbook.md`.
 7. ~~Existing Linear conventions~~ → **RESOLVED via API**: team `ISTA3` (key `IST`), workspace labels reusable: `shadcn-ui`, `migration`, `perf`, `docs`, `Feature`, `Improvement`, `Bug`. Project-specific labels to create: `i18n`, `copy`, `legal`, `a11y`, `design`, `seo`.
 
 ### Still parked
