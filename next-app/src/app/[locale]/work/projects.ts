@@ -3,7 +3,7 @@ export const PROJECTS = [
     slug: "rentcar",
     key: "rentcar",
     category: "software" as const,
-    tags: ["Next.js", "Stripe", "PostgreSQL"],
+    tags: ["Laravel", "Next.js", "Stripe", "PostgreSQL"],
     date: "2023",
   },
   {
@@ -17,21 +17,21 @@ export const PROJECTS = [
     slug: "classkom",
     key: "classkom",
     category: "software" as const,
-    tags: ["React Native", "Firebase"],
+    tags: ["React Native", "Firebase", "Node.js"],
     date: "2023",
   },
   {
     slug: "nortecoffeeco",
     key: "nortecoffeeco",
     category: "software" as const,
-    tags: ["Next.js", "Sanity"],
+    tags: ["Next.js", "Sanity", "Stripe"],
     date: "2024",
   },
   {
     slug: "ayaalmadina",
     key: "ayaalmadina",
     category: "software" as const,
-    tags: ["Laravel", "MySQL"],
+    tags: ["Laravel", "MySQL", "Mapbox"],
     date: "2022",
   },
   {
