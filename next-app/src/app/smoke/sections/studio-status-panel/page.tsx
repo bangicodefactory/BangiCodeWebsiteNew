@@ -5,6 +5,7 @@ export default function SmokeStudioStatusPanelPage() {
     <main className="bg-background min-h-screen p-12">
       <div className="mx-auto max-w-sm">
         <StudioStatusPanel
+          ariaLabel="Studio status"
           online="● online"
           sprintLabel="current sprint"
           sprint="E2 — Design system"

@@ -1,6 +1,7 @@
 import { LocalClock } from "@/components/LocalClock";
 
 export interface StudioStatusPanelProps {
+  ariaLabel: string;
   online: string;
   sprintLabel: string;
   sprint: string;
@@ -12,6 +13,7 @@ export interface StudioStatusPanelProps {
 }
 
 export function StudioStatusPanel({
+  ariaLabel,
   online,
   sprintLabel,
   sprint,
@@ -23,7 +25,7 @@ export function StudioStatusPanel({
 }: StudioStatusPanelProps) {
   return (
     <aside
-      aria-label="Studio status"
+      aria-label={ariaLabel}
       className="bg-primary space-y-4 rounded-sm p-5 text-sm"
     >
       <div className="flex items-center gap-2">

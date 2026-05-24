@@ -17,7 +17,8 @@
       "availability": "late july 2026",
       "teamLabel": "team",
       "team": "12 people · 4 practices",
-      "timeLabel": "local time"
+      "timeLabel": "local time",
+      "ariaLabel": "Studio status"
     },
     "thesis": {
       "eyebrow": "// the thesis",

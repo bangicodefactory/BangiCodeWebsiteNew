@@ -17,7 +17,8 @@
       "availability": "أواخر يوليو 2026",
       "teamLabel": "الفريق",
       "team": "12 شخصاً · 4 تخصصات",
-      "timeLabel": "التوقيت المحلي"
+      "timeLabel": "التوقيت المحلي",
+      "ariaLabel": "حالة الاستوديو"
     },
     "thesis": {
       "eyebrow": "// الفلسفة",

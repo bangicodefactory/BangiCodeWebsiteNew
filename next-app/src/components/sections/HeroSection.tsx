@@ -49,6 +49,7 @@ export async function HeroSection() {
         {/* Right column — studio status panel (desktop only) */}
         <div className="hidden lg:block">
           <StudioStatusPanel
+            ariaLabel={ts("ariaLabel")}
             online={ts("online")}
             sprintLabel={ts("sprintLabel")}
             sprint={ts("sprint")}
@@ -64,6 +65,7 @@ export async function HeroSection() {
       {/* Mobile status panel — below CTAs, collapsed */}
       <div className="mt-10 block lg:hidden">
         <StudioStatusPanel
+          ariaLabel={ts("ariaLabel")}
           online={ts("online")}
           sprintLabel={ts("sprintLabel")}
           sprint={ts("sprint")}
