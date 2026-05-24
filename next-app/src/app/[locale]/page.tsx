@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { routing } from "@/i18n/routing";
+import {
+  organizationSchema,
+  websiteSchema,
+  localBusinessSchema,
+} from "@/lib/json-ld";
 import { HeroSection } from "@/components/sections/HeroSection";
 import { ThesisLineStats } from "@/components/sections/ThesisLineStats";
 import { TrustedByRow } from "@/components/sections/TrustedByRow";
@@ -31,6 +36,16 @@ export async function generateMetadata({
 export default async function LocalePage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify([
+            organizationSchema(),
+            websiteSchema(),
+            localBusinessSchema(),
+          ]),
+        }}
+      />
       <HeroSection />
       <ThesisLineStats />
       <TrustedByRow />

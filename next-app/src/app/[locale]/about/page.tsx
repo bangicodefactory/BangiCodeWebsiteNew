@@ -5,6 +5,7 @@ import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { ThesisLineStats } from "@/components/sections/ThesisLineStats";
 import { FounderCard } from "@/components/sections/FounderCard";
+import { organizationSchema } from "@/lib/json-ld";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -27,6 +28,12 @@ export default async function AboutPage() {
 
   return (
     <main id="main-content">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(organizationSchema()),
+        }}
+      />
       {/* Hero */}
       <section className="mx-auto max-w-7xl px-4 pt-24 pb-16 sm:px-6 sm:pt-32 sm:pb-20">
         <p
