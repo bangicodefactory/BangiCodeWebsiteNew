@@ -1,4 +1,4 @@
-import manifestJson from "../../../content/work/manifest.json";
+import manifestJson from "../../content/work/manifest.json";
 
 export interface CaseHero {
   placeholder: boolean;
