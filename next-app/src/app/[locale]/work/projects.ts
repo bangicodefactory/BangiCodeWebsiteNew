@@ -59,14 +59,14 @@ export const PROJECTS = [
     slug: "fujiwara",
     key: "fujiwara",
     category: "social" as const,
-    tags: ["Instagram", "Video"],
+    tags: ["Instagram", "Video", "Photography"],
     date: "2023–present",
   },
   {
     slug: "alaturco",
     key: "alaturco",
     category: "social" as const,
-    tags: ["Social Media", "Photography"],
+    tags: ["Instagram", "Photography"],
     date: "2022–2023",
   },
   {
