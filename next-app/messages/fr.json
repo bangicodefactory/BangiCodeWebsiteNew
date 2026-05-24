@@ -493,5 +493,12 @@
     "legalNav": "Légal",
     "linkedin": "LinkedIn",
     "github": "GitHub"
+  },
+  "Legal": {
+    "legalEyebrow": "// légal",
+    "privacyTitle": "Politique de confidentialité",
+    "privacyMetaDescription": "Comment Bangicode SARL collecte, utilise et protège vos données personnelles.",
+    "lastUpdatedLabel": "Dernière mise à jour",
+    "backToHome": "Retour à l’accueil"
   }
 }

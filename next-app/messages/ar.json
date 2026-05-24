@@ -493,5 +493,12 @@
     "legalNav": "قانوني",
     "linkedin": "LinkedIn",
     "github": "GitHub"
+  },
+  "Legal": {
+    "legalEyebrow": "// قانوني",
+    "privacyTitle": "سياسة الخصوصية",
+    "privacyMetaDescription": "كيف تجمع بانجيكود ش.م.م بياناتك الشخصية وتستخدمها وتحميها.",
+    "lastUpdatedLabel": "آخر تحديث",
+    "backToHome": "العودة إلى الرئيسية"
   }
 }
