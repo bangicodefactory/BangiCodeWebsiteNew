@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import { notFound } from "next/navigation";
+import dynamic from "next/dynamic";
 import {
   Montserrat,
   Hanken_Grotesk,
@@ -15,22 +16,38 @@ import { Toaster } from "sonner";
 import { routing, type Locale } from "@/i18n/routing";
 import { SiteNav } from "@/components/sections/site-nav";
 import { SiteFooter } from "@/components/sections/site-footer";
-import { CookieBanner } from "@/components/sections/CookieBanner";
-import { WhatsAppCta } from "@/components/WhatsAppCta";
 import { BookedToast } from "@/components/BookedToast";
 import "../globals.css";
+
+// Deferred — both start hidden/invisible, so deferring avoids blocking the
+// initial JS bundle with scroll-tracking and consent logic.
+const CookieBanner = dynamic(
+  () =>
+    import("@/components/sections/CookieBanner").then((m) => ({
+      default: m.CookieBanner,
+    })),
+  { ssr: false },
+);
+
+const WhatsAppCta = dynamic(
+  () =>
+    import("@/components/WhatsAppCta").then((m) => ({
+      default: m.WhatsAppCta,
+    })),
+  { ssr: false },
+);
 
 const montserrat = Montserrat({
   variable: "--font-montserrat",
   subsets: ["latin", "latin-ext"],
-  weight: ["400", "500", "600", "700", "800"],
+  weight: ["400", "500", "600", "700"],
   display: "swap",
 });
 
 const hankenGrotesk = Hanken_Grotesk({
   variable: "--font-hanken-grotesk",
   subsets: ["latin"],
-  weight: ["300", "400", "500", "600"],
+  weight: ["400", "500", "600"],
   display: "swap",
 });
 
@@ -46,7 +63,7 @@ const jetbrainsMono = JetBrains_Mono({
 const notoSansArabic = Noto_Sans_Arabic({
   variable: "--font-noto-arabic",
   subsets: ["arabic"],
-  weight: ["400", "500", "600", "700", "800"],
+  weight: ["400", "500", "600", "700"],
   display: "swap",
   preload: false,
 });
