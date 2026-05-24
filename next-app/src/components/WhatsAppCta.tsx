@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
+import { trackWhatsappClick } from "@/lib/analytics";
 
 const WA_NUMBER = process.env.NEXT_PUBLIC_WA_NUMBER ?? "212664571370";
 
@@ -66,6 +67,10 @@ export function WhatsAppCta() {
   const hidden = !visible || inputFocused;
   const href = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(t("prefill"))}`;
 
+  const handleClick = useCallback(() => {
+    trackWhatsappClick(window.location.pathname);
+  }, []);
+
   return (
     <a
       href={href}
@@ -73,6 +78,7 @@ export function WhatsAppCta() {
       rel="noopener noreferrer"
       aria-label={t("ariaLabel")}
       data-testid="whatsapp-cta"
+      onClick={handleClick}
       className={cn(
         "fixed end-5 bottom-5 z-40",
         "flex h-14 w-14 items-center justify-center rounded-full",

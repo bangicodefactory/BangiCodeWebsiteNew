@@ -20,6 +20,7 @@ interface NavigationMenuProps {
   activeHref?: string;
   dir?: "ltr" | "rtl";
   className?: string;
+  onItemClick?: (item: NavLink) => void;
 }
 
 export function NavigationMenu({
@@ -27,6 +28,7 @@ export function NavigationMenu({
   activeHref,
   dir,
   className,
+  onItemClick,
 }: NavigationMenuProps) {
   const rawPathname = usePathname();
   const pathname = rawPathname.replace(LOCALE_PREFIX_RE, "/");
@@ -49,6 +51,7 @@ export function NavigationMenu({
                 <Link
                   href={item.href}
                   aria-current={isActive ? "page" : undefined}
+                  onClick={() => onItemClick?.(item)}
                   className={cn(
                     "font-hanken-grotesk relative inline-flex items-center rounded-sm px-3 py-2",
                     "text-foreground text-sm font-medium transition-colors",

@@ -16,6 +16,7 @@ import {
 import { NavigationMenu, type NavLink } from "@/components/nav/navigation-menu";
 import { LocaleSwitcher } from "@/components/LocaleSwitcher";
 import type { Locale } from "@/i18n/routing";
+import { trackNavClick } from "@/lib/analytics";
 
 interface SiteNavProps {
   locale: Locale;
@@ -71,7 +72,11 @@ export function SiteNav({ locale }: SiteNavProps) {
           className="hidden items-center gap-2 md:flex"
           aria-label={t("desktopNav")}
         >
-          <NavigationMenu items={navItems} dir={dir} />
+          <NavigationMenu
+            items={navItems}
+            dir={dir}
+            onItemClick={(item) => trackNavClick(item.href)}
+          />
           <LocaleSwitcher currentLocale={locale} />
           <Button variant="primary" size="sm" asChild>
             <Link href="/contact">{t("startProject")}</Link>
@@ -106,7 +111,10 @@ export function SiteNav({ locale }: SiteNavProps) {
                   <Link
                     key={item.href}
                     href={item.href}
-                    onClick={() => setOpen(false)}
+                    onClick={() => {
+                      setOpen(false);
+                      trackNavClick(item.href);
+                    }}
                     aria-current={
                       pathname === item.href ||
                       pathname.startsWith(item.href + "/")

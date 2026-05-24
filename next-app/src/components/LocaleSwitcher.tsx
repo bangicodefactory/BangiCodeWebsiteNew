@@ -3,6 +3,7 @@
 import { useTranslations } from "next-intl";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { routing, type Locale } from "@/i18n/routing";
+import { trackLocaleSwitch } from "@/lib/analytics";
 
 const LOCALE_LABELS: Record<Locale, string> = {
   en: "EN",
@@ -22,6 +23,7 @@ export function LocaleSwitcher({
   const router = useRouter();
 
   function switchLocale(nextLocale: Locale) {
+    trackLocaleSwitch(currentLocale, nextLocale);
     router.replace(pathname, { locale: nextLocale });
   }
 
