@@ -77,7 +77,7 @@ export default async function CaseStudyPage({
       </section>
 
       {/* Hero image */}
-      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+      <div className="bg-surface-container mx-auto max-w-7xl px-4 sm:px-6">
         {hero && !hero.placeholder ? (
           <Image
             src={hero.webp}

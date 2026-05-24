@@ -3,7 +3,6 @@ import manifestJson from "../../../content/work/manifest.json";
 export interface CaseHero {
   placeholder: boolean;
   webp: string;
-  avif: string;
   alt: string;
   width: number;
   height: number;

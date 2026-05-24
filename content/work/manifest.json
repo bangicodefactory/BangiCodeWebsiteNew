@@ -1,12 +1,10 @@
 {
-  "$schema": "../../next-app/src/lib/work-manifest.schema.json",
   "cases": [
     {
       "slug": "rentcar",
       "hero": {
         "placeholder": true,
         "webp": "/case-studies/rentcar/hero.webp",
-        "avif": "/case-studies/rentcar/hero.avif",
         "alt": "RentCar — vehicle rental platform dashboard",
         "width": 1600,
         "height": 900
@@ -17,7 +15,6 @@
       "hero": {
         "placeholder": true,
         "webp": "/case-studies/friterie-ma/hero.webp",
-        "avif": "/case-studies/friterie-ma/hero.avif",
         "alt": "Friterie.ma — food ordering platform",
         "width": 1600,
         "height": 900
@@ -28,7 +25,6 @@
       "hero": {
         "placeholder": true,
         "webp": "/case-studies/classkom/hero.webp",
-        "avif": "/case-studies/classkom/hero.avif",
         "alt": "Classkom — classroom management mobile app",
         "width": 1600,
         "height": 900
@@ -39,7 +35,6 @@
       "hero": {
         "placeholder": true,
         "webp": "/case-studies/nortecoffeeco/hero.webp",
-        "avif": "/case-studies/nortecoffeeco/hero.avif",
         "alt": "Nortecoffeeco — specialty coffee e-commerce",
         "width": 1600,
         "height": 900
@@ -50,7 +45,6 @@
       "hero": {
         "placeholder": true,
         "webp": "/case-studies/ayaalmadina/hero.webp",
-        "avif": "/case-studies/ayaalmadina/hero.avif",
         "alt": "Ayaalmadina — real estate listing platform",
         "width": 1600,
         "height": 900
@@ -61,7 +55,6 @@
       "hero": {
         "placeholder": true,
         "webp": "/case-studies/coinluminaire/hero.webp",
-        "avif": "/case-studies/coinluminaire/hero.avif",
         "alt": "Coinluminaire — lighting e-commerce store",
         "width": 1600,
         "height": 900
@@ -72,7 +65,6 @@
       "hero": {
         "placeholder": true,
         "webp": "/case-studies/cafeimperial/hero.webp",
-        "avif": "/case-studies/cafeimperial/hero.avif",
         "alt": "CafeImperial — café website and online presence",
         "width": 1600,
         "height": 900
@@ -83,7 +75,6 @@
       "hero": {
         "placeholder": true,
         "webp": "/case-studies/aqarchamal/hero.webp",
-        "avif": "/case-studies/aqarchamal/hero.avif",
         "alt": "Aqarchamal — northern Morocco real estate portal",
         "width": 1600,
         "height": 900
@@ -94,7 +85,6 @@
       "hero": {
         "placeholder": true,
         "webp": "/case-studies/fujiwara/hero.webp",
-        "avif": "/case-studies/fujiwara/hero.avif",
         "alt": "Fujiwara — social media and video production",
         "width": 1600,
         "height": 900
@@ -105,7 +95,6 @@
       "hero": {
         "placeholder": true,
         "webp": "/case-studies/alaturco/hero.webp",
-        "avif": "/case-studies/alaturco/hero.avif",
         "alt": "Alaturco — restaurant Instagram presence",
         "width": 1600,
         "height": 900
@@ -116,7 +105,6 @@
       "hero": {
         "placeholder": true,
         "webp": "/case-studies/riha-ma/hero.webp",
-        "avif": "/case-studies/riha-ma/hero.avif",
         "alt": "Riha.ma — travel and tourism social content",
         "width": 1600,
         "height": 900
@@ -127,7 +115,6 @@
       "hero": {
         "placeholder": true,
         "webp": "/case-studies/cosas-buenas/hero.webp",
-        "avif": "/case-studies/cosas-buenas/hero.avif",
         "alt": "Cosas Buenas — lifestyle brand Instagram",
         "width": 1600,
         "height": 900
