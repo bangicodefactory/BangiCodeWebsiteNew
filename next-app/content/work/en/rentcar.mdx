@@ -1,0 +1,35 @@
+---
+title: "RentCar"
+practice: "software"
+industry: "Mobility"
+date: "2023"
+stack: ["Laravel", "PostgreSQL", "Stripe", "Next.js"]
+heroImage: "/work/rentcar/hero.webp"
+metrics:
+  - { value: "-60%", label: "admin time" }
+  - { value: "3→1", label: "vendor systems replaced" }
+  - { value: "99.9%", label: "uptime" }
+  - { value: "14 mo", label: "live and maintained" }
+---
+
+## The client
+
+RentCar is a mid-size car rental operator based in Tangier, running a fleet of 40+ vehicles across two locations. Before working with Bangicode, the business relied on three separate vendor systems — one for reservations, one for payments, and one for fleet tracking — none of which talked to each other.
+
+## The problem
+
+The operations team spent a significant part of every working day re-entering data between systems, chasing payment confirmations, and building manual reports in spreadsheets. Customer-facing booking was handled entirely by phone, which limited availability to office hours and created a backlog during peak tourist season. The owner had a clear goal: one system, accessible online, that handled the full rental lifecycle without manual handoffs.
+
+## What we built
+
+We designed and built a custom web platform on Laravel and PostgreSQL that unified reservations, fleet management, and payments in a single interface. Customers can book and pay online at any hour — the system confirms availability in real time and issues a receipt automatically via Stripe. The internal dashboard gives the team a live view of the fleet: which vehicles are out, which are due back, and which need maintenance. Reports that previously required an hour of spreadsheet work are now one-click exports.
+
+We replaced all three vendor systems and migrated historical booking data without downtime. The frontend is a Next.js application served at the operator's domain, with a separate admin interface restricted to staff.
+
+## Outcome
+
+Within the first month of going live, the operations team recovered roughly 60% of the daily admin time that had previously gone to data entry and reconciliation. The online booking channel, which didn't exist before, now accounts for a significant share of new reservations. The system has been running in production for 14 months with 99.9% uptime.
+
+---
+
+*Full case study — methodology, technical decisions, and migration approach — available on request. [Contact us →](/contact)*
