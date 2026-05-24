@@ -1,4 +1,4 @@
-const BASE_URL = process.env.SITE_URL ?? "https://bangicode.ma";
+export const BASE_URL = process.env.SITE_URL ?? "https://bangicode.ma";
 
 export function organizationSchema() {
   return {
@@ -63,10 +63,12 @@ export function serviceSchema({
   name,
   description,
   url,
+  serviceType = "Software Development",
 }: {
   name: string;
   description: string;
   url: string;
+  serviceType?: string;
 }) {
   return {
     "@context": "https://schema.org",
@@ -76,6 +78,6 @@ export function serviceSchema({
     description,
     url,
     areaServed: { "@type": "Country", name: "Morocco" },
-    serviceType: "Software Development",
+    serviceType,
   };
 }

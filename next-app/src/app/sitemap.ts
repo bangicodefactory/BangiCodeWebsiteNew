@@ -1,16 +1,19 @@
 import type { MetadataRoute } from "next";
 import { PROJECTS } from "./[locale]/work/projects";
+import { BASE_URL } from "@/lib/json-ld";
 
-const BASE_URL = process.env.SITE_URL ?? "https://bangicode.ma";
 const LOCALES = ["en", "fr", "ar"] as const;
 
 type LangAlternates = MetadataRoute.Sitemap[number]["alternates"];
 
 function alternates(path: string): LangAlternates {
   return {
-    languages: Object.fromEntries(
-      LOCALES.map((locale) => [locale, `${BASE_URL}/${locale}${path}`]),
-    ),
+    languages: {
+      ...Object.fromEntries(
+        LOCALES.map((locale) => [locale, `${BASE_URL}/${locale}${path}`]),
+      ),
+      "x-default": `${BASE_URL}/en${path}`,
+    },
   };
 }
 

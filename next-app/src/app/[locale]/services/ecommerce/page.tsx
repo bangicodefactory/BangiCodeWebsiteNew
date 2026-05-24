@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import { ServiceDetailPage } from "@/components/sections/ServiceDetailPage";
-import { serviceSchema } from "@/lib/json-ld";
+import { serviceSchema, BASE_URL } from "@/lib/json-ld";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -25,8 +25,6 @@ const STACK = [
   "Laravel",
   "Next.js",
 ] as const;
-
-const BASE_URL = process.env.SITE_URL ?? "https://bangicode.ma";
 
 export default async function EcommercePage() {
   const t = await getTranslations("Services.ecommerce");
