@@ -45,14 +45,14 @@ export const PROJECTS = [
     slug: "cafeimperial",
     key: "cafeimperial",
     category: "web" as const,
-    tags: ["Next.js", "Headless CMS"],
+    tags: ["React", "Node.js"],
     date: "2024",
   },
   {
     slug: "aqarchamal",
     key: "aqarchamal",
     category: "web" as const,
-    tags: ["Next.js", "Mapbox"],
+    tags: ["Laravel", "Bootstrap", "MongoDB"],
     date: "2023–2024",
   },
   {
