@@ -30,11 +30,9 @@ export async function FounderCard() {
           </h2>
 
           <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
-            <Link href="/book">
-              <Button variant="primary" size="lg">
-                {t("ctaPrimary")}
-              </Button>
-            </Link>
+            <Button asChild variant="primary" size="lg">
+              <Link href="/book">{t("ctaPrimary")}</Link>
+            </Button>
 
             <p className="text-muted-foreground font-mono text-xs">
               {t("ctaSecondaryPrefix")}{" "}

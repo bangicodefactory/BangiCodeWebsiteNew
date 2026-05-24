@@ -59,13 +59,13 @@ export async function FeaturedCase() {
             {metrics.map((m) => (
               <div
                 key={m.label}
-                className="bg-primary flex flex-col items-start gap-1 p-6"
+                className="bg-primary flex flex-col-reverse items-start gap-1 p-6"
               >
-                <dt className="font-display text-secondary-container text-4xl font-bold tracking-tight">
-                  {m.value}
-                </dt>
-                <dd className="text-primary-foreground/60 font-mono text-xs">
+                <dt className="text-primary-foreground/60 font-mono text-xs">
                   {m.label}
+                </dt>
+                <dd className="font-display text-secondary-container text-4xl font-bold tracking-tight">
+                  {m.value}
                 </dd>
               </div>
             ))}
