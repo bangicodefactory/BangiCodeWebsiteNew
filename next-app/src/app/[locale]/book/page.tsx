@@ -31,8 +31,12 @@ export default async function BookPage({
   return (
     <>
       {/* Warm up the Cal.com connection before the embed JS runs */}
-      <link rel="preconnect" href="https://cal.com" />
-      <link rel="preconnect" href="https://app.cal.com" />
+      <link rel="preconnect" href="https://cal.com" crossOrigin="anonymous" />
+      <link
+        rel="preconnect"
+        href="https://app.cal.com"
+        crossOrigin="anonymous"
+      />
       <main
         id="main-content"
         className="mx-auto w-full max-w-3xl px-4 py-8 sm:px-6"
