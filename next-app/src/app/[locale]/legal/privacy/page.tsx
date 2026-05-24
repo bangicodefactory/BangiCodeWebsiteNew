@@ -2,11 +2,9 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { MDXRemote } from "next-mdx-remote/rsc";
-import matter from "gray-matter";
-import fs from "fs/promises";
-import path from "path";
 import { routing } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
+import { getLegalContent } from "@/lib/legal-content";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -25,37 +23,20 @@ export async function generateMetadata({
   };
 }
 
-async function getPrivacyContent(locale: string) {
-  const filepath = path.join(
-    process.cwd(),
-    "content",
-    "legal",
-    "privacy",
-    locale,
-    "v1.mdx",
-  );
-  try {
-    const raw = await fs.readFile(filepath, "utf8");
-    const { content, data } = matter(raw);
-    return { content, frontmatter: data };
-  } catch {
-    return null;
-  }
-}
-
 export default async function PrivacyPolicyPage({
   params,
 }: {
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  const result = await getPrivacyContent(locale);
+  const result = await getLegalContent("privacy", locale);
   if (!result) notFound();
 
   const t = await getTranslations({ locale, namespace: "Legal" });
   const { content, frontmatter } = result;
 
   const lastUpdated = frontmatter.lastUpdated as string | undefined;
+  const isRtl = locale === "ar";
 
   return (
     <main id="main-content">
@@ -78,7 +59,7 @@ export default async function PrivacyPolicyPage({
             >
               {t("lastUpdatedLabel")}:{" "}
               {new Date(lastUpdated).toLocaleDateString(
-                locale === "ar" ? "ar-MA" : locale === "fr" ? "fr-FR" : "en-GB",
+                isRtl ? "ar-MA" : locale === "fr" ? "fr-FR" : "en-GB",
                 { year: "numeric", month: "long" },
               )}
             </p>
@@ -87,20 +68,20 @@ export default async function PrivacyPolicyPage({
 
         {/* MDX content */}
         <div
-          dir={locale === "ar" ? "rtl" : "ltr"}
+          dir={isRtl ? "rtl" : "ltr"}
           className="prose prose-slate max-w-none"
         >
           <MDXRemote source={content} options={{ parseFrontmatter: false }} />
         </div>
 
-        {/* Back to legal / footer nav */}
+        {/* Back nav */}
         <div className="border-border mt-16 border-t pt-8">
           <p className="text-muted-foreground font-mono text-xs">
             <Link
               href="/"
               className="focus-visible:ring-ring hover:text-foreground rounded-sm underline-offset-4 hover:underline focus-visible:ring-2 focus-visible:outline-none"
             >
-              ← {t("backToHome")}
+              {isRtl ? "→" : "←"} {t("backToHome")}
             </Link>
           </p>
         </div>
