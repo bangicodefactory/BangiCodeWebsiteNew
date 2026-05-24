@@ -88,7 +88,3 @@ export const PROJECTS = [
 export type Project = (typeof PROJECTS)[number];
 export type ProjectCategory = Project["category"];
 export type ProjectSlug = Project["slug"];
-
-export const PROJECT_BY_SLUG = Object.fromEntries(
-  PROJECTS.map((p) => [p.slug, p]),
-) as Record<ProjectSlug, Project>;

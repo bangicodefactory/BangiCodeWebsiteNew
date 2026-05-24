@@ -4,7 +4,7 @@ import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { PROJECTS, PROJECT_BY_SLUG } from "../projects";
+import { PROJECTS } from "../projects";
 
 export function generateStaticParams() {
   return PROJECTS.map((p) => ({ slug: p.slug }));
@@ -16,7 +16,7 @@ export async function generateMetadata({
   params: Promise<{ locale: string; slug: string }>;
 }): Promise<Metadata> {
   const { locale, slug } = await params;
-  const project = PROJECT_BY_SLUG[slug as keyof typeof PROJECT_BY_SLUG];
+  const project = PROJECTS.find((p) => p.slug === slug);
   if (!project) return {};
   const t = await getTranslations({ locale, namespace: "Work" });
   return {
@@ -38,7 +38,7 @@ export default async function CaseStudyPage({
   params: Promise<{ locale: string; slug: string }>;
 }) {
   const { slug } = await params;
-  const project = PROJECT_BY_SLUG[slug as keyof typeof PROJECT_BY_SLUG];
+  const project = PROJECTS.find((p) => p.slug === slug);
   if (!project) notFound();
 
   const t = await getTranslations("Work");
@@ -83,7 +83,10 @@ export default async function CaseStudyPage({
           aria-label={t(`${project.key}Name`)}
           role="img"
         >
-          <span className="text-muted-foreground font-mono text-xs tracking-widest uppercase">
+          <span
+            aria-hidden="true"
+            className="text-muted-foreground font-mono text-xs tracking-widest uppercase"
+          >
             {t(`${project.key}Name`)}
           </span>
         </div>
@@ -118,7 +121,7 @@ export default async function CaseStudyPage({
         </div>
 
         {/* Outcome */}
-        <div className="border-secondary-container mb-12 border-l-2 pl-4">
+        <div className="border-secondary-container mb-12 border-s-2 ps-4">
           <p
             dir="ltr"
             className="text-muted-foreground mb-1 font-mono text-xs tracking-widest uppercase"
