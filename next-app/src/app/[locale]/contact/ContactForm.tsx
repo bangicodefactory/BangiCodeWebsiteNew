@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useEffect, useState } from "react";
+import { useActionState, useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { trackContactFormSubmit } from "@/lib/analytics";
 import { Button } from "@/components/ui/button";
@@ -33,9 +33,11 @@ export function ContactForm() {
     initialState,
   );
   const [selectedService, setSelectedService] = useState("");
+  const trackFiredRef = useRef(false);
 
   useEffect(() => {
-    if (state.status === "success") {
+    if (state.status === "success" && !trackFiredRef.current) {
+      trackFiredRef.current = true;
       trackContactFormSubmit(selectedService || "unknown");
     }
   }, [state.status, selectedService]);

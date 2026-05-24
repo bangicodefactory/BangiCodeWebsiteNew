@@ -75,7 +75,7 @@ export function SiteNav({ locale }: SiteNavProps) {
           <NavigationMenu
             items={navItems}
             dir={dir}
-            onItemClick={(item) => trackNavClick(item.label)}
+            onItemClick={(item) => trackNavClick(item.href)}
           />
           <LocaleSwitcher currentLocale={locale} />
           <Button variant="primary" size="sm" asChild>
@@ -113,7 +113,7 @@ export function SiteNav({ locale }: SiteNavProps) {
                     href={item.href}
                     onClick={() => {
                       setOpen(false);
-                      trackNavClick(item.label);
+                      trackNavClick(item.href);
                     }}
                     aria-current={
                       pathname === item.href ||
