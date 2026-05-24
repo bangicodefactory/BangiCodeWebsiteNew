@@ -1,10 +1,12 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { PROJECTS } from "../projects";
+import { getCaseHero } from "@/lib/work-manifest";
 
 export function generateStaticParams() {
   return PROJECTS.map((p) => ({ slug: p.slug }));
@@ -44,6 +46,7 @@ export default async function CaseStudyPage({
   const t = await getTranslations("Work");
   const categoryKey = CATEGORY_LABEL_KEY[project.category];
   const outcomeKey = `${project.key}Outcome` as Parameters<typeof t>[0];
+  const hero = getCaseHero(project.slug);
 
   return (
     <main id="main-content">
@@ -73,23 +76,33 @@ export default async function CaseStudyPage({
         </h1>
       </section>
 
-      {/* Hero visual placeholder — replace with next/image in BAN-164 */}
-      <div
-        className="bg-surface-variant mx-auto max-w-7xl px-4 sm:px-6"
-        data-placeholder="true"
-      >
-        <div
-          className="bg-surface-container flex h-64 items-center justify-center rounded-sm sm:h-80"
-          aria-label={t(`${project.key}Name`)}
-          role="img"
-        >
-          <span
-            aria-hidden="true"
-            className="text-muted-foreground font-mono text-xs tracking-widest uppercase"
+      {/* Hero image */}
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        {hero && !hero.placeholder ? (
+          <Image
+            src={hero.webp}
+            alt={hero.alt}
+            width={hero.width}
+            height={hero.height}
+            className="rounded-sm object-cover"
+            priority
+            sizes="(max-width: 768px) 100vw, (max-width: 1280px) 90vw, 1280px"
+          />
+        ) : (
+          <div
+            className="bg-surface-container flex h-64 items-center justify-center rounded-sm sm:h-80"
+            aria-label={t(`${project.key}Name`)}
+            role="img"
+            data-placeholder="true"
           >
-            {t(`${project.key}Name`)}
-          </span>
-        </div>
+            <span
+              aria-hidden="true"
+              className="text-muted-foreground font-mono text-xs tracking-widest uppercase"
+            >
+              {t(`${project.key}Name`)}
+            </span>
+          </div>
+        )}
       </div>
 
       {/* Body */}
