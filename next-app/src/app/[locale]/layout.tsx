@@ -19,8 +19,13 @@ import { SiteFooter } from "@/components/sections/site-footer";
 import { BookedToast } from "@/components/BookedToast";
 import "../globals.css";
 
-// Deferred — both start hidden/invisible, so deferring avoids blocking the
-// initial JS bundle with scroll-tracking and consent logic.
+// Deferred — all three start hidden/invisible so deferring avoids blocking the
+// initial JS bundle with scroll-tracking, consent logic, and analytics loading.
+const GaLoader = dynamic(
+  () => import("@/components/GaLoader").then((m) => ({ default: m.GaLoader })),
+  { ssr: false },
+);
+
 const CookieBanner = dynamic(
   () =>
     import("@/components/sections/CookieBanner").then((m) => ({
@@ -148,6 +153,7 @@ export default async function LocaleLayout({ children, params }: Props) {
               {children}
             </div>
             <SiteFooter />
+            <GaLoader />
             <CookieBanner />
             <WhatsAppCta />
             <Suspense>

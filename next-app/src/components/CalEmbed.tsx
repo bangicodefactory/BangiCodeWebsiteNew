@@ -3,19 +3,13 @@
 import { Component, type ReactNode, useEffect, useRef } from "react";
 import Cal, { getCalApi } from "@calcom/embed-react";
 import { useTranslations } from "next-intl";
+import { trackBookingCompleted } from "@/lib/analytics";
 
 export const CAL_EVENT_SLUG =
   process.env.NEXT_PUBLIC_CAL_EVENT_SLUG ?? "bangicode/30min-discovery";
 
 const FALLBACK_EMAIL = "hello@bangicode.ma";
 const FALLBACK_WA = "https://wa.me/212664571370";
-
-// GA4 fired only when the consent-gated gtag is present (BAN-156).
-function fireGA4Booking() {
-  if (typeof window !== "undefined" && typeof window.gtag === "function") {
-    window.gtag("event", "booking_completed");
-  }
-}
 
 // --- Error boundary -----------------------------------------------------------
 
@@ -82,11 +76,15 @@ export function CalInline({
 }: CalInlineProps) {
   const t = useTranslations("Booking");
   const initialized = useRef(false);
-  // Latest-ref: keeps onBooked current across re-renders without restarting the embed effect.
+  // Latest-refs: keep callbacks current across re-renders without restarting the embed effect.
   const onBookedRef = useRef(onBooked);
+  const eventSlugRef = useRef(eventSlug);
   useEffect(() => {
     onBookedRef.current = onBooked;
   }, [onBooked]);
+  useEffect(() => {
+    eventSlugRef.current = eventSlug;
+  }, [eventSlug]);
 
   useEffect(() => {
     if (initialized.current) return;
@@ -96,7 +94,7 @@ export function CalInline({
         cal("on", {
           action: "bookingSuccessful",
           callback: () => {
-            fireGA4Booking();
+            trackBookingCompleted(eventSlugRef.current ?? CAL_EVENT_SLUG);
             onBookedRef.current?.();
           },
         });
@@ -178,11 +176,15 @@ export function CalModalInit({
   onBooked,
 }: Omit<CalInlineProps, "redirectUrl">) {
   const initialized = useRef(false);
-  // Latest-ref keeps onBooked current across re-renders without restarting the embed effect.
+  // Latest-refs: keep callbacks current across re-renders without restarting the embed effect.
   const onBookedRef = useRef(onBooked);
+  const eventSlugRef = useRef(eventSlug);
   useEffect(() => {
     onBookedRef.current = onBooked;
   }, [onBooked]);
+  useEffect(() => {
+    eventSlugRef.current = eventSlug;
+  }, [eventSlug]);
 
   useEffect(() => {
     if (initialized.current) return;
@@ -193,7 +195,7 @@ export function CalModalInit({
         cal("on", {
           action: "bookingSuccessful",
           callback: () => {
-            fireGA4Booking();
+            trackBookingCompleted(eventSlugRef.current ?? CAL_EVENT_SLUG);
             onBookedRef.current?.();
           },
         });

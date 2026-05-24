@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { PROJECTS } from "../projects";
 import { getCaseHero } from "@/lib/work-manifest";
+import { CaseStudyViewTracker } from "@/components/CaseStudyViewTracker";
 
 export function generateStaticParams() {
   return PROJECTS.map((p) => ({ slug: p.slug }));
@@ -50,6 +51,7 @@ export default async function CaseStudyPage({
 
   return (
     <main id="main-content">
+      <CaseStudyViewTracker slug={project.slug} practice={project.category} />
       {/* Back nav */}
       <div className="mx-auto max-w-7xl px-4 pt-8 sm:px-6">
         <Link

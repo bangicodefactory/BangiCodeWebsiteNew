@@ -1,7 +1,8 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
+import { trackContactFormSubmit } from "@/lib/analytics";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -31,6 +32,13 @@ export function ContactForm() {
     submitContact,
     initialState,
   );
+  const [selectedService, setSelectedService] = useState("");
+
+  useEffect(() => {
+    if (state.status === "success") {
+      trackContactFormSubmit(selectedService || "unknown");
+    }
+  }, [state.status, selectedService]);
 
   if (state.status === "success") {
     return (
@@ -94,7 +102,7 @@ export function ContactForm() {
 
       <div className="flex flex-col gap-2">
         <Label htmlFor="contact-service-trigger">{t("formService")}</Label>
-        <Select name="service">
+        <Select name="service" onValueChange={setSelectedService}>
           <SelectTrigger id="contact-service-trigger">
             <SelectValue placeholder={t("formServicePlaceholder")} />
           </SelectTrigger>
