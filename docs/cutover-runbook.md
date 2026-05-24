@@ -41,9 +41,9 @@ Create `/var/www/bangicode/.env.production` (or set via cPanel → Environment V
 # On the server, from the next-app/ directory:
 npm ci --omit=dev
 npm run build
-pm2 start "npm run start" --name bangicode-next -- --port 3000
+pm2 start npm --name bangicode-next -- start
 pm2 save
-pm2 startup  # persist across reboots
+pm2 startup  # requires sudo — on managed cPanel use "Startup Scripts" or @reboot cron as fallback
 ```
 
 ### Apache vhost (reverse proxy example)
@@ -61,6 +61,7 @@ pm2 startup  # persist across reboots
   SSLCertificateFile    /etc/letsencrypt/live/bangicode.ma/fullchain.pem
   SSLCertificateKeyFile /etc/letsencrypt/live/bangicode.ma/privkey.pem
 
+  # Requires: a2enmod proxy proxy_http (or LoadModule proxy_module / proxy_http_module)
   ProxyPreserveHost On
   ProxyPass        / http://localhost:3000/
   ProxyPassReverse / http://localhost:3000/
@@ -197,7 +198,7 @@ Run these within 30 minutes of DNS swap:
 - [ ] `/en/work/rentcar` — case study detail
 - [ ] `/en/about` — founder section visible
 - [ ] `/en/process` — 4 steps visible
-- [ ] `/en/contact` �� form renders, submits successfully (use test email)
+- [ ] `/en/contact` — form renders, submits successfully (use test email)
 - [ ] `/en/book` — Cal.com inline embed loads
 - [ ] `/en/careers` — empty state renders
 - [ ] `/en/legal/privacy` — MDX content renders
