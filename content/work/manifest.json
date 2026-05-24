@@ -1,0 +1,126 @@
+{
+  "cases": [
+    {
+      "slug": "rentcar",
+      "hero": {
+        "placeholder": true,
+        "webp": "/case-studies/rentcar/hero.webp",
+        "alt": "RentCar — vehicle rental platform dashboard",
+        "width": 1600,
+        "height": 900
+      }
+    },
+    {
+      "slug": "friterie-ma",
+      "hero": {
+        "placeholder": true,
+        "webp": "/case-studies/friterie-ma/hero.webp",
+        "alt": "Friterie.ma — food ordering platform",
+        "width": 1600,
+        "height": 900
+      }
+    },
+    {
+      "slug": "classkom",
+      "hero": {
+        "placeholder": true,
+        "webp": "/case-studies/classkom/hero.webp",
+        "alt": "Classkom — classroom management mobile app",
+        "width": 1600,
+        "height": 900
+      }
+    },
+    {
+      "slug": "nortecoffeeco",
+      "hero": {
+        "placeholder": true,
+        "webp": "/case-studies/nortecoffeeco/hero.webp",
+        "alt": "Nortecoffeeco — specialty coffee e-commerce",
+        "width": 1600,
+        "height": 900
+      }
+    },
+    {
+      "slug": "ayaalmadina",
+      "hero": {
+        "placeholder": true,
+        "webp": "/case-studies/ayaalmadina/hero.webp",
+        "alt": "Ayaalmadina — real estate listing platform",
+        "width": 1600,
+        "height": 900
+      }
+    },
+    {
+      "slug": "coinluminaire",
+      "hero": {
+        "placeholder": true,
+        "webp": "/case-studies/coinluminaire/hero.webp",
+        "alt": "Coinluminaire — lighting e-commerce store",
+        "width": 1600,
+        "height": 900
+      }
+    },
+    {
+      "slug": "cafeimperial",
+      "hero": {
+        "placeholder": true,
+        "webp": "/case-studies/cafeimperial/hero.webp",
+        "alt": "CafeImperial — café website and online presence",
+        "width": 1600,
+        "height": 900
+      }
+    },
+    {
+      "slug": "aqarchamal",
+      "hero": {
+        "placeholder": true,
+        "webp": "/case-studies/aqarchamal/hero.webp",
+        "alt": "Aqarchamal — northern Morocco real estate portal",
+        "width": 1600,
+        "height": 900
+      }
+    },
+    {
+      "slug": "fujiwara",
+      "hero": {
+        "placeholder": true,
+        "webp": "/case-studies/fujiwara/hero.webp",
+        "alt": "Fujiwara — social media and video production",
+        "width": 1600,
+        "height": 900
+      }
+    },
+    {
+      "slug": "alaturco",
+      "hero": {
+        "placeholder": true,
+        "webp": "/case-studies/alaturco/hero.webp",
+        "alt": "Alaturco — restaurant Instagram presence",
+        "width": 1600,
+        "height": 900
+      }
+    },
+    {
+      "slug": "riha-ma",
+      "hero": {
+        "placeholder": true,
+        "webp": "/case-studies/riha-ma/hero.webp",
+        "alt": "Riha.ma — travel and tourism social content",
+        "width": 1600,
+        "height": 900
+      }
+    },
+    {
+      "slug": "cosas-buenas",
+      "hero": {
+        "placeholder": true,
+        "webp": "/case-studies/cosas-buenas/hero.webp",
+        "alt": "Cosas Buenas — lifestyle brand Instagram",
+        "width": 1600,
+        "height": 900
+      }
+    }
+  ],
+  "team": [],
+  "office": null
+}
