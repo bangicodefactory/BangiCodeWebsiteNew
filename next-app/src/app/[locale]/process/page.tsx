@@ -143,11 +143,9 @@ export default async function ProcessPage() {
           <h2 className="font-display text-primary-foreground mb-8 text-2xl font-bold tracking-tight sm:text-3xl">
             {t("ctaHeadline")}
           </h2>
-          <Link href="/contact">
-            <Button variant="secondary" size="lg">
-              {t("ctaButton")}
-            </Button>
-          </Link>
+          <Button asChild variant="secondary" size="lg">
+            <Link href="/contact">{t("ctaButton")}</Link>
+          </Button>
         </div>
       </section>
     </main>

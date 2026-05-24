@@ -37,7 +37,7 @@ export default async function CaseStudyPage({
 }: {
   params: Promise<{ locale: string; slug: string }>;
 }) {
-  const { slug } = await params;
+  const { locale, slug } = await params;
   const project = PROJECTS.find((p) => p.slug === slug);
   if (!project) notFound();
 
@@ -53,7 +53,7 @@ export default async function CaseStudyPage({
           href="/work"
           className="text-muted-foreground focus-visible:ring-ring hover:text-foreground rounded-sm font-mono text-xs tracking-widest uppercase underline-offset-4 hover:underline focus-visible:ring-2 focus-visible:outline-none"
         >
-          ← {t("backToWork")}
+          {locale === "ar" ? "→" : "←"} {t("backToWork")}
         </Link>
       </div>
 
