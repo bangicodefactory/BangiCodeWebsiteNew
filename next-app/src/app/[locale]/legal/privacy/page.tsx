@@ -78,7 +78,7 @@ export default async function PrivacyPolicyPage({
             >
               {t("lastUpdatedLabel")}:{" "}
               {new Date(lastUpdated).toLocaleDateString(
-                locale === "ar" ? "fr-MA" : locale === "fr" ? "fr-FR" : "en-GB",
+                locale === "ar" ? "ar-MA" : locale === "fr" ? "fr-FR" : "en-GB",
                 { year: "numeric", month: "long" },
               )}
             </p>
@@ -86,7 +86,10 @@ export default async function PrivacyPolicyPage({
         </div>
 
         {/* MDX content */}
-        <div className="prose prose-slate max-w-none">
+        <div
+          dir={locale === "ar" ? "rtl" : "ltr"}
+          className="prose prose-slate max-w-none"
+        >
           <MDXRemote source={content} options={{ parseFrontmatter: false }} />
         </div>
 
