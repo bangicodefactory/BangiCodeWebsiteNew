@@ -4,6 +4,7 @@ import { routing } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { Badge } from "@/components/ui/badge";
 import { WorkFilter, FILTER_VALUES, type FilterValue } from "./WorkFilter";
+import { PROJECTS, type Project } from "./projects";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -18,83 +19,6 @@ export async function generateMetadata({
   const t = await getTranslations({ locale, namespace: "Work" });
   return { title: t("h1"), description: t("subhead") };
 }
-
-const PROJECTS = [
-  {
-    slug: "rentcar",
-    key: "rentcar",
-    category: "software" as const,
-    tags: ["Next.js", "Stripe", "PostgreSQL"],
-  },
-  {
-    slug: "friterie-ma",
-    key: "friterieMa",
-    category: "software" as const,
-    tags: ["React", "Node.js", "MongoDB"],
-  },
-  {
-    slug: "classkom",
-    key: "classkom",
-    category: "software" as const,
-    tags: ["React Native", "Firebase"],
-  },
-  {
-    slug: "nortecoffeeco",
-    key: "nortecoffeeco",
-    category: "software" as const,
-    tags: ["Next.js", "Sanity"],
-  },
-  {
-    slug: "ayaalmadina",
-    key: "ayaalmadina",
-    category: "software" as const,
-    tags: ["Laravel", "MySQL"],
-  },
-  {
-    slug: "coinluminaire",
-    key: "coinluminaire",
-    category: "ecommerce" as const,
-    tags: ["Shopify", "Liquid"],
-  },
-  {
-    slug: "cafeimperial",
-    key: "cafeimperial",
-    category: "web" as const,
-    tags: ["Next.js", "Headless CMS"],
-  },
-  {
-    slug: "aqarchamal",
-    key: "aqarchamal",
-    category: "web" as const,
-    tags: ["Next.js", "Mapbox"],
-  },
-  {
-    slug: "fujiwara",
-    key: "fujiwara",
-    category: "social" as const,
-    tags: ["Instagram", "Video"],
-  },
-  {
-    slug: "alaturco",
-    key: "alaturco",
-    category: "social" as const,
-    tags: ["Social Media", "Photography"],
-  },
-  {
-    slug: "riha-ma",
-    key: "rihaMa",
-    category: "social" as const,
-    tags: ["TikTok", "Reels"],
-  },
-  {
-    slug: "cosas-buenas",
-    key: "cosasbuenas",
-    category: "social" as const,
-    tags: ["Instagram", "Content"],
-  },
-] as const;
-
-type Project = (typeof PROJECTS)[number];
 
 export default async function WorkPage({
   searchParams,
