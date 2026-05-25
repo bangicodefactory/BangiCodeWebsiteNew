@@ -1,89 +1,117 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Menu, X } from 'lucide-react';
 
 const Navigation = () => {
-  const { t, i18n } = useTranslation();
+  const { i18n } = useTranslation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const changeLanguage = (lng) => {
     i18n.changeLanguage(lng);
-    setMobileMenuOpen(false); 
+    setMobileMenuOpen(false);
   };
 
-  // Smooth scroll handler
-  const handleSmoothScroll = (e, targetId) => {
+  const handleScroll = (e, id) => {
     e.preventDefault();
-    const section = document.getElementById(targetId);
-    if (section) {
-      section.scrollIntoView({ behavior: 'smooth' });
-      setMobileMenuOpen(false); // Close mobile menu on navigation
-    }
+    const el = document.getElementById(id);
+    if (el) el.scrollIntoView({ behavior: 'smooth' });
+    setMobileMenuOpen(false);
   };
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 px-4 py-5">
-      <div className="max-w-7xl mx-auto bg-[rgba(15,15,35,0.8)] backdrop-blur-lg rounded-[50px] border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.3)] px-8 py-4">
-        <div className="flex justify-between items-center">
-          <div className="flex items-center gap-3 ">
-            <img 
-              src="/logo.png" 
-              alt="Bangicode Logo" 
-              className="h-6 w-auto"
-            />
-          </div>
+    <header className="bg-surface border-b border-outline-variant top-0 z-50 sticky">
+      <div className="flex justify-between items-center w-full px-gutter max-w-container-max mx-auto h-16">
+        <a href="/" aria-label="Bangicode — home">
+          <img
+            src={process.env.PUBLIC_URL + '/brand/logo.svg'}
+            alt="Bangicode"
+            width={156}
+            height={24}
+            className="h-6 w-auto"
+          />
+        </a>
 
-          <div className="hidden md:flex items-center space-x-8 rtl:space-x-reverse">
-            <a href="#services" onClick={e => handleSmoothScroll(e, 'services')} className="text-white text-[15px] font-medium hover:text-blue-400 transition-all duration-300">{t('navigation.services')}</a>
-            <a href="#about" onClick={e => handleSmoothScroll(e, 'about')} className="text-white text-[15px] font-medium hover:text-blue-400 transition-all duration-300">{t('navigation.about')}</a>
-            <a href="#portfolio" onClick={e => handleSmoothScroll(e, 'portfolio')} className="text-white text-[15px] font-medium hover:text-blue-400 transition-all duration-300">{t('navigation.portfolio')}</a>
-            <a href="#contact" onClick={e => handleSmoothScroll(e, 'contact')} className="text-white text-[15px] font-medium hover:text-blue-400 transition-all duration-300">{t('navigation.contact')}</a>
-            <button onClick={e => handleSmoothScroll(e, 'contact')} className="bg-blue-500 text-white px-6 py-2 rounded-full hover:bg-blue-600 transition-all duration-300 font-medium">
-              {t('navigation.getStarted')}
-            </button>
-            <div className="flex items-center gap-2">
-              <button onClick={() => changeLanguage('en')} className="text-white hover:text-blue-400 transition-all duration-300 font-medium">EN</button>
-              <span className="text-white/30">|</span>
-              <button onClick={() => changeLanguage('fr')} className="text-white hover:text-blue-400 transition-all duration-300 font-medium">FR</button>
-              <span className="text-white/30">|</span>
-              <button onClick={() => changeLanguage('ar')} className="text-white hover:text-blue-400 transition-all duration-300 font-medium">AR</button>
-            </div>
-          </div>
+        <button
+          aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
+          aria-expanded={mobileMenuOpen}
+          aria-controls="mobile-menu"
+          className="md:hidden text-primary p-2 -mr-2"
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+        >
+          {mobileMenuOpen ? <X size={24} aria-hidden="true" /> : <Menu size={24} aria-hidden="true" />}
+        </button>
 
-          <div className="md:hidden flex items-center">
-            <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="text-white">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            </button>
+        <nav className="hidden md:flex items-center space-x-space-xl">
+          {['services', 'portfolio', 'process', 'about', 'contact'].map((id) => (
+            <a
+              key={id}
+              href={`#${id}`}
+              onClick={(e) => handleScroll(e, id)}
+              className="text-on-surface-variant font-medium font-body-md text-body-md hover:text-secondary transition-colors duration-200 capitalize"
+            >
+              {id}
+            </a>
+          ))}
+          <div className="flex items-center space-x-space-md ml-space-lg border-l border-outline-variant pl-space-lg">
+            <span className="font-label-caps text-label-caps text-on-surface-variant lowercase flex gap-1">
+              {['en', 'fr', 'ar'].map((lng, i) => (
+                <button
+                  key={lng}
+                  onClick={() => changeLanguage(lng)}
+                  aria-label={`Switch to ${lng}`}
+                  aria-pressed={i18n.language === lng}
+                  className={`px-2 py-2 hover:text-secondary transition-colors ${i18n.language === lng ? 'text-secondary' : ''}`}
+                >
+                  {i > 0 && <span aria-hidden="true" className="mr-1">·</span>}{lng}
+                </button>
+              ))}
+            </span>
+            <a
+              href="#contact"
+              onClick={(e) => handleScroll(e, 'contact')}
+              className="bg-primary-container text-on-primary font-body-md text-body-md px-space-md py-space-md rounded hover:bg-secondary transition-colors duration-200 leading-none"
+            >
+              Start a project
+            </a>
           </div>
-        </div>
+        </nav>
       </div>
 
-      {/* Mobile Menu */}
       {mobileMenuOpen && (
-        <div className="md:hidden mt-4 bg-[rgba(15,15,35,0.95)] backdrop-blur-lg rounded-3xl border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.3)] mx-4">
-          <div className="px-4 pt-4 pb-4 space-y-2">
-            <a href="#services" onClick={e => handleSmoothScroll(e, 'services')} className="block px-4 py-3 rounded-xl text-base font-medium text-white hover:bg-white/10 transition-all duration-300">{t('navigation.services')}</a>
-            <a href="#about" onClick={e => handleSmoothScroll(e, 'about')} className="block px-4 py-3 rounded-xl text-base font-medium text-white hover:bg-white/10 transition-all duration-300">{t('navigation.about')}</a>
-            <a href="#portfolio" onClick={e => handleSmoothScroll(e, 'portfolio')} className="block px-4 py-3 rounded-xl text-base font-medium text-white hover:bg-white/10 transition-all duration-300">{t('navigation.portfolio')}</a>
-            <a href="#contact" onClick={e => handleSmoothScroll(e, 'contact')} className="block px-4 py-3 rounded-xl text-base font-medium text-white hover:bg-white/10 transition-all duration-300">{t('navigation.contact')}</a>
-            
-            {/* Language Buttons in Mobile Menu */}
-            <div className="flex items-center justify-center gap-4 px-4 py-3">
-              <button onClick={() => changeLanguage('en')} className="text-white hover:text-blue-400 transition-all duration-300 font-medium">EN</button>
-              <span className="text-white/30">|</span>
-              <button onClick={() => changeLanguage('fr')} className="text-white hover:text-blue-400 transition-all duration-300 font-medium">FR</button>
-              <span className="text-white/30">|</span>
-              <button onClick={() => changeLanguage('ar')} className="text-white hover:text-blue-400 transition-all duration-300 font-medium">AR</button>
-            </div>
-            
-            <button onClick={e => handleSmoothScroll(e, 'contact')} className="mt-2 w-full text-center bg-blue-500 text-white px-6 py-3 rounded-full hover:bg-blue-600 transition-all duration-300 font-medium">
-              {t('navigation.getStarted')}
-            </button>
+        <div id="mobile-menu" className="md:hidden border-t border-outline-variant bg-surface px-gutter py-space-md flex flex-col gap-space-sm">
+          {['services', 'portfolio', 'process', 'about', 'contact'].map((id) => (
+            <a
+              key={id}
+              href={`#${id}`}
+              onClick={(e) => handleScroll(e, id)}
+              className="text-on-surface-variant font-body-md text-body-md py-space-sm capitalize hover:text-secondary transition-colors"
+            >
+              {id}
+            </a>
+          ))}
+          <div className="flex items-center gap-space-sm pt-space-sm border-t border-outline-variant">
+            {['en', 'fr', 'ar'].map((lng) => (
+              <button
+                key={lng}
+                onClick={() => changeLanguage(lng)}
+                aria-label={`Switch to ${lng}`}
+                aria-pressed={i18n.language === lng}
+                className={`font-label-caps text-label-caps uppercase px-3 py-3 hover:text-secondary transition-colors ${i18n.language === lng ? 'text-secondary' : 'text-on-surface-variant'}`}
+              >
+                {lng}
+              </button>
+            ))}
           </div>
+          <a
+            href="#contact"
+            onClick={(e) => handleScroll(e, 'contact')}
+            className="bg-primary-container text-on-primary font-body-md text-body-md px-space-md py-space-md rounded text-center hover:bg-secondary transition-colors"
+          >
+            Start a project
+          </a>
         </div>
       )}
-    </nav>
+    </header>
   );
 };
 

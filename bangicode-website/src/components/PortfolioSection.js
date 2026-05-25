@@ -1,94 +1,150 @@
-import { useState } from 'react';
-import ProjectCard from './ProjectCard';
-import { useTranslation } from 'react-i18next';
-import LightRays from './LightRays';
+import { ArrowRight } from 'lucide-react';
 
-const PortfolioSection = () => {
-  const { t } = useTranslation();
-  // Use a key-based system instead of translated strings
-  const [activeTab, setActiveTab] = useState('allprojects');
+const otherProjects = [
+  {
+    title: 'Coinluminaire',
+    desc: 'Scalable storefront for a growing catalog.',
+    tags: [{ label: 'react', type: 'tech' }, { label: 'mongo', type: 'tech' }, { label: 'retail', type: 'industry' }],
+  },
+  {
+    title: 'Classkom LMS',
+    desc: 'Courses, students, grades — one system.',
+    tags: [{ label: 'react', type: 'tech' }, { label: 'laravel', type: 'tech' }, { label: 'education', type: 'industry' }],
+  },
+  {
+    title: 'Aqarchamal',
+    desc: 'Real estate platform for Tanger-Tetouan.',
+    tags: [{ label: 'laravel', type: 'tech' }, { label: 'bootstrap', type: 'tech' }, { label: 'real estate', type: 'industry' }],
+  },
+];
 
-  const projects = t('portfolio.projects', { returnObjects: true }).map(project => ({
-    ...project,
-    image: project.image || `https://placehold.co/600x400?text=${project.title.replace(/\s/g, '+')}`
-  }));
+const DashboardPreview = () => (
+  <svg
+    viewBox="0 0 384 240"
+    xmlns="http://www.w3.org/2000/svg"
+    className="w-full h-auto rounded-lg"
+    role="img"
+    aria-label="RentCar fleet management dashboard interface"
+  >
+    <rect width="384" height="240" fill="#001847" />
+    {/* App header */}
+    <rect width="384" height="36" fill="#002058" />
+    <rect x="16" y="12" width="88" height="12" rx="2" fill="#b2c5ff" opacity="0.7" />
+    <rect x="296" y="10" width="72" height="16" rx="8" fill="#5cb8fd" opacity="0.75" />
+    {/* Nav tabs */}
+    <rect x="16" y="48" width="60" height="20" rx="3" fill="#1a3673" />
+    <rect x="16" y="66" width="60" height="2" rx="1" fill="#5cb8fd" />
+    <rect x="84" y="52" width="52" height="8" rx="2" fill="#b2c5ff" opacity="0.25" />
+    <rect x="144" y="52" width="52" height="8" rx="2" fill="#b2c5ff" opacity="0.25" />
+    <rect x="204" y="52" width="40" height="8" rx="2" fill="#b2c5ff" opacity="0.25" />
+    {/* Stat cards */}
+    <rect x="16" y="80" width="78" height="44" rx="5" fill="#0d2a5c" />
+    <rect x="24" y="89" width="36" height="11" rx="2" fill="#5cb8fd" opacity="0.85" />
+    <rect x="24" y="104" width="56" height="7" rx="2" fill="#b2c5ff" opacity="0.35" />
+    <rect x="102" y="80" width="78" height="44" rx="5" fill="#0d2a5c" />
+    <rect x="110" y="89" width="28" height="11" rx="2" fill="#ffb4a9" opacity="0.8" />
+    <rect x="110" y="104" width="56" height="7" rx="2" fill="#b2c5ff" opacity="0.35" />
+    <rect x="188" y="80" width="78" height="44" rx="5" fill="#0d2a5c" />
+    <rect x="196" y="89" width="44" height="11" rx="2" fill="#b2c5ff" opacity="0.65" />
+    <rect x="196" y="104" width="48" height="7" rx="2" fill="#b2c5ff" opacity="0.35" />
+    <rect x="274" y="80" width="94" height="44" rx="5" fill="#0d2a5c" />
+    <rect x="282" y="89" width="32" height="11" rx="2" fill="#5cb8fd" opacity="0.5" />
+    <rect x="282" y="104" width="60" height="7" rx="2" fill="#b2c5ff" opacity="0.35" />
+    {/* Table header */}
+    <rect x="16" y="136" width="352" height="14" rx="3" fill="#1a3673" opacity="0.9" />
+    <rect x="24" y="140" width="56" height="6" rx="1" fill="#b2c5ff" opacity="0.55" />
+    <rect x="120" y="140" width="72" height="6" rx="1" fill="#b2c5ff" opacity="0.55" />
+    <rect x="248" y="140" width="56" height="6" rx="1" fill="#b2c5ff" opacity="0.55" />
+    {/* Table rows */}
+    <rect x="16" y="156" width="352" height="13" rx="2" fill="#0d2a5c" opacity="0.7" />
+    <rect x="24" y="160" width="64" height="5" rx="1" fill="#b2c5ff" opacity="0.4" />
+    <rect x="248" y="159" width="48" height="7" rx="3" fill="#5cb8fd" opacity="0.45" />
+    <rect x="16" y="175" width="352" height="13" rx="2" fill="#0d2a5c" opacity="0.35" />
+    <rect x="24" y="179" width="80" height="5" rx="1" fill="#b2c5ff" opacity="0.4" />
+    <rect x="248" y="178" width="48" height="7" rx="3" fill="#ffb4a9" opacity="0.45" />
+    <rect x="16" y="194" width="352" height="13" rx="2" fill="#0d2a5c" opacity="0.7" />
+    <rect x="24" y="198" width="56" height="5" rx="1" fill="#b2c5ff" opacity="0.4" />
+    <rect x="248" y="197" width="48" height="7" rx="3" fill="#5cb8fd" opacity="0.45" />
+    <rect x="16" y="213" width="352" height="13" rx="2" fill="#0d2a5c" opacity="0.35" />
+    <rect x="24" y="217" width="72" height="5" rx="1" fill="#b2c5ff" opacity="0.4" />
+    <rect x="248" y="216" width="48" height="7" rx="3" fill="#5cb8fd" opacity="0.45" />
+  </svg>
+);
 
-  // Define tab keys that correspond to your translation keys
-  const tabKeys = [
-    'allprojects',
-    'customsoftware', 
-    'ecommerce',
-    'webdevelopment',
-    'socialmedia'
-  ];
-
-  // Filter projects based on matching translated categories
-  const filteredProjects = activeTab === 'allprojects'
-    ? projects
-    : projects.filter(project => {
-        // Get the translated category name for the current active tab
-        const translatedTabCategory = t(`portfolio.tabs.${activeTab}`);
-        // Compare with the project's category (which is already translated in your JSON files)
-        return project.category === translatedTabCategory;
-      });
-
-  return (
-    <section id="portfolio" className="py-16 bg-gradient-to-br from-gray-900 via-black to-gray-900 relative overflow-hidden min-h-screen">
-      {/* LightRays Background */}
-      <div className="absolute inset-0 w-full h-full">
-        <LightRays
-          raysOrigin="top-center"
-          raysColor="#3b82f6"
-          raysSpeed={0.8}
-          lightSpread={1.2}
-          rayLength={1.5}
-          pulsating={false}
-          fadeDistance={1.2}
-          saturation={0.9}
-          followMouse={true}
-          mouseInfluence={0.15}
-          noiseAmount={0.1}
-          distortion={0.05}
-        />
+const PortfolioSection = () => (
+  <section id="portfolio" className="px-space-md pb-space-2xl md:px-gutter max-w-container-max mx-auto">
+    {/* Featured case study */}
+    <div className="bg-primary rounded-xl p-space-lg md:p-space-2xl flex flex-col lg:flex-row gap-space-2xl text-on-primary">
+      <div className="flex-1 flex flex-col justify-center w-full">
+        <div className="font-label-caps text-label-caps text-secondary-fixed-dim lowercase mb-space-md">
+          featured case · custom software
+        </div>
+        <h3 className="font-display-lg-mobile text-display-lg-mobile md:font-headline-lg md:text-headline-lg mb-space-md">
+          RentCar — a complete rental ops platform for a Tangier fleet.
+        </h3>
+        <p className="font-body-md text-body-md text-inverse-primary mb-space-xl max-w-2xl">
+          Booking, payments, fleet management in one stack. Replaced three vendor systems and cut 60% of the team's daily admin time.
+        </p>
+        <div className="flex flex-wrap gap-space-sm mb-space-xl w-full">
+          {['laravel', 'postgresql', 'stripe'].map((t) => (
+            <span key={t} className="px-2 py-1 bg-on-primary-fixed-variant bg-opacity-50 border border-outline rounded font-label-mono text-label-caps lowercase">
+              {t}
+            </span>
+          ))}
+          <span className="px-2 py-1 bg-tertiary-container bg-opacity-50 border border-outline rounded font-label-mono text-label-caps text-tertiary-fixed-dim lowercase">
+            mobility
+          </span>
+        </div>
+        <a href="#" className="font-label-mono text-label-mono text-secondary-fixed-dim hover:text-secondary-fixed flex items-center gap-1 lowercase group w-fit">
+          read the case study <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" aria-hidden="true" />
+        </a>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-white mb-4">
-            {t('portfolio.title')}
-          </h2>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            {t('portfolio.subtitle')}
-          </p>
+      {/* Interface preview + metrics */}
+      <div className="w-full lg:w-96 flex flex-col gap-space-md shrink-0">
+        <div className="rounded-lg overflow-hidden border border-on-primary-fixed-variant border-opacity-20">
+          <DashboardPreview />
         </div>
-        
-        <div className="flex flex-wrap justify-center gap-4 mb-12">
-          {tabKeys.map((tabKey) => (
-            <button
-              key={tabKey}
-              onClick={() => setActiveTab(tabKey)}
-              className={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition-colors ${
-                activeTab === tabKey
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-white/10 backdrop-blur-md text-white hover:bg-white/20 border border-white/20'
-              }`}
-            >
-              {t(`portfolio.tabs.${tabKey}`)}
-            </button>
-          ))}
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredProjects.map((project, index) => (
-            <ProjectCard
-              key={index}
-              project={project}
-            />
+        <div className="grid grid-cols-2 gap-space-sm">
+          {[
+            { value: '-60%', label: 'admin time' },
+            { value: '3→1',  label: 'vendor systems' },
+            { value: '14mo', label: 'still maintaining' },
+            { value: '99.9%', label: 'uptime' },
+          ].map(({ value, label }) => (
+            <div key={label} className="bg-on-primary-fixed-variant bg-opacity-30 border border-on-primary-fixed-variant rounded-lg p-space-md flex flex-col justify-center h-20">
+              <div className="font-headline-md text-headline-md mb-1">{value}</div>
+              <div className="font-label-caps text-label-caps text-inverse-primary lowercase">{label}</div>
+            </div>
           ))}
         </div>
       </div>
-    </section>
-  );
-};
+    </div>
+
+    {/* Other projects */}
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-space-md mt-space-md w-full">
+      {otherProjects.map(({ title, desc, tags }) => (
+        <div key={title} className="bg-surface-container-lowest border border-outline-variant rounded-lg p-space-lg">
+          <h4 className="font-headline-sm text-headline-sm text-primary mb-2">{title}</h4>
+          <p className="font-body-sm text-body-sm text-on-surface-variant mb-space-md">{desc}</p>
+          <div className="flex flex-wrap gap-space-sm w-full">
+            {tags.map(({ label, type }) => (
+              <span
+                key={label}
+                className={`px-2 py-1 border rounded text-[10px] font-label-mono lowercase ${
+                  type === 'industry'
+                    ? 'bg-tertiary-fixed bg-opacity-50 border-outline-variant text-on-tertiary-fixed-variant'
+                    : 'bg-surface-container border-outline-variant text-on-surface-variant'
+                }`}
+              >
+                {label}
+              </span>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+);
 
 export default PortfolioSection;
