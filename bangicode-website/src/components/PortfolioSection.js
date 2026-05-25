@@ -95,9 +95,9 @@ const PortfolioSection = () => (
             mobility
           </span>
         </div>
-        <a href="#" className="font-label-mono text-label-mono text-secondary-fixed-dim hover:text-secondary-fixed flex items-center gap-1 lowercase group w-fit">
+        <button type="button" className="font-label-mono text-label-mono text-secondary-fixed-dim hover:text-secondary-fixed flex items-center gap-1 lowercase group w-fit">
           read the case study <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" aria-hidden="true" />
-        </a>
+        </button>
       </div>
 
       {/* Interface preview + metrics */}

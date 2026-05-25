@@ -53,17 +53,19 @@ const Navigation = () => {
             </a>
           ))}
           <div className="flex items-center space-x-space-md ml-space-lg border-l border-outline-variant pl-space-lg">
-            <span className="font-label-caps text-label-caps text-on-surface-variant lowercase flex gap-1">
+            <span className="font-label-caps text-label-caps text-on-surface-variant lowercase flex items-center gap-1">
               {['en', 'fr', 'ar'].map((lng, i) => (
-                <button
-                  key={lng}
-                  onClick={() => changeLanguage(lng)}
-                  aria-label={`Switch to ${lng}`}
-                  aria-pressed={i18n.language === lng}
-                  className={`px-2 py-2 hover:text-secondary transition-colors ${i18n.language === lng ? 'text-secondary' : ''}`}
-                >
-                  {i > 0 && <span aria-hidden="true" className="mr-1">·</span>}{lng}
-                </button>
+                <span key={lng} className="flex items-center">
+                  {i > 0 && <span aria-hidden="true" className="mr-1 select-none">·</span>}
+                  <button
+                    onClick={() => changeLanguage(lng)}
+                    aria-label={`Switch to ${lng}`}
+                    aria-pressed={i18n.language === lng}
+                    className={`px-2 py-2 hover:text-secondary transition-colors ${i18n.language === lng ? 'text-secondary' : ''}`}
+                  >
+                    {lng}
+                  </button>
+                </span>
               ))}
             </span>
             <a

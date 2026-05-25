@@ -18,9 +18,9 @@ const TestimonialsSection = () => (
             <div className="font-body-md text-body-md font-medium text-primary">Youssef B.</div>
             <div className="font-label-caps text-label-caps text-on-surface-variant lowercase">director, friterie.ma</div>
           </div>
-          <a href="#" className="font-label-mono text-label-mono text-secondary hover:underline flex items-center gap-1 lowercase w-fit">
+          <button type="button" className="font-label-mono text-label-mono text-secondary hover:underline flex items-center gap-1 lowercase w-fit">
             read case study <ArrowRight size={14} aria-hidden="true" />
-          </a>
+          </button>
         </div>
       </div>
     </div>
