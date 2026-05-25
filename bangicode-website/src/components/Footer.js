@@ -49,9 +49,10 @@ const Footer = () => (
         <a key={l} href={`/${l}`} className="hover:text-secondary">{l}</a>
       ))}
       <span aria-hidden="true">·</span>
-      <a href="https://linkedin.com/company/bangicode" aria-label="Bangicode on LinkedIn" className="hover:text-secondary">linkedin</a>
-      <a href="https://github.com/bangicodefactory" aria-label="Bangicode on GitHub" className="hover:text-secondary">github</a>
-      <a href="https://wa.me/212664571370" aria-label="Contact Bangicode on WhatsApp" className="hover:text-secondary">whatsapp</a>
+      <a href="https://www.linkedin.com/company/bangi-code/" aria-label="Bangicode on LinkedIn" target="_blank" rel="noreferrer" className="hover:text-secondary">linkedin</a>
+      <a href="https://www.instagram.com/bangicode/" aria-label="Bangicode on Instagram" target="_blank" rel="noreferrer" className="hover:text-secondary">instagram</a>
+      <a href="https://github.com/bangicodefactory" aria-label="Bangicode on GitHub" target="_blank" rel="noreferrer" className="hover:text-secondary">github</a>
+      <a href="https://wa.me/212664571370" aria-label="Contact Bangicode on WhatsApp" target="_blank" rel="noreferrer" className="hover:text-secondary">whatsapp</a>
     </div>
   </footer>
 );
