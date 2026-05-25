@@ -1,63 +1,35 @@
-import { useTranslation } from 'react-i18next';
+import { ArrowRight } from 'lucide-react';
 
-const CTASection = () => {
-  const { t } = useTranslation();
-
-  const handleGetInTouchClick = () => {
-    const contactSection = document.getElementById('contact');
-    if (contactSection) {
-      contactSection.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
-  return (
-    <section className="py-20 bg-blue-600 text-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h2 className="text-3xl font-bold mb-6">{t('cta.title')}</h2>
-        <p className="text-xl mb-10 max-w-3xl mx-auto">
-          {t('cta.subtitle')}
+const CTASection = () => (
+  <section id="contact" className="px-space-md pb-space-3xl md:px-gutter max-w-container-max mx-auto w-full">
+    <div className="bg-surface-container-low rounded-xl p-space-xl md:p-space-2xl flex flex-col md:flex-row items-center md:items-start gap-space-lg md:gap-space-2xl w-full">
+      <div
+        className="w-20 h-20 rounded-full bg-primary flex items-center justify-center text-on-primary font-display-lg text-display-lg shrink-0"
+        aria-hidden="true"
+      >
+        A
+      </div>
+      <div className="flex-1 flex flex-col w-full text-center md:text-left">
+        <h3 className="font-headline-md text-headline-md text-primary mb-space-sm">Talk to Ahmed — founder.</h3>
+        <p className="font-body-md text-body-md text-on-surface-variant mb-space-xl max-w-2xl">
+          Skip the form. 30-min call, every Tuesday and Thursday. I'll tell you straight whether we're the right team for your project.
         </p>
-        <div className="flex flex-wrap justify-center gap-6">
-          <button
-            className="bg-white text-blue-600 px-8 py-3 rounded-md hover:bg-gray-100 transition"
-            onClick={handleGetInTouchClick}
-          >
-            {t('cta.getInTouch')}
-          </button>
-          <button
-            className="bg-transparent border-2 border-white text-white px-8 py-3 rounded-md hover:bg-blue-700 transition"
-            onClick={() => {
-              const servicesSection = document.getElementById('services');
-              if (servicesSection) {
-                servicesSection.scrollIntoView({ behavior: 'smooth' });
-              }
-            }}
-          >
-            {t('cta.exploreServices')}
-          </button>
-        </div>
-
-        <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8">
-          <div>
-            <div className="text-4xl font-bold">20+</div>
-            <div className="text-blue-200">{t('cta.stats.projects')}</div>
-          </div>
-          <div>
-            <div className="text-4xl font-bold">25+</div>
-            <div className="text-blue-200">{t('cta.stats.clients')}</div>
-          </div>
-          <div>
-            <div className="text-4xl font-bold">5+</div>
-            <div className="text-blue-200">{t('cta.stats.experience')}</div>
-          </div>
-          <div>
-            <div className="text-4xl font-bold">24/7</div>
-            <div className="text-blue-200">{t('cta.stats.support')}</div>
-          </div>
+      </div>
+      <div className="flex flex-col items-center md:items-end shrink-0 w-full md:w-auto">
+        <a
+          href="https://cal.com/bangicode"
+          target="_blank"
+          rel="noreferrer"
+          className="inline-flex justify-center items-center gap-2 px-space-2xl py-space-md bg-primary text-on-primary font-body-md text-body-md font-medium rounded-lg hover:bg-primary-container transition-colors w-full md:w-auto mb-space-sm"
+        >
+          Book 30 min <ArrowRight size={18} aria-hidden="true" />
+        </a>
+        <div className="font-label-mono text-[10px] text-on-surface-variant lowercase text-center md:text-right w-full">
+          or whatsapp · admin@bangicode.ma
         </div>
       </div>
-    </section>
-  );
-};
+    </div>
+  </section>
+);
 
 export default CTASection;

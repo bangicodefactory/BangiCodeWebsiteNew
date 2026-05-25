@@ -2,73 +2,61 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4BEWNSX0VQ"></script>
+    <!-- Consent Mode v2 defaults — analytics blocked until banner grants consent -->
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
+      gtag('consent', 'default', {
+        'analytics_storage': 'denied',
+        'ad_storage': 'denied',
+        'ad_user_data': 'denied',
+        'ad_personalization': 'denied',
+        'wait_for_update': 500
+      });
+      window.grantAnalyticsConsent = function() {
+        gtag('consent', 'update', { 'analytics_storage': 'granted' });
+      };
+    </script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4BEWNSX0VQ"></script>
+    <script>
       gtag('js', new Date());
-
       gtag('config', 'G-4BEWNSX0VQ');
     </script>
     <link rel="icon" href="%PUBLIC_URL%/logo.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#1c386b" />
+    <meta name="theme-color" content="#002058" />
     <meta
       name="description"
-      content="Bangicode - Leading Moroccan digital agency based in Tetouan. We help businesses transform ideas into powerful digital solutions that drive growth and innovation. Specializing in custom software development, e-commerce, web development, and social media management."
+      content="Bangicode — software studio in Tetouan, Morocco. Custom software, e-commerce, technical training, and social presence. Five years shipping code that ages well."
     />
-    <meta name="keywords" content="Bangicode, Morocco, Tetouan, digital agency, web development, software development, e-commerce, mobile apps, social media, digital solutions, Moroccan tech company" />
-    <meta name="author" content="Bangicode" />
-    
-    <!-- Open Graph / Facebook -->
+    <meta name="keywords" content="Bangicode, Morocco, Tetouan, software studio, custom software, e-commerce, technical training, web development, Moroccan tech" />
+    <meta name="author" content="Bangicode SARL" />
+
+    <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://www.bangicode.ma" />
-    <meta property="og:title" content="Bangicode - Digital Solutions Agency in Morocco" />
-    <meta property="og:description" content="Leading Moroccan digital agency in Tetouan. Transform your ideas into powerful digital solutions with custom software, e-commerce, and web development services." />
+    <meta property="og:title" content="Bangicode — Software Studio in Tetouan, Morocco" />
+    <meta property="og:description" content="Senior engineers. Honest timelines. Code that lasts. Five years shipping software for clients across Morocco and Europe." />
     <meta property="og:image" content="%PUBLIC_URL%/logo.png" />
-    
+
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image" />
     <meta property="twitter:url" content="https://www.bangicode.ma" />
-    <meta property="twitter:title" content="Bangicode - Digital Solutions Agency in Morocco" />
-    <meta property="twitter:description" content="Leading Moroccan digital agency in Tetouan. Transform your ideas into powerful digital solutions with custom software, e-commerce, and web development services." />
+    <meta property="twitter:title" content="Bangicode — Software Studio in Tetouan, Morocco" />
+    <meta property="twitter:description" content="Senior engineers. Honest timelines. Code that lasts. Five years shipping software for clients across Morocco and Europe." />
     <meta property="twitter:image" content="%PUBLIC_URL%/logo.png" />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-    <!--
-      manifest.json provides metadata used when your web app is installed on a
-      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
-    -->
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-    
-    <!-- Roboto Flex Variable Font for VariableProximity animation -->
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Flex:wght@400..900;wdth@100..125&display=swap" rel="stylesheet">
-    
-    <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
+    <link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
-    <title>Bangicode - Digital Solutions Agency | Tetouan, Morocco</title>
+    <title>Bangicode — Software Studio in Tetouan, Morocco</title>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
-
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
-
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
   </body>
 </html>
