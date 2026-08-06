@@ -69,10 +69,8 @@ export default function SmokeCardPage() {
             </CardHeader>
             <CardContent>
               Body content goes here. Uses{" "}
-              <code className="rounded bg-gray-100 px-1">
-                font-hanken-grotesk
-              </code>{" "}
-              at 14px.
+              <code className="rounded bg-gray-100 px-1">font-body</code> at
+              14px.
             </CardContent>
             <CardFooter>
               <Button variant="primary" size="sm" type="button">

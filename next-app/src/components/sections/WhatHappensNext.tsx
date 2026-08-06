@@ -1,5 +1,14 @@
 import { getTranslations } from "next-intl/server";
 
+/*
+ * Four numbered process steps. Design D sets these as a row of cards with the
+ * step number carried large in the mono face and a rule above each one — the
+ * rule reads as a progress track across the row at desktop width.
+ *
+ * Step 1's rule is the spark; the rest are sky. That is the one place on this
+ * band red is spent, and it marks the step the visitor is actually being asked
+ * to take.
+ */
 export async function WhatHappensNext() {
   const t = await getTranslations("Home.process");
 
@@ -32,27 +41,28 @@ export async function WhatHappensNext() {
 
   return (
     <section id="process" className="py-16 sm:py-24">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+      <div className="max-w-content mx-auto px-4 sm:px-6">
         <p
           dir="ltr"
-          className="text-muted-foreground mb-4 font-mono text-xs tracking-widest uppercase"
+          className="text-muted-foreground font-mono text-xs tracking-widest uppercase"
         >
           {t("eyebrow")}
         </p>
 
-        <h2 className="font-display text-foreground mb-12 max-w-xl text-3xl font-bold tracking-tight sm:text-4xl">
+        <h2 className="font-display text-foreground mt-4 max-w-2xl text-3xl font-bold tracking-tight text-balance sm:text-4xl">
           {t("headline")}
         </h2>
 
-        <ol className="bg-border grid grid-cols-1 gap-px sm:grid-cols-2 lg:grid-cols-4">
-          {steps.map((step) => (
-            <li
-              key={step.number}
-              className="bg-background flex flex-col gap-4 p-8"
-            >
+        <ol className="mt-12 grid list-none grid-cols-1 gap-8 p-0 sm:grid-cols-2 lg:grid-cols-4">
+          {steps.map((step, i) => (
+            <li key={step.number} className="flex flex-col gap-4">
+              <span
+                aria-hidden="true"
+                className={`block h-0.5 w-full ${i === 0 ? "bg-spark" : "bg-secondary/40"}`}
+              />
               <span
                 dir="ltr"
-                className="text-secondary-container font-mono text-xs"
+                className="text-accent font-mono text-2xl font-medium"
               >
                 {step.number}
               </span>

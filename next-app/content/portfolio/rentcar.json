@@ -1,0 +1,31 @@
+{
+  "slug": "rentcar",
+  "order": 1,
+  "category": "software",
+  "tags": ["Laravel", "Next.js", "Stripe", "PostgreSQL"],
+  "date": "2023",
+  "hero": {
+    "placeholder": true,
+    "webp": "/case-studies/rentcar/hero.webp",
+    "alt": "RentCar — vehicle rental platform dashboard",
+    "width": 1600,
+    "height": 900
+  },
+  "content": {
+    "en": {
+      "name": "RentCar",
+      "summary": "A fleet management and online booking platform for a Moroccan car rental operator.",
+      "outcome": "-60% daily admin time. Three vendor systems replaced by one. 99.9% uptime over 14 months."
+    },
+    "fr": {
+      "name": "RentCar",
+      "summary": "Plateforme de gestion de flotte et de réservation en ligne pour un loueur de voitures marocain.",
+      "outcome": "-60 % de temps admin quotidien. Trois systèmes fournisseurs remplacés par un seul. 99,9 % de disponibilité sur 14 mois."
+    },
+    "ar": {
+      "name": "RentCar",
+      "summary": "منصة إدارة أسطول وحجز إلكتروني لمشغّل تأجير سيارات مغربي.",
+      "outcome": "انخفاض 60% في الوقت الإداري اليومي. ثلاثة أنظمة موردين أصبحت نظاماً واحداً. 99.9% وقت تشغيل على مدى 14 شهراً."
+    }
+  }
+}

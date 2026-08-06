@@ -1,0 +1,31 @@
+{
+  "slug": "riha-ma",
+  "order": 11,
+  "category": "social",
+  "tags": ["TikTok", "Reels"],
+  "date": "2023–2024",
+  "hero": {
+    "placeholder": true,
+    "webp": "/case-studies/riha-ma/hero.webp",
+    "alt": "Riha.ma — travel and tourism social content",
+    "width": 1600,
+    "height": 900
+  },
+  "content": {
+    "en": {
+      "name": "Riha.ma",
+      "summary": "TikTok and Reels content production for a Moroccan home fragrance brand.",
+      "outcome": "500K+ TikTok views in first 3 months. Website sessions via social tripled."
+    },
+    "fr": {
+      "name": "Riha.ma",
+      "summary": "Production TikTok et Reels pour une marque marocaine de fragrances d'intérieur.",
+      "outcome": "500 000+ vues TikTok en 3 mois. Sessions web via social triplées."
+    },
+    "ar": {
+      "name": "Riha.ma",
+      "summary": "إنتاج TikTok وReels لعلامة مغربية في عطور المنزل.",
+      "outcome": "أكثر من 500 ألف مشاهدة على TikTok في 3 أشهر. تضاعف جلسات الموقع من السوشيال ثلاث مرات."
+    }
+  }
+}

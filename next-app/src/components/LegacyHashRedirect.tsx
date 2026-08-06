@@ -6,8 +6,8 @@ import { useRouter } from "@/i18n/navigation";
 const HASH_MAP: Record<string, string> = {
   "#about": "/about",
   "#services": "/services",
-  "#work": "/work",
-  "#portfolio": "/work",
+  "#work": "/portfolio",
+  "#portfolio": "/portfolio",
   "#process": "/process",
   "#contact": "/contact",
 };

@@ -1,8 +1,20 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { cn } from "@/lib/utils";
 
-export function LocalClock({ timeLabel }: { timeLabel: string }) {
+/*
+ * Surface-agnostic: uses muted-foreground / foreground rather than
+ * primary-foreground, so it reads correctly both inside StudioStatusPanel's
+ * navy card and inline in the hero's mono strip.
+ */
+export function LocalClock({
+  timeLabel,
+  className,
+}: {
+  timeLabel: string;
+  className?: string;
+}) {
   const [time, setTime] = useState<string | null>(null);
 
   useEffect(() => {
@@ -22,11 +34,15 @@ export function LocalClock({ timeLabel }: { timeLabel: string }) {
   }, []);
 
   return (
-    <div className="flex items-center justify-between">
-      <span className="text-primary-foreground/60 font-mono text-xs">
+    <div className={cn("flex items-center justify-between gap-3", className)}>
+      <span className="text-muted-foreground font-mono text-xs">
         {timeLabel}
       </span>
-      <span className="text-primary-foreground font-mono text-xs">
+      {/* tabular-nums so the minute rolling over never nudges the layout */}
+      <span
+        dir="ltr"
+        className="text-foreground font-mono text-xs tabular-nums"
+      >
         {time ?? "--:--"}
       </span>
     </div>

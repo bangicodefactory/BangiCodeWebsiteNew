@@ -7,20 +7,30 @@ import { cn } from "@/lib/utils";
 /**
  * Bangicode Button
  *
- * From DESIGN.md §Components:
- *   - Primary: filled Primary Navy with white text, 4px radius
- *   - Secondary: 1px Secondary Sky Blue outline with Sky Blue text
- *   - Focus: 2px Secondary Sky Blue ring with 2px offset
+ * Tokens and behaviour come from src/styles/tokens.css — see
+ * docs/adr/0001-adopt-claude-design-system-tokens.md.
  *
- * Per DESIGN.md §Brand & Style: sentence case labels.
- * Per DESIGN.md §Shapes: 4px (rounded-sm) for components — no pill shapes.
+ *   - spark:     filled brand red. The attention CTA — nav "Contact", hero
+ *                primary. Used sparingly; see the ~5% red rule.
+ *   - primary:   filled navy. The structural default.
+ *   - secondary: 1px sky outline with sky text.
+ *   - outline:   1px hairline with foreground text — quiet tertiary action
+ *                ("All solutions", "View all projects").
+ *   - ghost / link / destructive as before.
+ *
+ * Radius is `rounded-sm`, which tokens.css defines as 10px (buttons & inputs).
+ * Motion follows the design system: hover darkens one step and lifts, press
+ * settles back down. Focus is the global 3px sky ring, never removed.
+ *
+ * Sentence case labels.
  */
 const buttonVariants = cva(
   // Base — applies to every variant
   [
     "inline-flex items-center justify-center gap-2 whitespace-nowrap",
     "rounded-sm text-sm font-medium",
-    "transition-colors",
+    "transition-[color,background-color,border-color,box-shadow,transform] duration-200 ease-out",
+    "active:translate-y-px active:scale-[0.98]",
     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
     "disabled:pointer-events-none disabled:opacity-50",
     "[&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
@@ -28,10 +38,14 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
+        spark:
+          "bg-spark text-spark-foreground shadow-spark hover:bg-spark-hover hover:-translate-y-px",
         primary:
-          "bg-primary text-primary-foreground hover:bg-primary-container",
+          "bg-primary text-primary-foreground hover:bg-primary-container hover:-translate-y-px",
         secondary:
           "border border-secondary text-accent hover:bg-secondary hover:text-secondary-foreground",
+        outline:
+          "border border-border text-foreground hover:border-secondary hover:text-accent",
         ghost: "text-foreground hover:bg-muted hover:text-foreground",
         destructive:
           "bg-destructive text-destructive-foreground hover:bg-error-container hover:text-on-error-container",

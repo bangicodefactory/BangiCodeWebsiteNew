@@ -39,7 +39,7 @@ export default async function TermsOfServicePage({
   const isRtl = locale === "ar";
 
   return (
-    <main id="main-content">
+    <div>
       <div className="mx-auto max-w-3xl px-4 pt-24 pb-20 sm:px-6 sm:pt-32">
         {/* Header */}
         <div className="mb-12">
@@ -86,6 +86,6 @@ export default async function TermsOfServicePage({
           </p>
         </div>
       </div>
-    </main>
+    </div>
   );
 }

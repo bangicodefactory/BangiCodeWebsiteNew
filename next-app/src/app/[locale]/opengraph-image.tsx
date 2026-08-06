@@ -1,5 +1,6 @@
 import { ImageResponse } from "next/og";
 import { getTranslations } from "next-intl/server";
+import { BRAND } from "@/lib/brand-colors";
 
 export const runtime = "nodejs";
 export const size = { width: 1200, height: 630 };
@@ -16,7 +17,7 @@ export default async function Image({
   return new ImageResponse(
     <div
       style={{
-        background: "#002058",
+        background: BRAND.navy,
         width: "100%",
         height: "100%",
         display: "flex",
@@ -35,7 +36,7 @@ export default async function Image({
           left: 0,
           width: "100%",
           height: 6,
-          background: "#5cb8fd",
+          background: BRAND.sky,
           display: "flex",
         }}
       />
@@ -43,7 +44,7 @@ export default async function Image({
       {/* Logo wordmark */}
       <div
         style={{
-          color: "#ffffff",
+          color: BRAND.white,
           fontSize: 72,
           fontWeight: 700,
           letterSpacing: "-2px",
@@ -57,7 +58,7 @@ export default async function Image({
       {/* Tagline */}
       <div
         style={{
-          color: "#5cb8fd",
+          color: BRAND.sky,
           fontSize: 28,
           marginTop: 20,
           display: "flex",

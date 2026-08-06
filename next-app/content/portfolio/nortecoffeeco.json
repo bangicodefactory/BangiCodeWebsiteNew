@@ -1,0 +1,31 @@
+{
+  "slug": "nortecoffeeco",
+  "order": 4,
+  "category": "software",
+  "tags": ["Next.js", "Sanity", "Stripe"],
+  "date": "2024",
+  "hero": {
+    "placeholder": true,
+    "webp": "/case-studies/nortecoffeeco/hero.webp",
+    "alt": "Nortecoffeeco — specialty coffee e-commerce",
+    "width": 1600,
+    "height": 900
+  },
+  "content": {
+    "en": {
+      "name": "Nortecoffeeco",
+      "summary": "Brand site and wholesale ordering portal for a specialty coffee roaster.",
+      "outcome": "All wholesale ordering moved online within 2 months. Zero phone-based orders remaining."
+    },
+    "fr": {
+      "name": "Nortecoffeeco",
+      "summary": "Site de marque et portail de commande en gros pour un torréfacteur de café de spécialité.",
+      "outcome": "Toutes les commandes en gros traitées en ligne en 2 mois. Zéro commande téléphonique."
+    },
+    "ar": {
+      "name": "Nortecoffeeco",
+      "summary": "موقع علامة تجارية وبوابة طلبات الجملة لمحمّص قهوة متخصص.",
+      "outcome": "جميع طلبات الجملة انتقلت إلى الإنترنت خلال شهرين. صفر طلبات هاتفية."
+    }
+  }
+}

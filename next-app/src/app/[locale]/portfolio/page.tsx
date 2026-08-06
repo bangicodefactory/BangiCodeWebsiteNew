@@ -1,7 +1,8 @@
 import { Suspense } from "react";
 import type { Metadata } from "next";
-import { getTranslations } from "next-intl/server";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
+import { getProjects, toCardData } from "@/lib/portfolio";
 import { WorkProjectList } from "./WorkProjectList";
 
 export function generateStaticParams() {
@@ -18,13 +19,22 @@ export async function generateMetadata({
   return { title: t("h1"), description: t("subhead") };
 }
 
-export default async function WorkPage() {
+export default async function PortfolioPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+  setRequestLocale(locale);
   const t = await getTranslations("Work");
 
+  // Read on the server, localise here, hand plain data to the client filter.
+  const projects = getProjects().map((p) => toCardData(p, locale));
+
   return (
-    <main id="main-content">
+    <div>
       {/* Hero */}
-      <section className="mx-auto max-w-7xl px-4 pt-24 pb-16 sm:px-6 sm:pt-32 sm:pb-20">
+      <section className="max-w-content mx-auto px-4 pt-24 pb-16 sm:px-6 sm:pt-32 sm:pb-20">
         <p
           dir="ltr"
           className="text-muted-foreground mb-4 font-mono text-xs tracking-widest uppercase"
@@ -41,8 +51,8 @@ export default async function WorkPage() {
 
       {/* Filter + grid — client component; Suspense required for useSearchParams */}
       <Suspense>
-        <WorkProjectList />
+        <WorkProjectList projects={projects} />
       </Suspense>
-    </main>
+    </div>
   );
 }

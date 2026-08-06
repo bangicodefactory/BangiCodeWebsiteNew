@@ -1,0 +1,31 @@
+{
+  "slug": "classkom",
+  "order": 3,
+  "category": "software",
+  "tags": ["React Native", "Firebase", "Node.js"],
+  "date": "2023",
+  "hero": {
+    "placeholder": true,
+    "webp": "/case-studies/classkom/hero.webp",
+    "alt": "Classkom — classroom management mobile app",
+    "width": 1600,
+    "height": 900
+  },
+  "content": {
+    "en": {
+      "name": "Classkom",
+      "summary": "Mobile-first learning management system connecting students and instructors in real time.",
+      "outcome": "500+ active learners onboarded in the first semester across 12 courses."
+    },
+    "fr": {
+      "name": "Classkom",
+      "summary": "Système de gestion de l'apprentissage mobile-first connectant étudiants et formateurs en temps réel.",
+      "outcome": "500+ apprenants actifs intégrés lors du premier semestre, sur 12 cours."
+    },
+    "ar": {
+      "name": "Classkom",
+      "summary": "نظام إدارة تعلّم يعمل أولًا على الهاتف ويربط الطلاب والمدرّبين في الوقت الفعلي.",
+      "outcome": "أكثر من 500 متعلم نشط في الفصل الأول على 12 مساراً."
+    }
+  }
+}

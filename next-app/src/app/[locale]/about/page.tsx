@@ -27,7 +27,7 @@ export default async function AboutPage() {
   const t = await getTranslations("About");
 
   return (
-    <main id="main-content">
+    <div>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -35,7 +35,7 @@ export default async function AboutPage() {
         }}
       />
       {/* Hero */}
-      <section className="mx-auto max-w-7xl px-4 pt-24 pb-16 sm:px-6 sm:pt-32 sm:pb-20">
+      <section className="max-w-content mx-auto px-4 pt-24 pb-16 sm:px-6 sm:pt-32 sm:pb-20">
         <p
           dir="ltr"
           className="text-muted-foreground mb-4 font-mono text-xs tracking-widest uppercase"
@@ -55,7 +55,7 @@ export default async function AboutPage() {
 
       {/* Story */}
       <section className="border-border border-t py-16 sm:py-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <div className="max-w-content mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-3">
             <div className="lg:col-span-2">
               <p
@@ -106,7 +106,7 @@ export default async function AboutPage() {
 
       {/* Values */}
       <section className="border-border border-t py-16 sm:py-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <div className="max-w-content mx-auto px-4 sm:px-6">
           <p
             dir="ltr"
             className="text-muted-foreground mb-10 font-mono text-xs tracking-widest uppercase"
@@ -133,7 +133,7 @@ export default async function AboutPage() {
 
       {/* Team */}
       <section className="bg-surface-container py-16 sm:py-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <div className="max-w-content mx-auto px-4 sm:px-6">
           <p
             dir="ltr"
             className="text-muted-foreground mb-4 font-mono text-xs tracking-widest uppercase"
@@ -151,7 +151,7 @@ export default async function AboutPage() {
 
       {/* CTA */}
       <section className="border-border border-t py-16 sm:py-24">
-        <div className="mx-auto max-w-7xl px-4 text-center sm:px-6">
+        <div className="max-w-content mx-auto px-4 text-center sm:px-6">
           <h2 className="font-display text-foreground mb-8 text-2xl font-bold tracking-tight sm:text-3xl">
             {t("ctaHeadline")}
           </h2>
@@ -163,6 +163,6 @@ export default async function AboutPage() {
 
       {/* Founder contact */}
       <FounderCard />
-    </main>
+    </div>
   );
 }

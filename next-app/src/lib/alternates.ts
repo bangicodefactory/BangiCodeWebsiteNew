@@ -1,4 +1,13 @@
-const BASE_URL = "https://bangicode.ma";
+/*
+ * Same env override as [locale]/layout.tsx and robots.ts. This file hardcoded
+ * the live domain, so any page using buildAlternates emitted a bangicode.ma
+ * canonical even when CI served the site from localhost — Lighthouse scores a
+ * cross-origin canonical as invalid. The homepage happened to pass because its
+ * canonical comes from the layout, which already honoured SITE_URL; /solutions,
+ * /blog and the case studies would have failed the moment they were added to
+ * .lighthouserc.json's url list.
+ */
+const BASE_URL = process.env.SITE_URL ?? "https://bangicode.ma";
 
 /**
  * Generates hreflang alternates for a given pathname.

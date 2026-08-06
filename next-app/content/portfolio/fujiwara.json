@@ -1,0 +1,31 @@
+{
+  "slug": "fujiwara",
+  "order": 9,
+  "category": "social",
+  "tags": ["Instagram", "Video", "Photography"],
+  "date": "2023–present",
+  "hero": {
+    "placeholder": true,
+    "webp": "/case-studies/fujiwara/hero.webp",
+    "alt": "Fujiwara — social media and video production",
+    "width": 1600,
+    "height": 900
+  },
+  "content": {
+    "en": {
+      "name": "Fujiwara",
+      "summary": "Monthly content production and social management for a Japanese restaurant in northern Morocco.",
+      "outcome": "Content output quadrupled. New customers cite Instagram as their discovery channel."
+    },
+    "fr": {
+      "name": "Fujiwara",
+      "summary": "Production de contenu mensuel et gestion sociale pour un restaurant japonais au nord du Maroc.",
+      "outcome": "Production de contenu quadruplée. Les nouveaux clients citent Instagram comme canal de découverte."
+    },
+    "ar": {
+      "name": "Fujiwara",
+      "summary": "إنتاج محتوى شهري وإدارة رقمية لمطعم ياباني في شمال المغرب.",
+      "outcome": "تضاعف إنتاج المحتوى أربع مرات. العملاء الجدد يذكرون Instagram كقناة اكتشاف."
+    }
+  }
+}

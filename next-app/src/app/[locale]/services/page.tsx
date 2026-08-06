@@ -57,9 +57,9 @@ export default async function ServicesPage() {
   const t = await getTranslations("Services.overview");
 
   return (
-    <main id="main-content">
+    <div>
       {/* Hero */}
-      <section className="mx-auto max-w-7xl px-4 pt-24 pb-16 sm:px-6 sm:pt-32 sm:pb-20">
+      <section className="max-w-content mx-auto px-4 pt-24 pb-16 sm:px-6 sm:pt-32 sm:pb-20">
         <p
           dir="ltr"
           className="text-muted-foreground mb-4 font-mono text-xs tracking-widest uppercase"
@@ -75,7 +75,7 @@ export default async function ServicesPage() {
       </section>
 
       {/* Practices grid */}
-      <section className="mx-auto max-w-7xl px-4 pb-16 sm:px-6 sm:pb-24">
+      <section className="max-w-content mx-auto px-4 pb-16 sm:px-6 sm:pb-24">
         <div className="bg-border grid grid-cols-1 gap-px sm:grid-cols-2">
           {PRACTICES.map(({ key, href, tags }) => (
             <Link key={key} href={href} className="group">
@@ -107,7 +107,7 @@ export default async function ServicesPage() {
 
       {/* How we work */}
       <section className="border-border border-y py-16 sm:py-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <div className="max-w-content mx-auto px-4 sm:px-6">
           <p className="font-body text-muted-foreground mx-auto max-w-2xl text-lg leading-relaxed">
             {t("howWeWork")}
           </p>
@@ -115,7 +115,7 @@ export default async function ServicesPage() {
       </section>
 
       {/* FAQ */}
-      <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-24">
+      <section className="max-w-content mx-auto px-4 py-16 sm:px-6 sm:py-24">
         <p
           dir="ltr"
           className="text-muted-foreground mb-4 font-mono text-xs tracking-widest uppercase"
@@ -141,7 +141,7 @@ export default async function ServicesPage() {
 
       {/* CTA */}
       <section className="bg-primary py-16 sm:py-24">
-        <div className="mx-auto max-w-7xl px-4 text-center sm:px-6">
+        <div className="max-w-content mx-auto px-4 text-center sm:px-6">
           <h2 className="font-display text-primary-foreground mb-4 text-3xl font-bold tracking-tight sm:text-4xl">
             {t("ctaHeadline")}
           </h2>
@@ -153,6 +153,6 @@ export default async function ServicesPage() {
           </Button>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

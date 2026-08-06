@@ -40,9 +40,9 @@ export function ServiceDetailPage({
   contactHref = "/contact",
 }: ServiceDetailPageProps) {
   return (
-    <main id="main-content">
+    <div>
       {/* Hero */}
-      <section className="mx-auto max-w-7xl px-4 pt-24 pb-16 sm:px-6 sm:pt-32 sm:pb-20">
+      <section className="max-w-content mx-auto px-4 pt-24 pb-16 sm:px-6 sm:pt-32 sm:pb-20">
         <p
           dir="ltr"
           className="text-muted-foreground mb-4 font-mono text-xs tracking-widest uppercase"
@@ -59,7 +59,7 @@ export function ServiceDetailPage({
 
       {/* Capabilities */}
       <section className="border-border border-t py-16 sm:py-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <div className="max-w-content mx-auto px-4 sm:px-6">
           <p
             dir="ltr"
             className="text-muted-foreground mb-10 font-mono text-xs tracking-widest uppercase"
@@ -86,7 +86,7 @@ export function ServiceDetailPage({
 
       {/* Stack */}
       <section className="bg-surface-container py-10">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <div className="max-w-content mx-auto px-4 sm:px-6">
           <p
             dir="ltr"
             className="text-muted-foreground mb-4 font-mono text-xs tracking-widest uppercase"
@@ -105,7 +105,7 @@ export function ServiceDetailPage({
 
       {/* Process */}
       <section className="py-16 sm:py-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <div className="max-w-content mx-auto px-4 sm:px-6">
           <p
             dir="ltr"
             className="text-muted-foreground mb-10 font-mono text-xs tracking-widest uppercase"
@@ -132,7 +132,7 @@ export function ServiceDetailPage({
 
       {/* Featured case */}
       <section className="bg-primary py-16 sm:py-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <div className="max-w-content mx-auto px-4 sm:px-6">
           <p
             dir="ltr"
             className="text-primary-foreground/60 mb-4 font-mono text-xs tracking-widest uppercase"
@@ -156,7 +156,7 @@ export function ServiceDetailPage({
 
       {/* CTA */}
       <section className="border-border border-t py-16 sm:py-24">
-        <div className="mx-auto max-w-7xl px-4 text-center sm:px-6">
+        <div className="max-w-content mx-auto px-4 text-center sm:px-6">
           <h2 className="font-display text-foreground mb-8 text-2xl font-bold tracking-tight sm:text-3xl">
             {ctaHeadline}
           </h2>
@@ -165,6 +165,6 @@ export function ServiceDetailPage({
           </Button>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

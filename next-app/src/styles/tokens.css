@@ -1,0 +1,360 @@
+/*
+ * ═══════════════════════════════════════════════════════════════════════════
+ *  bangicode design tokens
+ *  Source of truth. See docs/adr/0001-adopt-claude-design-system-tokens.md
+ * ═══════════════════════════════════════════════════════════════════════════
+ *
+ *  Derived from the Claude Design System ("bangicode Design System" project),
+ *  whose three brand anchors are the fills inside brand/logo.svg:
+ *
+ *      --color-navy-700  #114483   structure
+ *      --color-sky-500   #2E91CE   accent
+ *      --color-red-500   #D30F33   the spark
+ *
+ *  Pairing rule: blue does the structure, red does the spark.
+ *  If a layout is more than ~5% red, it is wrong.
+ *
+ *  ── Three layers, in this order ───────────────────────────────────────────
+ *
+ *   1. @theme            Primitives. Ramps, radii, shadows, easings, container.
+ *                        These generate utilities (bg-navy-700, shadow-brand…).
+ *
+ *   2. :root             Semantic assignments as PLAIN custom properties, in
+ *      [data-surface]    BOTH vocabularies the codebase uses (shadcn +
+ *                        Material-3). Re-declared under [data-surface="dark"].
+ *
+ *   3. @theme inline     Bridge: --color-primary: var(--primary). `inline` is
+ *                        essential — it makes utilities emit var() references
+ *                        rather than resolved values, so layer 2's scoped
+ *                        overrides actually cascade.
+ *
+ *  ── Why layer 2 is scoped, and why it matters ─────────────────────────────
+ *
+ *  Design D has three dark navy bands (hero+stats, portfolio, footer/CTA), but
+ *  every existing component is written in light-surface semantics
+ *  (text-foreground, bg-background, border-border, text-muted-foreground).
+ *
+ *  Wrapping a band in <section data-surface="dark"> re-points the semantic
+ *  layer, so those components render correctly on navy with ZERO markup change.
+ *
+ *  This is also what resolves `secondary-container`, which is genuinely
+ *  overloaded: 18 text + 5 border call sites, some on navy (needing a LIGHT
+ *  sky) and some on white (needing a DARK sky). One value cannot serve both —
+ *  sky-400 on ink-50 is ~2.6:1, failing even the 3:1 large-text threshold.
+ *  Scoping makes it two values under one name and leaves all 23 sites correct
+ *  without editing any of them.
+ *
+ *  ⚠ When you add a semantic token, add it to BOTH vocabularies and to BOTH
+ *    surface scopes, or you get a silently unstyled element — no error, no
+ *    warning. `pnpm check:tokens` guards this.
+ */
+
+@theme {
+  /* ── Ink — cool, faint-blue neutrals ─────────────────────────────────── */
+  --color-ink-50: #f6f8fb;
+  --color-ink-100: #edf1f7;
+  --color-ink-200: #dfe5ee;
+  --color-ink-300: #c7d0de;
+  --color-ink-400: #9aa6b8;
+  --color-ink-500: #6f7c90;
+  --color-ink-600: #526074;
+  --color-ink-700: #3c4859;
+  --color-ink-800: #27303e;
+  --color-ink-900: #161d28;
+  --color-ink-950: #0b111a;
+
+  /* ── Navy — structure. 700 is the logo wordmark navy. ────────────────── */
+  --color-navy-50: #eef3fa;
+  --color-navy-100: #d9e4f4;
+  --color-navy-200: #b3c8e8;
+  --color-navy-300: #7fa3d6;
+  --color-navy-400: #4a78bc;
+  --color-navy-500: #2559a1;
+  --color-navy-600: #184e92;
+  --color-navy-700: #114483; /* ⚑ brand — brand/logo.svg */
+  --color-navy-800: #0d3568;
+  --color-navy-900: #0a2749;
+  --color-navy-950: #061a32;
+
+  /* ── Sky — accent. 500 is the logo wordmark blue. ─────────────────────── */
+  --color-sky-50: #edf7fc;
+  --color-sky-100: #d5ecf8;
+  --color-sky-200: #a9d8f0;
+  --color-sky-300: #75bfe4;
+  --color-sky-400: #4ba6d9;
+  --color-sky-500: #2e91ce; /* ⚑ brand — brand/logo.svg */
+  --color-sky-600: #2276a9;
+  --color-sky-700: #1c5d85;
+  --color-sky-800: #174a69;
+  --color-sky-900: #133a52;
+  --color-sky-950: #0c2536;
+
+  /* ── Red — the spark. 500/600/700 are the logo's own "S" reds. ────────── */
+  --color-red-50: #fdecef;
+  --color-red-100: #fbd3da;
+  --color-red-200: #f6a6b5;
+  --color-red-300: #ef7288;
+  --color-red-400: #e43f5c;
+  --color-red-500: #d30f33; /* ⚑ brand — brand/logo.svg */
+  --color-red-600: #b20f2e; /* ⚑ logo */
+  --color-red-700: #8f0c25;
+  --color-red-800: #6e0a1d;
+  --color-red-900: #520816;
+  --color-red-950: #33050e;
+
+  /* ── Status ──────────────────────────────────────────────────────────── */
+  --color-success: #1f9d6b;
+  --color-warning: #e0922f;
+
+  /* ── Radii — moderate-geometric. Nothing pillowy. ─────────────────────
+   * Sized so existing call sites land correctly without edits:
+   *   rounded-sm (49 uses, incl. Button) → 10px  buttons & inputs
+   *   rounded-md                          → 14px  cards
+   *   rounded-lg / -xl                    → 20/28px  feature panels
+   * Note: plain `rounded` is NOT theme-backed in Tailwind v4 (fixed 0.25rem).
+   * Its only production use is LocaleSwitcher, which is being rewritten.
+   */
+  --radius-xs: 0.375rem; /*  6px */
+  --radius-sm: 0.625rem; /* 10px — buttons, inputs */
+  --radius-md: 0.875rem; /* 14px — cards */
+  --radius-lg: 1.25rem; /* 20px — feature panels */
+  --radius-xl: 1.75rem; /* 28px — large feature panels */
+
+  /* ── Elevation — navy-tinted, never neutral black ─────────────────────── */
+  --shadow-xs: 0 1px 2px rgb(17 68 131 / 0.05);
+  --shadow-sm: 0 1px 2px rgb(17 68 131 / 0.06), 0 2px 8px rgb(17 68 131 / 0.05);
+  --shadow-md:
+    0 4px 12px rgb(17 68 131 / 0.08), 0 2px 4px rgb(17 68 131 / 0.06);
+  --shadow-lg:
+    0 12px 28px rgb(17 68 131 / 0.1), 0 4px 8px rgb(17 68 131 / 0.06);
+  --shadow-xl:
+    0 24px 48px rgb(17 68 131 / 0.14), 0 8px 16px rgb(17 68 131 / 0.08);
+  --shadow-brand: 0 8px 24px rgb(17 68 131 / 0.28);
+  --shadow-spark: 0 8px 24px rgb(211 15 51 / 0.3);
+
+  /* ── Motion ───────────────────────────────────────────────────────────
+   * --ease-out intentionally overrides Tailwind's built-in easing so every
+   * existing `ease-out` picks up the design's curve.
+   */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* ── Layout — 1320px content width (generates max-w-content) ──────────── */
+  --container-content: 82.5rem;
+}
+
+/*
+ * Durations. Plain properties, not @theme: Tailwind's duration-* utilities
+ * take bare values, so a --duration-* namespace would generate nothing.
+ * Use as duration-[var(--duration-base)] or in hand-written CSS.
+ */
+:root {
+  --duration-fast: 120ms;
+  --duration-base: 200ms;
+  --duration-slow: 360ms;
+
+  /* ═══ Font stacks ════════════════════════════════════════════════════
+   * Indirected through *-stack properties for the same reason the colours
+   * are: `@theme inline` INLINES its value into the utility, so
+   * `.font-display` compiles to `font-family: var(--font-chakra-petch)`.
+   * A rule that merely reassigns `--font-display` therefore cannot affect it.
+   *
+   * That is exactly why the previous `[lang="ar"] { --font-display: … }` rule
+   * was dead — Tailwind dropped it from the output entirely, and Arabic pages
+   * rendered in a Latin face with system fallback for the Arabic glyphs.
+   *
+   * Utilities point at these stacks, so [lang="ar"] below can re-point them.
+   */
+  --font-display-stack: var(--font-chakra-petch);
+  --font-body-stack: var(--font-manrope);
+  --font-mono-stack: var(--font-jetbrains-mono);
+
+  /* ═══ Layer 2a — LIGHT surface ═══════════════════════════════════════ */
+
+  /* shadcn vocabulary */
+  --background: var(--color-ink-50);
+  --foreground: var(--color-ink-900);
+  --card: #ffffff;
+  --card-foreground: var(--color-ink-900);
+  --popover: #ffffff;
+  --popover-foreground: var(--color-ink-900);
+
+  --primary: var(--color-navy-700);
+  --primary-foreground: #ffffff;
+
+  /* NB: in this codebase `secondary` means SKY (Button's outline variant),
+   * not shadcn's default grey. Repointing it to grey would silently repaint
+   * border-secondary / bg-secondary / Badge variant="secondary". */
+  --secondary: var(--color-sky-500);
+  --secondary-foreground: #ffffff;
+
+  --muted: var(--color-ink-100);
+  --muted-foreground: var(--color-ink-600); /* 101 uses — ~6.9:1 on ink-50 ✓ */
+
+  /* accent is used as a TEXT colour (text-accent, Button link/secondary).
+   * sky-500 on white is ~3.3:1 → fails AA for body text; sky-600 is ~4.9:1 ✓ */
+  --accent: var(--color-sky-600);
+  --accent-foreground: #ffffff;
+
+  --destructive: var(--color-red-500);
+  --destructive-foreground: #ffffff;
+
+  --border: var(--color-ink-200);
+  --input: var(--color-ink-300);
+  --ring: var(--color-sky-500);
+
+  /* The spark. A first-class token, deliberately NOT `primary` — Design D's
+   * primary CTA is red, but bg-primary is also a section background, so
+   * repointing primary to red would turn the structural layer red and blow
+   * straight past the ~5% rule. */
+  --spark: var(--color-red-500);
+  --spark-hover: var(--color-red-600);
+  --spark-foreground: #ffffff;
+
+  /* Material-3 vocabulary — aliases onto the same ramps */
+  --surface: var(--color-ink-50);
+  --surface-container: var(--color-ink-100);
+  --surface-variant: var(--color-ink-200);
+  --on-surface: var(--color-ink-900);
+  --on-surface-variant: var(--color-ink-600);
+  --outline: var(--color-ink-400);
+  --outline-variant: var(--color-ink-200);
+
+  /* must be DARKER than --primary: used as a chip inside navy bands and as
+   * Button-primary's hover state */
+  --primary-container: var(--color-navy-800);
+  --on-primary-container: var(--color-navy-100);
+
+  /* the overloaded one — see the header note */
+  --secondary-container: var(--color-sky-600);
+  --on-secondary-container: #ffffff;
+
+  --error-container: var(--color-red-100);
+  --on-error-container: var(--color-red-800);
+  --scrim: var(--color-ink-950);
+}
+
+/* ═══ Layer 2b — DARK surface (navy bands: hero, portfolio, footer/CTA) ═══
+ *
+ * Dark mode of this brand is NAVY, not black.
+ * Usage: <section data-surface="dark"> … </section>
+ */
+[data-surface="dark"] {
+  --background: var(--color-ink-950);
+  --foreground: #ffffff;
+  --card: var(--color-navy-900);
+  --card-foreground: #ffffff;
+  --popover: var(--color-navy-900);
+  --popover-foreground: #ffffff;
+
+  --primary: var(--color-sky-400);
+  --primary-foreground: var(--color-navy-950);
+
+  --secondary: var(--color-sky-400);
+  --secondary-foreground: var(--color-navy-950);
+
+  --muted: var(--color-navy-800);
+  --muted-foreground: var(--color-sky-100);
+
+  --accent: var(--color-sky-300);
+  --accent-foreground: var(--color-navy-950);
+
+  --destructive: var(--color-red-400);
+  --destructive-foreground: #ffffff;
+
+  --border: var(--color-navy-800);
+  --input: var(--color-navy-700);
+  --ring: var(--color-sky-400);
+
+  --spark: var(--color-red-500);
+  --spark-hover: var(--color-red-400);
+  --spark-foreground: #ffffff;
+
+  --surface: var(--color-ink-950);
+  --surface-container: var(--color-navy-900);
+  --surface-variant: var(--color-navy-800);
+  --on-surface: #ffffff;
+  --on-surface-variant: var(--color-sky-100);
+  --outline: var(--color-navy-600);
+  --outline-variant: var(--color-navy-800);
+
+  --primary-container: var(--color-navy-700);
+  --on-primary-container: var(--color-navy-100);
+
+  --secondary-container: var(--color-sky-300);
+  --on-secondary-container: var(--color-navy-950);
+
+  --error-container: var(--color-red-900);
+  --on-error-container: var(--color-red-100);
+  --scrim: var(--color-ink-950);
+}
+
+/* ═══ Arabic ═════════════════════════════════════════════════════════════
+ * Chakra Petch and Manrope both lack Arabic coverage, so BOTH the display and
+ * the body stack must be re-pointed — not just display, which was the old
+ * (already broken) behaviour. --font-plex-arabic is set on <html> by the
+ * IBM_Plex_Sans_Arabic next/font instance, emitted only on /ar routes.
+ *
+ * Mono is deliberately NOT swapped: JetBrains Mono has no Arabic either, but
+ * mono is used only for eyebrows and metadata, which components already render
+ * with dir="ltr" as Latin technical markers (— SERVICES, // the thesis).
+ */
+[lang="ar"] {
+  --font-display-stack: var(--font-plex-arabic);
+  --font-body-stack: var(--font-plex-arabic);
+}
+
+/* ═══ Layer 3 — bridge ═══════════════════════════════════════════════════
+ * `inline` is load-bearing: it makes utilities emit var(--x) instead of the
+ * resolved value, so [data-surface="dark"] overrides cascade into them.
+ */
+@theme inline {
+  --font-display: var(--font-display-stack);
+  --font-body: var(--font-body-stack);
+  --font-mono: var(--font-mono-stack);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  --color-spark: var(--spark);
+  --color-spark-hover: var(--spark-hover);
+  --color-spark-foreground: var(--spark-foreground);
+
+  --color-surface: var(--surface);
+  --color-surface-container: var(--surface-container);
+  --color-surface-variant: var(--surface-variant);
+  --color-on-surface: var(--on-surface);
+  --color-on-surface-variant: var(--on-surface-variant);
+  --color-outline: var(--outline);
+  --color-outline-variant: var(--outline-variant);
+
+  --color-primary-container: var(--primary-container);
+  --color-on-primary-container: var(--on-primary-container);
+  --color-secondary-container: var(--secondary-container);
+  --color-on-secondary-container: var(--on-secondary-container);
+
+  --color-error-container: var(--error-container);
+  --color-on-error-container: var(--on-error-container);
+  --color-scrim: var(--scrim);
+}

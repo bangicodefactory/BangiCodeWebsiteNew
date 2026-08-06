@@ -35,6 +35,20 @@
     "trustedBy": {
       "label": "ils nous font confiance"
     },
+    "why": {
+      "eyebrow": "// pourquoi nous",
+      "headline": "Périmètre fixe. Ingénieurs seniors. Tout vous est remis.",
+      "themTitle": "Ce qui arrive d'habitude",
+      "usTitle": "Notre façon de travailler",
+      "them01": "Facturation à l'heure, et un périmètre qui s'élargit discrètement.",
+      "them02": "Vous rencontrez l'équipe senior à la présentation, puis plus jamais.",
+      "them03": "La livraison se résume à une archive, sans documentation ni accès.",
+      "them04": "Le silence entre deux jalons.",
+      "us01": "Périmètre et prix fixes, validés avant de commencer.",
+      "us02": "Un ingénieur senior pilote votre projet dès le premier jour.",
+      "us03": "Code source complet, accès de déploiement et documentation propre à la livraison.",
+      "us04": "Démos hebdomadaires, espace Notion partagé, canal Slack privé."
+    },
     "services": {
       "eyebrow": "// ce que nous créons",
       "headline": "Quatre expertises, une équipe.",
@@ -49,7 +63,27 @@
       "s03Body": "Bootcamps et ateliers pour équipes et individus — React, Node, Laravel et plus.",
       "s04Number": "04",
       "s04Title": "Présence sociale",
-      "s04Body": "Contenu cohérent avec la marque, gestion de communauté et stratégie digitale."
+      "s04Body": "Contenu cohérent avec la marque, gestion de communauté et stratégie digitale.",
+      "learnMore": "En savoir plus"
+    },
+    "solutions": {
+      "eyebrow": "// plateformes",
+      "headline": "Des modèles que nous avons construits plus d'une fois.",
+      "body": "Quatre formes de plateformes qui reviennent régulièrement dans nos projets clients. Chacune est un point de départ que nous adaptons à votre activité — pas un logiciel sur étagère.",
+      "placeholder": "à titre indicatif — construit sur mesure, pas vendu sur étagère",
+      "p01Name": "RentFlow",
+      "p01Tag": "Location & flotte",
+      "p01Body": "Réservations, contrats, disponibilité des véhicules et planning d'entretien au même endroit.",
+      "p02Name": "TableServe",
+      "p02Tag": "Restauration",
+      "p02Body": "Menus, commande en ligne et gestion des tables pour un ou plusieurs établissements.",
+      "p03Name": "Scholaris",
+      "p03Tag": "Éducation",
+      "p03Body": "Cours, inscriptions et suivi de progression pour écoles et centres de formation.",
+      "p04Name": "ShopCore",
+      "p04Tag": "E-commerce",
+      "p04Body": "Catalogue, paiement et livraison adaptés aux moyens de paiement et à la logistique marocains.",
+      "cta": "Parlons de votre plateforme"
     },
     "featuredCase": {
       "eyebrow": "// cas emblématique",
@@ -76,12 +110,8 @@
       "classkomIndustry": "Éducation",
       "aqarchamalClient": "Aqarchamal",
       "aqarchamalDesc": "Plateforme d'annonces immobilières avec recherche facettée et carte interactive pour la région Tanger-Tétouan.",
-      "aqarchamalIndustry": "Immobilier"
-    },
-    "testimonial": {
-      "quote": "Bangicode a livré une app prête pour la production dans les délais et le budget. La qualité du code est remarquable — nous la faisons tourner depuis plus d'un an sans incident majeur.",
-      "author": "Youssef B.",
-      "company": "Friterie.ma"
+      "aqarchamalIndustry": "Immobilier",
+      "ctaAll": "Voir tous les projets"
     },
     "process": {
       "eyebrow": "// ce qui se passe ensuite",
@@ -103,6 +133,25 @@
       "step04Time": "sous 2 semaines",
       "step04Body": "Le premier sprint commence. Vous obtenez un canal Slack, un espace Notion et des démos hebdomadaires."
     },
+    "testimonial": {
+      "quote": "Bangicode a livré une app prête pour la production dans les délais et le budget. La qualité du code est remarquable — nous la faisons tourner depuis plus d'un an sans incident majeur.",
+      "author": "Youssef B.",
+      "company": "Friterie.ma"
+    },
+    "faq": {
+      "eyebrow": "// questions fréquentes",
+      "headline": "Ce que les gens demandent avant de nous contacter.",
+      "q01": "Combien de temps dure un projet typique ?",
+      "a01": "La plupart des projets durent 6 à 16 semaines après le démarrage. Nous vous donnons un planning avant toute signature.",
+      "q02": "Travaillez-vous avec des clients internationaux ?",
+      "a02": "Oui. La plupart de nos communications sont asynchrones, en anglais ou en français. Les appels sont planifiés selon votre fuseau horaire.",
+      "q03": "Quel est votre modèle de tarification ?",
+      "a03": "Prix fixe par projet. Nous cadrons soigneusement en amont pour éviter les surprises.",
+      "q04": "Proposez-vous un support après le lancement ?",
+      "a04": "Oui — contrats de maintenance disponibles. La plupart de nos clients nous gardent 6 à 12 mois après le lancement.",
+      "q05": "Pouvez-vous reprendre un code existant ?",
+      "a05": "Parfois. Nous réalisons d'abord un audit payant d'une semaine pour vous donner une réponse honnête."
+    },
     "founder": {
       "label": "votre interlocuteur",
       "headline": "Parlez à Ahmed — fondateur.",
@@ -110,7 +159,9 @@
       "ctaPrimary": "Réserver 30 min",
       "ctaSecondaryPrefix": "ou",
       "whatsapp": "whatsapp",
-      "email": "admin@bangicode.ma"
+      "email": "admin@bangicode.ma",
+      "body": "Dites-nous ce que vous construisez. Nous répondrons en un jour ouvré.",
+      "ctaSecondary": "Envoyer un message"
     }
   },
   "Services": {
@@ -363,46 +414,10 @@
     "emptyState": "Pas encore de projets dans cette catégorie. Revenez bientôt, ou",
     "emptyStateLink": "démarrez un projet →",
     "viewCase": "Voir le cas",
-    "rentcarName": "RentCar",
-    "rentcarSummary": "Plateforme de gestion de flotte et de réservation en ligne pour un loueur de voitures marocain.",
-    "friterieMaName": "Friterie.ma",
-    "friterieMaSummary": "Système e-commerce et de commande sur mesure pour une chaîne de restauration rapide.",
-    "classkomName": "Classkom",
-    "classkomSummary": "Système de gestion de l'apprentissage mobile-first connectant étudiants et formateurs en temps réel.",
-    "nortecoffeecoName": "Nortecoffeeco",
-    "nortecoffeecoSummary": "Site de marque et portail de commande en gros pour un torréfacteur de café de spécialité.",
-    "ayaalmadinaName": "Ayaalmadina",
-    "ayaalmadinaSummary": "Plateforme de listing immobilier et de demandes de renseignements pour un promoteur à Tétouan.",
-    "coinluminaireName": "Coinluminaire",
-    "coinluminaireSummary": "Boutique e-commerce et panneau d'administration pour une marque marocaine de luminaires décoratifs.",
-    "cafeimperialName": "Café Imperial",
-    "cafeimperialSummary": "Site de restaurant bilingue avec menus autogérés pour un café du nord du Maroc.",
-    "aqarchamalName": "Aqarchamal",
-    "aqarchamalSummary": "Plateforme d'annonces immobilières avec portail agences et carte interactive pour la région Tanger-Tétouan.",
-    "fujiwaraName": "Fujiwara",
-    "fujiwaraSummary": "Production de contenu mensuel et gestion sociale pour un restaurant japonais au nord du Maroc.",
-    "alaturcoName": "Alaturco",
-    "alaturcoSummary": "Stratégie de contenu et photographie sur 12 mois pour un restaurant turc — 100 % organique.",
-    "rihaMaName": "Riha.ma",
-    "rihaMaSummary": "Production TikTok et Reels pour une marque marocaine de fragrances d'intérieur.",
-    "cosasbuenasName": "Cosas Buenas",
-    "cosasbuenasSummary": "Contenu Instagram et gestion de communauté pour une boutique lifestyle soigneusement sélectionnée.",
     "stackLabel": "Stack technique",
     "outcomeLabel": "Résultat",
     "backToWork": "Tous les projets",
-    "ctaButton": "Étude de cas complète disponible sur demande — contactez-nous",
-    "rentcarOutcome": "-60 % de temps admin quotidien. Trois systèmes fournisseurs remplacés par un seul. 99,9 % de disponibilité sur 14 mois.",
-    "friterieMaOutcome": "1 200+ commandes mensuelles traitées en 3 mois. Commandes téléphoniques tombées à zéro.",
-    "classkomOutcome": "500+ apprenants actifs intégrés lors du premier semestre, sur 12 cours.",
-    "nortecoffeecoOutcome": "Toutes les commandes en gros traitées en ligne en 2 mois. Zéro commande téléphonique.",
-    "ayaalmadinaOutcome": "Délai de réponse de 3 jours réduit à la journée même. 80 % de réduction des demandes en double.",
-    "coinluminaireOutcome": "Catalogue triplé au lancement. Chargement en moins de 2 secondes sur mobile. Un seul administrateur gère tout.",
-    "cafeimperialOutcome": "Mises à jour saisonnières gérées par l'équipe du café en toute autonomie — zéro appel d'agence.",
-    "aqarchamalOutcome": "Publication d'annonces le jour même. Trois systèmes manuels remplacés par une seule plateforme.",
-    "fujiwaraOutcome": "Production de contenu quadruplée. Les nouveaux clients citent Instagram comme canal de découverte.",
-    "alaturcoOutcome": "Portée organique mensuelle doublée en 90 jours — sans dépense publicitaire.",
-    "rihaMaOutcome": "500 000+ vues TikTok en 3 mois. Sessions web via social triplées.",
-    "cosasbuenasOutcome": "Demandes par DM multipliées par 5. Taux de réponse aux commentaires à 100 % depuis le lancement."
+    "ctaButton": "Étude de cas complète disponible sur demande — contactez-nous"
   },
   "Careers": {
     "eyebrow": "// rejoignez-nous",
@@ -445,11 +460,13 @@
   },
   "Nav": {
     "services": "Services",
-    "work": "Réalisations",
+    "solutions": "Solutions",
+    "portfolio": "Réalisations",
     "about": "À propos",
+    "blog": "Blog",
+    "contact": "Contact",
     "process": "Processus",
     "careers": "Carrières",
-    "contact": "Contact",
     "openMenu": "Ouvrir le menu",
     "startProject": "Démarrer un projet",
     "mobileTitle": "Navigation",
@@ -481,7 +498,6 @@
     "socialPresence": "Présence sociale",
     "about": "À propos",
     "process": "Processus",
-    "work": "Réalisations",
     "careers": "Carrières",
     "contact": "Contact",
     "address": "Av. Ali Yaeta\nCentre Commercial Wilaya Center\nEtage 6, N69\nTétouan, Maroc",
@@ -493,7 +509,8 @@
     "cookies": "Cookies",
     "legalNav": "Légal",
     "linkedin": "LinkedIn",
-    "github": "GitHub"
+    "github": "GitHub",
+    "portfolio": "Réalisations"
   },
   "Legal": {
     "legalEyebrow": "// légal",
@@ -514,5 +531,57 @@
     "accept": "Accepter les analyses",
     "decline": "Refuser",
     "managePreferences": "Gérer les préférences"
+  },
+  "Solutions": {
+    "eyebrow": "// plateformes",
+    "h1": "Des modèles que nous avons construits plus d'une fois.",
+    "subhead": "Quatre formes de plateformes qui reviennent régulièrement dans nos projets clients. Chacune est un point de départ que nous adaptons à votre activité — pas un logiciel sur étagère.",
+    "placeholderNote": "À titre indicatif. Ce sont des modèles issus de projets passés, pas des produits en vente — chaque réalisation est cadrée et chiffrée pour l'entreprise qui la commande.",
+    "learnMore": "Ce que comprend une réalisation",
+    "backToSolutions": "Toutes les plateformes",
+    "includedLabel": "// ce que comprend généralement une réalisation",
+    "timelineLabel": "// délai habituel",
+    "timelineValue": "8 à 16 semaines à partir du démarrage. Périmètre et prix fixes.",
+    "ctaHeadline": "Un projet dans ce domaine ?",
+    "ctaBody": "Dites-nous ce dont vous avez besoin. Nous le cadrons, le chiffrons et le livrons.",
+    "ctaButton": "Démarrer un projet",
+    "p01Name": "RentFlow",
+    "p01Tag": "Location & flotte",
+    "p01Summary": "Réservations, contrats, disponibilité des véhicules et planning d'entretien au même endroit.",
+    "p01Cap01": "Calendrier de réservation avec disponibilité des véhicules en temps réel",
+    "p01Cap02": "Génération de contrats, signatures et suivi des cautions",
+    "p01Cap03": "Planning d'entretien et historique par véhicule",
+    "p01Cap04": "Tableau de bord avec taux d'utilisation et chiffre d'affaires",
+    "p02Name": "TableServe",
+    "p02Tag": "Restauration",
+    "p02Summary": "Menus, commande en ligne et gestion des tables pour un ou plusieurs établissements.",
+    "p02Cap01": "Gestion des menus avec prix et disponibilité par établissement",
+    "p02Cap02": "Commande en ligne pour l'emporter et la livraison",
+    "p02Cap03": "Gestion des tables et des réservations",
+    "p02Cap04": "Écran de commande en cuisine et rapport de ventes quotidien",
+    "p03Name": "Scholaris",
+    "p03Tag": "Éducation",
+    "p03Summary": "Cours, inscriptions et suivi de progression pour écoles et centres de formation.",
+    "p03Cap01": "Catalogue de cours, inscriptions et gestion des promotions",
+    "p03Cap02": "Cours avec supports, devoirs et notation",
+    "p03Cap03": "Suivi de progression pour apprenants et formateurs",
+    "p03Cap04": "Présence, facturation et délivrance d'attestations",
+    "p04Name": "ShopCore",
+    "p04Tag": "E-commerce",
+    "p04Summary": "Catalogue, paiement et livraison adaptés aux moyens de paiement et à la logistique marocains.",
+    "p04Cap01": "Catalogue produits avec variantes, stock et import en masse",
+    "p04Cap02": "Paiement connecté à CMI, Stripe ou paiement à la livraison",
+    "p04Cap03": "Traitement des commandes et intégration des transporteurs locaux",
+    "p04Cap04": "Rapports sur les ventes, les mouvements de stock et les retours"
+  },
+  "Blog": {
+    "eyebrow": "// écrits",
+    "h1": "Notes du studio.",
+    "subhead": "Quelques articles sur les logiciels que nous construisons et notre façon de les construire.",
+    "empty": "Rien de publié pour l'instant. Nous écrivons quand nous avons quelque chose à dire, pas selon un calendrier.",
+    "emptyCtaPrefix": "En attendant,",
+    "emptyCtaLink": "découvrez nos réalisations",
+    "backToBlog": "Tous les articles",
+    "publishedLabel": "Publié le"
   }
 }

@@ -26,61 +26,98 @@ Read **`## Component library — Company brand registry`** below before doing an
 
 ### 3. Confirm token source of truth
 
-`DESIGN.md` (in the Company brand library repo) is the brand source of truth for colors, typography, radii, spacing. **Tokens reach `next-app/` THROUGH the Company brand registry** — they're not authored locally in this repo. The local CLAUDE.md token drift table below is preserved as a sanity check against the Stitch prototype, but the actual `@theme` values flow in via installed registry components. See "Component library — Company brand registry" below.
+Tokens are authored **locally** in `next-app/src/styles/tokens.css`, imported by `globals.css`. See "Token source of truth" below and [ADR 0001](docs/adr/0001-adopt-claude-design-system-tokens.md).
 
 ---
 
-## Token source of truth — DESIGN.md, NOT the prototype
+## Token source of truth — `next-app/src/styles/tokens.css`
 
-The Stitch HTML prototype has drifted color and borderRadius values. **DESIGN.md** (in the library repo) is canonical. The token CSS reaches `next-app/` through the registry — but if you're reading the prototype to plan structure, verify any color/radius reference against this table first. Known deltas:
+**Changed 2026-08-05 — see [ADR 0001](docs/adr/0001-adopt-claude-design-system-tokens.md).**
 
-| Token | Prototype (wrong) | DESIGN.md (correct) |
+The canonical palette is the **Claude Design System** ("bangicode Design System" project, proposal *D · Full brief (trilingual)*). Its three brand anchors are the same colours as the fills inside `brand/logo.svg`:
+
+| Token | Hex | Role |
 |---|---|---|
-| `primary` | `#000c2c` | **`#002058`** |
-| `tertiary` | `#280000` | **`#500000`** |
-| `secondary-container` | `#80c5fe` | **`#5cb8fd`** |
-| `surface-container` | `#eceef4` | **`#e3efff`** |
-| `surface-variant` | `#e0e2e8` | **`#d1e4fb`** |
-| `borderRadius.full` | `0.75rem` | **`9999px`** (pills, not rounded squares) |
-| `borderRadius` scale | DEFAULT 0.125 / lg 0.25 / xl 0.5 | DEFAULT 0.25 / md 0.375 / lg 0.5 / xl 0.75 / full 9999px |
+| `--navy-700` | **`#114483`** | Structure — primary buttons, dark sections, headings on light |
+| `--sky-500` | **`#2E91CE`** | Accent — links, eyebrows, highlights, focus rings |
+| `--red-500` | **`#D30F33`** | The spark — one accent word, a key metric, the active dot, primary CTA |
 
-If a token from the prototype isn't in this table, still verify against DESIGN.md before using.
+Plus cool blue-tinted neutrals `--ink-50…950`, and ramps for navy / sky / red. Semantic status: success `#1f9d6b`, warning `#e0922f`, danger = brand red, info = sky.
+
+**Pairing rule: blue does the structure, red does the spark.** If a layout is more than ~5% red, it's wrong.
+
+Shape / depth / motion:
+
+| Aspect | Value |
+|---|---|
+| Radii | buttons & inputs `10px`, cards `14px`, feature panels `20–28px`, pills `9999px` |
+| Borders | 1px cool-grey hairlines; brand emphasis 2–3px navy or spark-red rule |
+| Shadows | soft and **navy-tinted** (`rgb(17 68 131 / α)`), never neutral black; `--shadow-brand` / `--shadow-spark` glows |
+| Motion | `--ease-out` entrances, `--ease-spring` micro-interactions; 120 / 200 / 360ms |
+| Focus | **3px** sky soft ring, never removed |
+| Layout | 12-col mental model, max content width **1320px**, 4px spacing scale |
+
+**Both semantic vocabularies are live and must stay mapped.** Components mix shadcn names (`foreground`, `muted-foreground`, `card`, `ring`, `accent`, `destructive`) with Material-3 names (`on-surface`, `outline`, `surface-container`, `primary-container`, `on-error-container`). `tokens.css` defines both. If you add a token, add it to both vocabularies or you'll get a silently unstyled element.
+
+**`DESIGN.md` is superseded for colour** (it specified `#002058` primary, `#5cb8fd` secondary-container, `#500000` tertiary). It stays in the repo for history only. `prototypes/v4-stitch.html` is no longer the visual reference either — the Claude Design project is.
 
 ---
 
 ## Tech stack rules (don't deviate without writing an ADR)
 
 - **Next.js 16.2.6**, App Router, TypeScript strict.
-- **Tailwind v4** with CSS-first `@theme`. NOT Tailwind v3 JS config. NOT the Play CDN. The `@theme` block is **NOT authored locally** — token CSS flows in from the Company brand registry (see "Component library" section below).
-- **Components: Company brand shadcn registry** at https://github.com/bangicodefactory/bangicode-design-system. Consumer pulls components via `npx shadcn add @bangicode/<name>`. See `## Component library — Company brand registry` below.
-- **Icons:** **lucide-react** only. NOT Material Symbols Outlined (that's what the prototype uses; it loads a 700KB+ font and pulls by string name).
+- **Tailwind v4** with CSS-first `@theme`. NOT Tailwind v3 JS config. NOT the Play CDN. The `@theme` block **IS authored locally**, in `next-app/src/styles/tokens.css` (imported by `globals.css`) — see ADR 0001.
+- **Components:** shadcn-style primitives live in `next-app/src/components/ui/`. The `@bangicode` registry at `design.bangicode.ma` was never deployed; do not wait on it. See `## Component library` below.
+- **Icons:** **lucide-react** only, 2px stroke. 16px inline with text, 20px in buttons/nav, 24px feature. NOT Material Symbols Outlined (that's what the prototype uses; it loads a 700KB+ font and pulls by string name).
 - **i18n:** next-intl with `[locale]` route segments. RTL for AR via `dir="rtl"` on `<html>`.
-- **Fonts:** Montserrat (display), Hanken Grotesk (body), JetBrains Mono (technical) via `next/font`. Arabic locale needs a separate subset (Noto Sans Arabic or equivalent) for the display family.
+- **Fonts:** **Chakra Petch** (display), **Manrope** (body), **JetBrains Mono** (technical) via `next/font`. For `ar`, **IBM Plex Sans Arabic** replaces BOTH display and body — Chakra Petch and Manrope have no Arabic coverage. One family covers both roles to keep `/ar` to a single extra download.
+- **Font stacks are indirected** through `--font-display-stack` / `--font-body-stack` / `--font-mono-stack` in `tokens.css`. Do NOT point a utility straight at a `next/font` variable via `@theme inline` — `inline` bakes the value into the utility, so any `[lang=…]` override silently stops working and Tailwind drops the rule. That bug shipped twice.
 - **Analytics:** GA4, gated by the cookie consent banner (IST-156). NOT Plausible.
 - **Booking:** Cal.com via `@calcom/embed-react`.
 - **Forms:** React Hook Form + Zod — both come from the library via `@bangicode/form` (already wired upstream).
 
 ---
 
-## Component library — Company brand registry
+## Component library
 
-The redesign **consumes** the Bangicode design system as a private shadcn registry. It does NOT re-implement shadcn primitives or author DESIGN.md tokens locally.
+**Changed 2026-08-05 — see [ADR 0001](docs/adr/0001-adopt-claude-design-system-tokens.md).**
 
-- **Source:** https://github.com/bangicodefactory/bangicode-design-system
-- **Registry namespace:** `@bangicode`
-- **Registry URL (per `components.json`):** `https://design.bangicode.ma/r/<name>.json`
-- **Install:** `npx shadcn add @bangicode/<name>` (lands in `next-app/components/ui/<name>.tsx`)
-- **Version pin:** `next-app/registry-version.json` records the library's git SHA + `package.json` version + install timestamp. Refreshed each time a component is added or updated. CI fails if the pin is stale > 14 days (IST-123 / IST-200).
-- **Companion tickets:** [IST-120](https://linear.app/ista3/issue/IST-120) (consumer-side wiring) · [IST-200](https://linear.app/ista3/issue/IST-200) (consumer-side pin/refresh workflow) · [IST-198](https://linear.app/ista3/issue/IST-198) (library-side version freshness, in the `bangicode component library` project).
+The `@bangicode` private shadcn registry at `https://design.bangicode.ma/r/<name>.json` **was never deployed** — the endpoint 404s, and `next-app/registry-version.json` records `"status": "pending"` with no install timestamp. Do not block work on it.
+
+Primitives live locally in `next-app/src/components/ui/`: badge · button · card · checkbox · form (RHF+Zod) · input · label · radio-group · select · separator · sheet · switch · textarea. Add new ones in the same style, on tokens from `src/styles/tokens.css`.
 
 **Rules:**
 
-1. **Do not author DESIGN.md tokens or a `@theme` block locally.** They ship in through the installed components and a thin `app/globals.css` import. The library is the bridge from DESIGN.md to Tailwind v4.
-2. **Do not modify installed component source.** If a registry component doesn't meet a real need, file an upstream issue on the library repo. Page-level wrappers that compose registry components are fine; patching `components/ui/<name>.tsx` is not.
-3. **Consumer-specific sections** (StudioStatusPanel, ThesisLineStats, RentCarFeaturedCase, PeekCards, WhatHappensNext, FounderCard, TrustedByRow) live in `next-app/components/sections/` per IST-199. They use ONLY library token classes — no raw hex except the documented `tertiary-fixed-dim #ffb4a9` for the online dot.
-4. **Pulling updates** from the library: re-run `npx shadcn add @bangicode/<name>` for components you want to refresh. Read the diff before committing. Update `registry-version.json`. The smoke gallery (`/_smoke`, IST-129) is the verification surface.
-5. **Components the library ships** (per v0.1.0 CHANGELOG): Button · Card · Input · Textarea · Select · Label · Checkbox · Radio group · Switch · Form (RHF+Zod) · Dialog · Dropdown menu · Popover · Sheet · Tabs · Accordion · Alert · Toast (Sonner) · Tooltip · Badge · Separator · Avatar · Skeleton · Sidebar nav · Data table (TanStack) · Charts (Recharts) · Stats card · Breadcrumb · Pagination · Hero · Feature grid · Pricing table · CTA · Testimonials · Logo cloud · FAQ · Site footer.
-6. **NOT in the library** (must be built consumer-side): NavigationMenu (IST-127), the IST-199 bespoke sections, and any other page-specific composition.
+1. **Author tokens in `next-app/src/styles/tokens.css`.** Keep them in that file rather than inline in `globals.css`, so there's a single seam to remove if a real registry ever ships. Define every token in **both** semantic vocabularies (shadcn + Material-3) — see "Token source of truth" above.
+2. **Prefer editing a primitive over forking it.** A page-level wrapper that composes primitives is fine; a near-duplicate of `ui/<name>.tsx` is not.
+3. **Consumer-specific sections** (StudioStatusPanel, ThesisLineStats, FeaturedCase, PeekCards, WhatHappensNext, FounderCard, TrustedByRow, WhyBangicode, SolutionsSection, FaqSection) live in `next-app/src/components/sections/`. They use **only** token classes — **no raw hex**. The old `#ffb4a9` exception for the online dot is retired; that dot now uses the spark token.
+4. **The smoke gallery** (`src/app/smoke/`, gated by `SMOKE_GALLERY=1`) is the per-section verification surface. Add a page when you add a section, register it in the `SECTIONS` list in `src/app/smoke/page.tsx`, and remove both when you drop one. Note it is a **separate root layout** — it inherits nothing from `[locale]/layout.tsx`, so `smoke/layout.tsx` must keep its own `globals.css` import and font variables (ADR 0001, bug 5).
+5. **`pnpm check:registry-pin`** guards a registry we no longer consume. Disable or repoint it — tracked separately.
+6. **Still to build consumer-side:** NavigationMenu (IST-127, already bespoke in `components/nav/`) and any page-specific composition. An `Accordion` primitive is **not** needed — `FaqSection` uses native `<details>`/`<summary>`, which gives the disclosure semantics and keyboard handling for free and keeps the section off the client bundle (ADR 0001).
+
+---
+
+## The CMS — `/admin`
+
+**Added 2026-08-06 — see [ADR 0002](docs/adr/0002-git-backed-cms.md).**
+
+A git-backed CMS for blog posts and portfolio projects, built on the same tokens
+as the public site. Sign-in is GitHub OAuth restricted to active members of the
+`bangicodefactory` org; publishing commits to the repo and the site rebuilds.
+
+| Rule | Why |
+|---|---|
+| **Never generate TypeScript from the CMS.** Content is JSON/MDX under `content/`. | A bad write must be a bad page, not a broken build. |
+| **Editorial copy does not live in `messages/*.json`.** | Those are UI strings, guarded by `check:messages`. Project copy lives in `content/portfolio/<slug>.json`. |
+| **All three locales publish in ONE commit.** Use `commitFiles`, never per-file writes. | A half-published post renders in one language and 404s in another. |
+| **Every server action calls `requireSession()` first.** | Actions are POST endpoints reachable directly; middleware only guards navigations. |
+| **Editor inputs are controlled.** | React 19 resets `<form action>` after the action — uncontrolled fields lose the author's work on a validation error. |
+| **`/admin` is a separate root layout** and must keep its own `globals.css` import + font variables. | Same trap as `/smoke` (ADR 0001, bug 5). |
+| Client components import `@/lib/portfolio-schema`, never `@/lib/portfolio`. | The latter imports `node:fs` and fails the client build. |
+
+Env vars are documented in `next-app/.env.example`; `/admin/login` names any that
+are missing rather than crashing. Tests: `pnpm test:cms` (stub GitHub, never the
+real API).
 
 ---
 
@@ -91,7 +128,7 @@ The redesign **consumes** the Bangicode design system as a private shadcn regist
 - **Footer services list:** Custom software / E-commerce / Technical training / Social presence. (NOT the generic "Web Development / Mobile Solutions / UI/UX Strategy / Cloud Systems" that Stitch hallucinated.)
 - **Testimonials:** keep the Youssef B. / Friterie.ma placeholder. Mark it `data-placeholder="true"` so it's grep-able.
 - **Case studies:** short 1-screen summaries with "Full case study available on request — contact us" CTA. NOT long-form.
-- **Studio status panel `● online` indicator:** uses **tertiary-fixed-dim (`#ffb4a9`)** — the single legitimate use of tech-red. Stitch drifted to sky-blue; do not match Stitch on this one.
+- **Studio status panel `● online` indicator:** uses the **spark** token (brand red `#D30F33` family). The design system assigns spark-red to "the active dot", which matches the original intent behind the retired `#ffb4a9` hex. Do not use sky-blue here.
 - **Hero CTA naming:** "Start a project" everywhere (in both nav and body). NOT "Let's Build" (Stitch swap).
 
 ---
@@ -135,15 +172,15 @@ The canonical brand source lives at `brand/` in the repo root. When IST-119 scaf
 
 Wordmark. **2039 × 314** (wide horizontal, ~6.5:1 aspect). Use this for the top nav, the footer brand block, and the OG image.
 
-**The logo's hex colors are intentionally different from `DESIGN.md` tokens — DO NOT repaint them.** The logo is an immutable brand artifact; DESIGN.md tokens drive UI surfaces, the logo stays as-is. The colors used inside the SVG:
+**DO NOT repaint the logo.** It is an immutable brand artifact. As of ADR 0001 this is no longer a source of tension: the UI palette was moved *onto* the logo's colours, so they now agree.
 
-| Logo fill | Approximate DESIGN.md analog | Note |
+| Logo fill | Token | Note |
 |---|---|---|
-| `#114483` / `#124482` / `#124483` / `#124484` | ≈ `primary-container` (`#1A3673`) | Wordmark navy |
-| `#2A89C8` / `#2E8FCD` / `#2E91CE` / `#2F92CF` | ≈ `secondary` (`#006397`) / `secondary-container` (`#5cb8fd`) | Wordmark sky-blue |
-| `#D30F33` / `#B20F2E` / `#AC0F2D` | ≈ `tertiary` family — the "S" tech-red detail | Single legitimate place tech-red appears in brand |
+| `#114483` / `#124482` / `#124483` / `#124484` | **`--navy-700`** | Wordmark navy — exact match |
+| `#2A89C8` / `#2E8FCD` / `#2E91CE` / `#2F92CF` | **`--sky-500`** | Wordmark sky-blue — exact match on `#2E91CE` |
+| `#D30F33` / `#B20F2E` / `#AC0F2D` | **`--red-500`** | The "S" spark — exact match on `#D30F33` |
 
-If a design asks for the logo to "match the theme," resist. The drift is by design — the logo holds its own color identity against any UI palette tweaks.
+The old `DESIGN.md` palette (`#002058` / `#006397` / `#500000`) drifted away from these; that drift is now resolved in the UI's favour. Still never edit the SVG's fills — the near-duplicate shades above (`#124482`, `#2A89C8`, …) are anti-banding detail in the artwork, not tokens.
 
 ### Variants still needed (open — out of scope for IST-119, but track)
 
@@ -169,5 +206,8 @@ When these arrive, drop them in `brand/` alongside `logo.svg` with self-describi
 - Initial JS < 150KB gzipped per route.
 - Lighthouse Perf / A11y / SEO / BP ≥ 95 each.
 - WCAG 2.2 AA across every page.
-- All interactive elements get a 2px sky-blue focus ring (DESIGN.md §Elevation).
+- All interactive elements get a **3px** sky-blue focus ring (`--ring-focus`, ADR 0001). Never removed.
 - `prefers-reduced-motion` respected.
+- Touch targets ≥ 24×24 (WCAG 2.2 **2.5.8**). Stacked mono links in the footer need explicit vertical padding to clear it.
+- One `<main id="main-content">` per page, owned by `[locale]/layout.tsx`. Pages render `<div>`s — do not add another `<main>` or reuse the id.
+- **`pnpm check:messages`** guards `messages/{en,fr,ar}.json`: identical key sets, no empty values, no English left in `fr`/`ar`. next-intl renders the key path itself on a miss, so a gap ships silently — CI runs this in the "Integrity" job.

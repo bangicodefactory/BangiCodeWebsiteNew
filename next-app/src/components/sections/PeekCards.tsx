@@ -1,15 +1,21 @@
 import { getTranslations } from "next-intl/server";
+import { ArrowRight } from "lucide-react";
+import { Link } from "@/i18n/navigation";
 
 interface PeekCard {
   client: string;
   description: string;
   stack: readonly string[];
   industry: string;
+  href: string;
 }
 
 function PeekCardItem({ card }: { card: PeekCard }) {
   return (
-    <article className="border-border bg-background flex flex-col gap-4 rounded-sm border p-6">
+    <Link
+      href={card.href}
+      className="group border-border bg-card hover:border-secondary focus-visible:ring-ring flex flex-col gap-4 rounded-md border p-6 transition-[border-color,transform] duration-200 ease-out hover:-translate-y-1 focus-visible:ring-2 focus-visible:outline-none"
+    >
       <h3 className="font-display text-foreground text-lg font-bold">
         {card.client}
       </h3>
@@ -17,22 +23,29 @@ function PeekCardItem({ card }: { card: PeekCard }) {
         {card.description}
       </p>
       <div className="flex flex-wrap gap-2">
-        {card.stack.map((tech) => (
+        {[...card.stack, card.industry].map((tag) => (
           <span
-            key={tech}
-            className="text-muted-foreground bg-surface-container rounded-sm px-2 py-0.5 font-mono text-xs"
+            key={tag}
+            className="text-muted-foreground bg-muted rounded-full px-2.5 py-1 font-mono text-xs"
           >
-            {tech}
+            {tag}
           </span>
         ))}
-        <span className="text-muted-foreground bg-surface-container rounded-sm px-2 py-0.5 font-mono text-xs">
-          {card.industry}
-        </span>
       </div>
-    </article>
+    </Link>
   );
 }
 
+/*
+ * Bottom half of the dark portfolio band — three equal project cards, as in
+ * Design D. Shares FeaturedCase's dark surface and is joined to it by a
+ * hairline; the two read as one band.
+ *
+ * Card copy still comes from Home.peekCards rather than work/projects.ts. The
+ * plan floated switching the data source, but the three summaries here are
+ * translated in all three catalogs and projects.ts is about to be renamed in
+ * Phase 6 — repointing now would mean touching it twice.
+ */
 export async function PeekCards() {
   const t = await getTranslations("Home.peekCards");
 
@@ -42,24 +55,31 @@ export async function PeekCards() {
       description: t("coinluminaireDesc"),
       stack: ["React", "MongoDB"],
       industry: t("coinluminaireIndustry"),
+      href: "/portfolio/coinluminaire",
     },
     {
       client: t("classkomClient"),
       description: t("classkomDesc"),
       stack: ["React", "Laravel"],
       industry: t("classkomIndustry"),
+      href: "/portfolio/classkom",
     },
     {
       client: t("aqarchamalClient"),
       description: t("aqarchamalDesc"),
       stack: ["Laravel", "Bootstrap"],
       industry: t("aqarchamalIndustry"),
+      href: "/portfolio/aqarchamal",
     },
   ];
 
   return (
-    <section id="more-work" className="py-16 sm:py-20">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+    <section
+      id="more-work"
+      data-surface="dark"
+      className="border-border bg-background border-t py-16 sm:py-20"
+    >
+      <div className="max-w-content mx-auto px-4 sm:px-6">
         <p
           dir="ltr"
           className="text-muted-foreground mb-8 font-mono text-xs tracking-widest uppercase"
@@ -72,6 +92,17 @@ export async function PeekCards() {
             <PeekCardItem key={card.client} card={card} />
           ))}
         </div>
+
+        <Link
+          href="/portfolio"
+          className="group text-secondary-container focus-visible:ring-ring mt-10 inline-flex items-center gap-1.5 rounded-sm font-mono text-sm focus-visible:ring-2 focus-visible:outline-none"
+        >
+          {t("ctaAll")}
+          <ArrowRight
+            aria-hidden="true"
+            className="size-4 transition-transform duration-200 ease-out group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5"
+          />
+        </Link>
       </div>
     </section>
   );

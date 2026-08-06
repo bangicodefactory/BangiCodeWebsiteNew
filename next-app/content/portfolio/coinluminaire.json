@@ -1,0 +1,31 @@
+{
+  "slug": "coinluminaire",
+  "order": 6,
+  "category": "ecommerce",
+  "tags": ["Shopify", "Liquid"],
+  "date": "2023",
+  "hero": {
+    "placeholder": true,
+    "webp": "/case-studies/coinluminaire/hero.webp",
+    "alt": "Coinluminaire — lighting e-commerce store",
+    "width": 1600,
+    "height": 900
+  },
+  "content": {
+    "en": {
+      "name": "Coinluminaire",
+      "summary": "Full e-commerce storefront and admin panel for a Moroccan decorative lighting brand.",
+      "outcome": "Catalog tripled at launch. Page load under 2 seconds on mobile. One admin manages it solo."
+    },
+    "fr": {
+      "name": "Coinluminaire",
+      "summary": "Boutique e-commerce et panneau d'administration pour une marque marocaine de luminaires décoratifs.",
+      "outcome": "Catalogue triplé au lancement. Chargement en moins de 2 secondes sur mobile. Un seul administrateur gère tout."
+    },
+    "ar": {
+      "name": "Coinluminaire",
+      "summary": "متجر إلكتروني ولوحة إدارة لعلامة مغربية في الإضاءة الديكورية.",
+      "outcome": "تضاعف الكتالوج ثلاث مرات عند الإطلاق. التحميل أقل من ثانيتين على الجوال. مسؤول واحد يدير كل شيء."
+    }
+  }
+}

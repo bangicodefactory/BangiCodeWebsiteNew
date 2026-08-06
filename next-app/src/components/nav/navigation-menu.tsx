@@ -53,7 +53,7 @@ export function NavigationMenu({
                   aria-current={isActive ? "page" : undefined}
                   onClick={() => onItemClick?.(item)}
                   className={cn(
-                    "font-hanken-grotesk relative inline-flex items-center rounded-sm px-3 py-2",
+                    "font-body relative inline-flex items-center rounded-sm px-3 py-2",
                     "text-foreground text-sm font-medium transition-colors",
                     "hover:bg-muted hover:text-foreground",
                     "focus-visible:ring-ring focus-visible:ring-offset-background focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",

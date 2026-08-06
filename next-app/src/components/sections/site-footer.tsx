@@ -4,10 +4,18 @@ import { Link } from "@/i18n/navigation";
 import { Separator } from "@/components/ui/separator";
 
 const LINK_CLASS =
-  "font-hanken-grotesk text-sm text-foreground/80 transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm";
+  "font-body text-sm text-foreground/80 transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm";
 
 const MONO_LINK_CLASS =
-  "font-jetbrains-mono text-xs text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm";
+  "font-mono text-xs text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm";
+
+/*
+ * The phone / email / WhatsApp links in the address block are stacked full-width
+ * anchors around 12px text, so they measured 16px tall — under WCAG 2.2's 24×24
+ * minimum target size (2.5.8), and too close to their neighbours. `block` plus
+ * vertical padding takes each to 28px without changing how the column reads.
+ */
+const MONO_CONTACT_LINK_CLASS = `${MONO_LINK_CLASS} block w-fit py-1.5`;
 
 export async function SiteFooter() {
   const t = await getTranslations("Footer");
@@ -19,20 +27,37 @@ export async function SiteFooter() {
     { label: t("socialPresence"), href: "/services" },
   ];
 
+  // Process and Careers live here now that the primary nav is Design D's six.
   const company: Array<{ label: string; href: string }> = [
     { label: t("about"), href: "/about" },
     { label: t("process"), href: "/process" },
-    { label: t("work"), href: "/work" },
+    { label: t("portfolio"), href: "/portfolio" },
     { label: t("careers"), href: "/careers" },
     { label: t("contact"), href: "/contact" },
   ];
 
+  /*
+   * Design D's footer is a dark navy band. `data-surface="dark"` re-points the
+   * semantic tokens (see src/styles/tokens.css), so every LINK_CLASS /
+   * text-muted-foreground / border-border below resolves to its dark-surface
+   * value without a single class change. The 4-column structure and the locked
+   * content (services list, copyright line) are unchanged.
+   *
+   * Logo: white plate interim, same as site-nav — see the note there.
+   */
   return (
-    <footer className="border-border bg-background w-full border-t">
-      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
+    <footer
+      data-surface="dark"
+      className="border-border bg-background w-full border-t"
+    >
+      <div className="max-w-content mx-auto px-4 py-16 sm:px-6">
         <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-4">
           <div className="flex flex-col gap-4">
-            <Link href="/" aria-label="Bangicode — home">
+            <Link
+              href="/"
+              aria-label="Bangicode — home"
+              className="w-fit rounded-sm bg-white px-2.5 py-1.5"
+            >
               <Image
                 src="/brand/logo.svg"
                 alt="Bangicode"
@@ -41,7 +66,7 @@ export async function SiteFooter() {
                 className="h-[22px] w-auto"
               />
             </Link>
-            <p className="font-hanken-grotesk text-muted-foreground text-sm">
+            <p className="font-body text-muted-foreground text-sm">
               {t("tagline")}
             </p>
             <div className="flex items-center gap-3">
@@ -67,7 +92,7 @@ export async function SiteFooter() {
           <div className="flex flex-col gap-4">
             <p
               dir="ltr"
-              className="font-jetbrains-mono text-muted-foreground text-xs tracking-widest uppercase"
+              className="text-muted-foreground font-mono text-xs tracking-widest uppercase"
             >
               {t("servicesTitle")}
             </p>
@@ -85,7 +110,7 @@ export async function SiteFooter() {
           <div className="flex flex-col gap-4">
             <p
               dir="ltr"
-              className="font-jetbrains-mono text-muted-foreground text-xs tracking-widest uppercase"
+              className="text-muted-foreground font-mono text-xs tracking-widest uppercase"
             >
               {t("companyTitle")}
             </p>
@@ -103,27 +128,24 @@ export async function SiteFooter() {
           <div className="flex flex-col gap-4">
             <p
               dir="ltr"
-              className="font-jetbrains-mono text-muted-foreground text-xs tracking-widest uppercase"
+              className="text-muted-foreground font-mono text-xs tracking-widest uppercase"
             >
               {t("locationTitle")}
             </p>
             <address className="not-italic">
-              <p className="font-hanken-grotesk text-foreground/80 text-sm leading-relaxed whitespace-pre-line">
+              <p className="font-body text-foreground/80 text-sm leading-relaxed whitespace-pre-line">
                 {t("address")}
               </p>
-              <div className="mt-3 space-y-1.5">
-                <p className="font-jetbrains-mono text-muted-foreground text-xs">
+              <div className="mt-3 space-y-0.5">
+                <p className="text-muted-foreground font-mono text-xs">
                   {t("hours")}
                 </p>
-                <a
-                  href="tel:+212664571370"
-                  className={`block ${MONO_LINK_CLASS}`}
-                >
+                <a href="tel:+212664571370" className={MONO_CONTACT_LINK_CLASS}>
                   +212 664 571 370
                 </a>
                 <a
                   href="mailto:admin@bangicode.ma"
-                  className={`block ${MONO_LINK_CLASS}`}
+                  className={MONO_CONTACT_LINK_CLASS}
                 >
                   admin@bangicode.ma
                 </a>
@@ -131,7 +153,7 @@ export async function SiteFooter() {
                   href="https://wa.me/212664571370"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className={`block ${MONO_LINK_CLASS}`}
+                  className={MONO_CONTACT_LINK_CLASS}
                 >
                   {t("whatsapp")}
                 </a>
@@ -143,7 +165,7 @@ export async function SiteFooter() {
         <Separator className="my-8" />
 
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <p className="font-jetbrains-mono text-muted-foreground text-xs">
+          <p className="text-muted-foreground font-mono text-xs">
             {t("copyright")}
           </p>
           <nav aria-label={t("legalNav")} className="flex flex-wrap gap-4">

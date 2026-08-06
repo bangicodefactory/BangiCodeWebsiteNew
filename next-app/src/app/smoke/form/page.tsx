@@ -229,7 +229,7 @@ export default function SmokeFormsPage() {
               />
               <p
                 role="alert"
-                className="font-hanken-grotesk text-destructive text-sm font-medium"
+                className="font-body text-destructive text-sm font-medium"
               >
                 Enter a valid email address.
               </p>
@@ -256,7 +256,7 @@ export default function SmokeFormsPage() {
               />
               <p
                 role="alert"
-                className="font-hanken-grotesk text-destructive text-sm font-medium"
+                className="font-body text-destructive text-sm font-medium"
               >
                 Must be at least 10 characters.
               </p>
@@ -299,7 +299,7 @@ export default function SmokeFormsPage() {
               </Select>
               <p
                 role="alert"
-                className="font-hanken-grotesk text-destructive text-sm font-medium"
+                className="font-body text-destructive text-sm font-medium"
               >
                 Please select a service.
               </p>

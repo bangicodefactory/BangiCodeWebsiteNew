@@ -1,0 +1,31 @@
+{
+  "slug": "ayaalmadina",
+  "order": 5,
+  "category": "software",
+  "tags": ["Laravel", "MySQL", "Mapbox"],
+  "date": "2022",
+  "hero": {
+    "placeholder": true,
+    "webp": "/case-studies/ayaalmadina/hero.webp",
+    "alt": "Ayaalmadina — real estate listing platform",
+    "width": 1600,
+    "height": 900
+  },
+  "content": {
+    "en": {
+      "name": "Ayaalmadina",
+      "summary": "Property listing and inquiry platform for a real-estate developer in Tetouan.",
+      "outcome": "Lead response time from 3 days to same-day. 80% reduction in duplicate enquiries."
+    },
+    "fr": {
+      "name": "Ayaalmadina",
+      "summary": "Plateforme de listing immobilier et de demandes de renseignements pour un promoteur à Tétouan.",
+      "outcome": "Délai de réponse de 3 jours réduit à la journée même. 80 % de réduction des demandes en double."
+    },
+    "ar": {
+      "name": "Ayaalmadina",
+      "summary": "منصة قوائم عقارية واستفسارات لمطوّر عقاري في تطوان.",
+      "outcome": "وقت الرد من 3 أيام إلى نفس اليوم. انخفاض 80% في الاستفسارات المكررة."
+    }
+  }
+}

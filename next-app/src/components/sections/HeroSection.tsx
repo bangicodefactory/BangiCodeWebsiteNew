@@ -3,6 +3,17 @@ import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { StudioStatusPanel } from "@/components/sections/StudioStatusPanel";
 
+/*
+ * Design D's hero: a dark navy band, centred, with a mono eyebrow between two
+ * short spark rules and a two-line display headline whose second line is sky.
+ *
+ * Copy is unchanged from the previous two-column hero — decision 3 takes D's
+ * layout and visual language, not its agency voice.
+ *
+ * The texture is pure CSS (a navy grid under a radial mask, plus one blurred
+ * spark bloom). Deliberately not an image: this is the LCP band and the budget
+ * is LCP < 2.0s from EU/MENA.
+ */
 export async function HeroSection() {
   const t = await getTranslations("Home.hero");
   const ts = await getTranslations("Home.status");
@@ -10,45 +21,56 @@ export async function HeroSection() {
   return (
     <section
       id="hero"
-      className="mx-auto max-w-7xl px-4 pt-24 pb-16 sm:px-6 sm:pt-32 sm:pb-24"
+      data-surface="dark"
+      className="bg-background relative isolate overflow-hidden"
     >
-      <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_320px] lg:gap-16 xl:grid-cols-[1fr_360px]">
-        {/* Left column — headline + CTAs */}
-        <div className="flex flex-col gap-6">
-          <p
-            dir="ltr"
-            className="text-muted-foreground font-mono text-xs tracking-widest uppercase"
-          >
-            {t("eyebrow")}
-          </p>
+      {/* grid texture */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 -z-10 [background-image:linear-gradient(to_right,var(--color-navy-900)_1px,transparent_1px),linear-gradient(to_bottom,var(--color-navy-900)_1px,transparent_1px)] [mask-image:radial-gradient(ellipse_at_center,black,transparent_78%)] [background-size:80px_80px]"
+      />
+      {/* spark bloom — the ~5% of red this band is allowed */}
+      <div
+        aria-hidden="true"
+        className="bg-spark/15 pointer-events-none absolute -top-32 left-1/2 -z-10 h-72 w-[36rem] -translate-x-1/2 rounded-full blur-[120px]"
+      />
 
-          <h1 className="font-display text-foreground text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
-            {t("h1")}
-            <br />
-            <span className="text-secondary-container">{t("tagline")}</span>
-          </h1>
+      <div className="max-w-content mx-auto px-4 pt-20 pb-10 text-center sm:px-6 sm:pt-28 sm:pb-14">
+        <p
+          dir="ltr"
+          className="text-muted-foreground flex items-center justify-center gap-3 font-mono text-xs tracking-widest uppercase"
+        >
+          <span aria-hidden="true" className="bg-spark h-px w-6 sm:w-10" />
+          {t("eyebrow")}
+          <span aria-hidden="true" className="bg-spark h-px w-6 sm:w-10" />
+        </p>
 
-          <p className="font-body text-muted-foreground max-w-lg text-lg leading-relaxed">
-            {t("body")}
-          </p>
+        <h1 className="font-display text-foreground mx-auto mt-8 max-w-4xl text-4xl font-bold tracking-tight text-balance sm:text-6xl lg:text-7xl">
+          {t("h1")}
+          <br />
+          <span className="text-secondary-container">{t("tagline")}</span>
+        </h1>
 
-          <div className="flex flex-wrap items-center gap-3">
-            <Button asChild variant="primary" size="lg">
-              <Link href="/book">{t("ctaPrimary")}</Link>
-            </Button>
-            <Button asChild variant="secondary" size="lg">
-              <Link href="#work">{t("ctaSecondary")}</Link>
-            </Button>
-          </div>
+        <p className="font-body text-muted-foreground mx-auto mt-6 max-w-2xl text-base leading-relaxed text-pretty sm:text-lg">
+          {t("body")}
+        </p>
 
-          <p className="text-muted-foreground font-mono text-xs">
-            {t("microcopy")}
-          </p>
+        <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
+          <Button asChild variant="spark" size="lg">
+            <Link href="/book">{t("ctaPrimary")}</Link>
+          </Button>
+          <Button asChild variant="secondary" size="lg">
+            <Link href="#work">{t("ctaSecondary")}</Link>
+          </Button>
         </div>
 
-        {/* Right column — studio status panel (desktop only) */}
-        <div className="hidden lg:block">
+        <p className="text-muted-foreground mt-5 font-mono text-xs">
+          {t("microcopy")}
+        </p>
+
+        <div className="mt-12">
           <StudioStatusPanel
+            variant="strip"
             ariaLabel={ts("ariaLabel")}
             online={ts("online")}
             sprintLabel={ts("sprintLabel")}
@@ -60,21 +82,6 @@ export async function HeroSection() {
             timeLabel={ts("timeLabel")}
           />
         </div>
-      </div>
-
-      {/* Mobile status panel — below CTAs, collapsed */}
-      <div className="mt-10 block lg:hidden">
-        <StudioStatusPanel
-          ariaLabel={ts("ariaLabel")}
-          online={ts("online")}
-          sprintLabel={ts("sprintLabel")}
-          sprint={ts("sprint")}
-          availabilityLabel={ts("availabilityLabel")}
-          availability={ts("availability")}
-          teamLabel={ts("teamLabel")}
-          team={ts("team")}
-          timeLabel={ts("timeLabel")}
-        />
       </div>
     </section>
   );

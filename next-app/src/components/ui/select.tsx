@@ -17,7 +17,7 @@ const SelectTrigger = React.forwardRef<
     ref={ref}
     className={cn(
       "border-input bg-background flex h-10 w-full items-center justify-between rounded-sm border px-3 py-2",
-      "font-hanken-grotesk text-foreground placeholder:text-muted-foreground text-sm",
+      "font-body text-foreground placeholder:text-muted-foreground text-sm",
       "transition-colors",
       "focus:ring-ring focus:ring-offset-background focus:ring-2 focus:ring-offset-2 focus:outline-none",
       "disabled:cursor-not-allowed disabled:opacity-50",
@@ -113,7 +113,7 @@ const SelectLabel = React.forwardRef<
   <SelectPrimitive.Label
     ref={ref}
     className={cn(
-      "font-jetbrains-mono text-muted-foreground py-1.5 pr-2 pl-8 text-xs tracking-widest uppercase",
+      "text-muted-foreground py-1.5 pr-2 pl-8 font-mono text-xs tracking-widest uppercase",
       className,
     )}
     {...props}
@@ -129,7 +129,7 @@ const SelectItem = React.forwardRef<
     ref={ref}
     className={cn(
       "relative flex w-full cursor-default items-center rounded-sm py-1.5 pr-2 pl-8 select-none",
-      "font-hanken-grotesk text-foreground text-sm",
+      "font-body text-foreground text-sm",
       "outline-none",
       "focus:bg-muted focus:text-foreground",
       "data-[disabled]:pointer-events-none data-[disabled]:opacity-50",

@@ -5,9 +5,17 @@ import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { Badge } from "@/components/ui/badge";
 import { WorkFilter, FILTER_VALUES, type FilterValue } from "./WorkFilter";
-import { PROJECTS } from "./projects";
+import type { ProjectCardData } from "@/lib/portfolio-schema";
 
-export function WorkProjectList() {
+/*
+ * Projects arrive as props rather than being imported.
+ *
+ * This is a client component (useSearchParams for the ?filter= param) and the
+ * project data now lives on disk under content/portfolio/, so it cannot import
+ * the loader — fs is server-only. The server page reads and localises, this
+ * renders and filters.
+ */
+export function WorkProjectList({ projects }: { projects: ProjectCardData[] }) {
   const t = useTranslations("Work");
   const searchParams = useSearchParams();
 
@@ -20,8 +28,8 @@ export function WorkProjectList() {
 
   const filtered =
     activeFilter === "all"
-      ? PROJECTS
-      : PROJECTS.filter((p) => p.category === activeFilter);
+      ? projects
+      : projects.filter((p) => p.category === activeFilter);
 
   const filterLabels: Record<FilterValue, string> = {
     all: t("filterAll"),
@@ -36,7 +44,7 @@ export function WorkProjectList() {
       aria-labelledby="work-grid-heading"
       className="border-border border-t py-16 sm:py-20"
     >
-      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+      <div className="max-w-content mx-auto px-4 sm:px-6">
         <h2 id="work-grid-heading" className="sr-only">
           {t("h1")}
         </h2>
@@ -67,15 +75,15 @@ export function WorkProjectList() {
               >
                 <h2 className="font-display text-foreground mb-2 text-lg font-semibold">
                   <Link
-                    href={`/work/${project.slug}`}
+                    href={`/portfolio/${project.slug}`}
                     className="focus-visible:ring-ring rounded-sm focus-visible:ring-2 focus-visible:outline-none"
                   >
-                    {t(`${project.key}Name`)}
+                    {project.name}
                   </Link>
                 </h2>
 
                 <p className="font-body text-muted-foreground mb-4 flex-1 text-sm leading-relaxed">
-                  {t(`${project.key}Summary`)}
+                  {project.summary}
                 </p>
 
                 <div className="flex flex-wrap gap-1.5">
