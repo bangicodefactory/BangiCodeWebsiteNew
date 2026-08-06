@@ -338,6 +338,22 @@ jobs:
           chmod 600 ~/.ssh/id_ed25519
           ssh-keyscan -p "${{ secrets.DEPLOY_SSH_PORT }}" -H "${{ secrets.DEPLOY_HOST }}" >> ~/.ssh/known_hosts
 
+      # Snapshot the currently-deployed tree so a bad release can be undone.
+      # Shared hosting has no atomic swap, so this is the only rollback there is.
+      - name: Snapshot the current release
+        run: |
+          ssh -p "${{ secrets.DEPLOY_SSH_PORT }}" -i ~/.ssh/id_ed25519 \
+            "${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}" \
+            "set -e
+             APP='${{ secrets.DEPLOY_PATH }}'
+             if [ -f \"\$APP/server.js\" ]; then
+               rm -rf \"\$APP.prev\"
+               cp -a \"\$APP\" \"\$APP.prev\"
+               echo 'snapshot taken'
+             else
+               echo 'no existing release to snapshot (first deploy)'
+             fi"
+
       # --delete keeps the server from accumulating removed pages, but tmp/ and
       # any server-side .env are excluded: cPanel owns those.
       - name: Upload
@@ -369,6 +385,28 @@ jobs:
           done
           echo "site did not return 200 after restart"
           exit 1
+
+      # Uploading cleanly and leaving the site down is the worst outcome: the old
+      # build is already gone. Put it back rather than leave production broken
+      # while someone reads the logs.
+      - name: Roll back if the site is not serving
+        if: failure() && inputs.skip_live_check != true
+        run: |
+          ssh -p "${{ secrets.DEPLOY_SSH_PORT }}" -i ~/.ssh/id_ed25519 \
+            "${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}" \
+            "set -e
+             APP='${{ secrets.DEPLOY_PATH }}'
+             if [ -d \"\$APP.prev\" ]; then
+               rm -rf \"\$APP.broken\"
+               mv \"\$APP\" \"\$APP.broken\"
+               mv \"\$APP.prev\" \"\$APP\"
+               mkdir -p \"\$APP/tmp\" && touch \"\$APP/tmp/restart.txt\"
+               echo 'rolled back to the previous release'
+             else
+               echo 'NO SNAPSHOT — cannot roll back automatically'
+               exit 1
+             fi"
+          echo "::error::Deploy failed its live check and was rolled back. The failed build is at DEPLOY_PATH.broken for inspection."
 
       - name: Note when the live check was skipped
         if: inputs.skip_live_check == true

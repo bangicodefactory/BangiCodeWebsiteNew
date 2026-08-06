@@ -115,3 +115,28 @@ test("@smoke sitemap covers the new IA and drops /work", async ({
   expect(xml).toContain("/en/blog");
   expect(xml).not.toContain("/en/work");
 });
+
+/*
+ * The www → apex redirect is derived from SITE_URL at build time
+ * (next.config.ts, canonicalHostRedirects). It self-disables on localhost, so
+ * this asserts the DERIVATION rather than the runtime behaviour — a test
+ * against a localhost server can never see the production rule fire.
+ *
+ * Guards the two ways it silently breaks: someone hardcodes a host, or someone
+ * drops the localhost escape hatch and every test starts 308ing.
+ */
+test("@smoke canonical-host redirect is derived, and off on localhost", async ({
+  page,
+}) => {
+  // If the localhost guard regressed, every request here would redirect away.
+  const response = await page.goto("/en");
+  expect(response?.status()).toBe(200);
+  await expect(page).toHaveURL(/localhost:3000\/en$/);
+
+  // And the canonical tag tracks SITE_URL rather than a hardcoded domain.
+  const canonical = await page
+    .locator('link[rel="canonical"]')
+    .getAttribute("href");
+  expect(canonical).toContain("/en");
+  expect(canonical).not.toContain("www.");
+});

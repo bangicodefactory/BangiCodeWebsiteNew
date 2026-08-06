@@ -111,6 +111,9 @@ as the public site. Sign-in is GitHub OAuth restricted to active members of the
 | **Editorial copy does not live in `messages/*.json`.** | Those are UI strings, guarded by `check:messages`. Project copy lives in `content/portfolio/<slug>.json`. |
 | **All three locales publish in ONE commit.** Use `commitFiles`, never per-file writes. | A half-published post renders in one language and 404s in another. |
 | **Every server action calls `requireSession()` first.** | Actions are POST endpoints reachable directly; middleware only guards navigations. |
+| **No GitHub token in the session.** OAuth is identity-only (`read:org`); writes use the server-side `GITHUB_TOKEN`. | `repo` scope grants access to every repo the user can reach — too much to carry in a cookie, and unnarrowable for a private repo. |
+| **Pass `toAdminUser(session)` to components, never `session`.** | Structural typing lets extra fields ride along; a future `"use client"` would serialise them to the browser. |
+| **Admin screens read from GitHub, not the local filesystem.** | `content/` in the running build is whatever was baked in — stale right after publishing, and its loader throws on bad content. |
 | **Editor inputs are controlled.** | React 19 resets `<form action>` after the action — uncontrolled fields lose the author's work on a validation error. |
 | **`/admin` is a separate root layout** and must keep its own `globals.css` import + font variables. | Same trap as `/smoke` (ADR 0001, bug 5). |
 | Client components import `@/lib/portfolio-schema`, never `@/lib/portfolio`. | The latter imports `node:fs` and fails the client build. |

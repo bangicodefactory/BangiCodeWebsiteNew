@@ -4,15 +4,21 @@ import { callbackUrl } from "./config";
 /**
  * GitHub OAuth (authorization code flow) + org membership check.
  *
- * Scopes requested:
- *   read:org  — needed to read the caller's own org membership. Without it the
- *               membership endpoint 404s for private memberships and everyone
- *               is locked out.
- *   repo      — needed to commit content. `public_repo` would be narrower, but
- *               it cannot write to a private repository, and this repo's
- *               visibility is not something the CMS should assume.
+ * IDENTITY ONLY. The single scope is `read:org`, which is what the membership
+ * endpoint needs (without it, private memberships 404 and everyone is locked
+ * out). This token cannot write anything.
+ *
+ * Content is committed with a SEPARATE server-side credential (GITHUB_TOKEN),
+ * which never enters a cookie or the browser. The earlier design put the user's
+ * own `repo`-scoped token in the session, and `repo` grants read/write to every
+ * repository that user can reach — a much larger blast radius than a CMS needs,
+ * sitting in a cookie. It cannot be narrowed for an OAuth App against a private
+ * repo, so the fix is to stop carrying a write token at all.
+ *
+ * Attribution survives: commits set the `author` to the signed-in person (see
+ * commitAuthor in content.ts), so GitHub shows "X authored, Y committed".
  */
-const SCOPES = "read:org repo";
+const SCOPES = "read:org";
 
 const GITHUB_AUTHORIZE = "https://github.com/login/oauth/authorize";
 const GITHUB_TOKEN = "https://github.com/login/oauth/access_token";

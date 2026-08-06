@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import type { AdminUser } from "@/lib/admin/session";
 
 /**
  * Chrome shared by every signed-in admin screen.
@@ -15,7 +16,12 @@ export function AdminShell({
   current,
   children,
 }: {
-  user: { login: string; name: string; avatarUrl: string };
+  /*
+   * AdminUser, not AdminSession. Passing the whole session let extra fields
+   * ride along on structural typing — harmless while this is a server
+   * component, and a leak the moment anyone adds "use client".
+   */
+  user: AdminUser;
   current: "dashboard" | "blog" | "portfolio";
   children: ReactNode;
 }) {

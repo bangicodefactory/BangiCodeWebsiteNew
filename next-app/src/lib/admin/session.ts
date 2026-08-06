@@ -4,13 +4,17 @@ import { seal, unseal } from "./crypto";
 /**
  * Stateless admin sessions.
  *
- * The whole session — including the user's GitHub access token — lives inside
- * one AES-GCM sealed cookie. No session store, which suits a self-hosted single
- * node and means a restart does not sign everyone out.
+ * The session carries IDENTITY ONLY — who is signed in, and until when. No
+ * GitHub token. Writes use a server-side credential that never leaves the
+ * server (see github-oauth.ts for why), so a stolen cookie grants access to
+ * this admin UI and nothing else on GitHub.
  *
- * The token is in the cookie because commits are attributed to the person who
- * made them: the CMS pushes as the signed-in user, not as a bot. The cookie is
- * encrypted (not merely signed) precisely because it carries that token.
+ * Still encrypted rather than merely signed: the payload is small, AES-GCM
+ * gives integrity in the same primitive, and it keeps the login name out of
+ * anything that can read the cookie jar.
+ *
+ * Stateless by design — no session store, so a Passenger respawn on shared
+ * hosting does not sign everyone out.
  */
 
 export const SESSION_COOKIE = "bangicode_admin";
@@ -25,9 +29,19 @@ export interface AdminSession {
   login: string;
   name: string;
   avatarUrl: string;
-  accessToken: string;
   /** Unix seconds. Checked on every read — a sealed cookie is not enough. */
   exp: number;
+}
+
+/** The subset safe to hand to a component. Deliberately excludes `exp`. */
+export type AdminUser = Pick<AdminSession, "login" | "name" | "avatarUrl">;
+
+export function toAdminUser(session: AdminSession): AdminUser {
+  return {
+    login: session.login,
+    name: session.name,
+    avatarUrl: session.avatarUrl,
+  };
 }
 
 /**
@@ -48,11 +62,7 @@ export async function openSession(
 ): Promise<AdminSession | null> {
   const session = await unseal<AdminSession>(raw, secret);
   if (!session) return null;
-  if (
-    typeof session.exp !== "number" ||
-    typeof session.accessToken !== "string" ||
-    typeof session.login !== "string"
-  ) {
+  if (typeof session.exp !== "number" || typeof session.login !== "string") {
     return null;
   }
   if (session.exp * 1000 <= Date.now()) return null;

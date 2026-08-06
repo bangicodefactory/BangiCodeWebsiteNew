@@ -61,6 +61,7 @@ which `rsync --delete` would otherwise overwrite.
 | `GITHUB_CLIENT_ID` | from the GitHub OAuth app |
 | `GITHUB_CLIENT_SECRET` | from the GitHub OAuth app |
 | `GITHUB_REPO` | `owner/name` of this repository |
+| `GITHUB_TOKEN` | fine-grained PAT, **this repository only**, Contents: read and write |
 | `ADMIN_SESSION_SECRET` | `openssl rand -base64 48` |
 | `GITHUB_ORG` | `bangicodefactory` (optional, this is the default) |
 | `GITHUB_BRANCH` | `main` (optional, this is the default) |
@@ -74,6 +75,23 @@ which `rsync --delete` would otherwise overwrite.
 
 - **Homepage URL:** `https://bangicode.ma`
 - **Authorization callback URL:** `https://bangicode.ma/admin/auth/callback`
+
+The app requests **`read:org` only** — it proves who you are and that you are an
+active org member. It cannot write anything.
+
+Writing is done with `GITHUB_TOKEN`, a **fine-grained personal access token**
+scoped to this one repository with *Contents: read and write*. Create it at
+Settings → Developer settings → Personal access tokens → Fine-grained. It lives
+only in the cPanel environment, never in a cookie and never in the browser.
+
+Why the split: an OAuth App cannot write to a **private** repo with anything
+narrower than `repo`, and `repo` grants read/write to every repository that user
+can reach. Carrying that in a session cookie is a far larger blast radius than a
+CMS needs. Commits still show the signed-in person as *author*; the token owner
+is the *committer*.
+
+Fine-grained tokens expire — set a reminder. When it lapses, publishing fails
+with "GitHub rejected the session"; the public site is unaffected.
 
 The callback host must equal `SITE_URL` exactly — `www` vs apex and `http` vs
 `https` both count as a mismatch, and GitHub rejects the sign-in with

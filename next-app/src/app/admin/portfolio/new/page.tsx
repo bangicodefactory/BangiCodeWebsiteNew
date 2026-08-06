@@ -1,4 +1,5 @@
 import { requireSession } from "@/lib/admin/require-session";
+import { toAdminUser } from "@/lib/admin/session";
 import { AdminShell } from "@/components/admin/AdminShell";
 import { ProjectEditor } from "@/components/admin/ProjectEditor";
 import { listProjectFiles } from "@/lib/admin/content";
@@ -13,7 +14,7 @@ export default async function NewProjectPage() {
   // Default to the end of the list rather than colliding with an existing
   // position — order is a plain number, and two projects sharing one sorts
   // unpredictably.
-  const existing = await listProjectFiles(config, session.accessToken);
+  const existing = await listProjectFiles(config, config.githubToken);
   const nextOrder = existing.ok
     ? existing.value.reduce((max, p) => Math.max(max, p.order), 0) + 1
     : 1;
@@ -37,7 +38,7 @@ export default async function NewProjectPage() {
   };
 
   return (
-    <AdminShell user={session} current="portfolio">
+    <AdminShell user={toAdminUser(session)} current="portfolio">
       <ProjectEditor project={empty} isNew />
     </AdminShell>
   );

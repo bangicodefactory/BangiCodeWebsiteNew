@@ -1,4 +1,5 @@
 import { requireSession } from "@/lib/admin/require-session";
+import { toAdminUser } from "@/lib/admin/session";
 import { AdminShell } from "@/components/admin/AdminShell";
 import { BlogEditor } from "@/components/admin/BlogEditor";
 import { today } from "@/lib/admin/content";
@@ -19,7 +20,7 @@ export default async function NewBlogPostPage() {
   };
 
   return (
-    <AdminShell user={session} current="blog">
+    <AdminShell user={toAdminUser(session)} current="blog">
       <BlogEditor post={empty} isNew />
     </AdminShell>
   );

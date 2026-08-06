@@ -57,6 +57,8 @@ export default defineConfig({
         GITHUB_CLIENT_ID: "Iv1.test",
         GITHUB_CLIENT_SECRET: "test-secret",
         GITHUB_REPO: "bangicodefactory/test-repo",
+        // Server-side write credential. The stub accepts anything.
+        GITHUB_TOKEN: "stub-write-token",
         GITHUB_BRANCH: "main",
       },
     },

@@ -71,6 +71,23 @@ function readAll(): Project[] {
   }
 
   /*
+   * Duplicate `order` values sort unpredictably against each other, so the
+   * portfolio would silently reorder between builds. The CMS defaults new
+   * projects to max+1, but nothing stops a hand-edit colliding.
+   */
+  const seen = new Map<number, string>();
+  for (const p of projects) {
+    const other = seen.get(p.order);
+    if (other) {
+      errors.push(
+        `${p.slug}.json: order ${p.order} is already used by ${other}.json — orders must be unique`,
+      );
+    } else {
+      seen.set(p.order, p.slug);
+    }
+  }
+
+  /*
    * Throw rather than skip. A project silently missing from the portfolio is
    * exactly the class of failure this project keeps getting bitten by — the
    * unstyled tokens, the dead Arabic font, the 500ing case studies. A broken

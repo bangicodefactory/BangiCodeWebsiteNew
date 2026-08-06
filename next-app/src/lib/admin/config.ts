@@ -16,6 +16,11 @@ export interface AdminConfig {
   githubRepo: string;
   /** Branch commits land on. */
   githubBranch: string;
+  /**
+   * Server-side credential used to WRITE content. Never sent to the browser and
+   * never stored in a cookie — see the note in github-oauth.ts.
+   */
+  githubToken: string;
   /** ≥32 chars. Derives the AES-GCM key that seals the session cookie. */
   sessionSecret: string;
   /** Absolute origin, used to build the OAuth callback URL. */
@@ -32,6 +37,10 @@ export type ConfigResult =
   | { ok: false; missing: string[]; problems: string[] };
 
 const MIN_SECRET_LENGTH = 32;
+
+function countDistinct(value: string): number {
+  return new Set(value).size;
+}
 
 export function loadAdminConfig(): ConfigResult {
   const env = process.env;
@@ -51,6 +60,7 @@ export function loadAdminConfig(): ConfigResult {
   const githubClientSecret = need("GITHUB_CLIENT_SECRET");
   const sessionSecret = need("ADMIN_SESSION_SECRET");
   const githubRepo = need("GITHUB_REPO");
+  const githubToken = need("GITHUB_TOKEN");
 
   const githubOrg = env.GITHUB_ORG?.trim() || "bangicodefactory";
   const githubBranch = env.GITHUB_BRANCH?.trim() || "main";
@@ -62,6 +72,16 @@ export function loadAdminConfig(): ConfigResult {
   if (sessionSecret && sessionSecret.length < MIN_SECRET_LENGTH) {
     problems.push(
       `ADMIN_SESSION_SECRET must be at least ${MIN_SECRET_LENGTH} characters (got ${sessionSecret.length}). Generate one with: openssl rand -base64 48`,
+    );
+  } else if (sessionSecret && countDistinct(sessionSecret) < 12) {
+    /*
+     * Length alone is a weak gate: "aaaa…" passes it. The secret is hashed
+     * straight to an AES key with no KDF stretching, which is fine for the
+     * random value the docs tell you to generate and poor for a passphrase.
+     * This catches the obviously-typed-by-hand case.
+     */
+    problems.push(
+      `ADMIN_SESSION_SECRET looks low-entropy (${countDistinct(sessionSecret)} distinct characters). Generate one with: openssl rand -base64 48`,
     );
   }
   if (githubRepo && !/^[\w.-]+\/[\w.-]+$/.test(githubRepo)) {
@@ -86,6 +106,7 @@ export function loadAdminConfig(): ConfigResult {
       sessionSecret,
       siteUrl,
       githubApiUrl,
+      githubToken,
     },
   };
 }

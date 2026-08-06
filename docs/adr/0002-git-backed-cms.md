@@ -44,9 +44,26 @@ schema, not by the parity guard: `contentSchema` is built from
 `routing.locales`, so adding a locale fails every existing project file loudly at
 build time rather than silently rendering a slug to visitors of the new locale.
 
-**5. Auth is GitHub OAuth**, restricted to the `bangicodefactory` org. No password
-to store or rotate, and commits carry a real author — whoever can commit can
-publish. Sessions are stateless: an AES-GCM encrypted, httpOnly cookie.
+**5. Auth is GitHub OAuth**, restricted to the `bangicodefactory` org, and
+**identity-only**. The requested scope is `read:org`; the session cookie carries
+who you are and nothing else.
+
+Content is written with a **separate server-side credential** (`GITHUB_TOKEN`),
+a fine-grained PAT limited to this repository with Contents: read/write. It never
+enters a cookie or the browser.
+
+This replaced an earlier design that stored the user's own OAuth token in the
+session. Because the repo is private, an OAuth App needs the `repo` scope to
+write — and `repo` grants read/write to *every* repository that user can reach.
+Putting that in a cookie is a much larger blast radius than a CMS requires, and
+it cannot be narrowed. Removing the token from the session removes the exposure
+entirely, and also defuses a latent hazard: the session object was being passed
+into a component, so the token would have been serialised to the browser the
+moment that component became a client component.
+
+Attribution survives — commits set `author` to the signed-in person, so GitHub
+shows "X authored, Y committed". Sessions remain stateless: an AES-GCM
+encrypted, httpOnly cookie, so a Passenger respawn does not sign anyone out.
 
 ## Consequences
 

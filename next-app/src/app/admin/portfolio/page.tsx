@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Plus } from "lucide-react";
 import { requireSession } from "@/lib/admin/require-session";
+import { toAdminUser } from "@/lib/admin/session";
 import { AdminShell } from "@/components/admin/AdminShell";
 import { Button } from "@/components/ui/button";
 import { listProjectFiles } from "@/lib/admin/content";
@@ -15,10 +16,10 @@ export default async function AdminPortfolioList({
 }) {
   const { session, config } = await requireSession();
   const { deleted } = await searchParams;
-  const result = await listProjectFiles(config, session.accessToken);
+  const result = await listProjectFiles(config, config.githubToken);
 
   return (
-    <AdminShell user={session} current="portfolio">
+    <AdminShell user={toAdminUser(session)} current="portfolio">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
           <h1 className="font-display text-foreground text-2xl font-bold tracking-tight">

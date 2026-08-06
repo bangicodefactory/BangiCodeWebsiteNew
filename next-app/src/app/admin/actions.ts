@@ -88,7 +88,7 @@ export async function saveBlogPostAction(
   if (isNew) {
     const existing = await getBlogPost(
       config,
-      session.accessToken,
+      config.githubToken,
       parsed.data.slug,
     );
     if (!existing.ok) {
@@ -105,7 +105,7 @@ export async function saveBlogPostAction(
 
   const result = await saveBlogPost(
     config,
-    session.accessToken,
+    config.githubToken,
     parsed.data,
     commitAuthor(session),
     isNew,
@@ -138,7 +138,7 @@ export async function deleteBlogPostAction(
     };
   }
 
-  const existing = await getBlogPost(config, session.accessToken, slug.data);
+  const existing = await getBlogPost(config, config.githubToken, slug.data);
   if (!existing.ok) {
     return { status: "error", message: describeError(existing.error) };
   }
@@ -155,7 +155,7 @@ export async function deleteBlogPostAction(
 
   const result = await deleteBlogPost(
     config,
-    session.accessToken,
+    config.githubToken,
     slug.data,
     locales.length > 0 ? locales : [...routing.locales],
     commitAuthor(session),
@@ -187,7 +187,23 @@ export async function saveProjectAction(
     ]),
   );
 
-  const slug = str(form, "slug");
+  /*
+   * Validate the slug BEFORE anything is derived from it. The hero path is
+   * built by interpolation, and while projectSchema would reject a traversal
+   * attempt a moment later, deriving from unvalidated input is the ordering
+   * that turns into a path-traversal bug the next time someone adds a field.
+   */
+  const slugResult = slugSchema.safeParse(str(form, "slug"));
+  if (!slugResult.success) {
+    return {
+      status: "error",
+      message: "Some fields need attention.",
+      fieldErrors: {
+        slug: slugResult.error.issues[0]?.message ?? "Invalid slug",
+      },
+    };
+  }
+  const slug = slugResult.data;
   const tags = str(form, "tags")
     .split(",")
     .map((t) => t.trim())
@@ -222,7 +238,7 @@ export async function saveProjectAction(
 
   const result = await saveProject(
     config,
-    session.accessToken,
+    config.githubToken,
     parsed.data,
     commitAuthor(session),
     isNew,
@@ -256,7 +272,7 @@ export async function deleteProjectAction(
 
   const result = await deleteProject(
     config,
-    session.accessToken,
+    config.githubToken,
     slug.data,
     commitAuthor(session),
   );

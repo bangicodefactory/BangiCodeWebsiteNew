@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { requireSession } from "@/lib/admin/require-session";
+import { toAdminUser } from "@/lib/admin/session";
 import { AdminShell } from "@/components/admin/AdminShell";
 import { BlogEditor } from "@/components/admin/BlogEditor";
 import { getBlogPost, slugSchema } from "@/lib/admin/content";
@@ -20,14 +21,10 @@ export default async function EditBlogPostPage({
   const parsedSlug = slugSchema.safeParse(slug);
   if (!parsedSlug.success) notFound();
 
-  const result = await getBlogPost(
-    config,
-    session.accessToken,
-    parsedSlug.data,
-  );
+  const result = await getBlogPost(config, config.githubToken, parsedSlug.data);
   if (!result.ok) {
     return (
-      <AdminShell user={session} current="blog">
+      <AdminShell user={toAdminUser(session)} current="blog">
         <p
           role="alert"
           className="border-destructive bg-card text-foreground font-body rounded-sm border-s-2 p-4 text-sm leading-relaxed"
@@ -45,7 +42,7 @@ export default async function EditBlogPostPage({
   );
 
   return (
-    <AdminShell user={session} current="blog">
+    <AdminShell user={toAdminUser(session)} current="blog">
       <BlogEditor
         post={result.value}
         isNew={false}

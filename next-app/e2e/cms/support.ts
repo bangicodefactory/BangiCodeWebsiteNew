@@ -26,11 +26,11 @@ function b64url(bytes: Uint8Array): string {
 }
 
 export async function sealSession(expiresInSeconds = 3600): Promise<string> {
+  // Identity only — the session no longer carries a GitHub token.
   const payload = {
     login: "ahmed",
     name: "Ahmed Chioua",
     avatarUrl: "",
-    accessToken: "stub-token",
     exp: Math.floor(Date.now() / 1000) + expiresInSeconds,
   };
   const digest = await crypto.subtle.digest(

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Plus } from "lucide-react";
 import { requireSession } from "@/lib/admin/require-session";
+import { toAdminUser } from "@/lib/admin/session";
 import { AdminShell } from "@/components/admin/AdminShell";
 import { Button } from "@/components/ui/button";
 import { listBlogPosts } from "@/lib/admin/content";
@@ -16,10 +17,10 @@ export default async function AdminBlogList({
 }) {
   const { session, config } = await requireSession();
   const { deleted } = await searchParams;
-  const result = await listBlogPosts(config, session.accessToken);
+  const result = await listBlogPosts(config, config.githubToken);
 
   return (
-    <AdminShell user={session} current="blog">
+    <AdminShell user={toAdminUser(session)} current="blog">
       <div className="flex flex-wrap items-center justify-between gap-4">
         <div>
           <h1 className="font-display text-foreground text-2xl font-bold tracking-tight">

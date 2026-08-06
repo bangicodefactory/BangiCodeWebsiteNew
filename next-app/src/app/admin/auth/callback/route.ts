@@ -64,13 +64,13 @@ export async function GET(request: NextRequest) {
   );
   if (!member) return fail(request, "not_a_member");
 
+  /*
+   * The OAuth token is deliberately discarded here. It proved who the caller is
+   * and that they are an active org member; it is not needed again, and keeping
+   * it would put a GitHub credential in a cookie for no benefit.
+   */
   await setSession(
-    {
-      login: user.login,
-      name: user.name,
-      avatarUrl: user.avatarUrl,
-      accessToken: exchange.accessToken,
-    },
+    { login: user.login, name: user.name, avatarUrl: user.avatarUrl },
     config.sessionSecret,
   );
 
