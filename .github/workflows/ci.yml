@@ -148,16 +148,23 @@ jobs:
         env:
           SITE_URL: http://localhost:3000
 
+      # Tarred rather than uploaded as a directory tree, because .next/node_modules
+      # holds SYMLINKS into pnpm's content-addressable store and upload-artifact
+      # follows symlinks instead of preserving them. That flattening detaches the
+      # linked package from its own dependencies: next-mdx-remote resolved fine
+      # here and in production, but arrived in the smoke job as a bare directory
+      # whose `vfile` import had nowhere to resolve to, so every blog route 500'd
+      # in CI only. tar keeps the links, and the consumers extract in place.
+      - name: Package build output
+        run: tar -cf ../next-build.tar --exclude=./.next/cache ./.next
+
       # Upload .next/ output (excluding the build cache) for smoke + lighthouse
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
           name: next-build
-          path: |
-            next-app/.next
-            !next-app/.next/cache
+          path: next-build.tar
           retention-days: 1
-          include-hidden-files: true
 
   # ── Job 4: Playwright smoke tests ────────────────────────────────────────
   smoke:
@@ -188,7 +195,9 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: next-build
-          path: next-app/.next
+
+      - name: Unpack build output
+        run: tar -xf ../next-build.tar
 
       - name: Run smoke tests
         run: pnpm test:smoke
@@ -234,7 +243,9 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: next-build
-          path: next-app/.next
+
+      - name: Unpack build output
+        run: tar -xf ../next-build.tar
 
       - name: Run Lighthouse CI
         run: pnpm dlx @lhci/cli@^0.14.0 autorun
