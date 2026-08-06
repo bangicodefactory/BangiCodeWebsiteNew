@@ -1,29 +1,33 @@
-"use client";
-
-import { useSearchParams } from "next/navigation";
-import { useTranslations } from "next-intl";
+import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { Badge } from "@/components/ui/badge";
 import { WorkFilter, FILTER_VALUES, type FilterValue } from "./WorkFilter";
 import type { ProjectCardData } from "@/lib/portfolio-schema";
 
-/*
- * Projects arrive as props rather than being imported.
+/**
+ * Server component. Filtering happens here, from the URL, not in the browser.
  *
- * This is a client component (useSearchParams for the ?filter= param) and the
- * project data now lives on disk under content/portfolio/, so it cannot import
- * the loader — fs is server-only. The server page reads and localises, this
- * renders and filters.
+ * This was a client component: useSearchParams forced a Suspense boundary, the
+ * page shipped with an empty hole where the grid belongs, and twelve cards were
+ * injected on hydration. Measured CLS 0.78 — the project budget is 0.05.
+ *
+ * Reading the filter server-side costs this page its static rendering, which is
+ * the deliberate trade: TTFB here is ~12ms, and a fifteen-fold CLS overshoot is
+ * a far worse outcome than rendering on demand.
  */
-export function WorkProjectList({ projects }: { projects: ProjectCardData[] }) {
-  const t = useTranslations("Work");
-  const searchParams = useSearchParams();
+export async function WorkProjectList({
+  projects,
+  filter,
+}: {
+  projects: ProjectCardData[];
+  filter: string | undefined;
+}) {
+  const t = await getTranslations("Work");
 
-  const rawFilter = searchParams.get("filter");
   const activeFilter: FilterValue = FILTER_VALUES.includes(
-    rawFilter as FilterValue,
+    filter as FilterValue,
   )
-    ? (rawFilter as FilterValue)
+    ? (filter as FilterValue)
     : "all";
 
   const filtered =

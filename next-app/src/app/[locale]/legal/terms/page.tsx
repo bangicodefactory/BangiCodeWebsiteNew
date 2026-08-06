@@ -5,6 +5,7 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import { routing } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { getLegalContent } from "@/lib/legal-content";
+import { buildAlternates } from "@/lib/alternates";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -20,6 +21,7 @@ export async function generateMetadata({
   return {
     title: t("termsTitle"),
     description: t("termsMetaDescription"),
+    alternates: buildAlternates("/legal/terms", locale),
   };
 }
 

@@ -4,6 +4,7 @@ import { routing } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { buildAlternates } from "@/lib/alternates";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -19,6 +20,7 @@ export async function generateMetadata({
   return {
     title: t("h1"),
     description: t("subhead"),
+    alternates: buildAlternates("/services", locale),
   };
 }
 

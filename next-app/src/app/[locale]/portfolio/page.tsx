@@ -1,9 +1,9 @@
-import { Suspense } from "react";
 import type { Metadata } from "next";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import { getProjects, toCardData } from "@/lib/portfolio";
 import { WorkProjectList } from "./WorkProjectList";
+import { buildAlternates } from "@/lib/alternates";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -16,15 +16,22 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "Work" });
-  return { title: t("h1"), description: t("subhead") };
+  return {
+    title: t("h1"),
+    description: t("subhead"),
+    alternates: buildAlternates("/portfolio", locale),
+  };
 }
 
 export default async function PortfolioPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string }>;
+  searchParams: Promise<{ filter?: string }>;
 }) {
   const { locale } = await params;
+  const { filter } = await searchParams;
   setRequestLocale(locale);
   const t = await getTranslations("Work");
 
@@ -49,10 +56,8 @@ export default async function PortfolioPage({
         </p>
       </section>
 
-      {/* Filter + grid — client component; Suspense required for useSearchParams */}
-      <Suspense>
-        <WorkProjectList projects={projects} />
-      </Suspense>
+      {/* Filter + grid — server-rendered, so the cards are in the first paint */}
+      <WorkProjectList projects={projects} filter={filter} />
     </div>
   );
 }

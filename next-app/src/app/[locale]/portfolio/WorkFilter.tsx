@@ -1,6 +1,4 @@
-"use client";
-
-import { useRouter, usePathname } from "next/navigation";
+import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 
 export const FILTER_VALUES = [
@@ -18,29 +16,33 @@ interface WorkFilterProps {
   ariaLabel: string;
 }
 
+/**
+ * Filter chips as LINKS, rendered on the server.
+ *
+ * These were buttons calling router.replace, which forced the whole project
+ * list into a client component behind a Suspense boundary (useSearchParams
+ * requires one). The page therefore painted with an empty hole and injected
+ * twelve cards after hydration — CLS 0.78 against a project budget of 0.05,
+ * and the reason Lighthouse scored this page 0.76 on performance.
+ *
+ * A filter is a URL, so links are also the more honest control: they are
+ * middle-clickable, shareable, and work with JavaScript disabled.
+ */
 export function WorkFilter({
   currentFilter,
   labels,
   ariaLabel,
 }: WorkFilterProps) {
-  const router = useRouter();
-  const pathname = usePathname();
-
-  const setFilter = (value: FilterValue) => {
-    const query = value === "all" ? "" : `?filter=${value}`;
-    router.replace(`${pathname}${query}`, { scroll: false });
-  };
-
   return (
-    <div role="group" aria-label={ariaLabel} className="flex flex-wrap gap-2">
+    <nav aria-label={ariaLabel} className="flex flex-wrap gap-2">
       {FILTER_VALUES.map((value) => {
         const isActive = currentFilter === value;
         return (
-          <button
+          <Link
             key={value}
-            type="button"
-            aria-pressed={isActive}
-            onClick={() => setFilter(value)}
+            href={value === "all" ? "/portfolio" : `/portfolio?filter=${value}`}
+            scroll={false}
+            aria-current={isActive ? "page" : undefined}
             className={cn(
               "focus-visible:ring-ring rounded-sm px-4 py-1.5 font-mono text-xs tracking-widest uppercase transition-colors focus-visible:ring-2 focus-visible:outline-none",
               isActive
@@ -49,9 +51,9 @@ export function WorkFilter({
             )}
           >
             {labels[value]}
-          </button>
+          </Link>
         );
       })}
-    </div>
+    </nav>
   );
 }

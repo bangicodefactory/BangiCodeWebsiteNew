@@ -139,8 +139,14 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      # SITE_URL must match the origin the smoke and Lighthouse jobs audit.
+      # Metadata is baked at build time, so without this every canonical points
+      # at https://bangicode.ma while the runner serves localhost — Lighthouse
+      # scores a cross-origin canonical as invalid and every URL loses 8 points.
       - name: Build
         run: pnpm build
+        env:
+          SITE_URL: http://localhost:3000
 
       # Upload .next/ output (excluding the build cache) for smoke + lighthouse
       - name: Upload build artifact

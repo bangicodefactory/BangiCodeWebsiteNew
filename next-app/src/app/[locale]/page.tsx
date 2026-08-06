@@ -19,6 +19,7 @@ import { WhatHappensNext } from "@/components/sections/WhatHappensNext";
 import { TestimonialsSection } from "@/components/sections/TestimonialsSection";
 import { FaqSection } from "@/components/sections/FaqSection";
 import { FounderCard } from "@/components/sections/FounderCard";
+import { buildAlternates } from "@/lib/alternates";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -34,6 +35,7 @@ export async function generateMetadata({
   return {
     title: "Bangicode — Software Studio in Tetouan",
     description: t("body"),
+    alternates: buildAlternates("/", locale),
   };
 }
 

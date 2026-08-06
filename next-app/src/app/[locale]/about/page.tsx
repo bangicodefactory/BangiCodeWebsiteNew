@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { ThesisLineStats } from "@/components/sections/ThesisLineStats";
 import { FounderCard } from "@/components/sections/FounderCard";
 import { organizationSchema } from "@/lib/json-ld";
+import { buildAlternates } from "@/lib/alternates";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -18,7 +19,11 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "About" });
-  return { title: t("h1"), description: t("subhead") };
+  return {
+    title: t("h1"),
+    description: t("subhead"),
+    alternates: buildAlternates("/about", locale),
+  };
 }
 
 const VALUES = ["val01", "val02", "val03"] as const;

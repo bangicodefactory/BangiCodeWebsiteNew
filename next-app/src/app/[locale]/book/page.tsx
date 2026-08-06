@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { routing, type Locale } from "@/i18n/routing";
 import { CalInline } from "@/components/CalEmbed";
+import { buildAlternates } from "@/lib/alternates";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -14,7 +15,10 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "Booking" });
-  return { title: t("pageTitle") };
+  return {
+    title: t("pageTitle"),
+    alternates: buildAlternates("/book", locale),
+  };
 }
 
 export default async function BookPage({

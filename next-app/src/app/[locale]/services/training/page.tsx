@@ -3,6 +3,7 @@ import { getTranslations } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import { ServiceDetailPage } from "@/components/sections/ServiceDetailPage";
 import { serviceSchema, BASE_URL } from "@/lib/json-ld";
+import { buildAlternates } from "@/lib/alternates";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -15,7 +16,11 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "Services.training" });
-  return { title: t("h1"), description: t("subhead") };
+  return {
+    title: t("h1"),
+    description: t("subhead"),
+    alternates: buildAlternates("/services/training", locale),
+  };
 }
 
 const STACK = [

@@ -4,6 +4,7 @@ import { routing } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { buildAlternates } from "@/lib/alternates";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -16,7 +17,11 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "Careers" });
-  return { title: t("h1"), description: t("subhead") };
+  return {
+    title: t("h1"),
+    description: t("subhead"),
+    alternates: buildAlternates("/careers", locale),
+  };
 }
 
 const HIRE_STEPS = ["hire01", "hire02", "hire03"] as const;

@@ -6,6 +6,7 @@ import { routing } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { getLegalContent } from "@/lib/legal-content";
 import { CookieSettingsButton } from "@/components/sections/CookieSettingsButton";
+import { buildAlternates } from "@/lib/alternates";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -21,6 +22,7 @@ export async function generateMetadata({
   return {
     title: t("cookiesTitle"),
     description: t("cookiesMetaDescription"),
+    alternates: buildAlternates("/legal/cookies", locale),
   };
 }
 

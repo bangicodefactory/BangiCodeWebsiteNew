@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { routing, type Locale } from "@/i18n/routing";
 import { getProject, getProjectSlugs } from "@/lib/portfolio";
 import { CaseStudyViewTracker } from "@/components/CaseStudyViewTracker";
+import { buildAlternates } from "@/lib/alternates";
 
 export function generateStaticParams() {
   const slugs = getProjectSlugs();
@@ -25,7 +26,11 @@ export async function generateMetadata({
   const project = getProject(slug);
   if (!project) return {};
   const c = project.content[locale as Locale] ?? project.content.en;
-  return { title: c.name, description: c.summary };
+  return {
+    title: c.name,
+    description: c.summary,
+    alternates: buildAlternates(`/portfolio/${slug}`, locale),
+  };
 }
 
 const CATEGORY_LABEL_KEY = {
