@@ -67,7 +67,14 @@ export function CookieBanner() {
         {t("body")}{" "}
         <Link
           href="/legal/cookies"
-          className="text-primary focus-visible:ring-ring rounded-sm underline-offset-2 hover:underline focus-visible:ring-2 focus-visible:outline-none"
+          /*
+           * Underlined at rest, not just on hover. This link sits inside a
+           * paragraph, and navy-700 on ink-950 body text is under the 3:1 that
+           * WCAG 1.4.1 requires before colour may be the sole distinguisher —
+           * axe flags it as link-in-text-block. Local audits missed it because
+           * the banner only renders for visitors who have not chosen yet.
+           */
+          className="text-primary focus-visible:ring-ring rounded-sm underline underline-offset-2 hover:opacity-80 focus-visible:ring-2 focus-visible:outline-none"
         >
           {t("learnMore")}
         </Link>
