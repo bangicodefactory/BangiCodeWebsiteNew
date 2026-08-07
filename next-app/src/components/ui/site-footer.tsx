@@ -43,7 +43,7 @@ const SiteFooter = React.forwardRef<HTMLElement, SiteFooterProps>(
             >
               {columns.map((col, ci) => (
                 <div key={ci}>
-                  <p className="font-jetbrains-mono text-muted-foreground text-xs tracking-widest uppercase">
+                  <p className="text-muted-foreground font-mono text-xs tracking-widest uppercase">
                     {col.title}
                   </p>
                   <ul className="mt-4 list-none space-y-3 p-0">
@@ -51,7 +51,7 @@ const SiteFooter = React.forwardRef<HTMLElement, SiteFooterProps>(
                       <li key={li}>
                         <a
                           href={link.href}
-                          className="font-hanken-grotesk text-foreground hover:text-accent text-sm transition-colors"
+                          className="font-body text-foreground hover:text-accent text-sm transition-colors"
                         >
                           {link.label}
                         </a>
@@ -67,7 +67,7 @@ const SiteFooter = React.forwardRef<HTMLElement, SiteFooterProps>(
 
           <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center sm:justify-between">
             {logo && <div>{logo}</div>}
-            <p className="font-jetbrains-mono text-muted-foreground text-xs">
+            <p className="text-muted-foreground font-mono text-xs">
               {legal ?? `© ${year} Bangicode. All rights reserved.`}
             </p>
           </div>

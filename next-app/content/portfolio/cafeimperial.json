@@ -1,0 +1,31 @@
+{
+  "slug": "cafeimperial",
+  "order": 7,
+  "category": "web",
+  "tags": ["React", "Node.js"],
+  "date": "2024",
+  "hero": {
+    "placeholder": true,
+    "webp": "/case-studies/cafeimperial/hero.webp",
+    "alt": "CafeImperial — café website and online presence",
+    "width": 1600,
+    "height": 900
+  },
+  "content": {
+    "en": {
+      "name": "Café Imperial",
+      "summary": "Bilingual restaurant website with self-managed menus for a café in northern Morocco.",
+      "outcome": "Seasonal updates handled by the café team independently — zero agency calls needed."
+    },
+    "fr": {
+      "name": "Café Imperial",
+      "summary": "Site de restaurant bilingue avec menus autogérés pour un café du nord du Maroc.",
+      "outcome": "Mises à jour saisonnières gérées par l'équipe du café en toute autonomie — zéro appel d'agence."
+    },
+    "ar": {
+      "name": "Café Imperial",
+      "summary": "موقع مطعم ثنائي اللغة مع قوائم يديرها الفريق بنفسه لمقهى في شمال المغرب.",
+      "outcome": "تحديثات الموسم يديرها فريق المقهى باستقلالية — لا حاجة لأي وكالة."
+    }
+  }
+}

@@ -35,6 +35,20 @@
     "trustedBy": {
       "label": "trusted by"
     },
+    "why": {
+      "eyebrow": "// why us",
+      "headline": "Fixed scope. Senior engineers. Everything handed over.",
+      "themTitle": "What usually happens",
+      "usTitle": "How we work",
+      "them01": "Hourly billing, and a scope that quietly grows.",
+      "them02": "You meet the senior team at the pitch, then never again.",
+      "them03": "Handover is an archive with no docs and no access.",
+      "them04": "Silence between milestones.",
+      "us01": "Fixed scope and a fixed price, agreed before we start.",
+      "us02": "A senior engineer leads your project from day one.",
+      "us03": "Full source, deployment access, and clean docs at handover.",
+      "us04": "Weekly demos, a shared Notion workspace, a private Slack channel."
+    },
     "services": {
       "eyebrow": "// what we build",
       "headline": "Four practices, one team.",
@@ -49,7 +63,27 @@
       "s03Body": "Bootcamps and workshops for teams and individuals — React, Node, Laravel, and more.",
       "s04Number": "04",
       "s04Title": "Social presence",
-      "s04Body": "Brand-consistent content, community management, and digital strategy."
+      "s04Body": "Brand-consistent content, community management, and digital strategy.",
+      "learnMore": "Learn more"
+    },
+    "solutions": {
+      "eyebrow": "// platforms",
+      "headline": "Patterns we've built more than once.",
+      "body": "Four platform shapes that keep recurring in our client work. Each one is a starting point we build out for your business — not shrink-wrapped software.",
+      "placeholder": "illustrative — built per client, not sold off the shelf",
+      "p01Name": "RentFlow",
+      "p01Tag": "Rental & fleet",
+      "p01Body": "Bookings, contracts, vehicle availability, and maintenance schedules in one place.",
+      "p02Name": "TableServe",
+      "p02Tag": "Restaurants",
+      "p02Body": "Menus, online ordering, and table management for single and multi-site operators.",
+      "p03Name": "Scholaris",
+      "p03Tag": "Education",
+      "p03Body": "Courses, enrolment, and progress tracking for schools and training centres.",
+      "p04Name": "ShopCore",
+      "p04Tag": "E-commerce",
+      "p04Body": "Catalogue, checkout, and fulfilment tuned for Moroccan payment and delivery.",
+      "cta": "Talk to us about a platform"
     },
     "featuredCase": {
       "eyebrow": "// featured case",
@@ -76,12 +110,8 @@
       "classkomIndustry": "Education",
       "aqarchamalClient": "Aqarchamal",
       "aqarchamalDesc": "Property listing platform with faceted search and map view for the Tanger-Tetouan region.",
-      "aqarchamalIndustry": "Real estate"
-    },
-    "testimonial": {
-      "quote": "Bangicode delivered a production-ready app on time and on budget. The code quality is outstanding — we've been running it for over a year with zero major incidents.",
-      "author": "Youssef B.",
-      "company": "Friterie.ma"
+      "aqarchamalIndustry": "Real estate",
+      "ctaAll": "View all projects"
     },
     "process": {
       "eyebrow": "// what happens next",
@@ -103,6 +133,25 @@
       "step04Time": "within 2 weeks",
       "step04Body": "First sprint starts. You get a Slack channel, a Notion workspace, and weekly demos."
     },
+    "testimonial": {
+      "quote": "Bangicode delivered a production-ready app on time and on budget. The code quality is outstanding — we've been running it for over a year with zero major incidents.",
+      "author": "Youssef B.",
+      "company": "Friterie.ma"
+    },
+    "faq": {
+      "eyebrow": "// common questions",
+      "headline": "Things people ask before they reach out.",
+      "q01": "How long does a typical project take?",
+      "a01": "Most projects run 6–16 weeks from kickoff. We give you a timeline before you sign anything.",
+      "q02": "Do you work with international clients?",
+      "a02": "Yes. Most of our communication is async and in English or French. Calls are scheduled around your timezone.",
+      "q03": "What's your pricing model?",
+      "a03": "Fixed-price per project. We scope carefully upfront so there are no surprises.",
+      "q04": "Do you offer post-launch support?",
+      "a04": "Yes — maintenance contracts available. Most clients keep us on for 6-12 months post-launch.",
+      "q05": "Can you take over an existing codebase?",
+      "a05": "Sometimes. We do a paid 1-week audit first so we can give you an honest answer about what it'll take."
+    },
     "founder": {
       "label": "your point of contact",
       "headline": "Talk to Ahmed — founder.",
@@ -110,7 +159,9 @@
       "ctaPrimary": "Book 30 min",
       "ctaSecondaryPrefix": "or",
       "whatsapp": "whatsapp",
-      "email": "admin@bangicode.ma"
+      "email": "admin@bangicode.ma",
+      "body": "Tell us what you're building. We'll reply within one business day.",
+      "ctaSecondary": "Send a message"
     }
   },
   "Services": {
@@ -363,46 +414,10 @@
     "emptyState": "No projects in this category yet. Check back soon, or",
     "emptyStateLink": "start a project →",
     "viewCase": "View case",
-    "rentcarName": "RentCar",
-    "rentcarSummary": "A fleet management and online booking platform for a Moroccan car rental operator.",
-    "friterieMaName": "Friterie.ma",
-    "friterieMaSummary": "Custom e-commerce and ordering system for a fast-food chain expanding across northern Morocco.",
-    "classkomName": "Classkom",
-    "classkomSummary": "Mobile-first learning management system connecting students and instructors in real time.",
-    "nortecoffeecoName": "Nortecoffeeco",
-    "nortecoffeecoSummary": "Brand site and wholesale ordering portal for a specialty coffee roaster.",
-    "ayaalmadinaName": "Ayaalmadina",
-    "ayaalmadinaSummary": "Property listing and inquiry platform for a real-estate developer in Tetouan.",
-    "coinluminaireName": "Coinluminaire",
-    "coinluminaireSummary": "Full e-commerce storefront and admin panel for a Moroccan decorative lighting brand.",
-    "cafeimperialName": "Café Imperial",
-    "cafeimperialSummary": "Bilingual restaurant website with self-managed menus for a café in northern Morocco.",
-    "aqarchamalName": "Aqarchamal",
-    "aqarchamalSummary": "Property listing platform with agency portal and interactive map for the Tanger-Tetouan region.",
-    "fujiwaraName": "Fujiwara",
-    "fujiwaraSummary": "Monthly content production and social management for a Japanese restaurant in northern Morocco.",
-    "alaturcoName": "Alaturco",
-    "alaturcoSummary": "12-month content strategy and photography retainer for a Turkish restaurant — organic only.",
-    "rihaMaName": "Riha.ma",
-    "rihaMaSummary": "TikTok and Reels content production for a Moroccan home fragrance brand.",
-    "cosasbuenasName": "Cosas Buenas",
-    "cosasbuenasSummary": "Instagram content and community management for a curated lifestyle boutique.",
     "stackLabel": "Tech stack",
     "outcomeLabel": "Outcome",
     "backToWork": "All projects",
-    "ctaButton": "Full case study available on request — contact us",
-    "rentcarOutcome": "-60% daily admin time. Three vendor systems replaced by one. 99.9% uptime over 14 months.",
-    "friterieMaOutcome": "1,200+ monthly orders processed within 3 months. Phone orders dropped to near zero.",
-    "classkomOutcome": "500+ active learners onboarded in the first semester across 12 courses.",
-    "nortecoffeecoOutcome": "All wholesale ordering moved online within 2 months. Zero phone-based orders remaining.",
-    "ayaalmadinaOutcome": "Lead response time from 3 days to same-day. 80% reduction in duplicate enquiries.",
-    "coinluminaireOutcome": "Catalog tripled at launch. Page load under 2 seconds on mobile. One admin manages it solo.",
-    "cafeimperialOutcome": "Seasonal updates handled by the café team independently — zero agency calls needed.",
-    "aqarchamalOutcome": "Same-day listing go-live. Three manual systems replaced by one platform.",
-    "fujiwaraOutcome": "Content output quadrupled. New customers cite Instagram as their discovery channel.",
-    "alaturcoOutcome": "Monthly organic reach doubled in 90 days — zero ad spend.",
-    "rihaMaOutcome": "500K+ TikTok views in first 3 months. Website sessions via social tripled.",
-    "cosasbuenasOutcome": "DM enquiries up fivefold. 100% comment response rate maintained since launch."
+    "ctaButton": "Full case study available on request — contact us"
   },
   "Careers": {
     "eyebrow": "// join us",
@@ -445,11 +460,13 @@
   },
   "Nav": {
     "services": "Services",
-    "work": "Work",
+    "solutions": "Solutions",
+    "portfolio": "Portfolio",
     "about": "About",
+    "blog": "Blog",
+    "contact": "Contact",
     "process": "Process",
     "careers": "Careers",
-    "contact": "Contact",
     "openMenu": "Open menu",
     "startProject": "Start a project",
     "mobileTitle": "Navigation",
@@ -481,7 +498,6 @@
     "socialPresence": "Social presence",
     "about": "About",
     "process": "Process",
-    "work": "Work",
     "careers": "Careers",
     "contact": "Contact",
     "address": "Av. Ali Yaeta\nCentre Commercial Wilaya Center\nEtage 6, N69\nTetouan, Morocco",
@@ -493,7 +509,8 @@
     "cookies": "Cookies",
     "legalNav": "Legal",
     "linkedin": "LinkedIn",
-    "github": "GitHub"
+    "github": "GitHub",
+    "portfolio": "Portfolio"
   },
   "Legal": {
     "legalEyebrow": "// legal",
@@ -514,5 +531,57 @@
     "accept": "Accept analytics",
     "decline": "Decline",
     "managePreferences": "Manage cookie preferences"
+  },
+  "Solutions": {
+    "eyebrow": "// platforms",
+    "h1": "Platforms we've built more than once.",
+    "subhead": "Four platform shapes that recur across our client work. Each one is a starting point we build out for your business — not shrink-wrapped software.",
+    "placeholderNote": "Illustrative. These are patterns from past projects, not products you can buy off the shelf — every build is scoped and priced for the business that commissions it.",
+    "learnMore": "What a build includes",
+    "backToSolutions": "All platforms",
+    "includedLabel": "// what a build typically includes",
+    "timelineLabel": "// typical timeline",
+    "timelineValue": "8–16 weeks from kickoff. Fixed scope, fixed price.",
+    "ctaHeadline": "Building something in this space?",
+    "ctaBody": "Tell us what you need. We'll scope it, price it, and deliver it.",
+    "ctaButton": "Start a project",
+    "p01Name": "RentFlow",
+    "p01Tag": "Rental & fleet",
+    "p01Summary": "Bookings, contracts, vehicle availability, and maintenance schedules in one place.",
+    "p01Cap01": "Booking calendar with live vehicle availability and blackout dates",
+    "p01Cap02": "Contract generation, signatures, and deposit tracking",
+    "p01Cap03": "Maintenance schedules and service history per vehicle",
+    "p01Cap04": "Admin dashboard with utilisation and revenue reporting",
+    "p02Name": "TableServe",
+    "p02Tag": "Restaurants",
+    "p02Summary": "Menus, online ordering, and table management for single and multi-site operators.",
+    "p02Cap01": "Menu management with per-branch pricing and availability",
+    "p02Cap02": "Online ordering for pickup and delivery",
+    "p02Cap03": "Table and reservation management",
+    "p02Cap04": "Kitchen order screen and daily sales reporting",
+    "p03Name": "Scholaris",
+    "p03Tag": "Education",
+    "p03Summary": "Courses, enrolment, and progress tracking for schools and training centres.",
+    "p03Cap01": "Course catalogue, enrolment, and cohort management",
+    "p03Cap02": "Lessons with materials, assignments, and grading",
+    "p03Cap03": "Progress tracking for learners and instructors",
+    "p03Cap04": "Attendance, invoicing, and certificate issuing",
+    "p04Name": "ShopCore",
+    "p04Tag": "E-commerce",
+    "p04Summary": "Catalogue, checkout, and fulfilment tuned for Moroccan payment and delivery.",
+    "p04Cap01": "Product catalogue with variants, stock, and bulk import",
+    "p04Cap02": "Checkout wired to CMI, Stripe, or cash on delivery",
+    "p04Cap03": "Order fulfilment and local courier integrations",
+    "p04Cap04": "Reporting on sales, stock movement, and returns"
+  },
+  "Blog": {
+    "eyebrow": "// writing",
+    "h1": "Notes from the studio.",
+    "subhead": "Occasional writing about the software we build and how we build it.",
+    "empty": "Nothing published yet. We write when we have something worth saying, not on a schedule.",
+    "emptyCtaPrefix": "In the meantime,",
+    "emptyCtaLink": "see what we've built",
+    "backToBlog": "All posts",
+    "publishedLabel": "Published"
   }
 }

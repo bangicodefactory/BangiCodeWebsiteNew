@@ -12,7 +12,10 @@
     "typecheck": "tsc --noEmit",
     "test:e2e": "playwright test",
     "test:smoke": "playwright test --grep @smoke",
-    "check:registry-pin": "node scripts/check-registry-pin.mjs"
+    "test:cms": "playwright test --config=playwright.cms.config.ts",
+    "check:registry-pin": "node scripts/check-registry-pin.mjs",
+    "check:tokens": "node scripts/check-tokens.mjs",
+    "check:messages": "node scripts/check-messages-parity.mjs"
   },
   "dependencies": {
     "@calcom/embed-react": "^1.5.3",

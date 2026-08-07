@@ -82,10 +82,12 @@ export function WhatsAppCta() {
       className={cn(
         "fixed end-5 bottom-5 z-40",
         "flex h-14 w-14 items-center justify-center rounded-full",
+        // WhatsApp brand green is intentionally NOT a bangicode token — it is
+        // a third-party brand mark and must stay recognisable.
         "bg-[#25D366] text-white shadow-lg",
         "transition-[transform,opacity] duration-300 motion-reduce:transition-none",
         "hover:scale-110",
-        "focus-visible:ring-2 focus-visible:ring-sky-400 focus-visible:ring-offset-2 focus-visible:outline-none",
+        "focus-visible:ring-ring focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
         hidden &&
           "pointer-events-none translate-y-20 opacity-0 motion-reduce:hidden",
       )}

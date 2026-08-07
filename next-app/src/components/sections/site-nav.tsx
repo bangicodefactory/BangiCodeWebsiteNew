@@ -36,40 +36,66 @@ export function SiteNav({ locale }: SiteNavProps) {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  /*
+   * Design D's IA. Process and Careers are deliberately out of the primary nav
+   * and live in the footer's company column — six items is the ceiling before
+   * the bar stops scanning, and these two are the ones visitors seek out rather
+   * than browse into.
+   */
   const navItems: NavLink[] = [
     { label: t("services"), href: "/services" },
-    { label: t("work"), href: "/work" },
+    { label: t("solutions"), href: "/solutions" },
+    { label: t("portfolio"), href: "/portfolio" },
     { label: t("about"), href: "/about" },
-    { label: t("process"), href: "/process" },
-    { label: t("careers"), href: "/careers" },
+    { label: t("blog"), href: "/blog" },
     { label: t("contact"), href: "/contact" },
   ];
 
   const dir = locale === "ar" ? "rtl" : "ltr";
   const sheetSide = locale === "ar" ? "left" : "right";
 
+  /*
+   * Design D's nav is a dark navy bar. `data-surface="dark"` re-points the
+   * semantic token layer (see src/styles/tokens.css), so the nav's children —
+   * NavigationMenu, LocaleSwitcher, Button — render correctly on navy without
+   * any of them needing dark-specific classes.
+   *
+   * ⚠ The logo is navy + sky + red and CLAUDE.md forbids repainting it, so the
+   * navy wordmark would not read on ink-950. Interim: a white rounded plate
+   * behind it, which is consistent with the design system's card language.
+   * Replace with brand/logo-inverted.svg once that asset exists (CLAUDE.md
+   * lists it under "Variants still needed").
+   */
   return (
     <header
-      className={`sticky top-0 z-40 h-14 w-full transition-[background-color,border-color,box-shadow] sm:h-16 ${
-        scrolled
-          ? "border-border bg-background/80 border-b shadow-sm backdrop-blur-sm"
-          : "bg-background"
+      data-surface="dark"
+      className={`bg-background sticky top-0 z-40 h-14 w-full transition-[background-color,border-color,box-shadow] sm:h-16 ${
+        scrolled ? "border-border border-b shadow-lg backdrop-blur-sm" : ""
       }`}
     >
-      <div className="mx-auto flex h-full max-w-7xl items-center justify-between px-4 sm:px-6">
-        <Link href="/" aria-label="Bangicode — home">
+      <div className="max-w-content mx-auto flex h-full items-center justify-between px-4 sm:px-6">
+        <Link
+          href="/"
+          aria-label="Bangicode — home"
+          className="rounded-sm bg-white px-2.5 py-1.5"
+        >
           <Image
             src="/brand/logo.svg"
             alt="Bangicode"
             width={182}
             height={28}
             priority
-            className="h-7 w-auto"
+            className="h-6 w-auto sm:h-7"
           />
         </Link>
 
+        {/*
+         * lg, not md. At 768px the French labels (Réalisations, Méthodologie,
+         * Carrières) plus the locale switcher and the CTA measure ~871px and
+         * push the button off-screen. The Sheet covers tablets instead.
+         */}
         <nav
-          className="hidden items-center gap-2 md:flex"
+          className="hidden items-center gap-3 lg:flex"
           aria-label={t("desktopNav")}
         >
           <NavigationMenu
@@ -78,12 +104,12 @@ export function SiteNav({ locale }: SiteNavProps) {
             onItemClick={(item) => trackNavClick(item.href)}
           />
           <LocaleSwitcher currentLocale={locale} />
-          <Button variant="primary" size="sm" asChild>
+          <Button variant="spark" size="sm" asChild>
             <Link href="/contact">{t("startProject")}</Link>
           </Button>
         </nav>
 
-        <div className="flex items-center md:hidden">
+        <div className="flex items-center lg:hidden">
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon" aria-label={t("openMenu")}>
@@ -121,7 +147,7 @@ export function SiteNav({ locale }: SiteNavProps) {
                         ? "page"
                         : undefined
                     }
-                    className={`font-hanken-grotesk hover:bg-muted rounded-sm px-3 py-3 text-sm font-medium transition-colors ${
+                    className={`font-body hover:bg-muted rounded-sm px-3 py-3 text-sm font-medium transition-colors ${
                       pathname === item.href ||
                       pathname.startsWith(item.href + "/")
                         ? "bg-muted"
@@ -132,15 +158,12 @@ export function SiteNav({ locale }: SiteNavProps) {
                   </Link>
                 ))}
               </nav>
+              {/* The Sheet renders in a Radix portal, so it sits OUTSIDE the
+                  header's data-surface="dark" scope and stays light. */}
               <div className="border-border mt-auto border-t pt-4">
                 <LocaleSwitcher currentLocale={locale} hideNavRole />
                 <div className="mt-3">
-                  <Button
-                    variant="primary"
-                    size="sm"
-                    className="w-full"
-                    asChild
-                  >
+                  <Button variant="spark" size="sm" className="w-full" asChild>
                     <Link href="/contact" onClick={() => setOpen(false)}>
                       {t("startProject")}
                     </Link>

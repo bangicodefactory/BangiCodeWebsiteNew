@@ -1,44 +1,37 @@
 @import "tailwindcss";
+@import "../styles/tokens.css";
 @plugin "@tailwindcss/typography";
 
 /*
- * Token CSS arrives through the Company brand registry components (IST-120).
- * Do NOT author DESIGN.md tokens here — consume via `npx shadcn add @bangicode/<name>`.
- * The @theme block below is intentionally empty until IST-120 wires the registry.
+ * Brand tokens live in ../styles/tokens.css — see
+ * docs/adr/0001-adopt-claude-design-system-tokens.md.
+ *
+ * They are authored locally. The `@bangicode` registry this file used to defer
+ * to (design.bangicode.ma) was never deployed, which is why the @theme block
+ * here sat empty and every brand class in the codebase compiled to nothing.
  */
-@theme {
-  /* populated by @bangicode/* registry components — see IST-120 */
-}
 
 /*
- * Font token bridge: maps next/font CSS variables (set on <html> by layout.tsx)
- * to the canonical --font-display / --font-body / --font-mono tokens that
- * Tailwind utilities and registry components reference.
- * Uses @theme inline so Tailwind emits var() references at runtime.
+ * The font bridge and the [lang="ar"] override now live in tokens.css, next to
+ * the colour layers they mirror. See the "Font stacks" note there for why they
+ * are indirected through *-stack properties.
  */
-@theme inline {
-  --font-display: var(--font-montserrat);
-  --font-body: var(--font-hanken-grotesk);
-  --font-mono: var(--font-jetbrains-mono);
-}
-
-/*
- * Arabic locale: swap the display stack to Noto Sans Arabic.
- * --font-noto-arabic is set on <html> by the Noto_Sans_Arabic next/font instance
- * (applied only for /ar routes). Body and mono stacks are unchanged.
- */
-[lang="ar"] {
-  --font-display: var(--font-noto-arabic);
-}
 
 /* ── Base styles ──────────────────────────────────────────────────────────── */
 body {
-  font-family: var(--font-body);
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body-stack);
 }
 
-/* 2px sky-blue focus ring on all interactive elements (WCAG 2.2 AA) */
+/*
+ * 3px sky focus ring on all interactive elements (WCAG 2.2 AA, ADR 0001).
+ * Uses --ring so it re-points automatically inside [data-surface="dark"].
+ * Previously pointed at --color-secondary-container, which was undefined and
+ * therefore rendered no ring at all.
+ */
 :focus-visible {
-  outline: 2px solid var(--color-secondary-container);
+  outline: 3px solid var(--ring);
   outline-offset: 2px;
 }
 

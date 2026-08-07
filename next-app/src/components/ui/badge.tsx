@@ -5,7 +5,7 @@ import { cn } from "@/lib/utils";
 const badgeVariants = cva(
   [
     "inline-flex items-center rounded-sm border px-2 py-0.5",
-    "font-jetbrains-mono text-xs font-medium uppercase tracking-widest",
+    "font-mono text-xs font-medium uppercase tracking-widest",
     "transition-colors",
     "focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
   ].join(" "),
@@ -14,7 +14,15 @@ const badgeVariants = cva(
       variant: {
         default: "border-transparent bg-muted text-foreground",
         primary: "border-transparent bg-primary text-primary-foreground",
-        secondary: "border-transparent bg-secondary text-secondary-foreground",
+        /*
+         * secondary-container (sky-600), NOT secondary (sky-500). White on
+         * sky-500 is 3.47:1 — below the 4.5:1 AA threshold for the small text
+         * a badge uses. Lighthouse caught this on the case-study pages, where
+         * the practice badge is the only thing using this variant. sky-600
+         * clears it at 4.96:1 and is visually near-identical.
+         */
+        secondary:
+          "border-transparent bg-secondary-container text-on-secondary-container",
         outline: "border-border text-foreground",
         destructive: "border-transparent bg-destructive/15 text-destructive",
       },

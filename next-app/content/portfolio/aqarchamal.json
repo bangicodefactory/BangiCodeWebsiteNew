@@ -1,0 +1,31 @@
+{
+  "slug": "aqarchamal",
+  "order": 8,
+  "category": "web",
+  "tags": ["Laravel", "Bootstrap", "MongoDB"],
+  "date": "2023–2024",
+  "hero": {
+    "placeholder": true,
+    "webp": "/case-studies/aqarchamal/hero.webp",
+    "alt": "Aqarchamal — northern Morocco real estate portal",
+    "width": 1600,
+    "height": 900
+  },
+  "content": {
+    "en": {
+      "name": "Aqarchamal",
+      "summary": "Property listing platform with agency portal and interactive map for the Tanger-Tetouan region.",
+      "outcome": "Same-day listing go-live. Three manual systems replaced by one platform."
+    },
+    "fr": {
+      "name": "Aqarchamal",
+      "summary": "Plateforme d'annonces immobilières avec portail agences et carte interactive pour la région Tanger-Tétouan.",
+      "outcome": "Publication d'annonces le jour même. Trois systèmes manuels remplacés par une seule plateforme."
+    },
+    "ar": {
+      "name": "Aqarchamal",
+      "summary": "منصة عقارية مع بوابة وكالات وخريطة تفاعلية لمنطقة طنجة-تطوان.",
+      "outcome": "نشر الإعلانات في نفس اليوم. ثلاثة أنظمة يدوية أصبحت منصة واحدة."
+    }
+  }
+}

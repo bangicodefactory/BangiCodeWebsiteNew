@@ -4,6 +4,7 @@ import { routing } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { buildAlternates } from "@/lib/alternates";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -16,7 +17,11 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "Careers" });
-  return { title: t("h1"), description: t("subhead") };
+  return {
+    title: t("h1"),
+    description: t("subhead"),
+    alternates: buildAlternates("/careers", locale),
+  };
 }
 
 const HIRE_STEPS = ["hire01", "hire02", "hire03"] as const;
@@ -33,9 +38,9 @@ export default async function CareersPage() {
   const t = await getTranslations("Careers");
 
   return (
-    <main id="main-content">
+    <div>
       {/* Hero */}
-      <section className="mx-auto max-w-7xl px-4 pt-24 pb-16 sm:px-6 sm:pt-32 sm:pb-20">
+      <section className="max-w-content mx-auto px-4 pt-24 pb-16 sm:px-6 sm:pt-32 sm:pb-20">
         <p
           dir="ltr"
           className="text-muted-foreground mb-4 font-mono text-xs tracking-widest uppercase"
@@ -52,7 +57,7 @@ export default async function CareersPage() {
 
       {/* How we hire */}
       <section className="border-border border-t py-16 sm:py-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <div className="max-w-content mx-auto px-4 sm:px-6">
           <p
             dir="ltr"
             className="text-muted-foreground mb-3 font-mono text-xs tracking-widest uppercase"
@@ -86,7 +91,7 @@ export default async function CareersPage() {
 
       {/* What you'll do */}
       <section className="border-border border-t py-16 sm:py-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <div className="max-w-content mx-auto px-4 sm:px-6">
           <p
             dir="ltr"
             className="text-muted-foreground mb-3 font-mono text-xs tracking-widest uppercase"
@@ -114,7 +119,7 @@ export default async function CareersPage() {
 
       {/* Open roles */}
       <section className="border-border border-t py-16 sm:py-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <div className="max-w-content mx-auto px-4 sm:px-6">
           <p
             dir="ltr"
             className="text-muted-foreground mb-3 font-mono text-xs tracking-widest uppercase"
@@ -145,7 +150,7 @@ export default async function CareersPage() {
 
       {/* CTA */}
       <section className="border-border border-t py-16 sm:py-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <div className="max-w-content mx-auto px-4 sm:px-6">
           <div className="mx-auto max-w-2xl text-center">
             <h2 className="font-display text-foreground mb-4 text-2xl font-bold tracking-tight sm:text-3xl">
               {t("ctaH2")}
@@ -159,6 +164,6 @@ export default async function CareersPage() {
           </div>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

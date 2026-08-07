@@ -13,13 +13,13 @@
 |---|---|
 | Framework | **Next.js 16.2.6** (App Router, RSC, image optimization, ISR) |
 | Language | **TypeScript** (strict mode) |
-| Component library | **Company brand private shadcn registry** at https://github.com/bangicodefactory/bangicode-design-system. Consumer pulls components via `npx shadcn add @bangicode/<name>`. No local re-implementation of shadcn primitives. See §4 + IST-120 + IST-200. |
-| Styling | **Tailwind CSS 4**. Token CSS reaches `next-app/` THROUGH the registry — DESIGN.md is authored in the library repo, not here. No local `@theme` block. |
+| Component library | ~~Company brand private shadcn registry~~ → **superseded 2026-08-05 ([ADR 0001](docs/adr/0001-adopt-claude-design-system-tokens.md)).** The registry at `design.bangicode.ma` was never deployed. Primitives live locally in `next-app/src/components/ui/`. |
+| Styling | **Tailwind CSS 4**, `@theme` **authored locally** in `next-app/src/styles/tokens.css` → superseded 2026-08-05, see ADR 0001. |
 | Animation | **Refined, lightweight motion** — Framer Motion + Tailwind transitions. WebGL/Three.js components (Hyperspeed, LightRays, FloatingLines) **removed**. |
 | Copy | **Full rewrite** in EN / FR / AR, plus legal pages (Privacy, Terms, Cookies) |
 | i18n | **next-intl** with `[locale]` route segments; RTL for AR |
 | Linear tickets | Propose first; do not auto-create |
-| Visual reference | **Stitch preview** of Proposal A v3 — see §1A below |
+| Visual reference | ~~Stitch preview of Proposal A v3~~ → **superseded 2026-08-05.** The canonical reference is now **"D · Full brief (trilingual)"** in the *bangicode Design System* Claude Design project: https://claude.ai/design/p/db111a28-9a25-463e-a215-4677395eb0bd |
 | Legal entity | **Bangicode SARL** (use on copyright line + Terms of Service + Privacy) |
 | Copyright line | **© 2020–2026 Bangicode SARL.** |
 | Case-study depth | **Short 1-screen summaries** with a *"Full case study available on request"* CTA at the bottom of each. Dramatically smaller scope than originally planned (was 1500–2500 words each). |
@@ -30,6 +30,14 @@
 ---
 
 ## 1A. Visual reference — canonical Stitch mockup
+
+> ⚠️ **SUPERSEDED 2026-08-05 — see [ADR 0001](docs/adr/0001-adopt-claude-design-system-tokens.md).**
+> The canonical visual reference is now **"D · Full brief (trilingual)"** in the *bangicode Design System*
+> Claude Design project: https://claude.ai/design/p/db111a28-9a25-463e-a215-4677395eb0bd
+> Its 12-section homepage, navy/sky/red palette and Chakra Petch / Manrope / JetBrains Mono type stack
+> replace everything in §1A and §1B. **Copy voice is NOT taken from it** — the studio voice is retained
+> (see ADR 0001, "Two deliberate departures").
+> §1A and §1B are kept below for history only.
 
 **URL:** https://stitch.withgoogle.com/preview/5308203603932263226?node-id=2d3ee473fac94b7d8396fd9de7847c73&raw=1
 
@@ -136,30 +144,46 @@ A Create React App build (React 19) that renders eight sections on a single long
 
 Move from one-pager-with-anchors to a routed marketing site. Anchors stay supported for cross-linking but each section becomes a deep-linkable page.
 
+**Updated 2026-08-05 (ADR 0001).** Primary nav is Services / Solutions / Portfolio / About / Blog + Contact CTA. `/work` becomes `/portfolio` (301s kept); `/process` and `/careers` remain real routes but move to the footer's Company column — the dark nav is already at its practical width ceiling with 6 items + CTA + locale switcher.
+
 ```
 /[locale]
-├── /                          (Home — condensed hero + signal sections)
+├── /                          (Home — 12 sections per Design D)
 ├── /services                  (Service overview)
 │   ├── /software
 │   ├── /ecommerce
 │   ├── /training
 │   └── /social
-├── /work                      (Portfolio index, filterable)
-│   └── /work/[slug]           (Case study — one per project, 12 total)
+├── /solutions                 (NEW — productized platforms index)
+│   └── /solutions/[slug]      (NEW — all data-placeholder="true" until real)
+├── /portfolio                 (was /work — index, filterable; 301 from /work)
+│   └── /portfolio/[slug]      (Case study — one per project, 12 total)
+├── /blog                      (NEW — MDX index)
+│   └── /blog/[slug]           (NEW — MDX post)
 ├── /about                     (Team, story, stats, values)
-├── /process                   (4-step methodology, expanded)
+├── /process                   (4-step methodology — footer-linked)
 ├── /contact                   (Form + map + WhatsApp)
-├── /careers                   (Footer already links here; build it)
+├── /careers                   (Footer-linked)
+├── /book                      (Cal.com embed)
 ├── /legal/privacy
 ├── /legal/terms
 └── /legal/cookies
 ```
+
+**Content sources.** `/solutions` is messages-driven (fixed-shape marketing blurbs needing 3-locale parity — the same pattern as services/work/about). `/blog` is MDX under `content/blog/{en,fr,ar}/`, following the `legal/` precedent via `next-mdx-remote` + `gray-matter`; long-form prose does not belong in a translation JSON. Note that `content/work/en/*.mdx` is **dead code** — nothing imports it, case-study strings come from the messages catalog.
 
 Locales: `/en`, `/fr`, `/ar` — AR auto-applies RTL via `dir="rtl"` on `<html>`. `next-intl` middleware handles locale negotiation; `hreflang` tags generated per page.
 
 ---
 
 ## 4. Design system wiring — Company brand registry (registry-driven, not local)
+
+> ⚠️ **SUPERSEDED 2026-08-05 — see [ADR 0001](docs/adr/0001-adopt-claude-design-system-tokens.md).**
+> The registry at `design.bangicode.ma` was never deployed (endpoint 404s; `registry-version.json`
+> is still `"status": "pending"` with no install timestamp). Tokens are now authored locally in
+> `next-app/src/styles/tokens.css` and primitives live in `next-app/src/components/ui/`.
+> `pnpm check:registry-pin` guards a dead host and should be disabled or repointed.
+> Kept below for history only.
 
 **This section was rewritten 2026-05-22.** The redesign now consumes the Bangicode design system as a private shadcn registry. Tokens and primitives are no longer authored in `next-app/`; they ship in from the library.
 

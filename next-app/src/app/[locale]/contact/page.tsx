@@ -3,6 +3,7 @@ import { getTranslations } from "next-intl/server";
 import { routing } from "@/i18n/routing";
 import { ContactForm } from "./ContactForm";
 import { localBusinessSchema } from "@/lib/json-ld";
+import { buildAlternates } from "@/lib/alternates";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -15,7 +16,11 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "Contact" });
-  return { title: t("h1"), description: t("subhead") };
+  return {
+    title: t("h1"),
+    description: t("subhead"),
+    alternates: buildAlternates("/contact", locale),
+  };
 }
 
 const WA_NUMBER = process.env.NEXT_PUBLIC_WA_NUMBER ?? "212664571370";
@@ -24,7 +29,7 @@ export default async function ContactPage() {
   const t = await getTranslations("Contact");
 
   return (
-    <main id="main-content">
+    <div>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
@@ -32,7 +37,7 @@ export default async function ContactPage() {
         }}
       />
       {/* Hero */}
-      <section className="mx-auto max-w-7xl px-4 pt-24 pb-16 sm:px-6 sm:pt-32 sm:pb-20">
+      <section className="max-w-content mx-auto px-4 pt-24 pb-16 sm:px-6 sm:pt-32 sm:pb-20">
         <p
           dir="ltr"
           className="text-muted-foreground mb-4 font-mono text-xs tracking-widest uppercase"
@@ -49,7 +54,7 @@ export default async function ContactPage() {
 
       {/* Form + office info */}
       <section className="border-border border-t py-16 sm:py-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <div className="max-w-content mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-1 gap-16 lg:grid-cols-3">
             {/* Form — 2/3 width */}
             <div className="lg:col-span-2">
@@ -113,6 +118,6 @@ export default async function ContactPage() {
           </div>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

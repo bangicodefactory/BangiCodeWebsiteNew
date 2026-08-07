@@ -1,7 +1,7 @@
 {
-  "note": "Pins the Company brand registry version consumed by next-app/. Update each time npx shadcn add @bangicode/* is run. CI fails if stale > 14 days (IST-123 / IST-200).",
-  "status": "pending",
-  "reason": "Registry endpoint https://design.bangicode.ma/r/{name}.json returns 404 — design.bangicode.ma not yet deployed. Components below were manually sourced from the library GitHub repo (develop branch). Re-run `npx shadcn add @bangicode/*` once live to get the registry-distributed versions.",
+  "note": "ABANDONED 2026-08-05 — see docs/adr/0001-adopt-claude-design-system-tokens.md. Historical record of where src/components/ui/* was originally sourced from. Not a live dependency. The staleness check is skipped for this status.",
+  "status": "abandoned",
+  "reason": "Registry endpoint https://design.bangicode.ma/r/{name}.json was never deployed (404). The project no longer waits on it: tokens are authored locally in src/styles/tokens.css and the primitives below are now maintained in-repo. Components were originally hand-sourced from the library GitHub repo (develop branch) at the SHA recorded here; they have since diverged and should NOT be overwritten by `npx shadcn add`.",
   "libraryRepo": "https://github.com/bangicodefactory/bangicode-design-system",
   "libraryVersion": null,
   "libraryGitSha": "cbd8d334d2951158f8cad7f9d78be6d08e22f043",

@@ -1,0 +1,5 @@
+
+# Claude Code local tooling artefacts — not project code
+.claude/
+.agents/
+skills-lock.json

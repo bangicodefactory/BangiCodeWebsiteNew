@@ -1,5 +1,14 @@
 import { getTranslations } from "next-intl/server";
+import { ArrowRight } from "lucide-react";
+import { Link } from "@/i18n/navigation";
 
+/*
+ * Four service cards. Design D shows these as separate cards that lift on
+ * hover, rather than the flush 1px-gutter grid this used to be.
+ *
+ * Each card is a whole link now — the detail pages under /services/* already
+ * existed and nothing on the homepage pointed at them.
+ */
 export async function ServicesSection() {
   const t = await getTranslations("Home.services");
 
@@ -8,56 +17,65 @@ export async function ServicesSection() {
       number: t("s01Number"),
       title: t("s01Title"),
       body: t("s01Body"),
+      href: "/services/software",
     },
     {
       number: t("s02Number"),
       title: t("s02Title"),
       body: t("s02Body"),
+      href: "/services/ecommerce",
     },
     {
       number: t("s03Number"),
       title: t("s03Title"),
       body: t("s03Body"),
+      href: "/services/training",
     },
     {
       number: t("s04Number"),
       title: t("s04Title"),
       body: t("s04Body"),
+      href: "/services/social",
     },
   ];
 
   return (
     <section id="services" className="py-16 sm:py-24">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+      <div className="max-w-content mx-auto px-4 sm:px-6">
         <p
           dir="ltr"
-          className="text-muted-foreground mb-4 font-mono text-xs tracking-widest uppercase"
+          className="text-muted-foreground font-mono text-xs tracking-widest uppercase"
         >
           {t("eyebrow")}
         </p>
-        <h2 className="font-display text-foreground mb-12 text-3xl font-bold tracking-tight sm:text-4xl">
+        <h2 className="font-display text-foreground mt-4 text-3xl font-bold tracking-tight text-balance sm:text-4xl">
           {t("headline")}
         </h2>
 
-        <div className="bg-border grid grid-cols-1 gap-px sm:grid-cols-2">
+        <div className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {services.map((svc) => (
-            <article
+            <Link
               key={svc.number}
-              className="bg-background flex flex-col gap-4 p-8"
+              href={svc.href}
+              className="group border-border bg-card hover:border-secondary focus-visible:ring-ring flex flex-col gap-4 rounded-md border p-6 shadow-xs transition-[border-color,box-shadow,transform] duration-200 ease-out hover:-translate-y-1 hover:shadow-md focus-visible:ring-2 focus-visible:outline-none"
             >
-              <span
-                dir="ltr"
-                className="text-secondary-container font-mono text-xs"
-              >
+              <span dir="ltr" className="text-accent font-mono text-xs">
                 {svc.number}
               </span>
-              <h3 className="font-display text-foreground text-xl font-bold">
+              <h3 className="font-display text-foreground text-lg font-bold">
                 {svc.title}
               </h3>
-              <p className="font-body text-muted-foreground text-sm leading-relaxed">
+              <p className="font-body text-muted-foreground grow text-sm leading-relaxed">
                 {svc.body}
               </p>
-            </article>
+              <span className="text-accent flex items-center gap-1.5 font-mono text-xs">
+                {t("learnMore")}
+                <ArrowRight
+                  aria-hidden="true"
+                  className="size-3.5 transition-transform duration-200 ease-out group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5"
+                />
+              </span>
+            </Link>
           ))}
         </div>
       </div>

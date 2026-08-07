@@ -2,6 +2,9 @@
 /**
  * Fails CI if the registry-version.json pin is stale (> 14 days old).
  * Exits 0 (skips) when status is "pending" — registry not yet deployed.
+ * Exits 0 (skips) when status is "abandoned" — the @bangicode registry was never
+ * deployed and the project no longer consumes it (ADR 0001). registry-version.json
+ * is kept only as a record of where src/components/ui/* was originally sourced.
  */
 import { readFileSync } from "fs";
 import { fileURLToPath } from "url";
@@ -16,6 +19,13 @@ try {
 } catch {
   console.error(`check-registry-pin: cannot read ${pinPath}`);
   process.exit(1);
+}
+
+if (pin.status === "abandoned") {
+  console.log(
+    "check-registry-pin: registry abandoned (ADR 0001) — skipping staleness check.",
+  );
+  process.exit(0);
 }
 
 if (pin.status === "pending") {

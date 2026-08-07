@@ -183,7 +183,7 @@ export default function SmokeSheetPage() {
                   <SheetClose key={item.href} asChild>
                     <Link
                       href={item.href}
-                      className="font-hanken-grotesk text-foreground hover:bg-muted focus-visible:ring-ring rounded-sm px-3 py-2 text-sm font-medium focus-visible:ring-2 focus-visible:outline-none"
+                      className="font-body text-foreground hover:bg-muted focus-visible:ring-ring rounded-sm px-3 py-2 text-sm font-medium focus-visible:ring-2 focus-visible:outline-none"
                     >
                       {item.label}
                     </Link>

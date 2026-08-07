@@ -11,12 +11,29 @@ on:
     paths:
       - "next-app/**"
       - ".github/workflows/ci.yml"
+  # Manual runs, so the first deploy can be triggered without pushing a commit.
+  workflow_dispatch:
+    inputs:
+      skip_live_check:
+        description: >-
+          Skip the "is the site serving?" check. Use for the FIRST deploy, when
+          the cPanel app is still stopped on purpose — the upload succeeds but
+          nothing is listening yet, and the check would fail a good deploy.
+        type: boolean
+        default: false
 
 # Skip the entire workflow when the commit message contains [skip ci]
 # (GitHub Actions honours this natively on push; handled here for PR title parity)
+#
+# Superseding a running PR check is free; superseding a running DEPLOY is not.
+# Workflow-level cancellation kills the whole run, and it outranks the deploy
+# job's own `cancel-in-progress: false` — so a second push to main while the
+# first was mid-rsync would abort the upload with --delete already applied,
+# leaving a half-synced tree on the server. Giving main its own non-cancelling
+# group is what actually makes that job's guarantee true.
 concurrency:
   group: ci-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 # Opt into Node.js 24 runner for all JS actions (mandatory from 2026-06-02)
 # IST-201: remove FORCE_JAVASCRIPT_ACTIONS_TO_NODE24 after 2026-06-02
@@ -33,9 +50,9 @@ defaults:
 # Artifact "next-build" carries the .next/ output from build → smoke/lighthouse.
 
 jobs:
-  # ── Job 1: Registry pin freshness ────────────────────────────────────────
-  registry-pin:
-    name: "Registry pin freshness"
+  # ── Job 1: Design token + message catalog integrity ──────────────────────
+  tokens:
+    name: "Integrity (tokens · i18n parity)"
     runs-on: ubuntu-latest
 
     steps:
@@ -45,7 +62,25 @@ jobs:
         with:
           node-version: 24.16.0
 
-      # Script uses only Node built-ins — no pnpm install needed
+      # Scripts use only Node built-ins — no pnpm install needed
+
+      # Fails if a brand token class is used but not declared in tokens.css.
+      # Guards the failure mode described in ADR 0001, where every brand class
+      # in the codebase silently compiled to nothing.
+      - name: Check design tokens
+        run: node scripts/check-tokens.mjs
+        working-directory: ./next-app
+
+      # next-intl renders the key path itself when a key is missing, so a gap
+      # ships silently — an Arabic page reading "Home.faq.q03" with every other
+      # check green. Fails on key drift, empty values, or an English string left
+      # sitting in fr/ar.
+      - name: Check message catalog parity
+        run: node scripts/check-messages-parity.mjs
+        working-directory: ./next-app
+
+      # Registry was abandoned (ADR 0001); this now no-ops on status
+      # "abandoned" and is kept only so the pin file cannot rot unnoticed.
       - name: Check registry pin
         run: node scripts/check-registry-pin.mjs
         working-directory: ./next-app
@@ -111,19 +146,32 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      # SITE_URL must match the origin the smoke and Lighthouse jobs audit.
+      # Metadata is baked at build time, so without this every canonical points
+      # at https://bangicode.ma while the runner serves localhost — Lighthouse
+      # scores a cross-origin canonical as invalid and every URL loses 8 points.
       - name: Build
         run: pnpm build
+        env:
+          SITE_URL: http://localhost:3000
+
+      # Tarred rather than uploaded as a directory tree, because .next/node_modules
+      # holds SYMLINKS into pnpm's content-addressable store and upload-artifact
+      # follows symlinks instead of preserving them. That flattening detaches the
+      # linked package from its own dependencies: next-mdx-remote resolved fine
+      # here and in production, but arrived in the smoke job as a bare directory
+      # whose `vfile` import had nowhere to resolve to, so every blog route 500'd
+      # in CI only. tar keeps the links, and the consumers extract in place.
+      - name: Package build output
+        run: tar -cf ../next-build.tar --exclude=./.next/cache ./.next
 
       # Upload .next/ output (excluding the build cache) for smoke + lighthouse
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
           name: next-build
-          path: |
-            next-app/.next
-            !next-app/.next/cache
+          path: next-build.tar
           retention-days: 1
-          include-hidden-files: true
 
   # ── Job 4: Playwright smoke tests ────────────────────────────────────────
   smoke:
@@ -154,10 +202,19 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: next-build
-          path: next-app/.next
+
+      - name: Unpack build output
+        run: tar -xf ../next-build.tar
 
       - name: Run smoke tests
         run: pnpm test:smoke
+
+      # CMS suite — separate config, because it needs a CONFIGURED server plus a
+      # stub GitHub, while the run above deliberately uses an unconfigured one
+      # (which is what admin-auth.spec.ts asserts). Nothing here reaches
+      # api.github.com or any real repository.
+      - name: Run CMS end-to-end tests
+        run: pnpm test:cms
 
       - name: Upload Playwright report
         if: always()
@@ -193,7 +250,9 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: next-build
-          path: next-app/.next
+
+      - name: Unpack build output
+        run: tar -xf ../next-build.tar
 
       - name: Run Lighthouse CI
         run: pnpm dlx @lhci/cli@^0.14.0 autorun
@@ -208,3 +267,215 @@ jobs:
           name: lhci-results
           path: next-app/.lighthouseci/
           retention-days: 7
+
+  # ── Job 6: Deploy to Namecheap shared hosting ────────────────────────────
+  #
+  # Builds here, not on the server. Namecheap shared hosting caps per-process
+  # memory well below what `next build` needs, and a build that OOMs halfway
+  # would take the live site down. Building in CI also means a failing test or
+  # type error never reaches production — `needs:` is the gate.
+  #
+  # Ships a STANDALONE bundle: .next/standalone carries only the traced
+  # dependencies, so there is no npm install on the server and nothing to keep
+  # in sync. cPanel's Node.js app (Phusion Passenger) runs server.js directly.
+  deploy:
+    name: "Deploy (cPanel / Passenger)"
+    runs-on: ubuntu-latest
+    needs: [tokens, quality, smoke, lighthouse]
+    if: >-
+      github.ref == 'refs/heads/main' &&
+      (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+    concurrency:
+      group: deploy-production
+      cancel-in-progress: false # never interrupt a half-finished upload
+
+    steps:
+      # Fails fast with the NAMES of anything missing. Without this, an unset
+      # secret surfaces as `ssh: Could not resolve hostname` or an rsync path
+      # error several minutes into the job — accurate, but it does not tell you
+      # that DEPLOY_HOST was never set.
+      - name: Check deploy secrets are configured
+        env:
+          DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
+          DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
+          DEPLOY_SSH_PORT: ${{ secrets.DEPLOY_SSH_PORT }}
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+          SITE_URL: ${{ secrets.SITE_URL }}
+        run: |
+          missing=""
+          for name in DEPLOY_HOST DEPLOY_USER DEPLOY_SSH_PORT DEPLOY_SSH_KEY DEPLOY_PATH SITE_URL; do
+            if [ -z "${!name}" ]; then missing="$missing $name"; fi
+          done
+          if [ -n "$missing" ]; then
+            echo "::error::Missing repository secrets:$missing"
+            echo "Set them under Settings → Secrets and variables → Actions."
+            echo "See docs/DEPLOYMENT.md for what each one holds."
+            exit 1
+          fi
+          case "$SITE_URL" in
+            https://*) ;;
+            *) echo "::error::SITE_URL must start with https:// (got '$SITE_URL'). The admin session cookie is Secure and will be dropped over plain HTTP."; exit 1 ;;
+          esac
+          case "$DEPLOY_PATH" in
+            /*) ;;
+            *) echo "::error::DEPLOY_PATH must be absolute, e.g. /home/USER/bangicode-app (got '$DEPLOY_PATH')."; exit 1 ;;
+          esac
+          echo "All six deploy secrets present."
+
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.1.3
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.16.0
+          cache: pnpm
+          cache-dependency-path: next-app/pnpm-lock.yaml
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build standalone bundle
+        run: BUILD_STANDALONE=1 pnpm build
+        env:
+          SITE_URL: ${{ secrets.SITE_URL }}
+
+      # server.js serves public/ and .next/static ONLY if they sit inside the
+      # standalone directory — Next does not copy them. Skipping this step
+      # produces a site that renders unstyled with every asset 404ing.
+      - name: Assemble deployable tree
+        run: |
+          cp -r public .next/standalone/
+          cp -r .next/static .next/standalone/.next/
+          # Passenger restarts when this file's mtime changes.
+          mkdir -p .next/standalone/tmp
+          touch .next/standalone/tmp/restart.txt
+          du -sh .next/standalone
+
+      # DEPLOY_SSH_HOST_KEY is optional. Set it (the server's line from
+      # `ssh-keyscan -p PORT HOST`) and the host is pinned; leave it unset and
+      # this falls back to trust-on-first-use, which accepts whatever key the
+      # network hands back on every single run. Pinning is the difference
+      # between authenticating the server and merely hoping.
+      - name: Add SSH key
+        env:
+          HOST_KEY: ${{ secrets.DEPLOY_SSH_HOST_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          # printf, not echo: a key pasted without a trailing newline is rejected
+          # by ssh with an unhelpful "invalid format".
+          printf '%s\n' "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          if [ -n "$HOST_KEY" ]; then
+            printf '%s\n' "$HOST_KEY" >> ~/.ssh/known_hosts
+            echo "host key pinned from DEPLOY_SSH_HOST_KEY"
+          else
+            echo "::warning::DEPLOY_SSH_HOST_KEY is not set — trusting the host key on first sight. Add it to pin the server."
+            ssh-keyscan -p "${{ secrets.DEPLOY_SSH_PORT }}" -H "${{ secrets.DEPLOY_HOST }}" >> ~/.ssh/known_hosts
+          fi
+          chmod 600 ~/.ssh/known_hosts
+
+      # Snapshot the currently-deployed tree so a bad release can be undone.
+      # Shared hosting has no atomic swap, so this is the only rollback there is.
+      - name: Snapshot the current release
+        run: |
+          ssh -p "${{ secrets.DEPLOY_SSH_PORT }}" -i ~/.ssh/id_ed25519 \
+            "${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}" \
+            "set -e
+             APP='${{ secrets.DEPLOY_PATH }}'
+             if [ -f \"\$APP/server.js\" ]; then
+               rm -rf \"\$APP.prev\"
+               cp -a \"\$APP\" \"\$APP.prev\"
+               echo 'snapshot taken'
+             else
+               echo 'no existing release to snapshot (first deploy)'
+             fi"
+
+      # --delete keeps the server from accumulating removed pages, but tmp/ and
+      # any server-side .env are excluded: cPanel owns those.
+      - name: Upload
+        id: upload
+        run: |
+          rsync -az --delete \
+            --exclude 'tmp/' \
+            --exclude '.env' \
+            --exclude '.htaccess' \
+            --exclude '.well-known/' \
+            -e "ssh -p ${{ secrets.DEPLOY_SSH_PORT }} -i ~/.ssh/id_ed25519" \
+            .next/standalone/ \
+            "${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:${{ secrets.DEPLOY_PATH }}/"
+
+      - name: Restart the Passenger app
+        run: |
+          ssh -p "${{ secrets.DEPLOY_SSH_PORT }}" -i ~/.ssh/id_ed25519 \
+            "${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}" \
+            "mkdir -p ${{ secrets.DEPLOY_PATH }}/tmp && touch ${{ secrets.DEPLOY_PATH }}/tmp/restart.txt"
+
+      # A deploy that uploads cleanly but leaves the app dead is the failure
+      # mode worth catching here rather than from a user report. Skipped on the
+      # first run, when the cPanel app is deliberately still stopped.
+      # Matches on Next's BUILD_ID, which changes every build and appears in the
+      # served markup. A bare 200 was not enough: if Passenger never picked up
+      # the restart, the PREVIOUS build answers 200 perfectly happily and the
+      # check passed while the new release was not live at all. Nothing extra is
+      # published to do this — the id is already in the HTML.
+      - name: Verify the site is serving the new build
+        if: inputs.skip_live_check != true
+        run: |
+          BUILD_ID="$(cat .next/BUILD_ID)"
+          echo "expecting build $BUILD_ID"
+          for i in $(seq 1 20); do
+            code=$(curl -s -o /tmp/live.html -w "%{http_code}" "${{ secrets.SITE_URL }}/en" || true)
+            if [ "$code" = "200" ] && grep -q "$BUILD_ID" /tmp/live.html; then
+              echo "live and serving $BUILD_ID"
+              exit 0
+            fi
+            if [ "$code" = "200" ]; then
+              echo "attempt $i: HTTP 200 but still the previous build — waiting for Passenger"
+            else
+              echo "attempt $i: HTTP $code — waiting for Passenger to respawn"
+            fi
+            sleep 6
+          done
+          echo "site did not serve build $BUILD_ID after restart"
+          exit 1
+
+      # Uploading cleanly and leaving the site down is the worst outcome: the old
+      # build is already gone. Put it back rather than leave production broken
+      # while someone reads the logs.
+      #
+      # Gated on the UPLOAD having succeeded, not merely on the job failing.
+      # `$APP.prev` survives a successful deploy, so a bare `failure()` meant a
+      # failure that never touched the server — a type error in the standalone
+      # build, a missing secret — would still find last release's snapshot and
+      # "roll back" a perfectly healthy site to the version before it.
+      - name: Roll back if the site is not serving
+        if: >-
+          failure() &&
+          steps.upload.outcome == 'success' &&
+          inputs.skip_live_check != true
+        run: |
+          ssh -p "${{ secrets.DEPLOY_SSH_PORT }}" -i ~/.ssh/id_ed25519 \
+            "${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}" \
+            "set -e
+             APP='${{ secrets.DEPLOY_PATH }}'
+             if [ -d \"\$APP.prev\" ]; then
+               rm -rf \"\$APP.broken\"
+               mv \"\$APP\" \"\$APP.broken\"
+               mv \"\$APP.prev\" \"\$APP\"
+               mkdir -p \"\$APP/tmp\" && touch \"\$APP/tmp/restart.txt\"
+               echo 'rolled back to the previous release'
+             else
+               echo 'NO SNAPSHOT — cannot roll back automatically'
+               exit 1
+             fi"
+          echo "::error::Deploy failed its live check and was rolled back. The failed build is at DEPLOY_PATH.broken for inspection."
+
+      - name: Note when the live check was skipped
+        if: inputs.skip_live_check == true
+        run: |
+          echo "::notice::Upload finished. The live check was skipped, so nothing was verified to be serving."
+          echo "::notice::Start the app in cPanel → Setup Node.js App, then follow docs/CUTOVER.md Phase 4.4."

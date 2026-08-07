@@ -1,0 +1,11 @@
+Blog posts for this locale go here as <slug>.mdx with frontmatter:
+
+---
+title: "Post title"
+description: "One-sentence summary, used on the index card and as meta description."
+date: 2026-08-05
+---
+
+Body in MDX. src/lib/blog.ts picks the file up automatically — no code change
+needed. Locales are independent: a post can exist in en without forcing a
+translation into fr or ar.

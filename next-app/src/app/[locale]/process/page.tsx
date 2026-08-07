@@ -4,6 +4,7 @@ import { routing } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
+import { buildAlternates } from "@/lib/alternates";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -16,7 +17,11 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "Process" });
-  return { title: t("h1"), description: t("subhead") };
+  return {
+    title: t("h1"),
+    description: t("subhead"),
+    alternates: buildAlternates("/process", locale),
+  };
 }
 
 const STEPS = ["step01", "step02", "step03", "step04"] as const;
@@ -27,9 +32,9 @@ export default async function ProcessPage() {
   const t = await getTranslations("Process");
 
   return (
-    <main id="main-content">
+    <div>
       {/* Hero */}
-      <section className="mx-auto max-w-7xl px-4 pt-24 pb-16 sm:px-6 sm:pt-32 sm:pb-20">
+      <section className="max-w-content mx-auto px-4 pt-24 pb-16 sm:px-6 sm:pt-32 sm:pb-20">
         <p
           dir="ltr"
           className="text-muted-foreground mb-4 font-mono text-xs tracking-widest uppercase"
@@ -46,7 +51,7 @@ export default async function ProcessPage() {
 
       {/* Steps + sticky ToC */}
       <section className="border-border border-t py-16 sm:py-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <div className="max-w-content mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-1 gap-16 lg:grid-cols-4">
             {/* Sticky ToC — hidden on mobile */}
             <nav aria-label={t("tocLabel")} className="hidden lg:block">
@@ -112,7 +117,7 @@ export default async function ProcessPage() {
 
       {/* Principles */}
       <section className="border-border border-t py-16 sm:py-20">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <div className="max-w-content mx-auto px-4 sm:px-6">
           <p
             dir="ltr"
             className="text-muted-foreground mb-10 font-mono text-xs tracking-widest uppercase"
@@ -139,7 +144,7 @@ export default async function ProcessPage() {
 
       {/* CTA */}
       <section className="bg-primary py-16 sm:py-24">
-        <div className="mx-auto max-w-7xl px-4 text-center sm:px-6">
+        <div className="max-w-content mx-auto px-4 text-center sm:px-6">
           <h2 className="font-display text-primary-foreground mb-8 text-2xl font-bold tracking-tight sm:text-3xl">
             {t("ctaHeadline")}
           </h2>
@@ -148,6 +153,6 @@ export default async function ProcessPage() {
           </Button>
         </div>
       </section>
-    </main>
+    </div>
   );
 }

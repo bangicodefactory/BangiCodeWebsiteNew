@@ -5,6 +5,7 @@ import { MDXRemote } from "next-mdx-remote/rsc";
 import { routing } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { getLegalContent } from "@/lib/legal-content";
+import { buildAlternates } from "@/lib/alternates";
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -20,6 +21,7 @@ export async function generateMetadata({
   return {
     title: t("privacyTitle"),
     description: t("privacyMetaDescription"),
+    alternates: buildAlternates("/legal/privacy", locale),
   };
 }
 
@@ -39,7 +41,7 @@ export default async function PrivacyPolicyPage({
   const isRtl = locale === "ar";
 
   return (
-    <main id="main-content">
+    <div>
       <div className="mx-auto max-w-3xl px-4 pt-24 pb-20 sm:px-6 sm:pt-32">
         {/* Header */}
         <div className="mb-12">
@@ -86,6 +88,6 @@ export default async function PrivacyPolicyPage({
           </p>
         </div>
       </div>
-    </main>
+    </div>
   );
 }
