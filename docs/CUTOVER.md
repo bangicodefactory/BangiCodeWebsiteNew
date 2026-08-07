@@ -81,48 +81,101 @@ to hurry it.
 Without HTTPS the admin session cookie is `Secure` and gets silently dropped —
 sign-in will look broken for a reason that has nothing to do with the code.
 
-### 2.3 Create the staging Node app
+### 2.3 Create the staging Node app ✅ DONE 2026-08-07
 
-cPanel → **Setup Node.js App** → _Create Application_:
+Created over SSH. `new.bangicode.ma` → `~/staging_html`, application root
+`~/bangicode-app`, Node **22.23.0**, startup `server.js`, production mode,
+currently **stopped** for the first deploy.
 
-| Field                    | Value                                                           |
-| ------------------------ | --------------------------------------------------------------- |
-| Node.js version          | 20.x or newer (**if none available, stop — see DEPLOYMENT.md**) |
-| Application mode         | Production                                                      |
-| Application root         | `bangicode-staging`                                             |
-| Application URL          | `new.bangicode.ma`                                              |
-| Application startup file | `server.js`                                                     |
+The app root is `bangicode-app`, not `bangicode-staging`, on purpose: it matches
+the `DEPLOY_PATH` secret, so the same directory can be re-pointed from
+`new.bangicode.ma` to the apex at cutover without redeploying a byte.
 
-Add the environment variables from DEPLOYMENT.md, but with
-`SITE_URL=https://new.bangicode.ma`.
+Two notes for anyone repeating this elsewhere:
 
-### 2.4 Give staging its own GitHub OAuth app
+- cPanel's `uapi PassengerApps register_application` silently ignores
+  `nodejs_version` and registers an app with **no Node interpreter** — the
+  record comes back listing only Ruby and Python, and Passenger cannot start
+  it. Use CloudLinux's `cloudlinux-selector create --interpreter nodejs`
+  instead; it builds the `nodevenv` and writes the Passenger directives.
+- Registering at a domain's root rewrites how that domain is served. Never
+  point one at `bangicode.ma` while the old site is still live there.
 
-One OAuth app allows one callback host, so staging needs its own:
+### 2.3b Environment variables for staging
 
-- Callback URL: `https://new.bangicode.ma/admin/auth/callback`
-- Use its client ID/secret in the staging app's env vars
+Set these in cPanel → _Setup Node.js App_ → `bangicode` → **Environment
+variables**. Everything matches DEPLOYMENT.md §3 except `SITE_URL`:
 
-(If you would rather not test the CMS on staging, leave the GitHub vars unset.
-`/admin` will show setup instructions instead of breaking, and the public site
-is unaffected.)
+| Variable               | Staging value                  |
+| ---------------------- | ------------------------------ |
+| `NODE_ENV`             | `production`                   |
+| `SITE_URL`             | **`https://new.bangicode.ma`** |
+| `DB_HOST`              | `localhost`                    |
+| `DB_PORT`              | `3306`                         |
+| `DB_NAME`              | `bangspbp_bangicode`           |
+| `DB_USER`              | `bangspbp_bangicode`           |
+| `DB_PASSWORD`          | the database password          |
+| `ADMIN_SESSION_SECRET` | the generated 48-byte value    |
 
-### 2.5 Deploy to staging by hand, once
+`NODE_ENV` stays `production` — it is what makes the session cookie `Secure`,
+and there is no "staging" mode.
 
-```bash
-# on your machine, in next-app/
-BUILD_STANDALONE=1 SITE_URL=https://new.bangicode.ma pnpm build
-cp -r public .next/standalone/
-cp -r .next/static .next/standalone/.next/
-mkdir -p .next/standalone/tmp
+⚠️ **HTTPS must be working before sign-in will.** The cookie is `Secure`, so
+over plain HTTP the browser discards it and signing in appears to do nothing —
+no error, just a bounce back to the login page. `new.bangicode.ma` served HTTP
+immediately but had no certificate; this account has no `autossl` user feature,
+so issue it from cPanel → **SSL/TLS Status** → _Run AutoSSL_.
 
-rsync -az --delete -e "ssh -p 21098" \
-  .next/standalone/ USER@SERVER:/home/USER/bangicode-staging/
+⚠️ **Staging shares the production database.** There is only one. Before
+cutover that is useful — content entered on staging is already there when the
+apex takes over. After cutover it stops being useful, because staging edits
+would change the live site. Create a second database at that point, not now.
 
-ssh -p 21098 USER@SERVER "touch /home/USER/bangicode-staging/tmp/restart.txt"
+⚠️ **Flip the GitHub `SITE_URL` secret too**, not just the cPanel variable. The
+standalone build bakes it into every statically-rendered page's canonical, and
+the deploy's live check polls it. Set to `https://new.bangicode.ma` on
+2026-08-07; **set it back to `https://bangicode.ma` before the real cutover.**
+
+### 2.4 Create the first admin account
+
+Superseded by ADR 0003 — there is no OAuth app any more, for staging or
+production. Sign-in is an email and password in the database, and accounts are
+created from the command line:
+
+```sh
+cd /home/bangspbp/bangicode-app
+DB_HOST=localhost DB_NAME=bangspbp_bangicode DB_USER=bangspbp_bangicode \
+DB_PASSWORD='…' node scripts/create-admin.mjs
 ```
 
-Then in cPanel → _Setup Node.js App_ → **Start** the staging app.
+This only works **after** the first deploy has put `scripts/` on the server.
+
+Staging and production share one database, so this account is the same account
+either side of the cutover. Create it once.
+
+(To skip the CMS on staging entirely, leave `ADMIN_SESSION_SECRET` unset.
+`/admin` then denies every request and the login page says what is missing —
+it fails closed, and the public site is unaffected.)
+
+### 2.5 Deploy to staging
+
+Use the pipeline rather than a hand-rolled rsync — the point of staging is to
+rehearse the real thing, and a manual copy rehearses nothing. `DEPLOY_PATH`
+already points at `~/bangicode-app`, and the `SITE_URL` secret is pointed at
+`https://new.bangicode.ma`.
+
+Actions → **CI** → _Run workflow_ on `main`, with **`skip_live_check: true`**.
+
+That input exists for exactly this run: the app is deliberately stopped, so the
+upload succeeds while nothing is listening, and the live check would fail an
+otherwise good deploy.
+
+Then cPanel → _Setup Node.js App_ → **Start** the app, and run 2.4 to create
+the admin account.
+
+If it fails, note that the rollback step only fires when the upload itself
+succeeded, and there is no previous release to restore on a first deploy — it
+will say so rather than pretending.
 
 ### 2.6 Test staging properly
 
@@ -153,7 +206,10 @@ Only after staging is good.
 2. Create the production Node.js app in cPanel exactly as in DEPLOYMENT.md —
    application root `bangicode-app`, Application URL `bangicode.ma`.
    **Leave it stopped.**
-3. Add the production env vars, including the production OAuth app credentials.
+3. Add the production env vars — same as the staging table in 2.3b, but with
+   `SITE_URL=https://bangicode.ma`. Flip the GitHub `SITE_URL` secret back to
+   the apex at the same time, or the build will bake staging canonicals into
+   the production release.
 
 Nothing is live yet: the production app is stopped and `public_html` still holds
 the old site.
@@ -258,7 +314,9 @@ holding the old site in cache):
 
 ## Canonical host
 
-`bangicode.ma` (apex) is canonical. `SITE_URL` and the OAuth callback both use it.
+`bangicode.ma` (apex) is canonical, and `SITE_URL` must name it — in the cPanel
+environment AND in the GitHub secret, which the build bakes into every
+statically-rendered page.
 
 The `www` → apex 301 is handled **in the app** (`next.config.ts`,
 `canonicalHostRedirects`), derived from `SITE_URL`, path-preserving, and verified

@@ -128,21 +128,32 @@ Deploys run `scripts/migrate.mjs` automatically from then on.
 
 Repository → _Settings_ → _Secrets and variables_ → _Actions_:
 
-| Secret                 | Value                                                                    |
-| ---------------------- | ------------------------------------------------------------------------ |
-| `DEPLOY_HOST`          | `premium173.web-hosting.com`                                             |
-| `DEPLOY_USER`          | `bangspbp`                                                               |
-| `DEPLOY_SSH_PORT`      | `21098`                                                                  |
-| `DEPLOY_SSH_KEY`       | contents of `~/.ssh/gha-deploy-dac` — already authorised on this account |
-| `DEPLOY_PATH`          | `/home/bangspbp/bangicode-app`                                           |
-| `SITE_URL`             | `https://bangicode.ma`                                                   |
-| `DB_HOST`              | `localhost`                                                              |
-| `DB_PORT`              | `3306`                                                                   |
-| `DB_NAME`              | `bangspbp_bangicode`                                                     |
-| `DB_USER`              | `bangspbp_bangicode`                                                     |
-| `DB_PASSWORD`          | the database password                                                    |
-| `ADMIN_SESSION_SECRET` | the same value as the cPanel variable                                    |
-| `DEPLOY_SSH_HOST_KEY`  | optional — `ssh-keyscan -p 21098 HOST`, to pin the server                |
+| Secret                | Value                                                                    |
+| --------------------- | ------------------------------------------------------------------------ |
+| `DEPLOY_HOST`         | `premium173.web-hosting.com`                                             |
+| `DEPLOY_USER`         | `bangspbp`                                                               |
+| `DEPLOY_SSH_PORT`     | `21098`                                                                  |
+| `DEPLOY_SSH_KEY`      | contents of `~/.ssh/gha-deploy-dac` — already authorised on this account |
+| `DEPLOY_PATH`         | `/home/bangspbp/bangicode-app`                                           |
+| `SITE_URL`            | `https://bangicode.ma`                                                   |
+| `DB_HOST`             | `localhost`                                                              |
+| `DB_PORT`             | `3306`                                                                   |
+| `DB_NAME`             | `bangspbp_bangicode`                                                     |
+| `DB_USER`             | `bangspbp_bangicode`                                                     |
+| `DB_PASSWORD`         | the database password                                                    |
+| `DEPLOY_SSH_HOST_KEY` | optional — `ssh-keyscan -p 21098 HOST`, to pin the server                |
+
+**`ADMIN_SESSION_SECRET` is deliberately NOT in this table.** The deploy never
+sends it to the server — the app reads it from the cPanel environment, which is
+the only copy that signs cookies. Keeping it here as a GitHub secret would
+check that _a_ value exists in a place nothing reads, which is worse than not
+checking: it reads like assurance the server is configured when it is not.
+
+⚠️ **`SITE_URL` is used at BUILD time, not just for the live check.** The
+standalone build bakes it into the canonical and hreflang tags of every
+statically-rendered page. Point it at staging while testing on staging, and
+back at the apex before the real cutover, or the staging site will advertise
+production as its canonical.
 
 ⚠️ **`DEPLOY_PATH` must be exactly `/home/bangspbp/bangicode-app`.** This one
 cPanel account also hosts `garage/` (DirectAutoCare), `classkom.ma`,

@@ -382,7 +382,13 @@ jobs:
           SITE_URL: ${{ secrets.SITE_URL }}
         run: |
           missing=""
-          for name in DEPLOY_HOST DEPLOY_USER DEPLOY_SSH_PORT DEPLOY_SSH_KEY DEPLOY_PATH SITE_URL DB_HOST DB_USER DB_NAME DB_PASSWORD ADMIN_SESSION_SECRET; do
+          # ADMIN_SESSION_SECRET is deliberately absent. The deploy never sends
+          # it to the server — the app reads it from the cPanel environment,
+          # which CI cannot see. Requiring it here would verify that a value
+          # exists somewhere nothing reads, and report "all secrets present"
+          # for a server that cannot open a session. Checking the wrong thing
+          # is worse than not checking.
+          for name in DEPLOY_HOST DEPLOY_USER DEPLOY_SSH_PORT DEPLOY_SSH_KEY DEPLOY_PATH SITE_URL DB_HOST DB_USER DB_NAME DB_PASSWORD; do
             if [ -z "${!name}" ]; then missing="$missing $name"; fi
           done
           if [ -n "$missing" ]; then
