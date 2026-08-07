@@ -8,8 +8,9 @@ import mysql from "mysql2/promise";
  * `@mdx-js/mdx` resolvable on a developer machine and missing in CI. This is
  * pure JavaScript and traces cleanly into the standalone bundle.
  *
- * SQL is written by hand in `src/lib/content/*`, the same way `lib/admin/github.ts`
- * spoke to the GitHub API directly rather than pulling in Octokit.
+ * SQL is written by hand in the loaders (`lib/portfolio.ts`, `lib/blog.ts`)
+ * and in `lib/admin/content.ts`, the same way the GitHub client it replaced
+ * spoke to that API directly rather than pulling in Octokit.
  */
 
 export interface DbConfig {

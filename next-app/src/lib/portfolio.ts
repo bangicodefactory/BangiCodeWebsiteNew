@@ -1,27 +1,28 @@
-import fs from "node:fs";
-import path from "node:path";
+import { unstable_cache } from "next/cache";
+import { query } from "./db";
 import { projectSchema, type Project } from "./portfolio-schema";
 
 /**
- * Portfolio projects, one JSON file per project under `content/portfolio/`.
+ * Portfolio projects, read from the database. See ADR 0003.
  *
- * SERVER ONLY — it reads the filesystem. The contract (schema, types,
+ * SERVER ONLY — it opens a database connection. The contract (schema, types,
  * categories) lives in portfolio-schema.ts so the admin's client-side editor
- * can share it without dragging `node:fs` into the browser bundle. Importing
- * THIS module from a client component fails the build with a Turbopack chunk
- * error that does not name the cause, so keep the split.
+ * can share it without dragging a MySQL driver into the browser bundle.
+ * Importing THIS module from a client component fails the build with a
+ * Turbopack chunk error that does not name the cause, so keep the split.
  *
- * (The `server-only` package would turn that into a clear message. It is not
- * installed, and adding it with npm would desync pnpm-lock.yaml, which CI
- * installs with --frozen-lockfile. Worth adding via pnpm separately.)
- *
- * Each file carries ALL THREE locales, because a project cannot publish without
- * them (a locked decision). That is enforced by the schema rather than by
- * check-messages-parity: the parity guard now covers UI chrome only, which is
+ * Each project carries ALL THREE locales, because a project cannot publish
+ * without them (a locked decision). That is enforced by the schema rather than
+ * by check-messages-parity: the parity guard covers UI chrome only, which is
  * what it is actually good at.
  *
- * The same schema is what the CMS validates against before committing, so a
- * malformed write is rejected at the admin boundary and never reaches the repo.
+ * Rows are validated with the SAME Zod schema the CMS writes against, so a bad
+ * row is caught exactly where a bad file used to be. What changed is the
+ * response: the file loader THREW, because a malformed file meant someone had
+ * hand-edited the repo and the build should stop. A malformed row cannot get
+ * past the admin's validation, so the likelier cause here is a schema change
+ * mid-deploy — and taking the whole portfolio page down for one bad row is a
+ * worse outcome than rendering the rest. Bad rows are skipped and logged.
  */
 
 export {
@@ -34,83 +35,137 @@ export {
   type ProjectLocaleContent,
 } from "./portfolio-schema";
 
-const CONTENT_DIR = path.join(process.cwd(), "content", "portfolio");
+/** Invalidated by the admin on publish — see revalidateTag in actions.ts. */
+export const PROJECTS_TAG = "projects";
 
-function readAll(): Project[] {
-  if (!fs.existsSync(CONTENT_DIR)) return [];
+interface ProjectRow {
+  id: number;
+  slug: string;
+  sort_order: number;
+  category: string;
+  date: string;
+  tags: string;
+  hero_placeholder: number;
+  hero_webp: string;
+  hero_alt: string;
+  hero_width: number;
+  hero_height: number;
+}
+
+interface TranslationRow {
+  project_id: number;
+  locale: string;
+  name: string;
+  summary: string;
+  outcome: string;
+}
+
+function parseTags(raw: string): string[] {
+  try {
+    const parsed: unknown = JSON.parse(raw);
+    return Array.isArray(parsed)
+      ? parsed.filter((t) => typeof t === "string")
+      : [];
+  } catch {
+    return [];
+  }
+}
+
+/**
+ * Two queries, not one per project.
+ *
+ * The obvious shape — fetch projects, then translations for each — is N+1, and
+ * on shared hosting with a connection limit of three that is the difference
+ * between one round trip and thirteen for a page that renders in 12ms.
+ */
+async function readAll(): Promise<Project[]> {
+  const rows = await query<ProjectRow>(
+    `SELECT id, slug, sort_order, category, date, tags,
+            hero_placeholder, hero_webp, hero_alt, hero_width, hero_height
+       FROM projects
+       ORDER BY sort_order ASC`,
+  );
+  if (rows.length === 0) return [];
+
+  const translations = await query<TranslationRow>(
+    "SELECT project_id, locale, name, summary, outcome FROM project_translations",
+  );
+
+  const byProject = new Map<number, Record<string, unknown>>();
+  for (const t of translations) {
+    const bucket = byProject.get(t.project_id) ?? {};
+    bucket[t.locale] = {
+      name: t.name,
+      summary: t.summary,
+      outcome: t.outcome,
+    };
+    byProject.set(t.project_id, bucket);
+  }
 
   const projects: Project[] = [];
-  const errors: string[] = [];
+  for (const row of rows) {
+    const candidate = {
+      slug: row.slug,
+      order: row.sort_order,
+      category: row.category,
+      tags: parseTags(row.tags),
+      date: row.date,
+      hero: {
+        placeholder: Boolean(row.hero_placeholder),
+        webp: row.hero_webp,
+        alt: row.hero_alt,
+        width: row.hero_width,
+        height: row.hero_height,
+      },
+      content: byProject.get(row.id) ?? {},
+    };
 
-  for (const file of fs.readdirSync(CONTENT_DIR).sort()) {
-    if (!file.endsWith(".json")) continue;
-    const raw = fs.readFileSync(path.join(CONTENT_DIR, file), "utf8");
-
-    let parsed: unknown;
-    try {
-      parsed = JSON.parse(raw);
-    } catch {
-      errors.push(`${file}: not valid JSON`);
-      continue;
-    }
-
-    const result = projectSchema.safeParse(parsed);
-    if (!result.success) {
-      errors.push(
-        `${file}: ${result.error.issues.map((i) => `${i.path.join(".")} ${i.message}`).join("; ")}`,
-      );
-      continue;
-    }
-    if (result.data.slug !== file.replace(/\.json$/, "")) {
-      errors.push(
-        `${file}: slug "${result.data.slug}" does not match filename`,
-      );
-      continue;
-    }
-    projects.push(result.data);
-  }
-
-  /*
-   * Duplicate `order` values sort unpredictably against each other, so the
-   * portfolio would silently reorder between builds. The CMS defaults new
-   * projects to max+1, but nothing stops a hand-edit colliding.
-   */
-  const seen = new Map<number, string>();
-  for (const p of projects) {
-    const other = seen.get(p.order);
-    if (other) {
-      errors.push(
-        `${p.slug}.json: order ${p.order} is already used by ${other}.json — orders must be unique`,
-      );
+    const result = projectSchema.safeParse(candidate);
+    if (result.success) {
+      projects.push(result.data);
     } else {
-      seen.set(p.order, p.slug);
+      // Loud in the server log, invisible to the visitor. The admin's project
+      // list surfaces the same problem where someone can act on it.
+      console.error(
+        `portfolio: skipping "${row.slug}" — ${result.error.issues
+          .map((i) => `${i.path.join(".")} ${i.message}`)
+          .join("; ")}`,
+      );
     }
   }
 
-  /*
-   * Throw rather than skip. A project silently missing from the portfolio is
-   * exactly the class of failure this project keeps getting bitten by — the
-   * unstyled tokens, the dead Arabic font, the 500ing case studies. A broken
-   * content file should fail the build, loudly, at the point of the mistake.
-   */
-  if (errors.length > 0) {
-    throw new Error(
-      `Invalid portfolio content:\n  ${errors.join("\n  ")}\n` +
-        `Fix the file(s) under content/portfolio/.`,
-    );
-  }
-
-  return projects.sort((a, b) => a.order - b.order);
+  return projects;
 }
 
-export function getProjects(): Project[] {
-  return readAll();
+/*
+ * Cached with a tag rather than a time.
+ *
+ * Content changes when someone publishes and at no other moment, so an
+ * expiry-based cache is a choice between stale pages and pointless queries.
+ * `revalidateTag(PROJECTS_TAG)` in the publish action makes the change live in
+ * seconds while every other request is served from cache — which is what keeps
+ * the CI-enforced perf budget intact now that these routes no longer prerender
+ * at build time.
+ *
+ * Deliberately `unstable_cache` and not the `use cache` directive that
+ * supersedes it in Next 16: `use cache` requires enabling Cache Components
+ * globally, which changes how every dynamic API behaves across all 105
+ * prerendered pages. That migration belongs on its own. See ADR 0003.
+ */
+const cachedProjects = unstable_cache(readAll, ["portfolio-projects"], {
+  tags: [PROJECTS_TAG],
+});
+
+export async function getProjects(): Promise<Project[]> {
+  return cachedProjects();
 }
 
-export function getProject(slug: string): Project | null {
-  return readAll().find((p) => p.slug === slug) ?? null;
+export async function getProject(slug: string): Promise<Project | null> {
+  const projects = await cachedProjects();
+  return projects.find((p) => p.slug === slug) ?? null;
 }
 
-export function getProjectSlugs(): string[] {
-  return readAll().map((p) => p.slug);
+export async function getProjectSlugs(): Promise<string[]> {
+  const projects = await cachedProjects();
+  return projects.map((p) => p.slug);
 }

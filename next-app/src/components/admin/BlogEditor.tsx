@@ -178,7 +178,7 @@ export function BlogEditor({
         <div className="flex items-center gap-4">
           <PublishButton label={isNew ? "Create post" : "Save changes"} />
           <span className="text-muted-foreground font-mono text-xs">
-            Commits to the repository · live on the next build
+            Saved to the database · live immediately
           </span>
         </div>
       </form>

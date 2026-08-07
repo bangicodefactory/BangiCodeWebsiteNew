@@ -5,7 +5,7 @@ import { toAdminUser } from "@/lib/admin/session";
 import { AdminShell } from "@/components/admin/AdminShell";
 import { Button } from "@/components/ui/button";
 import { listBlogPosts } from "@/lib/admin/content";
-import { describeError } from "@/lib/admin/github";
+import { attempt } from "@/lib/admin/attempt";
 import { routing } from "@/i18n/routing";
 
 export const dynamic = "force-dynamic";
@@ -15,9 +15,9 @@ export default async function AdminBlogList({
 }: {
   searchParams: Promise<{ deleted?: string }>;
 }) {
-  const { session, config } = await requireSession();
+  const { session } = await requireSession();
   const { deleted } = await searchParams;
-  const result = await listBlogPosts(config, config.githubToken);
+  const result = await attempt(() => listBlogPosts());
 
   return (
     <AdminShell user={toAdminUser(session)} current="blog">
@@ -43,8 +43,7 @@ export default async function AdminBlogList({
           role="status"
           className="border-success bg-card text-foreground font-body mt-6 rounded-sm border-s-2 p-4 text-sm"
         >
-          Deleted “{deleted}”. The removal is committed; the site drops it on
-          the next build.
+          Deleted “{deleted}”. It is gone from the site already.
         </p>
       ) : null}
 
@@ -53,7 +52,7 @@ export default async function AdminBlogList({
           role="alert"
           className="border-destructive bg-card text-foreground font-body mt-8 rounded-sm border-s-2 p-4 text-sm leading-relaxed"
         >
-          {describeError(result.error)}
+          {result.error}
         </p>
       ) : result.value.length === 0 ? (
         <div className="border-border bg-card mt-8 rounded-md border p-8">

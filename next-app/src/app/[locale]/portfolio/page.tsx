@@ -36,7 +36,7 @@ export default async function PortfolioPage({
   const t = await getTranslations("Work");
 
   // Read on the server, localise here, hand plain data to the client filter.
-  const projects = getProjects().map((p) => toCardData(p, locale));
+  const projects = (await getProjects()).map((p) => toCardData(p, locale));
 
   return (
     <div>

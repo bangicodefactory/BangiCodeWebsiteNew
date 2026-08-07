@@ -30,7 +30,7 @@ export default async function BlogIndexPage({
 }) {
   const { locale } = await params;
   const t = await getTranslations("Blog");
-  const posts = getPosts(locale);
+  const posts = await getPosts(locale);
 
   return (
     <div>

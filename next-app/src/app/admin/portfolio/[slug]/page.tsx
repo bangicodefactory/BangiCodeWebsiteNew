@@ -4,7 +4,7 @@ import { toAdminUser } from "@/lib/admin/session";
 import { AdminShell } from "@/components/admin/AdminShell";
 import { ProjectEditor } from "@/components/admin/ProjectEditor";
 import { getProjectFile, slugSchema } from "@/lib/admin/content";
-import { describeError } from "@/lib/admin/github";
+import { attempt } from "@/lib/admin/attempt";
 
 export const dynamic = "force-dynamic";
 
@@ -13,17 +13,13 @@ export default async function EditProjectPage({
 }: {
   params: Promise<{ slug: string }>;
 }) {
-  const { session, config } = await requireSession();
+  const { session } = await requireSession();
   const { slug } = await params;
 
   const parsedSlug = slugSchema.safeParse(slug);
   if (!parsedSlug.success) notFound();
 
-  const result = await getProjectFile(
-    config,
-    config.githubToken,
-    parsedSlug.data,
-  );
+  const result = await attempt(() => getProjectFile(parsedSlug.data));
   if (!result.ok) {
     return (
       <AdminShell user={toAdminUser(session)} current="portfolio">
@@ -31,7 +27,7 @@ export default async function EditProjectPage({
           role="alert"
           className="border-destructive bg-card text-foreground font-body rounded-sm border-s-2 p-4 text-sm leading-relaxed"
         >
-          {describeError(result.error)}
+          {result.error}
         </p>
       </AdminShell>
     );

@@ -2,15 +2,23 @@ import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { routing } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { buildAlternates } from "@/lib/alternates";
-import { getPost, getPostSlugs } from "@/lib/blog";
+import { getPost } from "@/lib/blog";
 
+/*
+ * Empty, deliberately. See ADR 0003.
+ *
+ * Content lives in the production database, which the BUILD cannot reach — and
+ * baking CI's seed content into the bundle would ship fixtures to visitors. So
+ * nothing is prerendered at build; the first request for a post renders it and
+ * the result is cached under the `posts` tag, which publishing invalidates.
+ *
+ * `dynamicParams` defaults to true, so an unknown slug still reaches the page
+ * and still 404s through getPost() returning null.
+ */
 export function generateStaticParams() {
-  return routing.locales.flatMap((locale) =>
-    getPostSlugs(locale).map((slug) => ({ locale, slug })),
-  );
+  return [];
 }
 
 export async function generateMetadata({
@@ -19,7 +27,7 @@ export async function generateMetadata({
   params: Promise<{ locale: string; slug: string }>;
 }): Promise<Metadata> {
   const { locale, slug } = await params;
-  const post = getPost(locale, slug);
+  const post = await getPost(locale, slug);
   if (!post) return {};
   return {
     title: post.title,
@@ -43,7 +51,7 @@ export default async function BlogPostPage({
 }) {
   const { locale, slug } = await params;
   setRequestLocale(locale);
-  const post = getPost(locale, slug);
+  const post = await getPost(locale, slug);
   if (!post) notFound();
 
   const t = await getTranslations("Blog");
