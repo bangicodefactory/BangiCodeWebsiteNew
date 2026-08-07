@@ -50,10 +50,27 @@ Leave the app stopped for now — there is nothing in the directory yet.
 
 ### 2. Create the database
 
-cPanel → **MySQL® Databases**. Create a database and a user, then grant that
-user **ALL PRIVILEGES** on it. cPanel prefixes both with your account name, so
-`cms` becomes `bangspbp_cms` and `cmsuser` becomes `bangspbp_cmsuser` — use the
-prefixed names in the environment variables below.
+✅ **Already done on this account** (2026-08-07). Database and user are both
+`bangspbp_bangicode`, with ALL PRIVILEGES granted, the schema applied, and
+`001_init.sql` recorded in `schema_migrations`. The password is in the GitHub
+Actions secret `DB_PASSWORD` — skip to step 3 and paste the same value into
+cPanel.
+
+To do it again elsewhere: cPanel → **MySQL® Databases**. Create a database and a
+user, then grant that user **ALL PRIVILEGES** on it. cPanel prefixes both with
+the account name, so `bangicode` becomes `bangspbp_bangicode`. This account
+already hosts ten other databases, so a name that says which site it belongs to
+is worth more than a generic `cms`.
+
+⚠️ **cPanel creates databases as `latin1`.** One third of this site's content is
+Arabic. The tables in `001_init.sql` declare `utf8mb4` explicitly so they are
+safe either way, but the database default should be fixed too, or the first
+migration that forgets an explicit charset will mangle Arabic silently:
+
+```sql
+ALTER DATABASE bangspbp_bangicode
+  CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+```
 
 The database holds the blog posts, the portfolio projects and the admin
 accounts. It lives outside `DEPLOY_PATH`, which is deliberate: the deploy runs
@@ -77,8 +94,8 @@ which `rsync --delete` would otherwise overwrite.
 | `SITE_URL`             | `https://bangicode.ma` — must be the real public origin, no trailing slash |
 | `DB_HOST`              | `localhost`                                                                |
 | `DB_PORT`              | `3306`                                                                     |
-| `DB_NAME`              | `bangspbp_cms` — the prefixed name from step 2                             |
-| `DB_USER`              | `bangspbp_cmsuser`                                                         |
+| `DB_NAME`              | `bangspbp_bangicode` — the prefixed name from step 2                       |
+| `DB_USER`              | `bangspbp_bangicode`                                                       |
 | `DB_PASSWORD`          | the password you set in step 2                                             |
 | `ADMIN_SESSION_SECRET` | `openssl rand -base64 48`                                                  |
 
@@ -94,9 +111,9 @@ There is no sign-up form. Over SSH, once the app directory exists:
 
 ```sh
 cd /home/bangspbp/bangicode-app
-DB_HOST=localhost DB_NAME=bangspbp_cms DB_USER=bangspbp_cmsuser \
+DB_HOST=localhost DB_NAME=bangspbp_bangicode DB_USER=bangspbp_bangicode \
 DB_PASSWORD='…' node scripts/migrate.mjs      # creates the tables
-DB_HOST=localhost DB_NAME=bangspbp_cms DB_USER=bangspbp_cmsuser \
+DB_HOST=localhost DB_NAME=bangspbp_bangicode DB_USER=bangspbp_bangicode \
 DB_PASSWORD='…' node scripts/create-admin.mjs # prompts for email and password
 ```
 
@@ -121,8 +138,8 @@ Repository → _Settings_ → _Secrets and variables_ → _Actions_:
 | `SITE_URL`             | `https://bangicode.ma`                                                   |
 | `DB_HOST`              | `localhost`                                                              |
 | `DB_PORT`              | `3306`                                                                   |
-| `DB_NAME`              | `bangspbp_cms`                                                           |
-| `DB_USER`              | `bangspbp_cmsuser`                                                       |
+| `DB_NAME`              | `bangspbp_bangicode`                                                     |
+| `DB_USER`              | `bangspbp_bangicode`                                                     |
 | `DB_PASSWORD`          | the database password                                                    |
 | `ADMIN_SESSION_SECRET` | the same value as the cPanel variable                                    |
 | `DEPLOY_SSH_HOST_KEY`  | optional — `ssh-keyscan -p 21098 HOST`, to pin the server                |

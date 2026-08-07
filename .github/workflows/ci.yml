@@ -179,10 +179,11 @@ jobs:
   # (/en/portfolio/rentcar), and since ADR 0003 that content lives in MySQL
   # rather than in files on disk.
   #
-  # MariaDB, not mysql:8 — cPanel ships MariaDB, so matching it here is the
-  # difference between testing what production runs and testing something
-  # adjacent to it. This project has been bitten enough times by CI and the
-  # real environment disagreeing.
+  # MariaDB 11.4, not mysql:8 — verified over SSH on 2026-08-07 that the cPanel
+  # account runs MariaDB 11.4.12. Matching the major version is the difference
+  # between testing what production runs and testing something adjacent to it,
+  # and this project has already been bitten twice by CI and the real
+  # environment disagreeing.
   smoke:
     name: "Smoke (Playwright @smoke)"
     runs-on: ubuntu-latest
@@ -190,7 +191,7 @@ jobs:
 
     services:
       mariadb:
-        image: mariadb:10.11
+        image: mariadb:11.4
         env:
           MARIADB_ROOT_PASSWORD: ci
           MARIADB_DATABASE: bangicode_ci
@@ -283,7 +284,7 @@ jobs:
     # which would pass the budget while measuring nothing.
     services:
       mariadb:
-        image: mariadb:10.11
+        image: mariadb:11.4
         env:
           MARIADB_ROOT_PASSWORD: ci
           MARIADB_DATABASE: bangicode_ci
