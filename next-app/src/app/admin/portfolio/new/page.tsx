@@ -13,10 +13,11 @@ export default async function NewProjectPage() {
 
   // Default to the end of the list rather than colliding with an existing
   // position — order is a plain number, and two projects sharing one sorts
-  // unpredictably.
+  // unpredictably. A rejected file still occupies its position, so max() reads
+  // every entry's order, not just the valid ones.
   const existing = await listProjectFiles(config, config.githubToken);
   const nextOrder = existing.ok
-    ? existing.value.reduce((max, p) => Math.max(max, p.order), 0) + 1
+    ? existing.value.reduce((max, e) => Math.max(max, e.order ?? 0), 0) + 1
     : 1;
 
   const empty: Project = {

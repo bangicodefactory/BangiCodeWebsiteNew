@@ -85,6 +85,29 @@ test("@smoke unknown slugs 404 rather than 500", async ({ page }) => {
   }
 });
 
+/*
+ * Paths containing a DOT are the case the test above cannot reach. The i18n
+ * middleware's matcher excludes them, so they arrive at [locale] with the
+ * filename as the locale, hit notFound(), and render the locale boundary
+ * outside any established request locale. While that boundary used next-intl's
+ * Link — which resolves the locale by reading headers — every one of these
+ * answered 500: mistyped asset URLs, stale links to old .html pages, and the
+ * steady background of bots probing for /wp-login.php.
+ */
+test("@smoke missing paths that look like files 404 rather than 500", async ({
+  page,
+}) => {
+  for (const path of [
+    "/nope.txt",
+    "/old-page.html",
+    "/wp-login.php",
+    "/en/missing-asset.png",
+  ]) {
+    const response = await page.goto(path);
+    expect(response?.status(), `${path} should 404`).toBe(404);
+  }
+});
+
 test("@smoke primary nav is the Design D IA", async ({ page }) => {
   await page.goto("/en");
   const nav = page.getByRole("navigation", { name: /main navigation/i });

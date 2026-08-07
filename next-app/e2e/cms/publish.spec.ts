@@ -231,3 +231,64 @@ test("the blog list flags a post that is not live in every locale", async ({
   const commits = await getCommits(request);
   expect(commits).toHaveLength(0); // listing must not write anything
 });
+
+/*
+ * The two cross-file rules Zod cannot enforce, because neither is a property of
+ * a single project. Both were unguarded on the portfolio path while the blog
+ * path had the slug check — the asymmetry was invisible because the only
+ * duplicate-slug test above exercises /admin/blog/new.
+ */
+async function fillProjectLocales(page: import("@playwright/test").Page) {
+  for (const [locale, tab] of [
+    ["en", "English"],
+    ["fr", "Français"],
+    ["ar", "العربية"],
+  ] as const) {
+    await page.getByRole("tab", { name: new RegExp(tab, "i") }).click();
+    await page.fill(`input[name="name.${locale}"]`, "Placeholder");
+    await page.fill(
+      `textarea[name="summary.${locale}"]`,
+      "Placeholder summary.",
+    );
+    await page.fill(
+      `textarea[name="outcome.${locale}"]`,
+      "Placeholder outcome.",
+    );
+  }
+}
+
+test("a new project cannot overwrite an existing one by reusing its slug", async ({
+  signedIn: page,
+  request,
+}) => {
+  await page.goto("/admin/portfolio/new");
+  // rentcar is seeded. Creating "new" over it used to commit straight on top,
+  // silently replacing a published case study.
+  await page.fill('input[name="slug"]', "rentcar");
+  await page.fill('input[name="tags"]', "Next.js");
+  await page.fill('input[name="date"]', "2026");
+  await fillProjectLocales(page);
+  await page.getByRole("button", { name: "Create project" }).click();
+
+  await expect(banner(page)).toContainText("already exists");
+  expect(await getCommits(request)).toHaveLength(0);
+});
+
+test("a project cannot take an order another project already occupies", async ({
+  signedIn: page,
+  request,
+}) => {
+  await page.goto("/admin/portfolio/new");
+  await page.fill('input[name="slug"]', "second-project");
+  await page.fill('input[name="tags"]', "Next.js");
+  await page.fill('input[name="date"]', "2026");
+  // rentcar holds order 1. src/lib/portfolio.ts THROWS on a duplicate, so
+  // accepting this would commit cleanly and then break the next build.
+  await page.fill('input[name="order"]', "1");
+  await fillProjectLocales(page);
+  await page.getByRole("button", { name: "Create project" }).click();
+
+  await expect(banner(page)).toContainText("already used by");
+  await expect(banner(page)).toContainText("rentcar");
+  expect(await getCommits(request)).toHaveLength(0);
+});

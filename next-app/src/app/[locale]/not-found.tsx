@@ -1,4 +1,4 @@
-import { Link } from "@/i18n/navigation";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
 /*
@@ -20,6 +20,19 @@ import { Button } from "@/components/ui/button";
  * Deliberately no useTranslations: a not-found boundary can render in contexts
  * where the locale has not been established, and a 404 page that itself throws
  * is considerably worse than one that is only in English.
+ *
+ * For the same reason the links are plain next/link, NOT next-intl's. This file
+ * used the localised Link while claiming to need no locale, and that was a live
+ * contradiction: the localised Link resolves the current locale, which without
+ * an established request locale means reading headers. Any path the i18n
+ * middleware skips — its matcher excludes anything containing a dot — reached
+ * the [locale] segment with a junk locale, hit notFound(), rendered this
+ * boundary, and turned a static render dynamic. `/nope.txt`, `/old-page.html`
+ * and every bot probe for `/wp-login.php` answered 500 instead of 404.
+ *
+ * Unprefixed hrefs are correct here: the middleware redirects `/` and
+ * `/portfolio` to the visitor's locale, which is the right answer when this
+ * page cannot know what that locale is.
  */
 export default function LocaleNotFound() {
   return (

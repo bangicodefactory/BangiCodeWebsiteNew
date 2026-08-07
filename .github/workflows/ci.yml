@@ -24,9 +24,16 @@ on:
 
 # Skip the entire workflow when the commit message contains [skip ci]
 # (GitHub Actions honours this natively on push; handled here for PR title parity)
+#
+# Superseding a running PR check is free; superseding a running DEPLOY is not.
+# Workflow-level cancellation kills the whole run, and it outranks the deploy
+# job's own `cancel-in-progress: false` — so a second push to main while the
+# first was mid-rsync would abort the upload with --delete already applied,
+# leaving a half-synced tree on the server. Giving main its own non-cancelling
+# group is what actually makes that job's guarantee true.
 concurrency:
   group: ci-${{ github.ref }}
-  cancel-in-progress: true
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 # Opt into Node.js 24 runner for all JS actions (mandatory from 2026-06-02)
 # IST-201: remove FORCE_JAVASCRIPT_ACTIONS_TO_NODE24 after 2026-06-02
@@ -348,12 +355,28 @@ jobs:
           touch .next/standalone/tmp/restart.txt
           du -sh .next/standalone
 
+      # DEPLOY_SSH_HOST_KEY is optional. Set it (the server's line from
+      # `ssh-keyscan -p PORT HOST`) and the host is pinned; leave it unset and
+      # this falls back to trust-on-first-use, which accepts whatever key the
+      # network hands back on every single run. Pinning is the difference
+      # between authenticating the server and merely hoping.
       - name: Add SSH key
+        env:
+          HOST_KEY: ${{ secrets.DEPLOY_SSH_HOST_KEY }}
         run: |
           mkdir -p ~/.ssh
-          echo "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/id_ed25519
+          # printf, not echo: a key pasted without a trailing newline is rejected
+          # by ssh with an unhelpful "invalid format".
+          printf '%s\n' "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
-          ssh-keyscan -p "${{ secrets.DEPLOY_SSH_PORT }}" -H "${{ secrets.DEPLOY_HOST }}" >> ~/.ssh/known_hosts
+          if [ -n "$HOST_KEY" ]; then
+            printf '%s\n' "$HOST_KEY" >> ~/.ssh/known_hosts
+            echo "host key pinned from DEPLOY_SSH_HOST_KEY"
+          else
+            echo "::warning::DEPLOY_SSH_HOST_KEY is not set — trusting the host key on first sight. Add it to pin the server."
+            ssh-keyscan -p "${{ secrets.DEPLOY_SSH_PORT }}" -H "${{ secrets.DEPLOY_HOST }}" >> ~/.ssh/known_hosts
+          fi
+          chmod 600 ~/.ssh/known_hosts
 
       # Snapshot the currently-deployed tree so a bad release can be undone.
       # Shared hosting has no atomic swap, so this is the only rollback there is.
@@ -374,10 +397,13 @@ jobs:
       # --delete keeps the server from accumulating removed pages, but tmp/ and
       # any server-side .env are excluded: cPanel owns those.
       - name: Upload
+        id: upload
         run: |
           rsync -az --delete \
             --exclude 'tmp/' \
             --exclude '.env' \
+            --exclude '.htaccess' \
+            --exclude '.well-known/' \
             -e "ssh -p ${{ secrets.DEPLOY_SSH_PORT }} -i ~/.ssh/id_ed25519" \
             .next/standalone/ \
             "${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:${{ secrets.DEPLOY_PATH }}/"
@@ -391,23 +417,46 @@ jobs:
       # A deploy that uploads cleanly but leaves the app dead is the failure
       # mode worth catching here rather than from a user report. Skipped on the
       # first run, when the cPanel app is deliberately still stopped.
+      # Matches on Next's BUILD_ID, which changes every build and appears in the
+      # served markup. A bare 200 was not enough: if Passenger never picked up
+      # the restart, the PREVIOUS build answers 200 perfectly happily and the
+      # check passed while the new release was not live at all. Nothing extra is
+      # published to do this — the id is already in the HTML.
       - name: Verify the site is serving the new build
         if: inputs.skip_live_check != true
         run: |
+          BUILD_ID="$(cat .next/BUILD_ID)"
+          echo "expecting build $BUILD_ID"
           for i in $(seq 1 20); do
-            code=$(curl -s -o /dev/null -w "%{http_code}" "${{ secrets.SITE_URL }}/en" || true)
-            if [ "$code" = "200" ]; then echo "live (HTTP $code)"; exit 0; fi
-            echo "attempt $i: HTTP $code — waiting for Passenger to respawn"
+            code=$(curl -s -o /tmp/live.html -w "%{http_code}" "${{ secrets.SITE_URL }}/en" || true)
+            if [ "$code" = "200" ] && grep -q "$BUILD_ID" /tmp/live.html; then
+              echo "live and serving $BUILD_ID"
+              exit 0
+            fi
+            if [ "$code" = "200" ]; then
+              echo "attempt $i: HTTP 200 but still the previous build — waiting for Passenger"
+            else
+              echo "attempt $i: HTTP $code — waiting for Passenger to respawn"
+            fi
             sleep 6
           done
-          echo "site did not return 200 after restart"
+          echo "site did not serve build $BUILD_ID after restart"
           exit 1
 
       # Uploading cleanly and leaving the site down is the worst outcome: the old
       # build is already gone. Put it back rather than leave production broken
       # while someone reads the logs.
+      #
+      # Gated on the UPLOAD having succeeded, not merely on the job failing.
+      # `$APP.prev` survives a successful deploy, so a bare `failure()` meant a
+      # failure that never touched the server — a type error in the standalone
+      # build, a missing secret — would still find last release's snapshot and
+      # "roll back" a perfectly healthy site to the version before it.
       - name: Roll back if the site is not serving
-        if: failure() && inputs.skip_live_check != true
+        if: >-
+          failure() &&
+          steps.upload.outcome == 'success' &&
+          inputs.skip_live_check != true
         run: |
           ssh -p "${{ secrets.DEPLOY_SSH_PORT }}" -i ~/.ssh/id_ed25519 \
             "${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}" \

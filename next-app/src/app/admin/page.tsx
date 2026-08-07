@@ -3,7 +3,11 @@ import { FileText, FolderGit2, AlertTriangle } from "lucide-react";
 import { requireSession } from "@/lib/admin/require-session";
 import { toAdminUser } from "@/lib/admin/session";
 import { AdminShell } from "@/components/admin/AdminShell";
-import { listBlogPosts, listProjectFiles } from "@/lib/admin/content";
+import {
+  listBlogPosts,
+  listProjectFiles,
+  validProjects,
+} from "@/lib/admin/content";
 import { describeError } from "@/lib/admin/github";
 
 export const dynamic = "force-dynamic";
@@ -42,6 +46,12 @@ export default async function AdminDashboard() {
   const livePosts = posts.ok ? posts.value.filter((p) => p.complete).length : 0;
   const draftPosts = posts.ok ? posts.value.length - livePosts : 0;
 
+  // Same treatment as posts: a file that fails the schema is not a project, it
+  // is a broken build waiting to happen, and the dashboard should say so rather
+  // than counting it as live.
+  const liveProjects = projects.ok ? validProjects(projects.value).length : 0;
+  const brokenProjects = projects.ok ? projects.value.length - liveProjects : 0;
+
   const cards = [
     {
       href: "/admin/blog",
@@ -57,8 +67,11 @@ export default async function AdminDashboard() {
       href: "/admin/portfolio",
       icon: FolderGit2,
       label: "Projects",
-      value: projects.ok ? String(projects.value.length) : "—",
-      detail: "all locales complete",
+      value: projects.ok ? String(liveProjects) : "—",
+      detail:
+        brokenProjects > 0
+          ? `${brokenProjects} need fixing — blocking the build`
+          : "all locales complete",
     },
   ];
 

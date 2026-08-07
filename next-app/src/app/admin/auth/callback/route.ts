@@ -46,8 +46,8 @@ export async function GET(request: NextRequest) {
   const state = params.get("state");
   if (!code || !state) return fail(request, "invalid_request");
 
-  const expectedState = await takeOAuthState(config.sessionSecret);
-  if (!expectedState || !timingSafeEqual(state, expectedState)) {
+  const pending = await takeOAuthState(config.sessionSecret);
+  if (!pending || !timingSafeEqual(state, pending.state)) {
     return fail(request, "invalid_state");
   }
 
@@ -74,5 +74,8 @@ export async function GET(request: NextRequest) {
     config.sessionSecret,
   );
 
-  return NextResponse.redirect(new URL("/admin", request.url));
+  // Back to the page that triggered the sign-in, when there was one. The path
+  // came out of the sealed state cookie and safeNextPath has already vetted it,
+  // so this cannot be pointed off-origin.
+  return NextResponse.redirect(new URL(pending.next ?? "/admin", request.url));
 }

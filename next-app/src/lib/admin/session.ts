@@ -29,7 +29,7 @@ export interface AdminSession {
   login: string;
   name: string;
   avatarUrl: string;
-  /** Unix seconds. Checked on every read — a sealed cookie is not enough. */
+  /** Unix SECONDS. Checked on every read — a sealed cookie is not enough. */
   exp: number;
 }
 
@@ -62,7 +62,19 @@ export async function openSession(
 ): Promise<AdminSession | null> {
   const session = await unseal<AdminSession>(raw, secret);
   if (!session) return null;
-  if (typeof session.exp !== "number" || typeof session.login !== "string") {
+  /*
+   * Every field is checked, not just exp and login. AES-GCM means this cannot
+   * be a forgery, but it can be an OLD shape — a cookie sealed by a previous
+   * deploy whose AdminSession had different fields. Those ride through unseal
+   * intact and surface as `undefined` in the UI. Rejecting the whole cookie
+   * signs that person out once, which is the recoverable failure.
+   */
+  if (
+    typeof session.exp !== "number" ||
+    typeof session.login !== "string" ||
+    typeof session.name !== "string" ||
+    typeof session.avatarUrl !== "string"
+  ) {
     return null;
   }
   if (session.exp * 1000 <= Date.now()) return null;
@@ -93,24 +105,69 @@ export async function clearSession(): Promise<void> {
   store.set(SESSION_COOKIE, "", { ...COOKIE_BASE, maxAge: 0 });
 }
 
+const OAUTH_STATE_TTL_SECONDS = 10 * 60;
+
+interface OAuthStatePayload {
+  state: string;
+  /** Unix SECONDS, matching AdminSession.exp. */
+  exp: number;
+  /** Where to land after sign-in. Always an /admin path — see safeNextPath. */
+  next?: string;
+}
+
+/**
+ * Constrains the post-login redirect to a path inside this admin.
+ *
+ * The value starts life as a query parameter, so it is attacker-supplied by
+ * definition; unchecked it is an open redirect. Requiring a single leading
+ * slash rejects both absolute URLs (`https://evil.test`) and the protocol-
+ * relative `//evil.test` that a naive "starts with /" test lets straight
+ * through. It is sealed into the state cookie rather than carried through
+ * GitHub, so it cannot be swapped mid-flight either.
+ */
+export function safeNextPath(value: string | null | undefined): string | null {
+  if (!value) return null;
+  if (!value.startsWith("/admin")) return null;
+  if (value.startsWith("//")) return null;
+  if (value.includes("\\")) return null;
+  // No sending someone back to the login page they just came from.
+  if (value === "/admin/login" || value.startsWith("/admin/login?"))
+    return null;
+  if (value.startsWith("/admin/auth/")) return null;
+  return value;
+}
+
 /** Short-lived cookie holding the OAuth `state` between redirect and callback. */
 export async function setOAuthState(
   state: string,
   secret: string,
+  next?: string | null,
 ): Promise<void> {
-  const value = await seal({ state, exp: Date.now() + 10 * 60 * 1000 }, secret);
+  const payload: OAuthStatePayload = {
+    state,
+    exp: Math.floor(Date.now() / 1000) + OAUTH_STATE_TTL_SECONDS,
+    ...(next ? { next } : {}),
+  };
+  const value = await seal(payload, secret);
   const store = await cookies();
-  store.set(STATE_COOKIE, value, { ...COOKIE_BASE, maxAge: 600 });
+  store.set(STATE_COOKIE, value, {
+    ...COOKIE_BASE,
+    maxAge: OAUTH_STATE_TTL_SECONDS,
+  });
 }
 
-export async function takeOAuthState(secret: string): Promise<string | null> {
+export async function takeOAuthState(
+  secret: string,
+): Promise<{ state: string; next: string | null } | null> {
   const store = await cookies();
-  const payload = await unseal<{ state: string; exp: number }>(
+  const payload = await unseal<OAuthStatePayload>(
     store.get(STATE_COOKIE)?.value,
     secret,
   );
   // Single use — burn it whether or not it validated.
   store.set(STATE_COOKIE, "", { ...COOKIE_BASE, maxAge: 0 });
-  if (!payload || payload.exp <= Date.now()) return null;
-  return payload.state;
+  if (!payload || typeof payload.exp !== "number") return null;
+  if (payload.exp * 1000 <= Date.now()) return null;
+  // Re-validate on the way out: sealed is not the same as still-acceptable.
+  return { state: payload.state, next: safeNextPath(payload.next) };
 }

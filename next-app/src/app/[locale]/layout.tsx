@@ -111,6 +111,19 @@ export default async function LocaleLayout({ children, params }: Props) {
   const { locale } = await params;
 
   if (!(routing.locales as readonly string[]).includes(locale)) {
+    /*
+     * Establish a request locale BEFORE throwing. `[locale]` matches any single
+     * segment, so every path the i18n middleware skips — its matcher excludes
+     * anything containing a dot — lands here with a filename as the locale:
+     * /nope.txt, /old-page.html, every bot probing /wp-login.php. Rendering the
+     * 404 from that state made next-intl resolve the locale the only way left
+     * to it, by reading request headers, which turns a static render dynamic
+     * and answers 500 instead of 404.
+     *
+     * The value is a formality — nothing localized survives the notFound()
+     * below — but it has to be present before anything downstream asks.
+     */
+    setRequestLocale(routing.defaultLocale);
     notFound();
   }
 

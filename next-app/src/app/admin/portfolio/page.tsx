@@ -56,26 +56,53 @@ export default async function AdminPortfolioList({
         </p>
       ) : (
         <ul className="mt-8 list-none space-y-3 p-0">
-          {result.value.map((project) => (
-            <li key={project.slug}>
+          {result.value.map((entry) => (
+            <li key={entry.slug}>
               <Link
-                href={`/admin/portfolio/${project.slug}`}
-                className="group border-border bg-card hover:border-secondary focus-visible:ring-ring flex flex-wrap items-center justify-between gap-4 rounded-md border p-5 transition-[border-color] focus-visible:ring-2 focus-visible:outline-none"
+                href={`/admin/portfolio/${entry.slug}`}
+                className={`group bg-card focus-visible:ring-ring flex flex-wrap items-center justify-between gap-4 rounded-md border p-5 transition-[border-color] focus-visible:ring-2 focus-visible:outline-none ${
+                  entry.project
+                    ? "border-border hover:border-secondary"
+                    : "border-destructive"
+                }`}
               >
                 <div className="min-w-0">
                   <p className="font-display text-foreground truncate text-base font-semibold">
-                    {project.content.en.name}
+                    {entry.project ? entry.project.content.en.name : entry.slug}
                   </p>
+                  {/*
+                   * A file that fails the schema is shown here rather than
+                   * hidden. It is already blocking the site build, and this
+                   * list is where someone would come to fix it — silently
+                   * omitting it means the CMS says everything is fine while
+                   * the deploy fails.
+                   */}
                   <p className="text-muted-foreground mt-1 font-mono text-xs">
-                    {project.slug} · {project.date}
+                    {entry.project ? (
+                      <>
+                        {entry.slug} · {entry.project.date}
+                      </>
+                    ) : (
+                      <span className="text-destructive">
+                        {entry.slug}.json — {entry.problem ?? "invalid"}
+                      </span>
+                    )}
                   </p>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-muted-foreground bg-muted rounded-full px-2 py-0.5 font-mono text-xs">
-                    #{project.order}
-                  </span>
-                  <span className="bg-secondary/15 text-accent rounded-full px-2 py-0.5 font-mono text-xs">
-                    {project.category}
+                  {entry.order !== null ? (
+                    <span className="text-muted-foreground bg-muted rounded-full px-2 py-0.5 font-mono text-xs">
+                      #{entry.order}
+                    </span>
+                  ) : null}
+                  <span
+                    className={`rounded-full px-2 py-0.5 font-mono text-xs ${
+                      entry.project
+                        ? "bg-secondary/15 text-accent"
+                        : "bg-error-container text-on-error-container"
+                    }`}
+                  >
+                    {entry.project ? entry.project.category : "needs fixing"}
                   </span>
                 </div>
               </Link>

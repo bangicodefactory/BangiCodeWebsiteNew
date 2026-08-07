@@ -59,21 +59,38 @@ async function request(
   if (response.status === 401) return { ok: false, error: { kind: "auth" } };
   if (response.status === 404)
     return { ok: false, error: { kind: "not_found" } };
-  if (response.status === 409 || response.status === 422)
+  /*
+   * Only 409 is a conflict. 422 was folded in here too, but it is GitHub's
+   * generic validation error — a malformed tree entry or a bad field reports
+   * 422, and telling the author "someone else published, reload and reapply"
+   * sends them chasing a race that never happened while hiding a real bug.
+   * It falls through to `unexpected`, which surfaces GitHub's own message.
+   */
+  if (response.status === 409)
     return { ok: false, error: { kind: "conflict" } };
   if (
-    response.status === 403 &&
-    response.headers.get("x-ratelimit-remaining") === "0"
+    response.status === 429 ||
+    (response.status === 403 &&
+      response.headers.get("x-ratelimit-remaining") === "0")
   ) {
+    /*
+     * Two shapes to read. Primary limits answer 403 with x-ratelimit-reset (an
+     * absolute unix time); SECONDARY limits — which is what abuse detection
+     * returns for a burst of writes, exactly what publishing does — answer 429
+     * with retry-after (a delay in seconds). Only the first was handled, so a
+     * throttled publish reported an unexplained error instead of "try again in
+     * a minute".
+     */
+    const retryAfter = Number(response.headers.get("retry-after") ?? 0);
     const reset = Number(response.headers.get("x-ratelimit-reset") ?? 0);
+    const retryAfterSeconds = retryAfter
+      ? retryAfter
+      : reset
+        ? Math.max(0, reset - Math.floor(Date.now() / 1000))
+        : undefined;
     return {
       ok: false,
-      error: {
-        kind: "rate_limited",
-        retryAfterSeconds: reset
-          ? Math.max(0, reset - Math.floor(Date.now() / 1000))
-          : undefined,
-      },
+      error: { kind: "rate_limited", retryAfterSeconds },
     };
   }
 
@@ -336,10 +353,16 @@ export function describeError(error: GitHubError): string {
       return "The repository or branch could not be found. Check GITHUB_REPO and GITHUB_BRANCH.";
     case "conflict":
       return "The branch moved while you were editing — someone else published. Reload and reapply your change.";
-    case "rate_limited":
-      return error.retryAfterSeconds
-        ? `GitHub rate limit reached. Try again in about ${Math.ceil(error.retryAfterSeconds / 60)} minutes.`
-        : "GitHub rate limit reached. Try again shortly.";
+    case "rate_limited": {
+      const seconds = error.retryAfterSeconds;
+      if (!seconds) return "GitHub rate limit reached. Try again shortly.";
+      // Secondary limits are typically a 60s retry-after, and "1 minutes" reads
+      // like a bug in the very message meant to reassure.
+      if (seconds < 90) {
+        return "GitHub rate limit reached. Try again in about a minute.";
+      }
+      return `GitHub rate limit reached. Try again in about ${Math.ceil(seconds / 60)} minutes.`;
+    }
     case "network":
       return "Could not reach GitHub. Check the server's connectivity and try again.";
     case "unexpected":

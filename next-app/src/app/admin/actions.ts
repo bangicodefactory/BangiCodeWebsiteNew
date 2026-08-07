@@ -11,6 +11,7 @@ import {
   deleteBlogPost,
   deleteProject,
   getBlogPost,
+  listProjectFiles,
   saveBlogPost,
   saveProject,
   slugSchema,
@@ -233,6 +234,45 @@ export async function saveProjectAction(
       message:
         "Some fields need attention. Every locale must be complete before publishing.",
       fieldErrors: fieldErrorsFrom(parsed.error),
+    };
+  }
+
+  /*
+   * Two cross-file checks Zod cannot make, because it validates ONE project
+   * against the schema and neither of these is a property of one project.
+   *
+   *  - A "new" project reusing an existing slug wrote straight over that file.
+   *    saveBlogPostAction has always guarded this; the portfolio path did not,
+   *    and its only test covers the blog.
+   *  - `order` must be unique. src/lib/portfolio.ts THROWS on a duplicate, so a
+   *    colliding publish committed cleanly and then broke the next build —
+   *    taking the deploy with it. The editor defaults to max+1 but the field is
+   *    freely editable, so the default is a convenience, not a guarantee.
+   *
+   * This is what the module docstring above promises: content that would fail
+   * the build is rejected here, before it can reach the repo.
+   */
+  const listed = await listProjectFiles(config, config.githubToken);
+  if (!listed.ok) {
+    return { status: "error", message: describeError(listed.error) };
+  }
+
+  if (isNew && listed.value.some((e) => e.slug === parsed.data.slug)) {
+    return {
+      status: "error",
+      message: `A project with the slug "${parsed.data.slug}" already exists.`,
+      fieldErrors: { slug: "Already in use" },
+    };
+  }
+
+  const clash = listed.value.find(
+    (e) => e.slug !== parsed.data.slug && e.order === parsed.data.order,
+  );
+  if (clash) {
+    return {
+      status: "error",
+      message: `Order ${parsed.data.order} is already used by "${clash.slug}". Every project needs a distinct position, or the portfolio reorders itself between builds.`,
+      fieldErrors: { order: `Already used by "${clash.slug}"` },
     };
   }
 

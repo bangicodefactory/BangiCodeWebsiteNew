@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { loadAdminConfig } from "@/lib/admin/config";
+import { safeNextPath } from "@/lib/admin/session";
 import { Button } from "@/components/ui/button";
 
 export const dynamic = "force-dynamic";
@@ -30,7 +31,11 @@ export default async function AdminLoginPage({
 }: {
   searchParams: Promise<{ error?: string; next?: string }>;
 }) {
-  const { error } = await searchParams;
+  const { error, next } = await searchParams;
+  // The middleware appends ?next= when it bounces a deep link. It is echoed
+  // into the form so sign-in returns you where you were aiming, and validated
+  // here as well as on the way out — never trusted as given.
+  const nextPath = safeNextPath(next);
   const result = loadAdminConfig();
   const message = error ? (ERRORS[error] ?? ERRORS.exchange_failed) : null;
 
@@ -90,6 +95,9 @@ export default async function AdminLoginPage({
           <div className="mt-8">
             {result.ok ? (
               <form action="/admin/auth/login" method="post">
+                {nextPath ? (
+                  <input type="hidden" name="next" value={nextPath} />
+                ) : null}
                 <Button
                   type="submit"
                   variant="spark"

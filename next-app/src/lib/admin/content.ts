@@ -235,30 +235,86 @@ function projectPath(slug: string): string {
   return `content/portfolio/${slug}.json`;
 }
 
+/**
+ * One entry per file on the branch, valid or not.
+ *
+ * A file that fails validation is REPORTED, not dropped. Dropping it made a
+ * corrupt project invisible in the CMS — the one place you would go to repair
+ * it — while `portfolio.ts` refused to build the site because of it. `order` is
+ * read best-effort even from a rejected file, so the collision check below
+ * still sees the position it occupies.
+ */
+export interface ProjectListEntry {
+  slug: string;
+  /** null when the file is present but does not satisfy the schema. */
+  project: Project | null;
+  /** Why it was rejected, for the CMS list. */
+  problem?: string;
+  order: number | null;
+}
+
+/** Convenience for callers that only care about publishable projects. */
+export function validProjects(entries: ProjectListEntry[]): Project[] {
+  return entries.map((e) => e.project).filter((p): p is Project => p !== null);
+}
+
 export async function listProjectFiles(
   config: AdminConfig,
   token: string,
-): Promise<Result<Project[]>> {
+): Promise<Result<ProjectListEntry[]>> {
   const listed = await listDirectory(config, token, "content/portfolio");
   if (!listed.ok) return listed;
 
-  const projects: Project[] = [];
-  for (const entry of listed.value) {
-    if (entry.type !== "file" || !entry.name.endsWith(".json")) continue;
-    const file = await getFile(config, token, entry.path);
+  const entries: ProjectListEntry[] = [];
+  for (const file_ of listed.value) {
+    if (file_.type !== "file" || !file_.name.endsWith(".json")) continue;
+    const slug = file_.name.replace(/\.json$/, "");
+    const file = await getFile(config, token, file_.path);
     if (!file.ok) return file;
     if (!file.value) continue;
+
+    let raw: unknown;
     try {
-      const parsed = projectSchema.safeParse(JSON.parse(file.value.text));
-      // A file that fails validation is surfaced in the list rather than
-      // dropped, so a broken project is visible in the CMS instead of just
-      // silently missing from the site.
-      if (parsed.success) projects.push(parsed.data);
+      raw = JSON.parse(file.value.text);
     } catch {
-      /* unparseable file — skip; the build guard reports it loudly */
+      entries.push({
+        slug,
+        project: null,
+        problem: "Not valid JSON.",
+        order: null,
+      });
+      continue;
+    }
+
+    const parsed = projectSchema.safeParse(raw);
+    if (parsed.success) {
+      entries.push({
+        slug,
+        project: parsed.data,
+        order: parsed.data.order,
+      });
+    } else {
+      const rawOrder = (raw as { order?: unknown }).order;
+      entries.push({
+        slug,
+        project: null,
+        problem:
+          parsed.error.issues[0] &&
+          `${parsed.error.issues[0].path.join(".") || "file"}: ${parsed.error.issues[0].message}`,
+        order: typeof rawOrder === "number" ? rawOrder : null,
+      });
     }
   }
-  return { ok: true, value: projects.sort((a, b) => a.order - b.order) };
+
+  return {
+    ok: true,
+    value: entries.sort((a, b) => {
+      if (a.order === b.order) return a.slug.localeCompare(b.slug);
+      if (a.order === null) return 1;
+      if (b.order === null) return -1;
+      return a.order - b.order;
+    }),
+  };
 }
 
 export async function getProjectFile(
@@ -316,19 +372,43 @@ export async function deleteProject(
 
 /* ── helpers ───────────────────────────────────────────────────────────── */
 
+/*
+ * Dates are calendar days in the studio's own timezone, not UTC instants.
+ *
+ * toISOString() is UTC, and Morocco runs UTC+1, so anything published after
+ * 23:00 local was stamped with YESTERDAY's date — on the post the author was
+ * writing that evening, and in the ordering of the index. One hour of every day
+ * produced a wrong answer, which is exactly the kind of bug nobody reports
+ * because it looks like a typo.
+ */
+const STUDIO_TIMEZONE = "Africa/Casablanca";
+
+function calendarDay(date: Date): string {
+  // en-CA formats as YYYY-MM-DD, which is the shape the frontmatter wants.
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: STUDIO_TIMEZONE,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit",
+  }).format(date);
+}
+
 function normaliseDate(value: unknown): string | null {
   if (value instanceof Date && !Number.isNaN(value.getTime())) {
-    return value.toISOString().slice(0, 10);
+    return calendarDay(value);
   }
   if (typeof value === "string") {
+    // A bare YYYY-MM-DD is already a calendar day. Parsing it as a Date would
+    // read it as UTC midnight and shift it backwards in a negative offset.
+    if (/^\d{4}-\d{2}-\d{2}$/.test(value)) return value;
     const d = new Date(value);
-    if (!Number.isNaN(d.getTime())) return d.toISOString().slice(0, 10);
+    if (!Number.isNaN(d.getTime())) return calendarDay(d);
   }
   return null;
 }
 
 export function today(): string {
-  return new Date().toISOString().slice(0, 10);
+  return calendarDay(new Date());
 }
 
 /**

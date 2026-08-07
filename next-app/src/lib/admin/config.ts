@@ -112,8 +112,10 @@ export function loadAdminConfig(): ConfigResult {
 }
 
 /**
- * Middleware only needs the secret, and must not fail when the CMS is
- * unconfigured — it lets the request through so /admin can explain itself.
+ * Middleware only needs the secret. Returning null means "the CMS is not
+ * configured", and the middleware treats that as DENY, not allow: no session
+ * can exist without a secret to seal it, so letting the request through was an
+ * open admin. /admin/login is public and still explains what to set.
  */
 export function sessionSecretOrNull(): string | null {
   const s = process.env.ADMIN_SESSION_SECRET?.trim();

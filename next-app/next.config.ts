@@ -28,8 +28,19 @@ function canonicalHostRedirects() {
   } catch {
     return [];
   }
-  // Nothing to do if the canonical host IS the www one, or we are on localhost.
-  if (host.startsWith("www.") || host.startsWith("localhost")) return [];
+  /*
+   * Nothing to do if the canonical host IS the www one, or this is a local
+   * run. `localhost` alone missed 127.0.0.1 and ::1, which CI and some local
+   * setups use — those would have inherited a production redirect to
+   * https://www.127.0.0.1.
+   */
+  const hostname = host.replace(/:\d+$/, "").replace(/^\[|\]$/g, "");
+  const isLocal =
+    hostname === "localhost" ||
+    hostname.endsWith(".localhost") ||
+    hostname === "127.0.0.1" ||
+    hostname === "::1";
+  if (host.startsWith("www.") || isLocal) return [];
 
   return [
     {
