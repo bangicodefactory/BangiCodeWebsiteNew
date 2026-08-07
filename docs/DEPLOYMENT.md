@@ -21,10 +21,10 @@ all.
 
 Two other things to confirm while you are in cPanel:
 
-| Thing               | Why it matters                                                                                                                              | Where                                                         |
-| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- |
-| **SSH access**      | The deploy uploads over SSH/rsync. Namecheap uses port **21098**, not 22.                                                                   | ✅ Already enabled and working with the `gha-deploy-dac` key. |
-| **AutoSSL / HTTPS** | The admin session cookie is `Secure` in production. Over plain HTTP the browser silently discards it and **sign-in appears to do nothing**. | cPanel → _SSL/TLS Status_                                     |
+| Thing          | Why it matters                                                                                                                                                                                                                                                                                     | Where                                                               |
+| -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------- |
+| **SSH access** | The deploy uploads over SSH/rsync. Namecheap uses port **21098**, not 22.                                                                                                                                                                                                                          | ✅ Already enabled and working with the `gha-deploy-dac` key.       |
+| **HTTPS**      | The admin session cookie is `Secure` in production. Over plain HTTP the browser silently discards it and **sign-in appears to do nothing**. ⚠️ AutoSSL is **disabled on this account** — certs come from Namecheap's PositiveSSL provisioning, issued per domain at creation. See CUTOVER.md §2.2. | cPanel → _SSL/TLS Status_ (view only), then the Namecheap dashboard |
 
 ---
 

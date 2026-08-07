@@ -74,12 +74,26 @@ DNS is automatic — the subdomain resolves to the same server.
 
 ### 2.2 Wait for SSL
 
-cPanel → **SSL/TLS Status**. `new.bangicode.ma` must show a valid certificate
-before you test sign-in; AutoSSL usually issues within an hour. Run _Run AutoSSL_
-to hurry it.
-
+`new.bangicode.ma` must show a valid certificate before you test sign-in.
 Without HTTPS the admin session cookie is `Secure` and gets silently dropped —
-sign-in will look broken for a reason that has nothing to do with the code.
+sign-in looks broken for a reason that has nothing to do with the code.
+
+⚠️ **AutoSSL cannot be run on this account, from the UI or over SSH.** Verified
+2026-08-07: both the `autossl` and `market` cPanel features are disabled by the
+host, there is no Let's Encrypt plugin, and no ACME client is installed.
+`uapi SSL start_autossl_check` answers `You do not have the feature "autossl"`.
+
+Certificates here come from **Namecheap's own PositiveSSL provisioning**, not
+cPanel. Every existing domain carries a Sectigo DV certificate valid about a
+year, with a start date matching when that domain was created — `garage`
+2026-06-17, `test` 2025-11-24, the apex 2025-11-17. They are issued
+automatically at creation, not renewed on cPanel's 90-day AutoSSL cycle.
+
+So: wait for it to appear, and if it has not within a day, issue it from the
+**Namecheap dashboard** or raise a support ticket. Do not go looking for a
+_Run AutoSSL_ button — there isn't one on this plan.
+
+Everything except admin sign-in can be tested over plain HTTP in the meantime.
 
 ### 2.3 Create the staging Node app ✅ DONE 2026-08-07
 
