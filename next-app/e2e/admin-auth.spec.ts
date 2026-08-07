@@ -1,19 +1,19 @@
 import { test, expect } from "@playwright/test";
 
 /*
- * Auth gating for the CMS.
+ * Auth gating for the CMS. See ADR 0003.
  *
- * These run against a server started WITHOUT GitHub credentials, which is the
- * CI default and also the "someone deployed without finishing setup" case. The
- * important properties hold either way:
+ * These run against a server started WITHOUT database credentials, which is
+ * the CI default and also the "someone deployed without finishing setup" case.
+ * The important properties hold either way:
  *
  *   - /admin is never reachable without a valid session
  *   - an unconfigured server explains itself instead of crashing or looping
  *   - a forged or tampered session cookie is rejected, not merely "present"
  *
- * The happy path (real GitHub sign-in) cannot be exercised here without live
- * OAuth credentials and a browser session on github.com; it is covered by the
- * unit-level checks in admin-crypto.spec.ts plus manual verification.
+ * The happy path — a real password sign-in — needs a database, so it lives in
+ * `admin-lockout.spec.ts`, which skips itself when there is none. The
+ * primitives underneath are covered by `admin-password.spec.ts`.
  */
 
 const PROTECTED = ["/admin", "/admin/blog", "/admin/portfolio"];
@@ -41,11 +41,13 @@ test("@smoke an unconfigured server states what is missing", async ({
 }) => {
   await page.goto("/admin/login");
   const body = await page.locator("body").innerText();
-  // Either it is configured (a sign-in button) or it names the missing vars.
-  const configured = body.includes("Continue with GitHub");
+  // Either it is configured (a credential form) or it names the missing vars.
+  const configured = await page.locator('input[name="password"]').count();
   if (!configured) {
     expect(body).toContain("Server setup incomplete");
-    expect(body).toContain("GITHUB_CLIENT_ID");
+    // The database is what sign-in now depends on; naming the exact variable
+    // is the difference between a five-minute fix and an afternoon.
+    expect(body).toContain("DB_HOST");
     expect(body).toContain("ADMIN_SESSION_SECRET");
   }
 });
@@ -90,8 +92,9 @@ test("@smoke sign-out is POST-only", async ({ request }) => {
   expect(res.status()).toBe(405);
 });
 
-test("@smoke starting sign-in is POST-only", async ({ request }) => {
-  // GET would let a prefetch or crawler mint and burn the OAuth state cookie.
+test("@smoke signing in is POST-only", async ({ request }) => {
+  // Credentials must never ride in a URL: a GET form would put the password in
+  // the address bar, browser history, and every proxy log on the way.
   const res = await request.get("/admin/auth/login", {
     maxRedirects: 0,
     failOnStatusCode: false,
@@ -99,20 +102,21 @@ test("@smoke starting sign-in is POST-only", async ({ request }) => {
   expect(res.status()).toBe(405);
 });
 
-test("@smoke the OAuth callback refuses a code with no matching state", async ({
-  request,
-}) => {
-  const res = await request.get(
-    "/admin/auth/callback?code=abc123&state=forged",
-    {
-      maxRedirects: 0,
-      failOnStatusCode: false,
-    },
-  );
+test("@smoke bad credentials never mint a session", async ({ request }) => {
+  const res = await request.post("/admin/auth/login", {
+    form: { email: "nobody@bangicode.test", password: "wrong-password" },
+    maxRedirects: 0,
+    failOnStatusCode: false,
+  });
+
   expect([302, 303, 307, 308]).toContain(res.status());
   const location = res.headers()["location"] ?? "";
   expect(location).toContain("/admin/login");
-  // Coarse reason, and definitely not a session.
-  expect(location).toMatch(/error=(invalid_state|not_configured)/);
-  expect(res.headers()["set-cookie"] ?? "").not.toContain("bangicode_admin=ey");
+  // Coarse on purpose: "invalid_credentials" says nothing about WHICH half was
+  // wrong, so the form cannot be used to discover which addresses exist.
+  expect(location).toMatch(/error=(invalid_credentials|not_configured)/);
+
+  // And, whatever happened, no session cookie came back.
+  const setCookie = res.headers()["set-cookie"] ?? "";
+  expect(setCookie).not.toMatch(/bangicode_admin=[^;\s]/);
 });

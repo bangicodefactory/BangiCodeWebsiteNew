@@ -412,16 +412,18 @@ export function today(): string {
 }
 
 /**
- * Commits are attributed to the signed-in person. GitHub's `noreply` address
- * links the commit to their account without exposing a private email — the CMS
- * never asks for one and never stores one.
+ * Attribution for a write, taken from the signed-in account.
+ *
+ * Previously this built a GitHub `noreply` address from the OAuth login,
+ * because the CMS never held a real email. Local accounts are keyed BY email,
+ * so the honest attribution is the account's own address.
  */
-export function commitAuthor(user: { login: string; name: string }): {
+export function commitAuthor(user: { email: string; name: string }): {
   name: string;
   email: string;
 } {
   return {
-    name: user.name || user.login,
-    email: `${user.login}@users.noreply.github.com`,
+    name: user.name || user.email,
+    email: user.email,
   };
 }
