@@ -4,6 +4,17 @@ import { SOLUTIONS } from "@/lib/solutions";
 import { getPostSlugs } from "@/lib/blog";
 import { BASE_URL } from "@/lib/json-ld";
 
+/*
+ * Generated per request, not at build. See ADR 0003.
+ *
+ * It enumerates projects and posts from the database, which the build cannot
+ * reach. Baking it at build time would also be wrong on its own terms: a
+ * sitemap frozen at release would omit everything published since, which is
+ * the opposite of what a sitemap is for now that publishing no longer involves
+ * a deploy. The underlying queries are cached and invalidated on publish.
+ */
+export const dynamic = "force-dynamic";
+
 const LOCALES = ["en", "fr", "ar"] as const;
 
 type LangAlternates = MetadataRoute.Sitemap[number]["alternates"];

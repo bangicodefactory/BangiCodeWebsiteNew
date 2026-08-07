@@ -5,6 +5,17 @@ import { getProjects, toCardData } from "@/lib/portfolio";
 import { WorkProjectList } from "./WorkProjectList";
 import { buildAlternates } from "@/lib/alternates";
 
+/*
+ * Rendered on demand, and said so explicitly.
+ *
+ * Reading `searchParams` for the filter already made this page dynamic, so it
+ * survived the build that broke /blog — but only by accident of an unrelated
+ * feature. If the filter ever moved back into the client, the build would
+ * start trying to prerender a page that queries a database it cannot reach.
+ * The same query cache applies here as on /blog.
+ */
+export const dynamic = "force-dynamic";
+
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
