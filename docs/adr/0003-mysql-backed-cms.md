@@ -19,8 +19,8 @@ That ADR considered a database and **rejected it**, in these words:
 Every clause of that is still true. What changed is not the analysis but the
 weighting: the owner wants to publish **without a deploy**, and to sign in
 **without a GitHub account**. Those are requirements, not preferences, and the
-git-backed design cannot satisfy either — publishing *is* a commit, and the
-authorisation model *is* org membership.
+git-backed design cannot satisfy either — publishing _is_ a commit, and the
+authorisation model _is_ org membership.
 
 So this ADR does not claim the previous one was wrong. It records that two of
 its accepted costs stopped being acceptable.
@@ -50,8 +50,8 @@ access.
 **3. The session layer does not change.** It was already a stateless, AES-GCM
 sealed cookie carrying **identity only** — no token, no server-side store. That
 is what lets `middleware.ts` verify a session at the Edge without a database
-round trip, and it is why replacing the *authentication* step is a much smaller
-change than replacing the *session*. `src/lib/admin/crypto.ts` and
+round trip, and it is why replacing the _authentication_ step is a much smaller
+change than replacing the _session_. `src/lib/admin/crypto.ts` and
 `session.ts` are untouched.
 
 **4. Reads are cached and invalidated on publish.** Content routes read through
@@ -62,7 +62,7 @@ seconds rather than in a build.
 Deliberately **not** `use cache`, which supersedes `unstable_cache` in Next 16:
 that directive requires enabling Cache Components globally, which changes how
 every dynamic API behaves across all 105 prerendered pages. Flipping a global
-rendering flag inside a change that already replaces auth *and* storage is how
+rendering flag inside a change that already replaces auth _and_ storage is how
 this codebase has repeatedly shipped subtle rendering bugs (ADR 0001 catalogues
 six). Migrating to `use cache` is a follow-up, on its own, with its own
 verification.
@@ -110,8 +110,13 @@ traces cleanly into the standalone bundle.
 
 - CI now needs a database. The smoke suite and Lighthouse both assert on real
   content (`/en/portfolio/rentcar` appears in `e2e/routes.spec.ts` and
-  `.lighthouserc.json`), so those jobs run a `mysql` service container, migrate,
-  and seed from the repository's content files.
+  `.lighthouserc.json`), so those jobs run a **MariaDB** service container,
+  migrate, and seed from the repository's content files.
+
+  MariaDB rather than MySQL 8, which the plan originally specified: cPanel ships
+  MariaDB, and CI that runs a different engine from production is the same class
+  of gap that has already produced two CI-only failures in this project. The
+  schema is deliberately conservative SQL so it behaves identically on both.
 - The content files under `content/portfolio/` and `content/blog/` **stay in the
   repo** as the seed fixture for CI and local development. They stop being the
   source of truth for the live site.

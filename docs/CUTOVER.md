@@ -13,13 +13,13 @@ and the GitHub Actions pipeline. This document is only about the switch.
 The live site (`bangicode-website/`) is a **single-page CRA app**. It has no
 router: every "page" is an anchor on one document.
 
-| Old URL | Reaches the server as | Notes |
-|---|---|---|
-| `bangicode.ma/` | `/` | The only server-visible URL |
-| `bangicode.ma/#services` | `/` | **Fragments are never sent to the server** |
-| `bangicode.ma/#portfolio` | `/` | Same |
-| `bangicode.ma/#process` | `/` | Same |
-| `bangicode.ma/#contact` | `/` | Same |
+| Old URL                   | Reaches the server as | Notes                                      |
+| ------------------------- | --------------------- | ------------------------------------------ |
+| `bangicode.ma/`           | `/`                   | The only server-visible URL                |
+| `bangicode.ma/#services`  | `/`                   | **Fragments are never sent to the server** |
+| `bangicode.ma/#portfolio` | `/`                   | Same                                       |
+| `bangicode.ma/#process`   | `/`                   | Same                                       |
+| `bangicode.ma/#contact`   | `/`                   | Same                                       |
 
 **Consequence: there are no server-side redirects to write.** One URL moves, and
 the new app's middleware already sends `/` → `/en`. The old anchors are handled
@@ -54,8 +54,8 @@ ssh -p 21098 bangspbp@premium173.web-hosting.com   "cd ~ && tar -czf public_html
 scp -P 21098 bangspbp@premium173.web-hosting.com:~/public_html-backup-*.tar.gz .
 ```
 
-Also take a cPanel **full backup** (cPanel → *Backup* → *Download a Full Account
-Backup*) if you have the disk quota. It captures email and databases too.
+Also take a cPanel **full backup** (cPanel → _Backup_ → _Download a Full Account
+Backup_) if you have the disk quota. It captures email and databases too.
 
 ---
 
@@ -65,7 +65,7 @@ Do **not** deploy straight over the live site. Stand it up beside it first.
 
 ### 2.1 Create the subdomain
 
-cPanel → **Domains** → *Create A New Domain*:
+cPanel → **Domains** → _Create A New Domain_:
 
 - Domain: `new.bangicode.ma`
 - Document root: `staging_html` (uncheck "share document root")
@@ -75,7 +75,7 @@ DNS is automatic — the subdomain resolves to the same server.
 ### 2.2 Wait for SSL
 
 cPanel → **SSL/TLS Status**. `new.bangicode.ma` must show a valid certificate
-before you test sign-in; AutoSSL usually issues within an hour. Run *Run AutoSSL*
+before you test sign-in; AutoSSL usually issues within an hour. Run _Run AutoSSL_
 to hurry it.
 
 Without HTTPS the admin session cookie is `Secure` and gets silently dropped —
@@ -83,15 +83,15 @@ sign-in will look broken for a reason that has nothing to do with the code.
 
 ### 2.3 Create the staging Node app
 
-cPanel → **Setup Node.js App** → *Create Application*:
+cPanel → **Setup Node.js App** → _Create Application_:
 
-| Field | Value |
-|---|---|
-| Node.js version | 20.x or newer (**if none available, stop — see DEPLOYMENT.md**) |
-| Application mode | Production |
-| Application root | `bangicode-staging` |
-| Application URL | `new.bangicode.ma` |
-| Application startup file | `server.js` |
+| Field                    | Value                                                           |
+| ------------------------ | --------------------------------------------------------------- |
+| Node.js version          | 20.x or newer (**if none available, stop — see DEPLOYMENT.md**) |
+| Application mode         | Production                                                      |
+| Application root         | `bangicode-staging`                                             |
+| Application URL          | `new.bangicode.ma`                                              |
+| Application startup file | `server.js`                                                     |
 
 Add the environment variables from DEPLOYMENT.md, but with
 `SITE_URL=https://new.bangicode.ma`.
@@ -122,7 +122,7 @@ rsync -az --delete -e "ssh -p 21098" \
 ssh -p 21098 USER@SERVER "touch /home/USER/bangicode-staging/tmp/restart.txt"
 ```
 
-Then in cPanel → *Setup Node.js App* → **Start** the staging app.
+Then in cPanel → _Setup Node.js App_ → **Start** the staging app.
 
 ### 2.6 Test staging properly
 
@@ -213,7 +213,7 @@ cat .htaccess
   appended rather than replaced. Delete the Laravel `<IfModule mod_rewrite.c>`
   section and the `<FilesMatch>` PHP handler, leaving only the Passenger lines.
 - **No Passenger directives at all** — the Node app was not registered against
-  this document root. Go back to *Setup Node.js App* and check the Application
+  this document root. Go back to _Setup Node.js App_ and check the Application
   URL is `bangicode.ma`.
 
 Then remove the old site's files, keeping the (now Passenger-only) `.htaccess`:
@@ -229,13 +229,13 @@ ls -la
 
 `~/nodevenv/` on this account contains an entry for `public_html/server`, but
 no such directory exists — a Node app was registered there once and removed
-without cleaning up. Check *Setup Node.js App* for an application whose root no
+without cleaning up. Check _Setup Node.js App_ for an application whose root no
 longer exists and delete it, so it cannot fight the new one for the same
 document root.
 
 ### 4.3 Start the app
 
-cPanel → *Setup Node.js App* → **Start** (or **Restart**) the production app.
+cPanel → _Setup Node.js App_ → **Start** (or **Restart**) the production app.
 
 ### 4.4 Verify immediately
 
@@ -262,7 +262,7 @@ holding the old site in cache):
 
 The `www` → apex 301 is handled **in the app** (`next.config.ts`,
 `canonicalHostRedirects`), derived from `SITE_URL`, path-preserving, and verified
-by test. Do **not** also add a redirect in cPanel → *Domains* → *Redirects*: that
+by test. Do **not** also add a redirect in cPanel → _Domains_ → _Redirects_: that
 writes to the same `.htaccess` the Node app manages, and the two overwrite each
 other.
 
@@ -277,12 +277,12 @@ the switch.
 - **Google Search Console**: submit `https://bangicode.ma/sitemap.xml`. The site
   is now trilingual with hreflang; the sitemap declares all three.
 - **Watch for 404s** for a week. The old site had one URL, so there should be
-  none, but check Search Console → *Pages*.
+  none, but check Search Console → _Pages_.
 - **Keep the backup** for at least a month.
 - Only once you are confident: retire `bangicode-website/` from the repo
   (CLAUDE.md currently forbids deleting it — update that line when you do).
 - Delete the staging subdomain and its Node app, or keep it as a preview
-  environment. If you keep it, leave `noindex` on: cPanel → *Domains* →
+  environment. If you keep it, leave `noindex` on: cPanel → _Domains_ →
   `new.bangicode.ma` and add a `robots.txt` that disallows everything, so
   staging never competes with production in search.
 
@@ -313,11 +313,11 @@ not on the server.
 
 ## Things that commonly go wrong here
 
-| Symptom | Cause |
-|---|---|
-| Old site still showing | Browser cache (hard refresh), or `public_html` still has `index.html` |
-| Site loads but completely unstyled | `public/` or `.next/static` not copied into the standalone directory |
-| 503 from Passenger | App failed to boot — read the log in *Setup Node.js App*. Usually a missing env var or Node < 20.9 |
-| Redirect loop | `SITE_URL` disagrees with the real host — e.g. set to apex while the site serves `www` |
-| Sign-in does nothing | No HTTPS on that hostname, so the `Secure` cookie is dropped |
-| `www` does not redirect to apex | `SITE_URL` was not set, or was set to the `www` host — the redirect is derived from it |
+| Symptom                            | Cause                                                                                              |
+| ---------------------------------- | -------------------------------------------------------------------------------------------------- |
+| Old site still showing             | Browser cache (hard refresh), or `public_html` still has `index.html`                              |
+| Site loads but completely unstyled | `public/` or `.next/static` not copied into the standalone directory                               |
+| 503 from Passenger                 | App failed to boot — read the log in _Setup Node.js App_. Usually a missing env var or Node < 20.9 |
+| Redirect loop                      | `SITE_URL` disagrees with the real host — e.g. set to apex while the site serves `www`             |
+| Sign-in does nothing               | No HTTPS on that hostname, so the `Secure` cookie is dropped                                       |
+| `www` does not redirect to apex    | `SITE_URL` was not set, or was set to the `www` host — the redirect is derived from it             |

@@ -45,9 +45,15 @@ test("@smoke an unconfigured server states what is missing", async ({
   const configured = await page.locator('input[name="password"]').count();
   if (!configured) {
     expect(body).toContain("Server setup incomplete");
-    // The database is what sign-in now depends on; naming the exact variable
-    // is the difference between a five-minute fix and an afternoon.
-    expect(body).toContain("DB_HOST");
+    /*
+     * ADMIN_SESSION_SECRET specifically, and not DB_HOST.
+     *
+     * CI now runs this job with a database available, so DB_HOST is set and
+     * correctly absent from the missing list — asserting on it would have gone
+     * red on the runner while passing on a bare local checkout. The secret is
+     * the one this run always withholds, and naming the exact variable is the
+     * difference between a five-minute fix and an afternoon.
+     */
     expect(body).toContain("ADMIN_SESSION_SECRET");
   }
 });

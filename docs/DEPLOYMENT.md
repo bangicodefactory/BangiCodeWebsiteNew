@@ -4,7 +4,7 @@ The site is a Next.js 16 server, not static files, so it runs under cPanel's
 **Setup Node.js App** (Phusion Passenger). GitHub Actions builds; the server
 only runs.
 
-Related: [ADR 0002 — git-backed CMS](adr/0002-git-backed-cms.md).
+Related: [ADR 0003 — MySQL-backed CMS](adr/0003-mysql-backed-cms.md).
 
 ---
 
@@ -15,16 +15,16 @@ Related: [ADR 0002 — git-backed CMS](adr/0002-git-backed-cms.md).
 ✅ **Verified on this account** (`bangspbp` @ `premium173.web-hosting.com`,
 2026-08-06): Node **20, 22 and 24** are installed. Pick 22 in the dropdown.
 
-If you ever move hosts, re-check: cPanel → *Setup Node.js App* → **Node.js
+If you ever move hosts, re-check: cPanel → _Setup Node.js App_ → **Node.js
 version**. If the newest option is 18.x or lower the app cannot run there at
 all.
 
 Two other things to confirm while you are in cPanel:
 
-| Thing | Why it matters | Where |
-|---|---|---|
-| **SSH access** | The deploy uploads over SSH/rsync. Namecheap uses port **21098**, not 22. | ✅ Already enabled and working with the `gha-deploy-dac` key. |
-| **AutoSSL / HTTPS** | The admin session cookie is `Secure` in production. Over plain HTTP the browser silently discards it and **sign-in appears to do nothing**. | cPanel → *SSL/TLS Status* |
+| Thing               | Why it matters                                                                                                                              | Where                                                         |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------- |
+| **SSH access**      | The deploy uploads over SSH/rsync. Namecheap uses port **21098**, not 22.                                                                   | ✅ Already enabled and working with the `gha-deploy-dac` key. |
+| **AutoSSL / HTTPS** | The admin session cookie is `Secure` in production. Over plain HTTP the browser silently discards it and **sign-in appears to do nothing**. | cPanel → _SSL/TLS Status_                                     |
 
 ---
 
@@ -32,86 +32,100 @@ Two other things to confirm while you are in cPanel:
 
 ### 1. Create the Node.js application
 
-cPanel → **Setup Node.js App** → *Create Application*:
+cPanel → **Setup Node.js App** → _Create Application_:
 
-| Field | Value |
-|---|---|
-| Node.js version | 20.x or newer |
-| Application mode | Production |
-| Application root | e.g. `bangicode-app` (this is `DEPLOY_PATH`) |
-| Application URL | your domain |
-| Application startup file | `server.js` |
+| Field                    | Value                                        |
+| ------------------------ | -------------------------------------------- |
+| Node.js version          | 20.x or newer                                |
+| Application mode         | Production                                   |
+| Application root         | e.g. `bangicode-app` (this is `DEPLOY_PATH`) |
+| Application URL          | your domain                                  |
+| Application startup file | `server.js`                                  |
 
 Leave the app stopped for now — there is nothing in the directory yet.
 
-> Do **not** run *Run NPM Install*. The deploy ships a standalone bundle that
+> Do **not** run _Run NPM Install_. The deploy ships a standalone bundle that
 > already contains the exact dependencies Next traced. Installing on top of it
 > would be slower and could pull different versions than the build used.
 
-### 2. Set the environment variables
+### 2. Create the database
 
-Still in *Setup Node.js App*, add these under **Environment variables**. Setting
+cPanel → **MySQL® Databases**. Create a database and a user, then grant that
+user **ALL PRIVILEGES** on it. cPanel prefixes both with your account name, so
+`cms` becomes `bangspbp_cms` and `cmsuser` becomes `bangspbp_cmsuser` — use the
+prefixed names in the environment variables below.
+
+The database holds the blog posts, the portfolio projects and the admin
+accounts. It lives outside `DEPLOY_PATH`, which is deliberate: the deploy runs
+`rsync --delete` over that directory, so anything stored inside it would be
+destroyed on every release. It is also covered by cPanel's own backups, which a
+file in the app directory would not be.
+
+**Test a restore before you rely on it.** Version history moved from git to this
+database when the CMS did (ADR 0003), and a backup nobody has restored is a
+belief, not a safety net.
+
+### 3. Set the environment variables
+
+Still in _Setup Node.js App_, add these under **Environment variables**. Setting
 them here rather than in a `.env` file keeps secrets out of the deployed tree,
 which `rsync --delete` would otherwise overwrite.
 
-| Variable | Value |
-|---|---|
-| `NODE_ENV` | `production` |
-| `SITE_URL` | `https://bangicode.ma` — must be the real public origin, no trailing slash |
-| `GITHUB_CLIENT_ID` | from the GitHub OAuth app |
-| `GITHUB_CLIENT_SECRET` | from the GitHub OAuth app |
-| `GITHUB_REPO` | `owner/name` of this repository |
-| `GITHUB_TOKEN` | fine-grained PAT, **this repository only**, Contents: read and write |
-| `ADMIN_SESSION_SECRET` | `openssl rand -base64 48` |
-| `GITHUB_ORG` | `bangicodefactory` (optional, this is the default) |
-| `GITHUB_BRANCH` | `main` (optional, this is the default) |
+| Variable               | Value                                                                      |
+| ---------------------- | -------------------------------------------------------------------------- |
+| `NODE_ENV`             | `production`                                                               |
+| `SITE_URL`             | `https://bangicode.ma` — must be the real public origin, no trailing slash |
+| `DB_HOST`              | `localhost`                                                                |
+| `DB_PORT`              | `3306`                                                                     |
+| `DB_NAME`              | `bangspbp_cms` — the prefixed name from step 2                             |
+| `DB_USER`              | `bangspbp_cmsuser`                                                         |
+| `DB_PASSWORD`          | the password you set in step 2                                             |
+| `ADMIN_SESSION_SECRET` | `openssl rand -base64 48`                                                  |
 
-`SITE_URL` must match the OAuth app's callback host exactly — see below.
+`SITE_URL` **must** be `https://`. The admin session cookie is `Secure`, so over
+plain HTTP the browser silently discards it and sign-in appears to do nothing.
 
-### 3. Create the GitHub OAuth app
+Without `ADMIN_SESSION_SECRET` the admin **denies every request** — it fails
+closed by design, and `/admin/login` names what is missing rather than crashing.
 
-`github.com/organizations/bangicodefactory/settings/applications` →
-**New OAuth App**. Org-owned, so it survives any one person leaving.
+### 4. Create the first admin account
 
-- **Homepage URL:** `https://bangicode.ma`
-- **Authorization callback URL:** `https://bangicode.ma/admin/auth/callback`
+There is no sign-up form. Over SSH, once the app directory exists:
 
-The app requests **`read:org` only** — it proves who you are and that you are an
-active org member. It cannot write anything.
+```sh
+cd /home/bangspbp/bangicode-app
+DB_HOST=localhost DB_NAME=bangspbp_cms DB_USER=bangspbp_cmsuser \
+DB_PASSWORD='…' node scripts/migrate.mjs      # creates the tables
+DB_HOST=localhost DB_NAME=bangspbp_cms DB_USER=bangspbp_cmsuser \
+DB_PASSWORD='…' node scripts/create-admin.mjs # prompts for email and password
+```
 
-Writing is done with `GITHUB_TOKEN`, a **fine-grained personal access token**
-scoped to this one repository with *Contents: read and write*. Create it at
-Settings → Developer settings → Personal access tokens → Fine-grained. It lives
-only in the cPanel environment, never in a cookie and never in the browser.
+Use a **generated** password from a password manager. There is no 2FA and no
+email-based reset: this password and the lockout after five failed attempts are
+the whole of what protects the publish button. `create-admin.mjs --reset` is the
+only way to recover a forgotten one, and it needs shell access.
 
-Why the split: an OAuth App cannot write to a **private** repo with anything
-narrower than `repo`, and `repo` grants read/write to every repository that user
-can reach. Carrying that in a session cookie is a far larger blast radius than a
-CMS needs. Commits still show the signed-in person as *author*; the token owner
-is the *committer*.
+Deploys run `scripts/migrate.mjs` automatically from then on.
 
-Fine-grained tokens expire — set a reminder. When it lapses, publishing fails
-with "GitHub rejected the session"; the public site is unaffected.
+### 5. Add the GitHub Actions secrets
 
-The callback host must equal `SITE_URL` exactly — `www` vs apex and `http` vs
-`https` both count as a mismatch, and GitHub rejects the sign-in with
-`redirect_uri_mismatch`.
+Repository → _Settings_ → _Secrets and variables_ → _Actions_:
 
-Local development needs a **separate** OAuth app pointing at
-`http://localhost:3000/admin/auth/callback`, because one app allows one host.
-
-### 4. Add the GitHub Actions secrets
-
-Repository → *Settings* → *Secrets and variables* → *Actions*:
-
-| Secret | Value |
-|---|---|
-| `DEPLOY_HOST` | `premium173.web-hosting.com` |
-| `DEPLOY_USER` | `bangspbp` |
-| `DEPLOY_SSH_PORT` | `21098` |
-| `DEPLOY_SSH_KEY` | contents of `~/.ssh/gha-deploy-dac` — already authorised on this account |
-| `DEPLOY_PATH` | `/home/bangspbp/bangicode-app` |
-| `SITE_URL` | `https://bangicode.ma` |
+| Secret                 | Value                                                                    |
+| ---------------------- | ------------------------------------------------------------------------ |
+| `DEPLOY_HOST`          | `premium173.web-hosting.com`                                             |
+| `DEPLOY_USER`          | `bangspbp`                                                               |
+| `DEPLOY_SSH_PORT`      | `21098`                                                                  |
+| `DEPLOY_SSH_KEY`       | contents of `~/.ssh/gha-deploy-dac` — already authorised on this account |
+| `DEPLOY_PATH`          | `/home/bangspbp/bangicode-app`                                           |
+| `SITE_URL`             | `https://bangicode.ma`                                                   |
+| `DB_HOST`              | `localhost`                                                              |
+| `DB_PORT`              | `3306`                                                                   |
+| `DB_NAME`              | `bangspbp_cms`                                                           |
+| `DB_USER`              | `bangspbp_cmsuser`                                                       |
+| `DB_PASSWORD`          | the database password                                                    |
+| `ADMIN_SESSION_SECRET` | the same value as the cPanel variable                                    |
+| `DEPLOY_SSH_HOST_KEY`  | optional — `ssh-keyscan -p 21098 HOST`, to pin the server                |
 
 ⚠️ **`DEPLOY_PATH` must be exactly `/home/bangspbp/bangicode-app`.** This one
 cPanel account also hosts `garage/` (DirectAutoCare), `classkom.ma`,
@@ -138,34 +152,49 @@ run. It then:
 2. copies `public/` and `.next/static` **into** that directory — Next does not
    do this, and without it the site renders unstyled with every asset 404ing;
 3. rsyncs the tree to `DEPLOY_PATH`;
-4. touches `tmp/restart.txt`, which is how Passenger is told to respawn;
-5. polls `SITE_URL/en` until it returns 200, and fails the job if it never does.
+4. runs `scripts/migrate.mjs` against the production database over SSH;
+5. touches `tmp/restart.txt`, which is how Passenger is told to respawn;
+6. polls `SITE_URL/en` until it serves the new BUILD_ID, and fails the job if it
+   never does — a bare 200 would also be returned by the build it replaced.
 
 Roughly 55 MB is uploaded, and rsync only sends what changed.
 
 ## How publishing works
 
-The CMS commits content to the repository. That push triggers the same pipeline,
-so **published content goes live on the next successful deploy** — a few minutes,
-not instantly. The admin says so on every save; do not promise editors otherwise.
+The CMS writes to the database and invalidates the affected cache tags, so
+**published content is live within seconds** — no deploy, no rebuild. Content
+and code are now on completely separate paths: a red CI run no longer blocks
+publishing, and publishing no longer costs a deploy.
 
-A consequence worth knowing: because the deploy is gated on CI, content that
-would break the build cannot reach production. The trade is that a red CI run on
-unrelated code also blocks content from going live.
+The trade, and it is a real one: CI no longer stands between a bad write and
+production. Under the git-backed design the build validated content before it
+shipped. Now the admin's Zod validation is the only gate — which is why the
+public loaders skip and log a bad row rather than throwing, and why the CMS
+list screens show a row that fails validation instead of hiding it.
+
+Migrations are the exception and DO ride with a deploy: `scripts/migrate.mjs`
+runs over SSH after the upload and before the Passenger restart, so a schema
+change lands while the old process is still serving and the new code comes up
+expecting it.
+
+⚠️ A failed migration triggers the rollback, which restores the previous
+**code** — it cannot un-apply DDL, because MySQL commits that implicitly. If a
+migration fails halfway, expect to fix the schema by hand.
 
 ---
 
 ## Troubleshooting
 
-| Symptom | Cause |
-|---|---|
-| Site renders as unstyled HTML | `public/` or `.next/static` missing from the standalone directory — step 2 of the deploy |
-| 503 from Passenger | App failed to boot. cPanel → *Setup Node.js App* → open the log. Usually a missing env var or too-old Node. |
-| Sign-in bounces back to the login page with no error | No HTTPS, so the `Secure` session cookie is discarded. Check AutoSSL. |
-| `redirect_uri_mismatch` from GitHub | `SITE_URL` and the OAuth callback host disagree — check `www` vs apex |
-| `/admin` redirects to login with `error=not_configured` | One of the four required env vars is unset. The login page lists which. |
-| Publishing succeeds but the site is unchanged | Expected until the deploy finishes. Check the Actions run. |
-| "The branch moved while you were editing" | Someone else published between load and save. Reload and reapply. |
+| Symptom                                                          | Cause                                                                                                                         |
+| ---------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| Site renders as unstyled HTML                                    | `public/` or `.next/static` missing from the standalone directory — step 2 of the deploy                                      |
+| 503 from Passenger                                               | App failed to boot. cPanel → _Setup Node.js App_ → open the log. Usually a missing env var or too-old Node.                   |
+| Sign-in bounces back to the login page with no error             | No HTTPS, so the `Secure` session cookie is discarded. Check AutoSSL.                                                         |
+| "That email and password do not match" for a known-good password | The account may be locked after five failed attempts. Wait 15 minutes, or reset with `node scripts/create-admin.mjs --reset`. |
+| `/admin` redirects to login with `error=not_configured`          | A required env var is unset — most often `ADMIN_SESSION_SECRET`. The login page lists which.                                  |
+| Login shows "Could not reach the database"                       | `DB_*` are wrong, or the MySQL user lacks privileges on the database. This is a server problem, not a password problem.       |
+| Publishing succeeds but the site is unchanged                    | Cache invalidation did not fire. It should be immediate — check the Passenger log for an error from `revalidateTag`.          |
+| "That position is already taken"                                 | Two projects cannot share a `sort_order`; the column is UNIQUE. Reload to see the current order.                              |
 
 ## Known constraints of this host
 
@@ -174,6 +203,12 @@ unrelated code also blocks content from going live.
   respawn does not sign anyone out — that was a deliberate design choice.
 - **No on-server builds.** Never run `next build` on the box; memory caps make it
   unreliable and a failed build takes the site down.
-- **Outbound HTTPS must be permitted** for the CMS to reach `api.github.com`. If
-  the admin lists load but publishing fails with a network error, ask Namecheap
-  whether outbound 443 is restricted.
+- **MySQL connection limits are low**, and Passenger runs several processes that
+  each hold their own pool. The pool is capped at 3 connections for that reason.
+  If you see "too many connections", raising that cap is the wrong fix.
+- **No outbound HTTPS is required any more.** The CMS talks only to the local
+  database, so a restrictive egress policy no longer affects publishing.
+- **The ISR cache is on disk under `.next/cache`**, and `rsync --delete` clears
+  it on every deploy. That is harmless — the first request after a release
+  repopulates it — but it does mean the first hit on each content route after a
+  deploy is slower than the rest.
