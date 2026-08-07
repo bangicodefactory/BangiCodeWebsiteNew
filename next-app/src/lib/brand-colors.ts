@@ -1,11 +1,15 @@
 /**
  * Literal brand hex values, for the few places CSS custom properties cannot reach.
  *
- * `next/og` ImageResponse (opengraph-image.tsx) and the root not-found.tsx render
- * with inline styles outside the Tailwind pipeline, so they cannot read
- * `var(--color-navy-700)`. They must hardcode hex — this module exists so those
- * literals live in exactly one place and cannot silently drift from
- * `src/styles/tokens.css` the way the old `#002058` / `#5cb8fd` pair did.
+ * `next/og` ImageResponse (opengraph-image.tsx) renders with inline styles
+ * outside the Tailwind pipeline, so it cannot read `var(--color-navy-700)`. It
+ * must hardcode hex — this module exists so those literals live in exactly one
+ * place and cannot silently drift from `src/styles/tokens.css` the way the old
+ * `#002058` / `#5cb8fd` pair did.
+ *
+ * The root not-found.tsx used to be the other caller. It now imports
+ * globals.css and uses token classes like every other page, which is the better
+ * answer wherever it is available.
  *
  * ⚠ Keep in sync with src/styles/tokens.css. See
  *   docs/adr/0001-adopt-claude-design-system-tokens.md

@@ -108,6 +108,46 @@ test("@smoke missing paths that look like files 404 rather than 500", async ({
   }
 });
 
+/*
+ * The root boundary must be BRANDED, not merely correct.
+ *
+ * Fixing the 500 above made this page the visible answer for every stale
+ * inbound link — including the twelve legacy /work/<slug> case studies — and it
+ * was still the bare monospace placeholder that [locale]/not-found.tsx was
+ * written to stop the site serving. It is a separate root layout, so it owns
+ * its own stylesheet; asserting a computed style is the only way to catch that
+ * regressing, since the markup renders fine with no CSS attached at all.
+ */
+test("@smoke the root 404 is styled, not a bare fallback", async ({ page }) => {
+  const response = await page.goto("/nope.txt");
+  expect(response?.status()).toBe(404);
+
+  const heading = page.getByRole("heading", { level: 1 });
+  await expect(heading).toBeVisible();
+
+  const font = await heading.evaluate((el) => getComputedStyle(el).fontFamily);
+  expect(font, "root 404 should use the display face").toContain(
+    "Chakra Petch",
+  );
+
+  const bg = await page.evaluate(
+    () => getComputedStyle(document.body).backgroundColor,
+  );
+  // Tailwind's default is transparent/white; the token surface is ink-50.
+  expect(bg).toBe("rgb(246, 248, 251)");
+
+  /*
+   * A 404 must not claim a canonical URL of its own — asserted against the
+   * SERVED HTML, not the live DOM. Next re-injects a canonical during
+   * hydration, so a DOM query finds one no matter what the server sent. The
+   * response body is what a crawler receives and what the fix actually
+   * changed; the page is noindex in either case.
+   */
+  const html = (await response?.text()) ?? "";
+  expect(html).not.toContain('rel="canonical"');
+  expect(html).toContain('name="robots" content="noindex"');
+});
+
 test("@smoke primary nav is the Design D IA", async ({ page }) => {
   await page.goto("/en");
   const nav = page.getByRole("navigation", { name: /main navigation/i });

@@ -79,6 +79,19 @@ const BASE_URL = process.env.SITE_URL ?? "https://bangicode.ma";
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale } = await params;
+
+  /*
+   * `[locale]` matches any single segment, so a junk value reaches here on
+   * every path the i18n middleware skips. Emitting the normal metadata for one
+   * produced `<link rel="canonical" href="…/nope.txt">` on a 404 — self-
+   * canonicalising a page that does not exist, alongside hreflang alternates
+   * for it. Next marks not-found responses noindex so nothing was indexed, but
+   * a 404 has no business claiming a canonical URL.
+   */
+  if (!(routing.locales as readonly string[]).includes(locale)) {
+    return { metadataBase: new URL(BASE_URL) };
+  }
+
   return {
     metadataBase: new URL(BASE_URL),
     title: {
