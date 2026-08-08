@@ -8,40 +8,29 @@ import {
   listProjectFiles,
   validProjects,
 } from "@/lib/admin/content";
-import { describeError } from "@/lib/admin/github";
+import { attempt } from "@/lib/admin/attempt";
 
 export const dynamic = "force-dynamic";
 
 /*
- * Reads from GitHub, like every other admin screen — NOT from the local
- * filesystem.
+ * Reads through the admin's own loaders, which report a bad row instead of
+ * throwing on it.
  *
- * This page previously used getPosts()/getProjects(), which read the `content/`
- * directory baked into the running build. Two problems with that:
- *
- *   1. Stale. Publish a post, land here, and the count is the build-time value
- *      while /admin/blog shows the live one. Two screens, two truths.
- *   2. Fragile. getProjects() throws on an invalid content file — correct for
- *      the build, wrong here. One malformed JSON file took out the admin's
- *      front door, exactly when you would want the admin to fix it.
- *
- * The GitHub-backed readers skip-and-surface instead of throwing, so a broken
- * file shows up as a lower count rather than a 500.
+ * The public site's loaders are not interchangeable here. They cache under a
+ * tag, so this page would show whatever the last publish left behind, and a
+ * malformed row would take out the admin's front door exactly when you would
+ * want the admin to fix it.
  */
 export default async function AdminDashboard() {
-  const { session, config } = await requireSession();
+  const { session } = await requireSession();
 
   const [posts, projects] = await Promise.all([
-    listBlogPosts(config, config.githubToken),
-    listProjectFiles(config, config.githubToken),
+    attempt(() => listBlogPosts()),
+    attempt(() => listProjectFiles()),
   ]);
 
-  // A GitHub outage should degrade this page, not break it.
-  const error = !posts.ok
-    ? describeError(posts.error)
-    : !projects.ok
-      ? describeError(projects.error)
-      : null;
+  // A database blip should degrade this page, not break it.
+  const error = !posts.ok ? posts.error : !projects.ok ? projects.error : null;
 
   const livePosts = posts.ok ? posts.value.filter((p) => p.complete).length : 0;
   const draftPosts = posts.ok ? posts.value.length - livePosts : 0;
@@ -70,7 +59,7 @@ export default async function AdminDashboard() {
       value: projects.ok ? String(liveProjects) : "—",
       detail:
         brokenProjects > 0
-          ? `${brokenProjects} need fixing — blocking the build`
+          ? `${brokenProjects} need fixing — not shown on the site`
           : "all locales complete",
     },
   ];
@@ -81,10 +70,8 @@ export default async function AdminDashboard() {
         Welcome back, {session.name.split(" ")[0]}.
       </h1>
       <p className="font-body text-muted-foreground mt-2 text-sm leading-relaxed">
-        Publishing commits to{" "}
-        <span className="font-mono text-xs">{config.githubRepo}</span> on{" "}
-        <span className="font-mono text-xs">{config.githubBranch}</span>. The
-        site rebuilds from that commit.
+        Publishing writes to the database and the site picks it up within
+        seconds — no deploy, no rebuild.
       </p>
 
       {error ? (

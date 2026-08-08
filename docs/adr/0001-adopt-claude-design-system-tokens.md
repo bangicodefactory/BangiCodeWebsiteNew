@@ -37,20 +37,20 @@ The rule "do not author tokens locally, they ship in from the registry" has been
 
 **3. An approved design now exists, and its palette is the logo's palette.**
 
-"D · Full brief (trilingual)" in the *bangicode Design System* Claude Design project
+"D · Full brief (trilingual)" in the _bangicode Design System_ Claude Design project
 (`https://claude.ai/design/p/db111a28-9a25-463e-a215-4677395eb0bd`) was approved as the
 visual direction. Its three brand anchors are:
 
-| Token | Hex |
-|---|---|
+| Token        | Hex       |
+| ------------ | --------- |
 | `--navy-700` | `#114483` |
-| `--sky-500` | `#2E91CE` |
-| `--red-500` | `#D30F33` |
+| `--sky-500`  | `#2E91CE` |
+| `--red-500`  | `#D30F33` |
 
 These are **exactly the fills inside `brand/logo.svg`**, as documented in CLAUDE.md's
 "Brand assets" section. That section also states the logo's colours deliberately differ
-from the `DESIGN.md` tokens, and instructs: *"If a design asks for the logo to 'match the
-theme,' resist. The drift is by design."*
+from the `DESIGN.md` tokens, and instructs: _"If a design asks for the logo to 'match the
+theme,' resist. The drift is by design."_
 
 That instruction protected the logo from being repainted to match the UI. It does not
 argue against moving the UI to match the logo — which is what adopting this token set
@@ -77,6 +77,7 @@ does, and which removes the drift entirely rather than preserving it.
    `@theme inline` bakes the value into the utility, so `[lang="ar"]` overrides
    never reach it and Tailwind drops the rule entirely. That is precisely why
    the pre-existing Arabic font swap was dead — see "Two bugs found on the way".
+
 4. **Adopt its shape, depth and motion scales**: radii 10/14/20–28px + pill; navy-tinted
    shadows; `--ease-out` / `--ease-spring` at 120/200/360ms; 1320px content width.
 5. **Keep both semantic vocabularies alive.** Live components mix shadcn names
@@ -159,7 +160,7 @@ codebase compiled to nothing.
 `--font-display` cannot reach it. Tailwind then dropped the `[lang="ar"]` rule
 from the output entirely (verified: it is absent from the compiled CSS).
 Arabic pages rendered headings in a Latin face with system fallback for Arabic
-glyphs. Arabic *body* copy was worse still — only display was ever swapped, so
+glyphs. Arabic _body_ copy was worse still — only display was ever swapped, so
 body text had no Arabic face at all.
 
 Both are now guarded by `e2e/tokens.spec.ts` and `scripts/check-tokens.mjs`.
@@ -199,7 +200,7 @@ was created. `/smoke/button` exists to prove the button variants work and could
 not have displayed one of them. Fixed by importing `globals.css` and applying
 the three Latin font variables in that layout.
 
-This one is worth dwelling on: the gallery would have shown the *original*
+This one is worth dwelling on: the gallery would have shown the _original_
 token bug (bug 1) immediately, and could not, because it was broken in a way
 that looked the same as what it was meant to detect.
 
@@ -239,13 +240,13 @@ computed values could not be read programmatically, and the swatches are not hex
 OKLCH ramp anchored on the three known hexes, with the ink ramp carrying the faint blue
 tint the design system specifies for its neutrals. Known-exact values used as-is:
 
-| Role | Hex | Source |
-|---|---|---|
+| Role     | Hex       | Source               |
+| -------- | --------- | -------------------- |
 | navy-700 | `#114483` | design system + logo |
-| sky-500 | `#2E91CE` | design system + logo |
-| red-500 | `#D30F33` | design system + logo |
-| success | `#1f9d6b` | design system readme |
-| warning | `#e0922f` | design system readme |
+| sky-500  | `#2E91CE` | design system + logo |
+| red-500  | `#D30F33` | design system + logo |
+| success  | `#1f9d6b` | design system readme |
+| warning  | `#e0922f` | design system readme |
 
 If exact ramp values are later obtained from the design project, replace the generated
 stops in `tokens.css`; nothing else needs to change, because every semantic token is

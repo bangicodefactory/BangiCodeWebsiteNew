@@ -174,10 +174,41 @@ jobs:
           retention-days: 1
 
   # ── Job 4: Playwright smoke tests ────────────────────────────────────────
+  #
+  # Needs a database. The smoke suite asserts on real content
+  # (/en/portfolio/rentcar), and since ADR 0003 that content lives in MySQL
+  # rather than in files on disk.
+  #
+  # MariaDB 11.4, not mysql:8 — verified over SSH on 2026-08-07 that the cPanel
+  # account runs MariaDB 11.4.12. Matching the major version is the difference
+  # between testing what production runs and testing something adjacent to it,
+  # and this project has already been bitten twice by CI and the real
+  # environment disagreeing.
   smoke:
     name: "Smoke (Playwright @smoke)"
     runs-on: ubuntu-latest
     needs: build
+
+    services:
+      mariadb:
+        image: mariadb:11.4
+        env:
+          MARIADB_ROOT_PASSWORD: ci
+          MARIADB_DATABASE: bangicode_ci
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+
+    env:
+      DB_HOST: 127.0.0.1
+      DB_PORT: "3306"
+      DB_USER: root
+      DB_PASSWORD: ci
+      DB_NAME: bangicode_ci
 
     steps:
       - uses: actions/checkout@v4
@@ -206,15 +237,33 @@ jobs:
       - name: Unpack build output
         run: tar -xf ../next-build.tar
 
+      # The content files stayed in the repo precisely so CI has a fixture to
+      # seed from — see the note at the top of scripts/seed-from-files.mjs.
+      - name: Migrate and seed the database
+        run: |
+          pnpm db:migrate
+          pnpm db:seed
+
       - name: Run smoke tests
         run: pnpm test:smoke
 
-      # CMS suite — separate config, because it needs a CONFIGURED server plus a
-      # stub GitHub, while the run above deliberately uses an unconfigured one
-      # (which is what admin-auth.spec.ts asserts). Nothing here reaches
-      # api.github.com or any real repository.
+      # CMS suite — separate config, because it needs a CONFIGURED server while
+      # the run above deliberately uses an unconfigured one (which is what
+      # admin-auth.spec.ts asserts).
+      #
+      # Its OWN database, because support.ts truncates between tests and the
+      # smoke fixture must survive a retry. Sharing one schema would make the
+      # two suites order-dependent, which is a debugging session nobody needs.
+      - name: Create the CMS test database
+        run: |
+          mysql -h 127.0.0.1 -u root -pci -e \
+            "CREATE DATABASE IF NOT EXISTS bangicode_cms_test CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci"
+          DB_NAME=bangicode_cms_test pnpm db:migrate
+
       - name: Run CMS end-to-end tests
         run: pnpm test:cms
+        env:
+          CMS_TEST_DB: bangicode_cms_test
 
       - name: Upload Playwright report
         if: always()
@@ -229,6 +278,30 @@ jobs:
     name: "Lighthouse budget (≥95 perf/a11y/seo/bp)"
     runs-on: ubuntu-latest
     needs: build
+
+    # Same reason as the smoke job: /en/portfolio and /en/portfolio/rentcar are
+    # in the URL list, and an empty database would audit an empty portfolio —
+    # which would pass the budget while measuring nothing.
+    services:
+      mariadb:
+        image: mariadb:11.4
+        env:
+          MARIADB_ROOT_PASSWORD: ci
+          MARIADB_DATABASE: bangicode_ci
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="healthcheck.sh --connect --innodb_initialized"
+          --health-interval=5s
+          --health-timeout=5s
+          --health-retries=20
+
+    env:
+      DB_HOST: 127.0.0.1
+      DB_PORT: "3306"
+      DB_USER: root
+      DB_PASSWORD: ci
+      DB_NAME: bangicode_ci
 
     steps:
       - uses: actions/checkout@v4
@@ -253,6 +326,11 @@ jobs:
 
       - name: Unpack build output
         run: tar -xf ../next-build.tar
+
+      - name: Migrate and seed the database
+        run: |
+          pnpm db:migrate
+          pnpm db:seed
 
       - name: Run Lighthouse CI
         run: pnpm dlx @lhci/cli@^0.14.0 autorun
@@ -295,6 +373,14 @@ jobs:
       # error several minutes into the job — accurate, but it does not tell you
       # that DEPLOY_HOST was never set.
       - name: Check deploy secrets are configured
+        # Runs BEFORE checkout, so it cannot use the workflow's
+        # `working-directory: ./next-app` default — that directory does not
+        # exist yet and bash refuses to start in it:
+        #   "An error occurred trying to start process '/usr/bin/bash' with
+        #    working directory '.../next-app'. No such file or directory"
+        # The first time this job ever ran, that is how it failed. The
+        # workspace root always exists, so pin to it.
+        working-directory: .
         env:
           DEPLOY_HOST: ${{ secrets.DEPLOY_HOST }}
           DEPLOY_USER: ${{ secrets.DEPLOY_USER }}
@@ -304,7 +390,13 @@ jobs:
           SITE_URL: ${{ secrets.SITE_URL }}
         run: |
           missing=""
-          for name in DEPLOY_HOST DEPLOY_USER DEPLOY_SSH_PORT DEPLOY_SSH_KEY DEPLOY_PATH SITE_URL; do
+          # ADMIN_SESSION_SECRET is deliberately absent. The deploy never sends
+          # it to the server — the app reads it from the cPanel environment,
+          # which CI cannot see. Requiring it here would verify that a value
+          # exists somewhere nothing reads, and report "all secrets present"
+          # for a server that cannot open a session. Checking the wrong thing
+          # is worse than not checking.
+          for name in DEPLOY_HOST DEPLOY_USER DEPLOY_SSH_PORT DEPLOY_SSH_KEY DEPLOY_PATH SITE_URL DB_HOST DB_USER DB_NAME DB_PASSWORD; do
             if [ -z "${!name}" ]; then missing="$missing $name"; fi
           done
           if [ -n "$missing" ]; then
@@ -321,7 +413,7 @@ jobs:
             /*) ;;
             *) echo "::error::DEPLOY_PATH must be absolute, e.g. /home/USER/bangicode-app (got '$DEPLOY_PATH')."; exit 1 ;;
           esac
-          echo "All six deploy secrets present."
+          echo "All deploy secrets present."
 
       - uses: actions/checkout@v4
 
@@ -350,6 +442,16 @@ jobs:
         run: |
           cp -r public .next/standalone/
           cp -r .next/static .next/standalone/.next/
+          # The migrator and its SQL are NOT traced into the standalone bundle
+          # — nothing in the app imports them — but the deploy runs migrations
+          # on the server, so they have to be shipped explicitly. Same class of
+          # omission as public/ and .next/static above.
+          mkdir -p .next/standalone/scripts
+          cp scripts/migrate.mjs .next/standalone/scripts/
+          cp -r migrations .next/standalone/
+          # The admin CLI, so an account can be created or a password reset
+          # without a redeploy. It is the only password reset there is.
+          cp scripts/create-admin.mjs .next/standalone/scripts/
           # Passenger restarts when this file's mtime changes.
           mkdir -p .next/standalone/tmp
           touch .next/standalone/tmp/restart.txt
@@ -407,6 +509,27 @@ jobs:
             -e "ssh -p ${{ secrets.DEPLOY_SSH_PORT }} -i ~/.ssh/id_ed25519" \
             .next/standalone/ \
             "${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:${{ secrets.DEPLOY_PATH }}/"
+
+      # Migrations run BEFORE the restart, and from the runner rather than the
+      # server — cPanel's MySQL is not reachable from outside, so this goes
+      # over the SSH connection that is already open and authenticated.
+      #
+      # Order matters. The new code is uploaded but not yet serving, so a
+      # migration that adds a column lands while the OLD process is still
+      # answering requests, and the restart brings up code that expects it. The
+      # reverse order gives you a window where new code queries a column that
+      # does not exist yet.
+      - name: Migrate the production database
+        run: |
+          ssh -p "${{ secrets.DEPLOY_SSH_PORT }}" -i ~/.ssh/id_ed25519 \
+            "${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}" \
+            "cd '${{ secrets.DEPLOY_PATH }}' && \
+             DB_HOST='${{ secrets.DB_HOST }}' \
+             DB_PORT='${{ secrets.DB_PORT }}' \
+             DB_USER='${{ secrets.DB_USER }}' \
+             DB_PASSWORD='${{ secrets.DB_PASSWORD }}' \
+             DB_NAME='${{ secrets.DB_NAME }}' \
+             node scripts/migrate.mjs"
 
       - name: Restart the Passenger app
         run: |

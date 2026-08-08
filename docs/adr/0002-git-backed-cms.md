@@ -9,12 +9,12 @@ a developer editing source files.
 
 Before this change a single project lived in **four** places:
 
-| # | Location | Carried |
-|---|---|---|
-| 1 | `src/app/[locale]/portfolio/projects.ts` | slug, category, tags, date |
-| 2 | `messages/{en,fr,ar}.json` → `Work.<key>{Name,Summary,Outcome}` | 9 strings |
-| 3 | `content/work/manifest.json` | hero image metadata |
-| 4 | `content/work/en/*.mdx` | nothing — dead, nothing imported it |
+| #   | Location                                                        | Carried                             |
+| --- | --------------------------------------------------------------- | ----------------------------------- |
+| 1   | `src/app/[locale]/portfolio/projects.ts`                        | slug, category, tags, date          |
+| 2   | `messages/{en,fr,ar}.json` → `Work.<key>{Name,Summary,Outcome}` | 9 strings                           |
+| 3   | `content/work/manifest.json`                                    | hero image metadata                 |
+| 4   | `content/work/en/*.mdx`                                         | nothing — dead, nothing imported it |
 
 Blog posts were already clean: one MDX file per locale under `content/blog/`.
 
@@ -54,7 +54,7 @@ enters a cookie or the browser.
 
 This replaced an earlier design that stored the user's own OAuth token in the
 session. Because the repo is private, an OAuth App needs the `repo` scope to
-write — and `repo` grants read/write to *every* repository that user can reach.
+write — and `repo` grants read/write to _every_ repository that user can reach.
 Putting that in a cookie is a much larger blast radius than a CMS requires, and
 it cannot be narrowed. Removing the token from the session removes the exposure
 entirely, and also defuses a latent hazard: the session object was being passed
@@ -101,17 +101,17 @@ control, with no review, no history and no rollback.
 
 Two Playwright configs, deliberately:
 
-| Config | Server | Guards |
-|---|---|---|
-| `playwright.config.ts` | CMS **unconfigured** | The public site, and that every `/admin` path is denied when no secret is set. This is what CI and a fresh checkout look like. |
-| `playwright.cms.config.ts` | CMS configured + **stub GitHub** | Publish, edit and delete flows, asserted against the commits the stub records. |
+| Config                     | Server                           | Guards                                                                                                                         |
+| -------------------------- | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `playwright.config.ts`     | CMS **unconfigured**             | The public site, and that every `/admin` path is denied when no secret is set. This is what CI and a fresh checkout look like. |
+| `playwright.cms.config.ts` | CMS configured + **stub GitHub** | Publish, edit and delete flows, asserted against the commits the stub records.                                                 |
 
 Configuring the server in the first run would invert the meaning of
 `admin-auth.spec.ts`, which asserts the unconfigured state — hence the split.
 
 `e2e/support/stub-github.mjs` implements only the endpoints
 `src/lib/admin/github.ts` calls, and logs every commit so a test can assert what
-*would* have been pushed. It is a fake of GitHub's **shape**, not its semantics:
+_would_ have been pushed. It is a fake of GitHub's **shape**, not its semantics:
 rate limits, permission edge cases and payload limits remain unverified until
 the CMS is pointed at a real repository.
 

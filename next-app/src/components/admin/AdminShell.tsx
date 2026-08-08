@@ -63,12 +63,10 @@ export function AdminShell({
               {user.name}
             </span>
             {/*
-             * Initials, not the GitHub avatar. Rendering the avatar would mean
-             * either an <img> that fails the no-img-element rule, or opening a
-             * next/image remote pattern to avatars.githubusercontent.com — a
-             * config change and an outbound request per page load, for 28px of
-             * decoration. The initial circle is already the site's idiom
-             * (TestimonialsSection, FounderCard) and needs neither.
+             * An initial, not an avatar. Local accounts have no picture to
+             * show, and the initial circle is already the site's idiom
+             * (TestimonialsSection, FounderCard). Nothing to fetch, nothing to
+             * configure, and no outbound request per page load.
              */}
             <span
               aria-hidden="true"
@@ -118,7 +116,7 @@ export function AdminShell({
 
       <footer className="border-border mx-auto w-full max-w-6xl border-t px-4 py-6 sm:px-6">
         <p className="text-muted-foreground font-mono text-xs">
-          Changes are committed to the repository and go live on the next build.
+          Changes are saved to the database and go live immediately.
         </p>
       </footer>
     </div>

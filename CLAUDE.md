@@ -105,22 +105,29 @@ A git-backed CMS for blog posts and portfolio projects, built on the same tokens
 as the public site. Sign-in is GitHub OAuth restricted to active members of the
 `bangicodefactory` org; publishing commits to the repo and the site rebuilds.
 
+**Changed 2026-08-07 — see [ADR 0003](docs/adr/0003-mysql-backed-cms.md).** Content
+lives in **MySQL**, not in git, and sign-in is a **local account**, not GitHub
+OAuth. ADR 0002 still explains the shape of the admin and why atomic
+multi-locale writes matter; its storage and auth decisions are superseded.
+
 | Rule | Why |
 |---|---|
-| **Never generate TypeScript from the CMS.** Content is JSON/MDX under `content/`. | A bad write must be a bad page, not a broken build. |
-| **Editorial copy does not live in `messages/*.json`.** | Those are UI strings, guarded by `check:messages`. Project copy lives in `content/portfolio/<slug>.json`. |
-| **All three locales publish in ONE commit.** Use `commitFiles`, never per-file writes. | A half-published post renders in one language and 404s in another. |
+| **Never generate TypeScript from the CMS.** Content is rows, read through `src/lib/content/*`. | A bad write must be a bad page, not a broken build. |
+| **Editorial copy does not live in `messages/*.json`.** | Those are UI strings, guarded by `check:messages`. Project copy lives in `project_translations`. |
+| **All three locales publish in ONE transaction.** | A half-published post renders in one language and 404s in another. |
 | **Every server action calls `requireSession()` first.** | Actions are POST endpoints reachable directly; middleware only guards navigations. |
-| **No GitHub token in the session.** OAuth is identity-only (`read:org`); writes use the server-side `GITHUB_TOKEN`. | `repo` scope grants access to every repo the user can reach — too much to carry in a cookie, and unnarrowable for a private repo. |
+| **Nothing but identity in the session.** It stays an AES-GCM sealed cookie with no server-side store. | It is what lets middleware verify at the Edge with no DB round trip. Adding a DB lookup there would break the Edge guard. |
 | **Pass `toAdminUser(session)` to components, never `session`.** | Structural typing lets extra fields ride along; a future `"use client"` would serialise them to the browser. |
-| **Admin screens read from GitHub, not the local filesystem.** | `content/` in the running build is whatever was baked in — stale right after publishing, and its loader throws on bad content. |
+| **Publishing calls `revalidateTag`.** | Content routes are cached; without invalidation a publish is invisible until the cache expires. |
+| **Passwords are hashed with `scrypt` from `node:crypto`.** Never add argon2/bcrypt. | They ship native binaries — the same class of dependency that made `@mdx-js/mdx` fail only in CI. |
 | **Editor inputs are controlled.** | React 19 resets `<form action>` after the action — uncontrolled fields lose the author's work on a validation error. |
 | **`/admin` is a separate root layout** and must keep its own `globals.css` import + font variables. | Same trap as `/smoke` (ADR 0001, bug 5). |
-| Client components import `@/lib/portfolio-schema`, never `@/lib/portfolio`. | The latter imports `node:fs` and fails the client build. |
+| Client components import `@/lib/portfolio-schema`, never a loader. | Loaders reach the database and fail the client build. |
+| `content/portfolio/*.json` and `content/blog/**` are **seed fixtures**, not the live source. | CI and local dev seed from them; the site reads the database. |
 
 Env vars are documented in `next-app/.env.example`; `/admin/login` names any that
-are missing rather than crashing. Tests: `pnpm test:cms` (stub GitHub, never the
-real API).
+are missing rather than crashing. Tests: `pnpm test:cms` (a real MySQL, seeded
+per run — never a production database).
 
 ---
 

@@ -5,6 +5,21 @@ import { Link } from "@/i18n/navigation";
 import { buildAlternates } from "@/lib/alternates";
 import { getPosts } from "@/lib/blog";
 
+/*
+ * Rendered on demand, not at build. See ADR 0003.
+ *
+ * This page reads posts from the database, and the BUILD has no database — CI
+ * failed here with "Database is not configured" the first time it ran without
+ * one. The detail routes avoid it by returning [] from generateStaticParams,
+ * but an index page has no dynamic params to withhold, so it needs saying
+ * outright.
+ *
+ * Costs less than it looks: the query itself is cached under the `posts` tag
+ * and invalidated on publish, so a request renders markup from cached data
+ * rather than hitting MySQL.
+ */
+export const dynamic = "force-dynamic";
+
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
@@ -30,7 +45,7 @@ export default async function BlogIndexPage({
 }) {
   const { locale } = await params;
   const t = await getTranslations("Blog");
-  const posts = getPosts(locale);
+  const posts = await getPosts(locale);
 
   return (
     <div>

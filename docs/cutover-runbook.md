@@ -13,27 +13,27 @@ The site runs as a **Node.js server** (`next start` after `next build`). It requ
 
 ### Minimum host requirements
 
-| Requirement | Notes |
-|---|---|
-| Node.js 20+ | App Router RSC + Server Actions |
-| Persistent process (PM2 / systemd) | `next start` must stay running |
-| Reverse proxy (Apache mod_proxy / Nginx) | Forward port 3000 → 80/443 |
-| TLS cert | Let's Encrypt via Certbot or cPanel AutoSSL |
-| 512 MB RAM minimum | Next.js runtime + Node.js modules |
-| SSH access | For deployment + process restart |
+| Requirement                              | Notes                                       |
+| ---------------------------------------- | ------------------------------------------- |
+| Node.js 20+                              | App Router RSC + Server Actions             |
+| Persistent process (PM2 / systemd)       | `next start` must stay running              |
+| Reverse proxy (Apache mod_proxy / Nginx) | Forward port 3000 → 80/443                  |
+| TLS cert                                 | Let's Encrypt via Certbot or cPanel AutoSSL |
+| 512 MB RAM minimum                       | Next.js runtime + Node.js modules           |
+| SSH access                               | For deployment + process restart            |
 
 ### Environment variables to set on the server
 
 Create `/var/www/bangicode/.env.production` (or set via cPanel → Environment Variables):
 
-| Variable | Value |
-|---|---|
-| `SITE_URL` | `https://bangicode.ma` |
-| `NEXT_PUBLIC_GA_ID` | `G-XXXXXXXXXX` (from GA4 property) |
-| `NEXT_PUBLIC_WA_NUMBER` | `212664571370` |
-| `NEXT_PUBLIC_CAL_EVENT_SLUG` | `bangicode/30min-discovery` |
-| `RESEND_API_KEY` | (set when email delivery is wired, BAN-146) |
-| `NODE_ENV` | `production` |
+| Variable                     | Value                                       |
+| ---------------------------- | ------------------------------------------- |
+| `SITE_URL`                   | `https://bangicode.ma`                      |
+| `NEXT_PUBLIC_GA_ID`          | `G-XXXXXXXXXX` (from GA4 property)          |
+| `NEXT_PUBLIC_WA_NUMBER`      | `212664571370`                              |
+| `NEXT_PUBLIC_CAL_EVENT_SLUG` | `bangicode/30min-discovery`                 |
+| `RESEND_API_KEY`             | (set when email delivery is wired, BAN-146) |
+| `NODE_ENV`                   | `production`                                |
 
 ### Build + start commands
 
@@ -136,6 +136,7 @@ If the new site breaks post-cutover and the decision is to revert within the 30-
 ### Rollback conditions
 
 Roll back immediately if **any** of the following:
+
 - Homepage returns non-200 in more than 1 locale
 - Contact form returns 5xx
 - Cal.com booking widget fails to load
@@ -144,6 +145,7 @@ Roll back immediately if **any** of the following:
 ### CRA app preservation
 
 The old CRA app (`bangicode-website/`) must remain **deployable for 30 days post-launch**:
+
 - Do not shut down the old hosting until T+30 days
 - Keep the old host's A record noted below:
 
@@ -163,22 +165,22 @@ The old site uses a single-page CRA app with anchor (`#`) navigation. Bookmarks 
 
 These catch any path-based URLs that may have been shared:
 
-| From | To | Status |
-|---|---|---|
-| `/index.html` | `/` | 301 |
+| From          | To  | Status |
+| ------------- | --- | ------ |
+| `/index.html` | `/` | 301    |
 
 ### Client-side hash redirect (homepage)
 
 A `LegacyHashRedirect` component on the homepage detects legacy `#section` anchors and pushes to the correct new route. Implemented in `next-app/src/components/LegacyHashRedirect.tsx`.
 
-| Old hash | New route |
-|---|---|
-| `/#about` | `/about` |
-| `/#services` | `/services` |
-| `/#work` | `/work` |
-| `/#process` | `/process` |
-| `/#contact` | `/contact` |
-| `/#portfolio` | `/work` |
+| Old hash      | New route   |
+| ------------- | ----------- |
+| `/#about`     | `/about`    |
+| `/#services`  | `/services` |
+| `/#work`      | `/work`     |
+| `/#process`   | `/process`  |
+| `/#contact`   | `/contact`  |
+| `/#portfolio` | `/work`     |
 
 Any hash not in the map: no redirect (stays on homepage).
 
@@ -189,6 +191,7 @@ Any hash not in the map: no redirect (stays on homepage).
 Run these within 30 minutes of DNS swap:
 
 **Every locale (en / fr / ar):**
+
 - [ ] `https://bangicode.ma/en` — homepage loads, all sections visible
 - [ ] `https://bangicode.ma/fr` — homepage loads in French
 - [ ] `https://bangicode.ma/ar` — homepage loads RTL in Arabic
@@ -204,6 +207,7 @@ Run these within 30 minutes of DNS swap:
 - [ ] `/en/legal/privacy` — MDX content renders
 
 **Functional:**
+
 - [ ] Cookie banner appears on first visit → accepting enables GA4 network requests
 - [ ] WhatsApp button visible and links to correct number
 - [ ] Locale switcher EN→FR→AR works
@@ -214,6 +218,7 @@ Run these within 30 minutes of DNS swap:
 - [ ] Legacy hash: `bangicode.ma/#services` → client redirects to `/en/services`
 
 **Performance (30 min post-cutover):**
+
 - [ ] Lighthouse mobile score ≥ 80 on `bangicode.ma/en`
 - [ ] No console errors on homepage
 - [ ] `pm2 list` on server shows `bangicode-next` as **online**
@@ -222,8 +227,8 @@ Run these within 30 minutes of DNS swap:
 
 ## 7. Contacts & escalation
 
-| Role | Name | Contact |
-|---|---|---|
-| DNS registrar access | Ahmed CHIOUA | ahmedchioua@gmail.com |
+| Role                   | Name         | Contact               |
+| ---------------------- | ------------ | --------------------- |
+| DNS registrar access   | Ahmed CHIOUA | ahmedchioua@gmail.com |
 | Server / hosting admin | Ahmed CHIOUA | ahmedchioua@gmail.com |
-| Old host admin | Ahmed CHIOUA | — |
+| Old host admin         | Ahmed CHIOUA | —                     |

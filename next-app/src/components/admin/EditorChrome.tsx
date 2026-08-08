@@ -48,20 +48,7 @@ export function ActionBanner({ state }: { state: ActionState }) {
         <div>
           <p className="font-body text-sm font-medium">{state.message}</p>
           <p className="font-body text-muted-foreground mt-1 text-sm leading-relaxed">
-            Committed to the repository. It goes live on the next build.
-            {state.commitUrl ? (
-              <>
-                {" "}
-                <a
-                  href={state.commitUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-accent underline underline-offset-4"
-                >
-                  View the commit
-                </a>
-              </>
-            ) : null}
+            Saved and live on the site — no deploy needed.
           </p>
         </div>
       </div>

@@ -1,10 +1,14 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { z } from "zod";
-import { routing, type Locale } from "@/i18n/routing";
+import { routing } from "@/i18n/routing";
 import { projectSchema } from "@/lib/portfolio-schema";
 import { requireSession } from "@/lib/admin/require-session";
+import { duplicateKeyName, isDuplicateKeyError } from "@/lib/db";
+import { POSTS_TAG } from "@/lib/blog";
+import { PROJECTS_TAG } from "@/lib/portfolio";
 import {
   blogPostSchema,
   commitAuthor,
@@ -16,25 +20,28 @@ import {
   saveProject,
   slugSchema,
 } from "@/lib/admin/content";
-import { describeError } from "@/lib/admin/github";
 
 /**
- * Mutations for the CMS.
+ * Mutations for the CMS. See ADR 0003.
  *
  * Every action calls requireSession() FIRST. Server actions are POST endpoints
  * reachable directly with a crafted request — the middleware guard protects
  * page navigations, not these. An action that trusted the middleware would be
  * an unauthenticated write endpoint.
  *
- * Validation is Zod, against the SAME schemas the site's content loader uses.
- * That is what makes a bad write impossible rather than merely unlikely: content
- * that would fail the build is rejected here, before it can reach the repo.
+ * Validation is Zod, against the SAME schemas the public site reads with, so a
+ * row that would fail to render is rejected before it is written.
+ *
+ * Every successful write invalidates its cache tag. The public routes are
+ * cached indefinitely and revalidated by tag rather than by time, so WITHOUT
+ * these calls a publish would appear to succeed and change nothing a visitor
+ * can see — the most confusing failure this design can have.
  */
 
 export type ActionState =
   | { status: "idle" }
   | { status: "error"; message: string; fieldErrors?: Record<string, string> }
-  | { status: "success"; message: string; commitUrl?: string };
+  | { status: "success"; message: string };
 
 function fieldErrorsFrom(error: z.ZodError): Record<string, string> {
   const out: Record<string, string> = {};
@@ -50,13 +57,65 @@ function str(form: FormData, key: string): string {
   return String(form.get(key) ?? "").trim();
 }
 
+/**
+ * Turns a write failure into something an author can act on.
+ *
+ * A duplicate-key error is not a server fault — it means someone published the
+ * same slug or position while this form was open — so it is reported as a
+ * field error rather than a stack trace. Everything else is genuinely
+ * unexpected and says so without leaking the query.
+ */
+function describeWriteError(error: unknown): ActionState {
+  if (isDuplicateKeyError(error)) {
+    const key = duplicateKeyName(error) ?? "";
+    if (key.includes("sort_order")) {
+      return {
+        status: "error",
+        message:
+          "That position is already taken by another project. Reload to see the current order, then pick another.",
+        fieldErrors: { order: "Already in use" },
+      };
+    }
+    return {
+      status: "error",
+      message: "That slug is already in use.",
+      fieldErrors: { slug: "Already in use" },
+    };
+  }
+  const message =
+    error instanceof Error ? error.message : "The write did not complete.";
+  return { status: "error", message };
+}
+
+/** Makes a publish visible. See the note at the top of this file. */
+function publishedBlog(slug: string) {
+  // Next 16 requires a cache profile; "max" is the documented equivalent of
+  // the old single-argument call — purge, do not merely shorten the life.
+  revalidateTag(POSTS_TAG, "max");
+  for (const locale of routing.locales) {
+    revalidatePath(`/${locale}/blog`);
+    revalidatePath(`/${locale}/blog/${slug}`);
+  }
+  // The sitemap enumerates posts, so it is stale too.
+  revalidatePath("/sitemap.xml");
+}
+
+function publishedProject(slug: string) {
+  revalidateTag(PROJECTS_TAG, "max");
+  for (const locale of routing.locales) {
+    revalidatePath(`/${locale}/portfolio`);
+    revalidatePath(`/${locale}/portfolio/${slug}`);
+  }
+  revalidatePath("/sitemap.xml");
+}
+
 /* ── Blog ──────────────────────────────────────────────────────────────── */
 
 export async function saveBlogPostAction(
   _prev: ActionState,
   form: FormData,
 ): Promise<ActionState> {
-  const { session, config } = await requireSession();
+  const { session } = await requireSession();
 
   const isNew = str(form, "isNew") === "true";
   const content = Object.fromEntries(
@@ -86,39 +145,26 @@ export async function saveBlogPostAction(
   }
 
   // Refuse to silently overwrite an existing post when creating a new one.
-  if (isNew) {
-    const existing = await getBlogPost(
-      config,
-      config.githubToken,
-      parsed.data.slug,
-    );
-    if (!existing.ok) {
-      return { status: "error", message: describeError(existing.error) };
-    }
-    if (existing.value) {
-      return {
-        status: "error",
-        message: `A post with the slug "${parsed.data.slug}" already exists.`,
-        fieldErrors: { slug: "Already in use" },
-      };
-    }
+  // The UNIQUE index is the real guarantee — this is the friendly message.
+  if (isNew && (await getBlogPost(parsed.data.slug))) {
+    return {
+      status: "error",
+      message: `A post with the slug "${parsed.data.slug}" already exists.`,
+      fieldErrors: { slug: "Already in use" },
+    };
   }
 
-  const result = await saveBlogPost(
-    config,
-    config.githubToken,
-    parsed.data,
-    commitAuthor(session),
-    isNew,
-  );
-  if (!result.ok) {
-    return { status: "error", message: describeError(result.error) };
+  try {
+    await saveBlogPost(parsed.data, commitAuthor(session), isNew);
+  } catch (error) {
+    return describeWriteError(error);
   }
+
+  publishedBlog(parsed.data.slug);
 
   return {
     status: "success",
     message: isNew ? "Post created." : "Post updated.",
-    commitUrl: result.value.url,
   };
 }
 
@@ -126,7 +172,7 @@ export async function deleteBlogPostAction(
   _prev: ActionState,
   form: FormData,
 ): Promise<ActionState> {
-  const { session, config } = await requireSession();
+  const { session } = await requireSession();
 
   const slug = slugSchema.safeParse(str(form, "slug"));
   if (!slug.success) return { status: "error", message: "Invalid slug." };
@@ -139,32 +185,13 @@ export async function deleteBlogPostAction(
     };
   }
 
-  const existing = await getBlogPost(config, config.githubToken, slug.data);
-  if (!existing.ok) {
-    return { status: "error", message: describeError(existing.error) };
-  }
-  if (!existing.value) {
-    return { status: "error", message: "That post no longer exists." };
+  try {
+    await deleteBlogPost(slug.data, commitAuthor(session));
+  } catch (error) {
+    return describeWriteError(error);
   }
 
-  const locales = str(form, "locales")
-    .split(",")
-    .map((l) => l.trim())
-    .filter((l): l is Locale =>
-      (routing.locales as readonly string[]).includes(l),
-    );
-
-  const result = await deleteBlogPost(
-    config,
-    config.githubToken,
-    slug.data,
-    locales.length > 0 ? locales : [...routing.locales],
-    commitAuthor(session),
-  );
-  if (!result.ok) {
-    return { status: "error", message: describeError(result.error) };
-  }
-
+  publishedBlog(slug.data);
   redirect("/admin/blog?deleted=" + encodeURIComponent(slug.data));
 }
 
@@ -174,7 +201,7 @@ export async function saveProjectAction(
   _prev: ActionState,
   form: FormData,
 ): Promise<ActionState> {
-  const { session, config } = await requireSession();
+  const { session } = await requireSession();
 
   const isNew = str(form, "isNew") === "true";
   const content = Object.fromEntries(
@@ -190,9 +217,8 @@ export async function saveProjectAction(
 
   /*
    * Validate the slug BEFORE anything is derived from it. The hero path is
-   * built by interpolation, and while projectSchema would reject a traversal
-   * attempt a moment later, deriving from unvalidated input is the ordering
-   * that turns into a path-traversal bug the next time someone adds a field.
+   * built by interpolation, and deriving from unvalidated input is the
+   * ordering that turns into a bug the next time someone adds a field.
    */
   const slugResult = slugSchema.safeParse(str(form, "slug"));
   if (!slugResult.success) {
@@ -238,26 +264,17 @@ export async function saveProjectAction(
   }
 
   /*
-   * Two cross-file checks Zod cannot make, because it validates ONE project
-   * against the schema and neither of these is a property of one project.
+   * Two cross-row checks Zod cannot make, because it validates ONE project and
+   * neither of these is a property of one project.
    *
-   *  - A "new" project reusing an existing slug wrote straight over that file.
-   *    saveBlogPostAction has always guarded this; the portfolio path did not,
-   *    and its only test covers the blog.
-   *  - `order` must be unique. src/lib/portfolio.ts THROWS on a duplicate, so a
-   *    colliding publish committed cleanly and then broke the next build —
-   *    taking the deploy with it. The editor defaults to max+1 but the field is
-   *    freely editable, so the default is a convenience, not a guarantee.
-   *
-   * This is what the module docstring above promises: content that would fail
-   * the build is rejected here, before it can reach the repo.
+   * Both are ALSO enforced by UNIQUE indexes, which is the real guarantee — a
+   * check-then-write always leaves a window between the two. These exist to
+   * name the offender: "already used by rentcar" is actionable, ER_DUP_ENTRY
+   * is not. describeWriteError catches whatever slips through the window.
    */
-  const listed = await listProjectFiles(config, config.githubToken);
-  if (!listed.ok) {
-    return { status: "error", message: describeError(listed.error) };
-  }
+  const existing = await listProjectFiles();
 
-  if (isNew && listed.value.some((e) => e.slug === parsed.data.slug)) {
+  if (isNew && existing.some((e) => e.slug === parsed.data.slug)) {
     return {
       status: "error",
       message: `A project with the slug "${parsed.data.slug}" already exists.`,
@@ -265,7 +282,7 @@ export async function saveProjectAction(
     };
   }
 
-  const clash = listed.value.find(
+  const clash = existing.find(
     (e) => e.slug !== parsed.data.slug && e.order === parsed.data.order,
   );
   if (clash) {
@@ -276,21 +293,17 @@ export async function saveProjectAction(
     };
   }
 
-  const result = await saveProject(
-    config,
-    config.githubToken,
-    parsed.data,
-    commitAuthor(session),
-    isNew,
-  );
-  if (!result.ok) {
-    return { status: "error", message: describeError(result.error) };
+  try {
+    await saveProject(parsed.data, commitAuthor(session), isNew);
+  } catch (error) {
+    return describeWriteError(error);
   }
+
+  publishedProject(parsed.data.slug);
 
   return {
     status: "success",
     message: isNew ? "Project created." : "Project updated.",
-    commitUrl: result.value.url,
   };
 }
 
@@ -298,7 +311,7 @@ export async function deleteProjectAction(
   _prev: ActionState,
   form: FormData,
 ): Promise<ActionState> {
-  const { session, config } = await requireSession();
+  const { session } = await requireSession();
 
   const slug = slugSchema.safeParse(str(form, "slug"));
   if (!slug.success) return { status: "error", message: "Invalid slug." };
@@ -310,15 +323,12 @@ export async function deleteProjectAction(
     };
   }
 
-  const result = await deleteProject(
-    config,
-    config.githubToken,
-    slug.data,
-    commitAuthor(session),
-  );
-  if (!result.ok) {
-    return { status: "error", message: describeError(result.error) };
+  try {
+    await deleteProject(slug.data, commitAuthor(session));
+  } catch (error) {
+    return describeWriteError(error);
   }
 
+  publishedProject(slug.data);
   redirect("/admin/portfolio?deleted=" + encodeURIComponent(slug.data));
 }

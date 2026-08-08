@@ -4,7 +4,7 @@ import { toAdminUser } from "@/lib/admin/session";
 import { AdminShell } from "@/components/admin/AdminShell";
 import { BlogEditor } from "@/components/admin/BlogEditor";
 import { getBlogPost, slugSchema } from "@/lib/admin/content";
-import { describeError } from "@/lib/admin/github";
+import { attempt } from "@/lib/admin/attempt";
 import { routing } from "@/i18n/routing";
 
 export const dynamic = "force-dynamic";
@@ -14,14 +14,14 @@ export default async function EditBlogPostPage({
 }: {
   params: Promise<{ slug: string }>;
 }) {
-  const { session, config } = await requireSession();
+  const { session } = await requireSession();
   const { slug } = await params;
 
-  // Validate before the slug reaches a repository path.
+  // Validate before the slug reaches a query or a derived path.
   const parsedSlug = slugSchema.safeParse(slug);
   if (!parsedSlug.success) notFound();
 
-  const result = await getBlogPost(config, config.githubToken, parsedSlug.data);
+  const result = await attempt(() => getBlogPost(parsedSlug.data));
   if (!result.ok) {
     return (
       <AdminShell user={toAdminUser(session)} current="blog">
@@ -29,14 +29,14 @@ export default async function EditBlogPostPage({
           role="alert"
           className="border-destructive bg-card text-foreground font-body rounded-sm border-s-2 p-4 text-sm leading-relaxed"
         >
-          {describeError(result.error)}
+          {result.error}
         </p>
       </AdminShell>
     );
   }
   if (!result.value) notFound();
 
-  // Which locales actually have a file — the delete commit only touches those.
+  // Which locales actually have a row — used to label the delete confirmation.
   const existingLocales = routing.locales.filter(
     (l) => result.value!.content[l].title !== "",
   );

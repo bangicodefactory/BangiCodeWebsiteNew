@@ -5,16 +5,19 @@ import { getTranslations, setRequestLocale } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { routing, type Locale } from "@/i18n/routing";
-import { getProject, getProjectSlugs } from "@/lib/portfolio";
+import { type Locale } from "@/i18n/routing";
+import { getProject } from "@/lib/portfolio";
 import { CaseStudyViewTracker } from "@/components/CaseStudyViewTracker";
 import { buildAlternates } from "@/lib/alternates";
 
+/*
+ * Empty, deliberately — see ADR 0003 and the note in blog/[slug]/page.tsx.
+ * The build cannot reach the production database, and prerendering CI's seed
+ * content would ship fixtures. Pages render on first request and are cached
+ * under the `projects` tag until a publish invalidates it.
+ */
 export function generateStaticParams() {
-  const slugs = getProjectSlugs();
-  return routing.locales.flatMap((locale) =>
-    slugs.map((slug) => ({ locale, slug })),
-  );
+  return [];
 }
 
 export async function generateMetadata({
@@ -23,7 +26,7 @@ export async function generateMetadata({
   params: Promise<{ locale: string; slug: string }>;
 }): Promise<Metadata> {
   const { locale, slug } = await params;
-  const project = getProject(slug);
+  const project = await getProject(slug);
   if (!project) return {};
   const c = project.content[locale as Locale] ?? project.content.en;
   return {
@@ -47,7 +50,7 @@ export default async function CaseStudyPage({
 }) {
   const { locale, slug } = await params;
   setRequestLocale(locale);
-  const project = getProject(slug);
+  const project = await getProject(slug);
   if (!project) notFound();
 
   const t = await getTranslations("Work");

@@ -3,19 +3,20 @@ import { toAdminUser } from "@/lib/admin/session";
 import { AdminShell } from "@/components/admin/AdminShell";
 import { ProjectEditor } from "@/components/admin/ProjectEditor";
 import { listProjectFiles } from "@/lib/admin/content";
+import { attempt } from "@/lib/admin/attempt";
 import { routing } from "@/i18n/routing";
 import type { Project } from "@/lib/portfolio-schema";
 
 export const dynamic = "force-dynamic";
 
 export default async function NewProjectPage() {
-  const { session, config } = await requireSession();
+  const { session } = await requireSession();
 
   // Default to the end of the list rather than colliding with an existing
   // position — order is a plain number, and two projects sharing one sorts
   // unpredictably. A rejected file still occupies its position, so max() reads
   // every entry's order, not just the valid ones.
-  const existing = await listProjectFiles(config, config.githubToken);
+  const existing = await attempt(() => listProjectFiles());
   const nextOrder = existing.ok
     ? existing.value.reduce((max, e) => Math.max(max, e.order ?? 0), 0) + 1
     : 1;

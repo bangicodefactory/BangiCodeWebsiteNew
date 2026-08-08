@@ -1,100 +1,97 @@
-import fs from "node:fs";
-import path from "node:path";
-import matter from "gray-matter";
+import { unstable_cache } from "next/cache";
+import { query } from "./db";
 
 /**
- * Filesystem-backed blog. Posts are MDX files under
- * `content/blog/<locale>/<slug>.mdx` with frontmatter:
+ * Blog posts, read from the database. See ADR 0003.
  *
- *     ---
- *     title: "..."
- *     description: "..."
- *     date: 2026-08-05
- *     ---
+ * Posts are per-locale rows: `posts` holds the slug and date, and one
+ * `post_translations` row per language carries the title, description and MDX
+ * body. A post is only LIVE in the locales that have a row, which is why the
+ * admin refuses to publish until all three exist — a half-translated post
+ * renders in one language and 404s in another.
  *
- * There are no posts yet, and none have been invented — the studio publishes
- * when it has something to say. Everything here is written to work the moment
- * the first .mdx file lands: drop it in, and the index and detail routes pick
- * it up with no code change.
- *
- * Locales are independent directories rather than translations of one post, so
- * a post can exist in `en` without forcing a machine translation into `ar`.
+ * The body is still MDX, compiled at render time by next-mdx-remote. Moving
+ * storage to a database did not change what an author writes.
  */
 
-const BLOG_DIR = path.join(process.cwd(), "content", "blog");
+/** Invalidated by the admin on publish — see revalidateTag in actions.ts. */
+export const POSTS_TAG = "posts";
 
 export interface BlogPostMeta {
   slug: string;
   title: string;
   description: string;
-  /** ISO date string, or null when frontmatter omits/malforms it. */
+  /** Calendar day, `YYYY-MM-DD`, or null when unset. */
   date: string | null;
 }
 
 export interface BlogPost extends BlogPostMeta {
-  /** MDX body with frontmatter stripped. */
+  /** MDX body. */
   body: string;
 }
 
-function localeDir(locale: string): string {
-  return path.join(BLOG_DIR, locale);
+interface PostRow {
+  slug: string;
+  date: string | null;
+  title: string;
+  description: string;
+  body: string;
 }
 
-function readPostFile(locale: string, slug: string): BlogPost | null {
-  const file = path.join(localeDir(locale), `${slug}.mdx`);
-  // Guard against a slug escaping the locale directory via traversal.
-  if (!file.startsWith(localeDir(locale) + path.sep)) return null;
-  if (!fs.existsSync(file)) return null;
+/**
+ * Every post for one locale, newest first, undated last.
+ *
+ * Sorted in SQL rather than in JS so the ordering is the database's problem
+ * and stays correct as the table grows.
+ */
+async function readPosts(locale: string): Promise<BlogPost[]> {
+  const rows = await query<PostRow>(
+    `SELECT p.slug, p.date, t.title, t.description, t.body
+       FROM posts p
+       JOIN post_translations t ON t.post_id = p.id
+      WHERE t.locale = ?
+      ORDER BY p.date DESC, p.slug ASC`,
+    [locale],
+  );
 
-  const { data, content } = matter(fs.readFileSync(file, "utf8"));
-  const rawDate = data.date;
-  const parsed =
-    rawDate instanceof Date
-      ? rawDate
-      : typeof rawDate === "string"
-        ? new Date(rawDate)
-        : null;
+  return rows.map((r) => ({
+    slug: r.slug,
+    title: r.title,
+    description: r.description,
+    date: r.date,
+    body: r.body,
+  }));
+}
 
-  return {
+/*
+ * Cached per locale. The key includes the locale because unstable_cache keys
+ * on the arguments, and a shared key would serve the English post list to a
+ * reader on /ar. Both share one tag, so a publish invalidates all three at
+ * once — which is correct, since a publish writes all three.
+ */
+const cachedPosts = unstable_cache(readPosts, ["blog-posts"], {
+  tags: [POSTS_TAG],
+});
+
+export async function getPosts(locale: string): Promise<BlogPostMeta[]> {
+  const posts = await cachedPosts(locale);
+  return posts.map(({ slug, title, description, date }) => ({
     slug,
-    title: typeof data.title === "string" ? data.title : slug,
-    description: typeof data.description === "string" ? data.description : "",
-    date:
-      parsed && !Number.isNaN(parsed.getTime()) ? parsed.toISOString() : null,
-    body: content,
-  };
+    title,
+    description,
+    date,
+  }));
 }
 
-export function getPostSlugs(locale: string): string[] {
-  const dir = localeDir(locale);
-  if (!fs.existsSync(dir)) return [];
-  return fs
-    .readdirSync(dir)
-    .filter((f) => f.endsWith(".mdx"))
-    .map((f) => f.replace(/\.mdx$/, ""));
+export async function getPost(
+  locale: string,
+  slug: string,
+): Promise<BlogPost | null> {
+  const posts = await cachedPosts(locale);
+  return posts.find((p) => p.slug === slug) ?? null;
 }
 
-/** Post metadata for the index, newest first. Undated posts sort last. */
-export function getPosts(locale: string): BlogPostMeta[] {
-  return getPostSlugs(locale)
-    .map((slug) => readPostFile(locale, slug))
-    .filter((p): p is BlogPost => p !== null)
-    .map(
-      (p): BlogPostMeta => ({
-        slug: p.slug,
-        title: p.title,
-        description: p.description,
-        date: p.date,
-      }),
-    )
-    .sort((a, b) => {
-      if (a.date === b.date) return a.slug.localeCompare(b.slug);
-      if (!a.date) return 1;
-      if (!b.date) return -1;
-      return b.date.localeCompare(a.date);
-    });
-}
-
-export function getPost(locale: string, slug: string): BlogPost | null {
-  return readPostFile(locale, slug);
+export async function getPostSlugs(locale: string): Promise<string[]> {
+  const posts = await cachedPosts(locale);
+  return posts.map((p) => p.slug);
 }

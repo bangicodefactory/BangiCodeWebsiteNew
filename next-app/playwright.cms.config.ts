@@ -8,17 +8,27 @@ import { defineConfig, devices } from "@playwright/test";
  * that (every admin path denied, setup instructions shown). Configuring the
  * server in that run would invert the meaning of those tests.
  *
- * So this config brings up two servers instead: a stub GitHub, and the app
- * pointed at it. Nothing here touches api.github.com or a real repository.
+ * So this config starts the app pointed at a TEST DATABASE. There is no stub:
+ * the GitHub stub it replaced was a fake of that API's shape, and faking a
+ * database badly is a much easier mistake to make than running a real one —
+ * transactions, unique constraints and cascading deletes are precisely what
+ * these tests are checking, and only the real engine has them.
+ *
+ * DB_NAME must be a test database. `support.ts` truncates it between tests.
  *
  * Run with: pnpm test:cms
  */
-const STUB_PORT = 4599;
-const COMMIT_LOG = "e2e/support/.stub-commits.json";
+const DB = {
+  DB_HOST: process.env.DB_HOST ?? "127.0.0.1",
+  DB_PORT: process.env.DB_PORT ?? "3306",
+  DB_USER: process.env.DB_USER ?? "root",
+  DB_PASSWORD: process.env.DB_PASSWORD ?? "",
+  DB_NAME: process.env.CMS_TEST_DB ?? "bangicode_test",
+};
 
 export default defineConfig({
   testDir: "./e2e/cms",
-  fullyParallel: false, // one shared stub repo — parallel writes would interleave
+  fullyParallel: false, // one shared database — parallel writes would interleave
   workers: 1,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,
@@ -33,34 +43,20 @@ export default defineConfig({
 
   webServer: [
     {
-      command: `node e2e/support/stub-github.mjs`,
-      url: `http://localhost:${STUB_PORT}/user`,
-      reuseExistingServer: !process.env.CI,
-      timeout: 20_000,
-      env: {
-        STUB_GITHUB_PORT: String(STUB_PORT),
-        STUB_COMMIT_LOG: COMMIT_LOG,
-      },
-    },
-    {
       command: "pnpm start",
       url: "http://localhost:3000",
       reuseExistingServer: !process.env.CI,
       timeout: 60_000,
       env: {
+        ...DB,
         SITE_URL: "http://localhost:3000",
-        GITHUB_API_URL: `http://localhost:${STUB_PORT}`,
-        // Test-only values. The session secret only needs to be long enough to
-        // derive a key; nothing here is a credential for anything real.
+        // Test-only. Long enough to derive a key; a credential for nothing.
         ADMIN_SESSION_SECRET:
           "playwright-cms-suite-secret-at-least-32-characters-long",
-        GITHUB_CLIENT_ID: "Iv1.test",
-        GITHUB_CLIENT_SECRET: "test-secret",
-        GITHUB_REPO: "bangicodefactory/test-repo",
-        // Server-side write credential. The stub accepts anything.
-        GITHUB_TOKEN: "stub-write-token",
-        GITHUB_BRANCH: "main",
       },
     },
   ],
 });
+
+/** Exported so support.ts connects to exactly the database the app is using. */
+export const TEST_DB = DB;
