@@ -520,26 +520,43 @@ jobs:
             .next/standalone/ \
             "${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:${{ secrets.DEPLOY_PATH }}/"
 
-      # Migrations run BEFORE the restart, and from the runner rather than the
-      # server — cPanel's MySQL is not reachable from outside, so this goes
-      # over the SSH connection that is already open and authenticated.
+      # Migrations run BEFORE the restart, so a schema change lands while the
+      # OLD process is still answering requests and the restart brings up code
+      # that expects it. The reverse order leaves a window where new code
+      # queries a column that does not exist yet.
       #
-      # Order matters. The new code is uploaded but not yet serving, so a
-      # migration that adds a column lands while the OLD process is still
-      # answering requests, and the restart brings up code that expects it. The
-      # reverse order gives you a window where new code queries a column that
-      # does not exist yet.
+      # Run on the RUNNER through an SSH tunnel, not on the server.
+      #
+      # The obvious version — ssh in and `node scripts/migrate.mjs` — fails
+      # with "Cannot find package 'mysql2'". Next bundles mysql2 into its own
+      # server chunks, so the APP is fine, but the standalone output's
+      # node_modules holds only next, react and react-dom. A plain script sitting
+      # beside it can import none of them. Shipping mysql2 and its nine
+      # dependencies through pnpm's symlink farm is the same fragility that
+      # already cost us a CI-only failure with next-mdx-remote.
+      #
+      # The runner already has mysql2 from `pnpm install`. Forwarding a local
+      # port to the server's MySQL means the migrator runs where its dependency
+      # lives, and the database still only ever accepts local connections —
+      # from its own perspective the tunnel IS localhost.
       - name: Migrate the production database
+        env:
+          DB_HOST: 127.0.0.1
+          DB_PORT: "13306"
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_NAME: ${{ secrets.DB_NAME }}
         run: |
-          ssh -p "${{ secrets.DEPLOY_SSH_PORT }}" -i ~/.ssh/id_ed25519 \
-            "${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}" \
-            "cd '${{ secrets.DEPLOY_PATH }}' && \
-             DB_HOST='${{ secrets.DB_HOST }}' \
-             DB_PORT='${{ secrets.DB_PORT }}' \
-             DB_USER='${{ secrets.DB_USER }}' \
-             DB_PASSWORD='${{ secrets.DB_PASSWORD }}' \
-             DB_NAME='${{ secrets.DB_NAME }}' \
-             node scripts/migrate.mjs"
+          # -f backgrounds after auth, -N runs no remote command.
+          ssh -f -N -L 13306:127.0.0.1:3306 \
+            -p "${{ secrets.DEPLOY_SSH_PORT }}" -i ~/.ssh/id_ed25519 \
+            "${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}"
+          # Give the forward a moment to accept connections.
+          for i in $(seq 1 10); do
+            (echo > /dev/tcp/127.0.0.1/13306) >/dev/null 2>&1 && break
+            sleep 1
+          done
+          node scripts/migrate.mjs
 
       - name: Restart the Passenger app
         run: |
