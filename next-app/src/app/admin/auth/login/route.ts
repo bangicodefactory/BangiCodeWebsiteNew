@@ -2,7 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { loadAdminConfig } from "@/lib/admin/config";
 import { safeNextPath, setSession } from "@/lib/admin/session";
 import { signIn } from "@/lib/admin/users";
-import { redirectOrigin } from "@/lib/admin/redirect-origin";
+import { redirectTo } from "@/lib/admin/redirect";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -19,15 +19,10 @@ export const dynamic = "force-dynamic";
  * and can act on — and it reveals nothing that five failed attempts have not
  * already told the attacker.
  */
-function fail(
-  request: NextRequest,
-  reason: string,
-  next: string | null,
-): NextResponse {
-  const url = new URL("/admin/login", redirectOrigin(request));
-  url.searchParams.set("error", reason);
-  if (next) url.searchParams.set("next", next);
-  return NextResponse.redirect(url, { status: 303 });
+function fail(reason: string, next: string | null): NextResponse {
+  const params = new URLSearchParams({ error: reason });
+  if (next) params.set("next", next);
+  return redirectTo(`/admin/login?${params}`);
 }
 
 export async function POST(request: NextRequest) {
@@ -38,13 +33,13 @@ export async function POST(request: NextRequest) {
   if (!result.ok) {
     // Built from the request, not SITE_URL: this branch runs precisely when
     // configuration is missing, and SITE_URL may be one of the missing things.
-    return fail(request, "not_configured", next);
+    return fail("not_configured", next);
   }
 
   const email = String(form.get("email") ?? "").trim();
   const password = String(form.get("password") ?? "");
 
-  if (!email || !password) return fail(request, "invalid_credentials", next);
+  if (!email || !password) return fail("invalid_credentials", next);
 
   let outcome;
   try {
@@ -53,12 +48,11 @@ export async function POST(request: NextRequest) {
     // The database is configured but unreachable. Distinct from bad
     // credentials: telling someone their password is wrong when the server
     // cannot check it sends them resetting a password that was fine.
-    return fail(request, "unavailable", next);
+    return fail("unavailable", next);
   }
 
   if (!outcome.ok) {
     return fail(
-      request,
       outcome.reason === "locked" ? "locked" : "invalid_credentials",
       next,
     );
@@ -74,10 +68,5 @@ export async function POST(request: NextRequest) {
   );
 
   // 303 so the browser follows with GET rather than re-POSTing.
-  return NextResponse.redirect(
-    new URL(next ?? "/admin", redirectOrigin(request)),
-    {
-      status: 303,
-    },
-  );
+  return redirectTo(next ?? "/admin");
 }
