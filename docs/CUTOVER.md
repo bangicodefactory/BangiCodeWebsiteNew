@@ -89,11 +89,35 @@ year, with a start date matching when that domain was created — `garage`
 2026-06-17, `test` 2025-11-24, the apex 2025-11-17. They are issued
 automatically at creation, not renewed on cPanel's 90-day AutoSSL cycle.
 
-So: wait for it to appear, and if it has not within a day, issue it from the
-**Namecheap dashboard** or raise a support ticket. Do not go looking for a
-_Run AutoSSL_ button — there isn't one on this plan.
+So: issue it from the **Namecheap dashboard**, or raise a support ticket. Do not
+go looking for a _Run AutoSSL_ button — there isn't one on this plan.
 
-Everything except admin sign-in can be tested over plain HTTP in the meantime.
+Reusing the apex certificate does **not** work, and cPanel is right to refuse
+it: these are single-name certs, not wildcards. `bangicode.ma` covers
+`bangicode.ma` and `www.bangicode.ma`; `garage.bangicode.ma` covers itself and
+its own `www`. There is no `*.bangicode.ma` on the account, so
+`new.bangicode.ma` is not inside any existing cert's SAN list.
+
+#### Self-signed stopgap ⚠️ INSTALLED 2026-08-08 — REPLACE ME
+
+A self-signed certificate is installed on `new.bangicode.ma` so staging has
+working HTTPS and admin sign-in is testable. It expires **2027-08-08**.
+
+Browsers show a full-page warning; click through. **Replace it with the real
+Sectigo certificate as soon as Namecheap issues one** — installing that over
+the top is all it takes, and it is a one-line job in cPanel → _SSL/TLS_ →
+_Install and Manage SSL_. Do not let a self-signed cert reach the apex.
+
+To regenerate one elsewhere: `uapi SSL generate_key`, then
+`uapi SSL generate_cert key_id=… domains=…`, then `uapi SSL install_ssl`.
+
+⚠️ **Percent-encode the PEMs before passing them to `uapi`.** Handed over raw,
+its CLI flattens the newlines and rejects the result with `Invalid base64: must
+be a multiple of 4 in length` — which reads like a corrupt certificate and is
+actually the transport. Validate with `openssl x509 -noout -subject` first, so
+you know the material is fine and the encoding is the problem.
+
+Everything except admin sign-in could be tested over plain HTTP in the meantime.
 
 ### 2.3 Create the staging Node app ✅ DONE 2026-08-07
 
