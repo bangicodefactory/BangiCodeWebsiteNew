@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { clearSession } from "@/lib/admin/session";
+import { redirectOrigin } from "@/lib/admin/redirect-origin";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -11,7 +12,10 @@ export const dynamic = "force-dynamic";
  */
 export async function POST(request: NextRequest) {
   await clearSession();
-  return NextResponse.redirect(new URL("/admin/login", request.url), {
-    status: 303,
-  });
+  return NextResponse.redirect(
+    new URL("/admin/login", redirectOrigin(request)),
+    {
+      status: 303,
+    },
+  );
 }

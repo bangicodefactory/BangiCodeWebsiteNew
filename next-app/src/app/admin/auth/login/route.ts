@@ -2,6 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { loadAdminConfig } from "@/lib/admin/config";
 import { safeNextPath, setSession } from "@/lib/admin/session";
 import { signIn } from "@/lib/admin/users";
+import { redirectOrigin } from "@/lib/admin/redirect-origin";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -23,7 +24,7 @@ function fail(
   reason: string,
   next: string | null,
 ): NextResponse {
-  const url = new URL("/admin/login", request.url);
+  const url = new URL("/admin/login", redirectOrigin(request));
   url.searchParams.set("error", reason);
   if (next) url.searchParams.set("next", next);
   return NextResponse.redirect(url, { status: 303 });
@@ -73,7 +74,10 @@ export async function POST(request: NextRequest) {
   );
 
   // 303 so the browser follows with GET rather than re-POSTing.
-  return NextResponse.redirect(new URL(next ?? "/admin", request.url), {
-    status: 303,
-  });
+  return NextResponse.redirect(
+    new URL(next ?? "/admin", redirectOrigin(request)),
+    {
+      status: 303,
+    },
+  );
 }
