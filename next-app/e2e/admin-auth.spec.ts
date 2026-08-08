@@ -143,12 +143,9 @@ test("@smoke bad credentials never mint a session", async ({ request }) => {
  * the /admin bounce was correct while the login POST was not. Same API, two
  * different notions of "the request".
  */
-test("@smoke auth redirects point at the requested host, not the bind address", async ({
+test("@smoke auth redirects are relative, so any host resolves them", async ({
   request,
-  baseURL,
 }) => {
-  const expectedHost = new URL(baseURL ?? "http://localhost:3000").host;
-
   const res = await request.post("/admin/auth/login", {
     form: { email: "nobody@bangicode.test", password: "wrong-password" },
     maxRedirects: 0,
@@ -158,21 +155,22 @@ test("@smoke auth redirects point at the requested host, not the bind address", 
   const location = res.headers()["location"] ?? "";
   expect(location, "a redirect must be issued").toBeTruthy();
 
-  // Relative Locations are fine — the browser resolves them against the
-  // request. An ABSOLUTE one pointing anywhere else is the bug.
-  if (/^https?:\/\//.test(location)) {
-    expect(new URL(location).host, `Location was ${location}`).toBe(
-      expectedHost,
-    );
-    expect(location).not.toContain("0.0.0.0");
-  }
+  /*
+   * RELATIVE, not merely pointing at the right host. An absolute Location is
+   * the bug: whatever origin the handler picks, it picked it from something —
+   * request.url, a proxy header — and behind Passenger every one of those was
+   * wrong. Asserting "relative" is the property that cannot regress quietly,
+   * and unlike a host comparison it fails on a developer machine too, where
+   * bind and Host agree and an absolute URL looks perfectly correct.
+   */
+  expect(location.startsWith("/")).toBe(true);
+  expect(location).not.toContain("://");
 
   const logout = await request.post("/admin/auth/logout", {
     maxRedirects: 0,
     failOnStatusCode: false,
   });
   const logoutLocation = logout.headers()["location"] ?? "";
-  if (/^https?:\/\//.test(logoutLocation)) {
-    expect(new URL(logoutLocation).host).toBe(expectedHost);
-  }
+  expect(logoutLocation.startsWith("/")).toBe(true);
+  expect(logoutLocation).not.toContain("://");
 });
