@@ -388,6 +388,16 @@ jobs:
           DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
           DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
           SITE_URL: ${{ secrets.SITE_URL }}
+          # These must be mapped here too, not only listed below. A name in the
+          # loop with no matching entry in this block reads as empty and is
+          # reported missing — which is exactly what happened: all four DB
+          # secrets were set in the repository and the preflight still failed
+          # them, sending you to check settings that were already correct.
+          DB_HOST: ${{ secrets.DB_HOST }}
+          DB_PORT: ${{ secrets.DB_PORT }}
+          DB_USER: ${{ secrets.DB_USER }}
+          DB_NAME: ${{ secrets.DB_NAME }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
         run: |
           missing=""
           # ADMIN_SESSION_SECRET is deliberately absent. The deploy never sends
