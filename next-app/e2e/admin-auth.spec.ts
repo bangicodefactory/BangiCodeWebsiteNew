@@ -126,3 +126,53 @@ test("@smoke bad credentials never mint a session", async ({ request }) => {
   const setCookie = res.headers()["set-cookie"] ?? "";
   expect(setCookie).not.toMatch(/bangicode_admin=[^;\s]/);
 });
+
+/*
+ * Redirects must name the host the visitor asked for.
+ *
+ * Behind Phusion Passenger, `request.url` inside a Route Handler is the address
+ * the Node process is BOUND to, not the one the browser used. Sign-in on
+ * staging redirected to `https://0.0.0.0:3000/admin` — a browser follows that
+ * straight off the internet and sign-in looks completely broken.
+ *
+ * curl hid it: it follows the Location header regardless, so the flow "passed"
+ * end to end while being unusable. This asserts on the header itself, which is
+ * the only thing that would have caught it.
+ *
+ * Middleware never had the bug — there `request.url` IS the external URL — so
+ * the /admin bounce was correct while the login POST was not. Same API, two
+ * different notions of "the request".
+ */
+test("@smoke auth redirects point at the requested host, not the bind address", async ({
+  request,
+  baseURL,
+}) => {
+  const expectedHost = new URL(baseURL ?? "http://localhost:3000").host;
+
+  const res = await request.post("/admin/auth/login", {
+    form: { email: "nobody@bangicode.test", password: "wrong-password" },
+    maxRedirects: 0,
+    failOnStatusCode: false,
+  });
+
+  const location = res.headers()["location"] ?? "";
+  expect(location, "a redirect must be issued").toBeTruthy();
+
+  // Relative Locations are fine — the browser resolves them against the
+  // request. An ABSOLUTE one pointing anywhere else is the bug.
+  if (/^https?:\/\//.test(location)) {
+    expect(new URL(location).host, `Location was ${location}`).toBe(
+      expectedHost,
+    );
+    expect(location).not.toContain("0.0.0.0");
+  }
+
+  const logout = await request.post("/admin/auth/logout", {
+    maxRedirects: 0,
+    failOnStatusCode: false,
+  });
+  const logoutLocation = logout.headers()["location"] ?? "";
+  if (/^https?:\/\//.test(logoutLocation)) {
+    expect(new URL(logoutLocation).host).toBe(expectedHost);
+  }
+});
