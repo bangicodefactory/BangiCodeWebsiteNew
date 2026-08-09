@@ -8,11 +8,16 @@ export function organizationSchema() {
     name: "Bangicode SARL",
     url: BASE_URL,
     logo: `${BASE_URL}/brand/logo.svg`,
+    description:
+      "Software agency in Tétouan, Morocco — websites, custom software, and e-commerce delivered fast.",
     email: "admin@bangicode.ma",
     telephone: "+212664571370",
     address: {
       "@type": "PostalAddress",
-      addressLocality: "Tetouan",
+      streetAddress:
+        "Av. Ali Yaeta, Centre Commercial Wilaya Center, Etage 6, N69",
+      addressLocality: "Tétouan",
+      addressRegion: "Tanger-Tétouan-Al Hoceïma",
       addressCountry: "MA",
     },
     sameAs: [
@@ -40,14 +45,20 @@ export function localBusinessSchema() {
     "@id": `${BASE_URL}/#localbusiness`,
     name: "Bangicode SARL",
     url: BASE_URL,
+    description:
+      "Software agency in Tétouan, Morocco — websites, custom software, and e-commerce delivered fast.",
     email: "admin@bangicode.ma",
     telephone: "+212664571370",
     priceRange: "$$",
     address: {
       "@type": "PostalAddress",
-      addressLocality: "Tetouan",
+      streetAddress:
+        "Av. Ali Yaeta, Centre Commercial Wilaya Center, Etage 6, N69",
+      addressLocality: "Tétouan",
+      addressRegion: "Tanger-Tétouan-Al Hoceïma",
       addressCountry: "MA",
     },
+    areaServed: { "@type": "Country", name: "Morocco" },
     openingHoursSpecification: [
       {
         "@type": "OpeningHoursSpecification",

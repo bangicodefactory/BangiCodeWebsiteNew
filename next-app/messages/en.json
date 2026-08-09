@@ -1,10 +1,10 @@
 {
   "Home": {
     "hero": {
-      "eyebrow": "software studio · tetouan, morocco",
-      "h1": "Software studio in Tetouan.",
-      "tagline": "Code that ages well.",
-      "body": "We build custom software, e-commerce platforms, and tech training programmes — from Tetouan, for businesses that want code they can maintain years from now.",
+      "eyebrow": "software agency · tétouan, morocco",
+      "h1": "Software agency in Tétouan, Morocco.",
+      "tagline": "Fast to ship. Built to last.",
+      "body": "We're a small senior team building websites, custom software, and e-commerce platforms for small businesses — delivered in weeks, not months, and engineered to run for years. Based in Tétouan, working across Morocco and beyond.",
       "ctaPrimary": "Start a project",
       "ctaSecondary": "See our work",
       "microcopy": "30-min discovery call · we reply within 24h"
@@ -18,11 +18,11 @@
       "teamLabel": "team",
       "team": "12 people · 4 practices",
       "timeLabel": "local time",
-      "ariaLabel": "Studio status"
+      "ariaLabel": "Agency status"
     },
     "thesis": {
       "eyebrow": "// the thesis",
-      "headline": "Senior engineers. Honest timelines. Code that lasts.",
+      "headline": "Senior engineers. Fast delivery. Code that lasts.",
       "projectsValue": "24+",
       "projectsLabel": "projects delivered",
       "clientsValue": "20+",
@@ -37,7 +37,7 @@
     },
     "why": {
       "eyebrow": "// why us",
-      "headline": "Fixed scope. Senior engineers. Everything handed over.",
+      "headline": "Fixed scope. Fast delivery. Everything handed over.",
       "themTitle": "What usually happens",
       "usTitle": "How we work",
       "them01": "Hourly billing, and a scope that quietly grows.",
@@ -142,7 +142,7 @@
       "eyebrow": "// common questions",
       "headline": "Things people ask before they reach out.",
       "q01": "How long does a typical project take?",
-      "a01": "Most projects run 6–16 weeks from kickoff. We give you a timeline before you sign anything.",
+      "a01": "Most projects ship in 6–16 weeks from kickoff — smaller websites in as little as 2–4 weeks. We give you a timeline before you sign anything.",
       "q02": "Do you work with international clients?",
       "a02": "Yes. Most of our communication is async and in English or French. Calls are scheduled around your timezone.",
       "q03": "What's your pricing model?",
@@ -167,9 +167,9 @@
   "Services": {
     "overview": {
       "eyebrow": "// what we do",
-      "h1": "What we do, and how we do it.",
-      "subhead": "Four focused practices. One close-knit team. Built in Tetouan.",
-      "howWeWork": "We run fixed-scope, fixed-price projects with weekly demos and a shared Notion workspace. No scope creep, no surprise invoices — just clean code delivered on schedule.",
+      "h1": "Software development services in Tétouan, Morocco.",
+      "subhead": "Custom software, web development, e-commerce, technical training, and social media — delivered fast by a senior team in Tétouan.",
+      "howWeWork": "We run fixed-scope, fixed-price projects with weekly demos and a shared Notion workspace. No scope creep, no surprise invoices — clean code, shipped fast and on schedule.",
       "faqEyebrow": "// common questions",
       "faqHeadline": "Things people ask before they reach out.",
       "ctaHeadline": "Ready to start?",
@@ -189,7 +189,7 @@
       "s04Body": "Brand-consistent content, community management, and digital strategy.",
       "s04Tags": "Meta · Instagram · TikTok · LinkedIn",
       "faq01Q": "How long does a typical project take?",
-      "faq01A": "Most projects run 6–16 weeks from kickoff. We give you a timeline before you sign anything.",
+      "faq01A": "Most projects ship in 6–16 weeks from kickoff — smaller websites in as little as 2–4 weeks. We give you a timeline before you sign anything.",
       "faq02Q": "Do you work with international clients?",
       "faq02A": "Yes. Most of our communication is async and in English or French. Calls are scheduled around your timezone.",
       "faq03Q": "What's your pricing model?",
@@ -201,8 +201,8 @@
     },
     "software": {
       "eyebrow": "// custom software",
-      "h1": "Software built to last.",
-      "subhead": "Web apps, internal tools, API integrations, mobile — engineered for longevity.",
+      "h1": "Custom software development, built to last.",
+      "subhead": "Web apps, internal tools, API integrations, and mobile apps — delivered fast from Tétouan, Morocco, and engineered for longevity.",
       "capEyebrow": "// what we build",
       "cap01Title": "Web applications",
       "cap01Body": "Full-stack web apps from auth to deployment. Laravel + Next.js or Inertia.js — whichever fits the project.",
@@ -225,8 +225,8 @@
     },
     "ecommerce": {
       "eyebrow": "// e-commerce",
-      "h1": "Stores that convert.",
-      "subhead": "Performant e-commerce platforms with custom checkout, inventory, and fulfilment.",
+      "h1": "E-commerce development that converts.",
+      "subhead": "Fast, high-converting online stores for Morocco and beyond — custom checkout, inventory, and fulfilment, launched in weeks.",
       "capEyebrow": "// what we build",
       "cap01Title": "Storefronts",
       "cap01Body": "Fast, SEO-friendly storefronts on Shopify, WooCommerce, or custom Laravel + Next.js stacks.",
@@ -249,8 +249,8 @@
     },
     "training": {
       "eyebrow": "// technical training",
-      "h1": "Learn modern web development.",
-      "subhead": "Bootcamps and workshops for developers and teams — React, Laravel, DevOps, and more.",
+      "h1": "Web development training in Tétouan.",
+      "subhead": "Bootcamps and workshops for developers and teams — React, Laravel, DevOps, and more. In person in Tétouan or remote.",
       "capEyebrow": "// what we teach",
       "cap01Title": "Modern web stack",
       "cap01Body": "React, Next.js, TypeScript, Tailwind — from beginner to production-ready.",
@@ -273,8 +273,8 @@
     },
     "social": {
       "eyebrow": "// social presence",
-      "h1": "A presence worth following.",
-      "subhead": "Brand-consistent content, community management, and digital strategy.",
+      "h1": "Social media management that grows brands.",
+      "subhead": "Brand-consistent content, community management, and digital strategy for businesses in Morocco and the MENA region.",
       "capEyebrow": "// what we deliver",
       "cap01Title": "Brand presence",
       "cap01Body": "Profile setup, bio, visual identity alignment across all platforms.",
@@ -298,11 +298,11 @@
   },
   "About": {
     "eyebrow": "// about us",
-    "h1": "The studio behind the code.",
-    "subhead": "A small team of senior engineers building honest software from Tetouan, Morocco.",
+    "h1": "The software agency behind the code.",
+    "subhead": "Bangicode is a software agency in Tétouan, Morocco — a small team of senior engineers shipping fast, honest software since 2020.",
     "storyEyebrow": "// our story",
     "storyHeadline": "Five years of shipping software that lasts.",
-    "storyBody": "Bangicode was founded in 2020 by Ahmed Chioua, a full-stack engineer who wanted to build a studio that treats clients the way he'd want to be treated — fixed prices, honest timelines, and code he'd be happy to maintain five years later. We've grown to 12 people across four practices: custom software, e-commerce, technical training, and social presence. Every project starts with a 30-minute call and ends with clean documentation.",
+    "storyBody": "Bangicode was founded in 2020 by Ahmed Chioua, a full-stack engineer who wanted to build an agency that treats clients the way he'd want to be treated — fixed prices, fast delivery, honest timelines, and code he'd be happy to maintain five years later. We've grown to 12 people across four practices: custom software, e-commerce, technical training, and social presence. Every project starts with a 30-minute call and ends with clean documentation.",
     "storySince": "In business since",
     "storySinceValue": "2020",
     "storySize": "Team",
@@ -318,14 +318,14 @@
     "val03Body": "We write code we'd be happy to maintain in three years. Documentation, tests, clean architecture.",
     "teamEyebrow": "// the team",
     "teamHeadline": "12 people · 4 practices.",
-    "teamBody": "Based in Tetouan, Morocco. Serving clients across Morocco, France, and the MENA region.",
+    "teamBody": "Based in Tétouan, in the Tanger-Tétouan region of northern Morocco. Serving clients across Morocco, France, and the MENA region.",
     "ctaHeadline": "Want to work with us?",
     "ctaButton": "Start a project"
   },
   "Process": {
     "eyebrow": "// how we work",
     "h1": "From hello to kickoff in two weeks or less.",
-    "subhead": "A four-step process designed to move fast without surprises.",
+    "subhead": "A four-step process designed to ship fast — without surprises.",
     "tocLabel": "On this page",
     "step01Nav": "01 · Tell us your problem",
     "step02Nav": "02 · Discovery call",
@@ -404,7 +404,7 @@
   "Work": {
     "eyebrow": "// our work",
     "h1": "Selected projects.",
-    "subhead": "Short summaries of what we've shipped. Full case studies available on request.",
+    "subhead": "Websites, e-commerce stores, and custom software delivered fast for businesses across Morocco and beyond. Full case studies available on request.",
     "filterLabel": "Filter by practice",
     "filterAll": "All",
     "filterSoftware": "Software",
@@ -488,7 +488,7 @@
     "prefill": "Hello! I'm interested in your services."
   },
   "Footer": {
-    "tagline": "Software studio in Tetouan, Morocco. Code that ages well.",
+    "tagline": "Software agency in Tétouan, Morocco. Fast to ship, built to last.",
     "servicesTitle": "// services",
     "companyTitle": "// company",
     "locationTitle": "// location",
@@ -583,5 +583,10 @@
     "emptyCtaLink": "see what we've built",
     "backToBlog": "All posts",
     "publishedLabel": "Published"
+  },
+  "Meta": {
+    "homeTitle": "Software Agency in Tétouan, Morocco | Bangicode",
+    "defaultTitle": "Bangicode — Software Agency in Tétouan, Morocco",
+    "description": "Bangicode is a software agency in Tétouan, Morocco. Websites, custom software, and e-commerce delivered fast — fixed price, senior engineers, code that lasts."
   }
 }
