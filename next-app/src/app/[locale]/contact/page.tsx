@@ -27,13 +27,14 @@ const WA_NUMBER = process.env.NEXT_PUBLIC_WA_NUMBER ?? "212664571370";
 
 export default async function ContactPage() {
   const t = await getTranslations("Contact");
+  const meta = await getTranslations("Meta");
 
   return (
     <div>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(localBusinessSchema()),
+          __html: JSON.stringify(localBusinessSchema(meta("description"))),
         }}
       />
       {/* Hero */}

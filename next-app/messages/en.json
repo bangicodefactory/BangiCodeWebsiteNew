@@ -576,7 +576,7 @@
   },
   "Blog": {
     "eyebrow": "// writing",
-    "h1": "Notes from the studio.",
+    "h1": "Notes from the agency.",
     "subhead": "Occasional writing about the software we build and how we build it.",
     "empty": "Nothing published yet. We write when we have something worth saying, not on a schedule.",
     "emptyCtaPrefix": "In the meantime,",

@@ -576,7 +576,7 @@
   },
   "Blog": {
     "eyebrow": "// écrits",
-    "h1": "Notes du studio.",
+    "h1": "Notes de l'agence.",
     "subhead": "Quelques articles sur les logiciels que nous construisons et notre façon de les construire.",
     "empty": "Rien de publié pour l'instant. Nous écrivons quand nous avons quelque chose à dire, pas selon un calendrier.",
     "emptyCtaPrefix": "En attendant,",
@@ -587,6 +587,6 @@
   "Meta": {
     "homeTitle": "Agence Web & Logiciels à Tétouan, Maroc | Bangicode",
     "defaultTitle": "Bangicode — Agence Web & Logiciels à Tétouan, Maroc",
-    "description": "Bangicode, agence de développement web à Tétouan (Maroc) : création de sites web, logiciels sur mesure et e-commerce livrés rapidement, à prix fixe, par des ingénieurs seniors."
+    "description": "Bangicode, agence de développement web à Tétouan : création de sites web, logiciels sur mesure et e-commerce livrés rapidement par des ingénieurs seniors."
   }
 }

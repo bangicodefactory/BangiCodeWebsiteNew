@@ -30,13 +30,14 @@ const VALUES = ["val01", "val02", "val03"] as const;
 
 export default async function AboutPage() {
   const t = await getTranslations("About");
+  const meta = await getTranslations("Meta");
 
   return (
     <div>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
-          __html: JSON.stringify(organizationSchema()),
+          __html: JSON.stringify(organizationSchema(meta("description"))),
         }}
       />
       {/* Hero */}

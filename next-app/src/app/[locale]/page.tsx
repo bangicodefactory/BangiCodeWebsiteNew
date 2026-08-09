@@ -43,15 +43,17 @@ export async function generateMetadata({
 }
 
 export default async function LocalePage() {
+  const meta = await getTranslations("Meta");
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify([
-            organizationSchema(),
+            organizationSchema(meta("description")),
             websiteSchema(),
-            localBusinessSchema(),
+            localBusinessSchema(meta("description")),
           ]),
         }}
       />

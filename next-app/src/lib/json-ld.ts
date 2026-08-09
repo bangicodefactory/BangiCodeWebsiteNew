@@ -1,6 +1,13 @@
 export const BASE_URL = process.env.SITE_URL ?? "https://bangicode.ma";
 
-export function organizationSchema() {
+/*
+ * `description` is passed in rather than hardcoded, because these schemas are
+ * rendered inside [locale] pages. Hardcoding English here would emit English
+ * structured data on /fr and /ar — the same defect that hardcoded <meta> tags
+ * had, reproduced one layer down. Callers hand it the same Meta.description the
+ * page's own metadata uses, so the two can never drift.
+ */
+export function organizationSchema(description: string) {
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -8,8 +15,7 @@ export function organizationSchema() {
     name: "Bangicode SARL",
     url: BASE_URL,
     logo: `${BASE_URL}/brand/logo.svg`,
-    description:
-      "Software agency in Tétouan, Morocco — websites, custom software, and e-commerce delivered fast.",
+    description,
     email: "admin@bangicode.ma",
     telephone: "+212664571370",
     address: {
@@ -38,15 +44,15 @@ export function websiteSchema() {
   };
 }
 
-export function localBusinessSchema() {
+/** Same reasoning as organizationSchema: localized by the caller. */
+export function localBusinessSchema(description: string) {
   return {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
     "@id": `${BASE_URL}/#localbusiness`,
     name: "Bangicode SARL",
     url: BASE_URL,
-    description:
-      "Software agency in Tétouan, Morocco — websites, custom software, and e-commerce delivered fast.",
+    description,
     email: "admin@bangicode.ma",
     telephone: "+212664571370",
     priceRange: "$$",
