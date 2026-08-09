@@ -1,10 +1,10 @@
 {
   "Home": {
     "hero": {
-      "eyebrow": "software studio · tétouan, maroc",
-      "h1": "Studio logiciel à Tétouan.",
-      "tagline": "Code qui vieillit bien.",
-      "body": "Nous créons des logiciels sur mesure, des plateformes e-commerce et des formations techniques — depuis Tétouan, pour les entreprises qui veulent un code maintenable des années plus tard.",
+      "eyebrow": "agence de développement web · tétouan, maroc",
+      "h1": "Agence de développement web à Tétouan, Maroc.",
+      "tagline": "Livraison rapide. Code qui dure.",
+      "body": "Petite équipe d'ingénieurs seniors, nous assurons la création de sites web, de logiciels sur mesure et de boutiques e-commerce pour les petites entreprises — livrés en quelques semaines, pas en mois, et conçus pour durer des années. Basés à Tétouan, nous travaillons dans tout le Maroc et à l'international.",
       "ctaPrimary": "Démarrer un projet",
       "ctaSecondary": "Voir nos réalisations",
       "microcopy": "Appel découverte de 30 min · réponse sous 24h"
@@ -18,11 +18,11 @@
       "teamLabel": "équipe",
       "team": "12 personnes · 4 expertises",
       "timeLabel": "heure locale",
-      "ariaLabel": "Statut du studio"
+      "ariaLabel": "Statut de l'agence"
     },
     "thesis": {
       "eyebrow": "// la thèse",
-      "headline": "Ingénieurs seniors. Délais honnêtes. Code qui dure.",
+      "headline": "Ingénieurs seniors. Livraison rapide. Code qui dure.",
       "projectsValue": "24+",
       "projectsLabel": "projets livrés",
       "clientsValue": "20+",
@@ -37,7 +37,7 @@
     },
     "why": {
       "eyebrow": "// pourquoi nous",
-      "headline": "Périmètre fixe. Ingénieurs seniors. Tout vous est remis.",
+      "headline": "Périmètre fixe. Livraison rapide. Tout vous est remis.",
       "themTitle": "Ce qui arrive d'habitude",
       "usTitle": "Notre façon de travailler",
       "them01": "Facturation à l'heure, et un périmètre qui s'élargit discrètement.",
@@ -142,7 +142,7 @@
       "eyebrow": "// questions fréquentes",
       "headline": "Ce que les gens demandent avant de nous contacter.",
       "q01": "Combien de temps dure un projet typique ?",
-      "a01": "La plupart des projets durent 6 à 16 semaines après le démarrage. Nous vous donnons un planning avant toute signature.",
+      "a01": "La plupart des projets sont livrés en 6 à 16 semaines — les sites vitrines en 2 à 4 semaines seulement. Nous vous donnons un planning avant toute signature.",
       "q02": "Travaillez-vous avec des clients internationaux ?",
       "a02": "Oui. La plupart de nos communications sont asynchrones, en anglais ou en français. Les appels sont planifiés selon votre fuseau horaire.",
       "q03": "Quel est votre modèle de tarification ?",
@@ -167,9 +167,9 @@
   "Services": {
     "overview": {
       "eyebrow": "// ce que nous faisons",
-      "h1": "Ce que nous faisons, et comment nous le faisons.",
-      "subhead": "Quatre expertises. Une équipe soudée. Basée à Tétouan.",
-      "howWeWork": "Nous menons des projets à périmètre et prix fixes avec des démos hebdomadaires et un espace Notion partagé. Pas de dérive de périmètre, pas de factures surprises — juste un code propre livré dans les délais.",
+      "h1": "Création de sites web et logiciels à Tétouan, Maroc.",
+      "subhead": "Agence web à Tétouan : sites sur mesure, e-commerce, formation technique et réseaux sociaux — livrés rapidement par une équipe senior.",
+      "howWeWork": "Nous menons des projets à périmètre et prix fixes avec des démos hebdomadaires et un espace Notion partagé. Pas de dérive de périmètre, pas de factures surprises — un code propre, livré vite et dans les délais.",
       "faqEyebrow": "// questions fréquentes",
       "faqHeadline": "Ce que les gens demandent avant de nous contacter.",
       "ctaHeadline": "Prêt à démarrer ?",
@@ -189,7 +189,7 @@
       "s04Body": "Contenu cohérent avec la marque, gestion de communauté et stratégie digitale.",
       "s04Tags": "Meta · Instagram · TikTok · LinkedIn",
       "faq01Q": "Combien de temps dure un projet typique ?",
-      "faq01A": "La plupart des projets durent 6 à 16 semaines après le démarrage. Nous vous donnons un planning avant toute signature.",
+      "faq01A": "La plupart des projets sont livrés en 6 à 16 semaines — les sites vitrines en 2 à 4 semaines seulement. Nous vous donnons un planning avant toute signature.",
       "faq02Q": "Travaillez-vous avec des clients internationaux ?",
       "faq02A": "Oui. La plupart de nos communications sont asynchrones, en anglais ou en français. Les appels sont planifiés selon votre fuseau horaire.",
       "faq03Q": "Quel est votre modèle de tarification ?",
@@ -201,8 +201,8 @@
     },
     "software": {
       "eyebrow": "// logiciel sur mesure",
-      "h1": "Des logiciels conçus pour durer.",
-      "subhead": "Applications web, outils internes, intégrations API, mobile — ingéniés pour la longévité.",
+      "h1": "Développement de logiciels sur mesure au Maroc.",
+      "subhead": "Applications web, outils internes, intégrations API, mobile — livrés rapidement depuis Tétouan et conçus pour durer.",
       "capEyebrow": "// ce que nous créons",
       "cap01Title": "Applications web",
       "cap01Body": "Applications full-stack de l'authentification au déploiement. Laravel + Next.js ou Inertia.js.",
@@ -225,8 +225,8 @@
     },
     "ecommerce": {
       "eyebrow": "// e-commerce",
-      "h1": "Des boutiques qui convertissent.",
-      "subhead": "Plateformes e-commerce performantes avec paiement, stock et livraison personnalisés.",
+      "h1": "Création de site e-commerce au Maroc.",
+      "subhead": "Des boutiques en ligne rapides et qui convertissent — paiement CMI ou Stripe, gestion de stock et livraison, lancées en quelques semaines.",
       "capEyebrow": "// ce que nous créons",
       "cap01Title": "Vitrines",
       "cap01Body": "Vitrines rapides et SEO-friendly sur Shopify, WooCommerce ou stack Laravel + Next.js.",
@@ -249,8 +249,8 @@
     },
     "training": {
       "eyebrow": "// formation technique",
-      "h1": "Apprenez le développement web moderne.",
-      "subhead": "Bootcamps et ateliers pour développeurs et équipes — React, Laravel, DevOps et plus.",
+      "h1": "Formation en développement web à Tétouan.",
+      "subhead": "Bootcamps et ateliers pour développeurs et équipes — React, Laravel, DevOps et plus. En présentiel à Tétouan ou à distance.",
       "capEyebrow": "// ce que nous enseignons",
       "cap01Title": "Stack web moderne",
       "cap01Body": "React, Next.js, TypeScript, Tailwind — du débutant au niveau production.",
@@ -273,8 +273,8 @@
     },
     "social": {
       "eyebrow": "// présence sociale",
-      "h1": "Une présence qui mérite d'être suivie.",
-      "subhead": "Contenu cohérent avec la marque, gestion de communauté et stratégie digitale.",
+      "h1": "Gestion des réseaux sociaux au Maroc.",
+      "subhead": "Contenu cohérent avec la marque, gestion de communauté et stratégie digitale pour les entreprises au Maroc et dans la région MENA.",
       "capEyebrow": "// ce que nous livrons",
       "cap01Title": "Présence de marque",
       "cap01Body": "Configuration des profils, bio, alignement de l'identité visuelle sur toutes les plateformes.",
@@ -298,11 +298,11 @@
   },
   "About": {
     "eyebrow": "// à propos",
-    "h1": "Le studio derrière le code.",
-    "subhead": "Une petite équipe d'ingénieurs seniors qui construit des logiciels honnêtes depuis Tétouan, Maroc.",
+    "h1": "L'agence derrière le code.",
+    "subhead": "Bangicode est une agence de développement web et logiciels à Tétouan, Maroc — une petite équipe d'ingénieurs seniors qui livre vite, depuis 2020.",
     "storyEyebrow": "// notre histoire",
     "storyHeadline": "Cinq ans à livrer des logiciels qui durent.",
-    "storyBody": "Bangicode a été fondé en 2020 par Ahmed Chioua, un ingénieur full-stack qui voulait créer un studio qui traite ses clients comme il aimerait être traité — prix fixes, délais honnêtes, et un code qu'il serait fier de maintenir cinq ans plus tard. Nous sommes passés à 12 personnes réparties sur quatre expertises : logiciel sur mesure, e-commerce, formation technique et présence sociale. Chaque projet commence par un appel de 30 minutes et se termine par une documentation propre.",
+    "storyBody": "Bangicode a été fondé en 2020 par Ahmed Chioua, un ingénieur full-stack qui voulait créer une agence qui traite ses clients comme il aimerait être traité — prix fixes, livraison rapide, délais honnêtes, et un code qu'il serait fier de maintenir cinq ans plus tard. Nous sommes passés à 12 personnes réparties sur quatre expertises : logiciel sur mesure, e-commerce, formation technique et présence sociale. Chaque projet commence par un appel de 30 minutes et se termine par une documentation propre.",
     "storySince": "En activité depuis",
     "storySinceValue": "2020",
     "storySize": "Équipe",
@@ -318,14 +318,14 @@
     "val03Body": "Nous écrivons du code que nous serions heureux de maintenir dans trois ans. Documentation, tests, architecture propre.",
     "teamEyebrow": "// l'équipe",
     "teamHeadline": "12 personnes · 4 expertises.",
-    "teamBody": "Basés à Tétouan, Maroc. Nous servons des clients au Maroc, en France et dans la région MENA.",
+    "teamBody": "Basés à Tétouan, dans la région Tanger-Tétouan, au nord du Maroc. Nous servons des clients au Maroc, en France et dans la région MENA.",
     "ctaHeadline": "Vous voulez travailler avec nous ?",
     "ctaButton": "Démarrer un projet"
   },
   "Process": {
     "eyebrow": "// comment nous travaillons",
     "h1": "Du premier contact au lancement en deux semaines ou moins.",
-    "subhead": "Un processus en quatre étapes conçu pour avancer vite sans surprises.",
+    "subhead": "Un processus en quatre étapes conçu pour livrer vite — sans surprises.",
     "tocLabel": "Sur cette page",
     "step01Nav": "01 · Décrivez votre problème",
     "step02Nav": "02 · Appel découverte",
@@ -404,7 +404,7 @@
   "Work": {
     "eyebrow": "// nos réalisations",
     "h1": "Projets sélectionnés.",
-    "subhead": "Courtes synthèses de ce que nous avons livré. Études de cas complètes disponibles sur demande.",
+    "subhead": "Sites web, boutiques e-commerce et logiciels sur mesure livrés rapidement pour des entreprises marocaines et internationales. Études de cas complètes disponibles sur demande.",
     "filterLabel": "Filtrer par domaine",
     "filterAll": "Tous",
     "filterSoftware": "Logiciel",
@@ -488,7 +488,7 @@
     "prefill": "Bonjour ! Je suis intéressé(e) par vos services."
   },
   "Footer": {
-    "tagline": "Studio logiciel à Tétouan, Maroc. Code qui vieillit bien.",
+    "tagline": "Agence de développement web et logiciels à Tétouan, Maroc. Livraison rapide, code qui dure.",
     "servicesTitle": "// services",
     "companyTitle": "// entreprise",
     "locationTitle": "// localisation",
@@ -576,12 +576,17 @@
   },
   "Blog": {
     "eyebrow": "// écrits",
-    "h1": "Notes du studio.",
+    "h1": "Notes de l'agence.",
     "subhead": "Quelques articles sur les logiciels que nous construisons et notre façon de les construire.",
     "empty": "Rien de publié pour l'instant. Nous écrivons quand nous avons quelque chose à dire, pas selon un calendrier.",
     "emptyCtaPrefix": "En attendant,",
     "emptyCtaLink": "découvrez nos réalisations",
     "backToBlog": "Tous les articles",
     "publishedLabel": "Publié le"
+  },
+  "Meta": {
+    "homeTitle": "Agence Web & Logiciels à Tétouan, Maroc | Bangicode",
+    "defaultTitle": "Bangicode — Agence Web & Logiciels à Tétouan, Maroc",
+    "description": "Bangicode, agence de développement web à Tétouan : création de sites web, logiciels sur mesure et e-commerce livrés rapidement par des ingénieurs seniors."
   }
 }

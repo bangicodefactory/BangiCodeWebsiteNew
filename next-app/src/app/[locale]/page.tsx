@@ -32,23 +32,28 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "Home.hero" });
+  const meta = await getTranslations({ locale, namespace: "Meta" });
   return {
-    title: "Bangicode — Software Studio in Tetouan",
+    // `absolute` opts out of the layout's "%s | Bangicode" template — the
+    // localized home title already carries the brand.
+    title: { absolute: meta("homeTitle") },
     description: t("body"),
     alternates: buildAlternates("/", locale),
   };
 }
 
 export default async function LocalePage() {
+  const meta = await getTranslations("Meta");
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify([
-            organizationSchema(),
+            organizationSchema(meta("description")),
             websiteSchema(),
-            localBusinessSchema(),
+            localBusinessSchema(meta("description")),
           ]),
         }}
       />

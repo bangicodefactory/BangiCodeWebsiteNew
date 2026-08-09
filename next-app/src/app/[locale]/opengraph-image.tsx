@@ -77,7 +77,7 @@ export default async function Image({
           display: "flex",
         }}
       >
-        bangicode.ma · Tetouan, Morocco
+        bangicode.ma · Tétouan, Morocco
       </div>
     </div>,
     { width: 1200, height: 630 },

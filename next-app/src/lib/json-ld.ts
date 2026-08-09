@@ -1,6 +1,13 @@
 export const BASE_URL = process.env.SITE_URL ?? "https://bangicode.ma";
 
-export function organizationSchema() {
+/*
+ * `description` is passed in rather than hardcoded, because these schemas are
+ * rendered inside [locale] pages. Hardcoding English here would emit English
+ * structured data on /fr and /ar — the same defect that hardcoded <meta> tags
+ * had, reproduced one layer down. Callers hand it the same Meta.description the
+ * page's own metadata uses, so the two can never drift.
+ */
+export function organizationSchema(description: string) {
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
@@ -8,11 +15,15 @@ export function organizationSchema() {
     name: "Bangicode SARL",
     url: BASE_URL,
     logo: `${BASE_URL}/brand/logo.svg`,
+    description,
     email: "admin@bangicode.ma",
     telephone: "+212664571370",
     address: {
       "@type": "PostalAddress",
-      addressLocality: "Tetouan",
+      streetAddress:
+        "Av. Ali Yaeta, Centre Commercial Wilaya Center, Etage 6, N69",
+      addressLocality: "Tétouan",
+      addressRegion: "Tanger-Tétouan-Al Hoceïma",
       addressCountry: "MA",
     },
     sameAs: [
@@ -33,21 +44,27 @@ export function websiteSchema() {
   };
 }
 
-export function localBusinessSchema() {
+/** Same reasoning as organizationSchema: localized by the caller. */
+export function localBusinessSchema(description: string) {
   return {
     "@context": "https://schema.org",
     "@type": "LocalBusiness",
     "@id": `${BASE_URL}/#localbusiness`,
     name: "Bangicode SARL",
     url: BASE_URL,
+    description,
     email: "admin@bangicode.ma",
     telephone: "+212664571370",
     priceRange: "$$",
     address: {
       "@type": "PostalAddress",
-      addressLocality: "Tetouan",
+      streetAddress:
+        "Av. Ali Yaeta, Centre Commercial Wilaya Center, Etage 6, N69",
+      addressLocality: "Tétouan",
+      addressRegion: "Tanger-Tétouan-Al Hoceïma",
       addressCountry: "MA",
     },
+    areaServed: { "@type": "Country", name: "Morocco" },
     openingHoursSpecification: [
       {
         "@type": "OpeningHoursSpecification",

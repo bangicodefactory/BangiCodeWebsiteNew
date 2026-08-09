@@ -8,7 +8,11 @@ import {
   IBM_Plex_Sans_Arabic,
 } from "next/font/google";
 import { NextIntlClientProvider } from "next-intl";
-import { getMessages, setRequestLocale } from "next-intl/server";
+import {
+  getMessages,
+  getTranslations,
+  setRequestLocale,
+} from "next-intl/server";
 import { ThemeProvider } from "next-themes";
 import { Suspense } from "react";
 import { Toaster } from "sonner";
@@ -92,14 +96,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     return { metadataBase: new URL(BASE_URL) };
   }
 
+  const t = await getTranslations({ locale, namespace: "Meta" });
+
   return {
     metadataBase: new URL(BASE_URL),
     title: {
-      default: "Bangicode — Software Studio in Tetouan",
+      default: t("defaultTitle"),
       template: "%s | Bangicode",
     },
-    description:
-      "Custom software, e-commerce, technical training, and social presence — built in Tetouan, Morocco.",
+    description: t("description"),
     alternates: {
       // Per-page overrides should specify the full path; this layout-level
       // entry covers every page that doesn't set its own alternates.
