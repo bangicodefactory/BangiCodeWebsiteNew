@@ -11,8 +11,13 @@ const WA_NUMBER = process.env.NEXT_PUBLIC_WA_NUMBER ?? "212664571370";
  * two pages competing copies of the same intake. The band carries the ask and
  * hands off.
  *
- * Home.founder stays as the frame: naming Ahmed is more distinctive than D's
- * anonymous "get in touch".
+ * Home.founder stays as the frame: reaching the people who build the thing is
+ * more distinctive than D's anonymous "get in touch".
+ *
+ * It named Ahmed specifically until 2026-08-10. Bangicode has two founders —
+ * Ahmed Chioua and Achraf Znagui — so a headline naming one was wrong, and
+ * naming both would date the moment a third person joins. "The team" is
+ * accurate at any headcount, which is why it is not "the founders" either.
  */
 export async function FounderCard() {
   const t = await getTranslations("Home.founder");
@@ -34,11 +39,18 @@ export async function FounderCard() {
             {t("label")}
           </p>
 
+          {/*
+           * The brand mark, not an initial. This was a hardcoded "A" for
+           * Ahmed, which reads as one person under a headline about the team.
+           * Two initials would be no better — both founders' names begin with
+           * A. A neutral mark says "the studio" and never needs revisiting.
+           */}
           <div
             className="bg-primary text-primary-foreground font-display mx-auto mt-6 flex h-16 w-16 items-center justify-center rounded-full text-2xl font-bold"
+            role="img"
             aria-label={t("avatarAlt")}
           >
-            A
+            B
           </div>
 
           <h2 className="font-display text-foreground mt-6 text-3xl font-bold tracking-tight text-balance sm:text-4xl">

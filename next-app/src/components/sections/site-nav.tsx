@@ -43,10 +43,24 @@ export function SiteNav({ locale }: SiteNavProps) {
    * than browse into.
    */
   const navItems: NavLink[] = [
+    /*
+     * Home is an explicit item, not only the logo. The logo does link home and
+     * always has, but that is a convention people have to know rather than see
+     * — and on a deep page like a case study there was no visible way back to
+     * the landing page. A named link costs one slot and removes the guess.
+     */
+    { label: t("home"), href: "/" },
     { label: t("services"), href: "/services" },
     { label: t("solutions"), href: "/solutions" },
     { label: t("portfolio"), href: "/portfolio" },
     { label: t("about"), href: "/about" },
+    /*
+     * Stays "Blog". It was briefly relabelled "Case studies", which collided
+     * with /portfolio — that IS the case studies section (CLAUDE.md defines
+     * them as the one-screen project summaries), so the nav offered two
+     * entries for the same idea and pointed the clearer name at the emptier
+     * page.
+     */
     { label: t("blog"), href: "/blog" },
     { label: t("contact"), href: "/contact" },
   ];

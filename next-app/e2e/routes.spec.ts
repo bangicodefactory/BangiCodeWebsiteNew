@@ -152,6 +152,12 @@ test("@smoke primary nav is the Design D IA", async ({ page }) => {
   await page.goto("/en");
   const nav = page.getByRole("navigation", { name: /main navigation/i });
   for (const href of [
+    /*
+     * Home is an explicit item, not only the logo. Someone deep in a case
+     * study had no visible way back to the landing page — the logo does link
+     * home, but that is a convention you have to already know rather than see.
+     */
+    "/en",
     "/en/services",
     "/en/solutions",
     "/en/portfolio",
