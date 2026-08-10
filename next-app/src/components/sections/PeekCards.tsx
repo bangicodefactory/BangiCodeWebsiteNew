@@ -14,7 +14,7 @@ function PeekCardItem({ card }: { card: PeekCard }) {
   return (
     <Link
       href={card.href}
-      className="group border-border bg-card hover:border-secondary focus-visible:ring-ring flex flex-col gap-4 rounded-md border p-6 transition-[border-color,transform] duration-200 ease-out hover:-translate-y-1 focus-visible:ring-2 focus-visible:outline-none"
+      className="group border-border bg-card hover:border-secondary focus-visible:ring-ring transition-interactive flex flex-col gap-4 rounded-md border p-6 duration-200 ease-out hover:-translate-y-1 focus-visible:ring-2 focus-visible:outline-none"
     >
       <h3 className="font-display text-foreground text-lg font-bold">
         {card.client}

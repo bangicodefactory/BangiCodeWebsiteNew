@@ -251,3 +251,79 @@ test("@smoke fonts — /en does NOT get the Arabic face", async ({ page }) => {
     "/en is using the Arabic font stack",
   ).toBe(false);
 });
+
+/*
+ * Hover and press must actually animate.
+ *
+ * Every interactive element was written as `transition-[…,transform]`, which
+ * is what Tailwind v3 required. v4 does not emit `transform` for these
+ * utilities — `-translate-y-px` compiles to the `translate` property and
+ * `scale-[0.98]` to `scale`. Naming only `transform` therefore transitioned
+ * something nothing sets, so every button and card LIFTED AND PRESSED
+ * INSTANTLY while its colour faded smoothly over 200ms.
+ *
+ * Nothing caught it: it type-checks, it lints, the class string looks correct,
+ * and Lighthouse does not measure whether a hover eases. Only reading the
+ * computed style, or noticing the site felt cheap, would find it.
+ *
+ * Asserting on the computed `transition-property` is the cheap durable check.
+ * The mid-flight sample below is the honest one — a transition can be declared
+ * and still not run.
+ */
+test("@smoke interactive elements animate their movement, not just their colour", async ({
+  page,
+}) => {
+  await page.goto("/en");
+
+  const targets = [
+    ["primary CTA", page.getByRole("link", { name: /start a project/i })],
+    ["service card", page.locator('main a[href*="/services/"]')],
+  ] as const;
+
+  for (const [label, locator] of targets) {
+    const el = locator.first();
+    await el.waitFor();
+    const property = await el.evaluate(
+      (n) => getComputedStyle(n).transitionProperty,
+    );
+    // Both, not either: the lift uses `translate` and the press uses `scale`.
+    expect(property, `${label} must transition translate`).toContain(
+      "translate",
+    );
+    expect(property, `${label} must transition scale`).toContain("scale");
+  }
+});
+
+test("@smoke a hover eases rather than snapping", async ({ page }) => {
+  await page.goto("/en");
+
+  const btn = page.getByRole("link", { name: /start a project/i }).first();
+  await btn.waitFor();
+  const box = await btn.boundingBox();
+  expect(box).not.toBeNull();
+
+  await page.mouse.move(box!.x + box!.width / 2, box!.y + box!.height / 2);
+
+  /*
+   * Sample the translate repeatedly during the transition. A declared-but-dead
+   * transition jumps straight to its end value, so the samples collapse to two
+   * distinct readings; a live one passes through intermediate positions.
+   *
+   * This is timing-sensitive by construction — six samples 30ms apart across a
+   * 200ms transition. The threshold is deliberately loose (more than two
+   * distinct values, not a specific count) so a loaded CI runner that misses
+   * some samples still passes. If it ever flakes, raise the sample count
+   * rather than lowering the threshold: at two, the test stops distinguishing
+   * an easing transition from a snapping one, which is the whole point.
+   */
+  const seen = new Set<string>();
+  for (let i = 0; i < 6; i++) {
+    seen.add(await btn.evaluate((n) => getComputedStyle(n).translate));
+    await page.waitForTimeout(30);
+  }
+
+  expect(
+    seen.size,
+    `expected intermediate positions, saw only: ${[...seen].join(" | ")}`,
+  ).toBeGreaterThan(2);
+});

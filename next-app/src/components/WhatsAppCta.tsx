@@ -85,7 +85,12 @@ export function WhatsAppCta() {
         // WhatsApp brand green is intentionally NOT a bangicode token — it is
         // a third-party brand mark and must stay recognisable.
         "bg-[#25D366] text-white shadow-lg",
-        "transition-[transform,opacity] duration-300 motion-reduce:transition-none",
+        // 300ms, not the 200ms used for hovers: this transition carries the
+        // ENTRANCE (translate-y-20 + opacity), and a floating button sliding
+        // in wants a slower, calmer curve than a button responding to a
+        // pointer. The duration lives here because transition-interactive
+        // deliberately does not set one — see the note in globals.css.
+        "transition-interactive duration-300 ease-out motion-reduce:transition-none",
         "hover:scale-110",
         "focus-visible:ring-ring focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
         hidden &&
