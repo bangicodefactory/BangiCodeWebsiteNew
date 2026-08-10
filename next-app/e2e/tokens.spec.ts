@@ -308,6 +308,13 @@ test("@smoke a hover eases rather than snapping", async ({ page }) => {
    * Sample the translate repeatedly during the transition. A declared-but-dead
    * transition jumps straight to its end value, so the samples collapse to two
    * distinct readings; a live one passes through intermediate positions.
+   *
+   * This is timing-sensitive by construction — six samples 30ms apart across a
+   * 200ms transition. The threshold is deliberately loose (more than two
+   * distinct values, not a specific count) so a loaded CI runner that misses
+   * some samples still passes. If it ever flakes, raise the sample count
+   * rather than lowering the threshold: at two, the test stops distinguishing
+   * an easing transition from a snapping one, which is the whole point.
    */
   const seen = new Set<string>();
   for (let i = 0; i < 6; i++) {

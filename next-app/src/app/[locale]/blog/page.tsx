@@ -91,7 +91,7 @@ export default async function BlogIndexPage({
               <li key={post.slug}>
                 <Link
                   href={`/blog/${post.slug}`}
-                  className="group border-border bg-card hover:border-secondary focus-visible:ring-ring transition-interactive flex h-full flex-col gap-3 rounded-md border p-6 shadow-xs hover:-translate-y-0.5 hover:shadow-md focus-visible:ring-2 focus-visible:outline-none"
+                  className="group border-border bg-card hover:border-secondary focus-visible:ring-ring transition-interactive flex h-full flex-col gap-3 rounded-md border p-6 shadow-xs duration-200 ease-out hover:-translate-y-1 hover:shadow-md focus-visible:ring-2 focus-visible:outline-none"
                 >
                   {post.date && (
                     <time

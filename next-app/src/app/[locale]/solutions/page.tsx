@@ -61,7 +61,7 @@ export default async function SolutionsPage() {
               key={s.slug}
               href={`/solutions/${s.slug}`}
               data-placeholder="true"
-              className="group border-border bg-card hover:border-secondary focus-visible:ring-ring transition-interactive flex flex-col gap-3 rounded-md border p-8 shadow-xs hover:-translate-y-0.5 hover:shadow-md focus-visible:ring-2 focus-visible:outline-none"
+              className="group border-border bg-card hover:border-secondary focus-visible:ring-ring transition-interactive flex flex-col gap-3 rounded-md border p-8 shadow-xs duration-200 ease-out hover:-translate-y-1 hover:shadow-md focus-visible:ring-2 focus-visible:outline-none"
             >
               <span className="text-muted-foreground bg-muted w-fit rounded-full px-2.5 py-1 font-mono text-xs">
                 {t(`${s.key}Tag`)}
