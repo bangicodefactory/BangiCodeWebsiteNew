@@ -35,6 +35,46 @@ body {
   outline-offset: 2px;
 }
 
+/*
+ * The interaction transition, in one place.
+ *
+ * Every hover lift and press in this project was written as
+ * `transition-[…,transform]`, which is what Tailwind v3 needed. v4 does not
+ * emit `transform` for these utilities — `-translate-y-px` compiles to
+ * `translate: …` and `scale-[0.98]` to `scale: …`, both standalone CSS
+ * properties. Naming only `transform` therefore transitioned a property
+ * nothing sets, so every button LIFTED AND PRESSED INSTANTLY while its colour
+ * faded smoothly over 200ms. Measured in a browser, not inferred: the computed
+ * transition-property contained `transform` and neither `translate` nor
+ * `scale`.
+ *
+ * `transition-interactive` names all three. `transform` stays for anything
+ * still using a genuine transform (rotate utilities, third-party markup), and
+ * costs nothing when unset.
+ *
+ * Kept as a utility rather than repeated inline so the next person adding a
+ * hover lift cannot reintroduce the bug by copying an old class string — and
+ * so a future Tailwind change is one edit, not seven files.
+ */
+@utility transition-interactive {
+  transition-property:
+    color, background-color, border-color, box-shadow, opacity, transform,
+    translate, scale;
+  transition-timing-function: var(--ease-out);
+  transition-duration: var(--duration-base);
+}
+
+/*
+ * Press feedback. Separated from hover because the two want different curves:
+ * a press should feel immediate (120ms) while a hover can afford to glide.
+ * Anything below ~100ms reads as a snap rather than a response.
+ */
+@utility transition-press {
+  transition-property: transform, translate, scale;
+  transition-timing-function: var(--ease-out);
+  transition-duration: var(--duration-fast);
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

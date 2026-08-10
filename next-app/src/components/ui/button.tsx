@@ -29,8 +29,24 @@ const buttonVariants = cva(
   [
     "inline-flex items-center justify-center gap-2 whitespace-nowrap",
     "rounded-sm text-sm font-medium",
-    "transition-[color,background-color,border-color,box-shadow,transform] duration-200 ease-out",
-    "active:translate-y-px active:scale-[0.98]",
+    /*
+     * transition-interactive, not a hand-written property list — see the note
+     * in globals.css. The old list named `transform`, which Tailwind v4 does
+     * not emit for these utilities, so the lift and press snapped while the
+     * colour faded.
+     */
+    "transition-interactive",
+    /*
+     * The press is deliberately faster than the hover: active:duration-[120ms]
+     * overrides the 200ms base only while the pointer is down. A press that
+     * eases in over 200ms feels laggy — the finger is already up before the
+     * button finishes acknowledging it.
+     *
+     * -0.5px rather than a whole pixel on the lift: at 10px radius and this
+     * shadow, a 1px rise reads as a jump. Sub-pixel movement is what makes it
+     * feel like the button rose rather than teleported.
+     */
+    "active:translate-y-px active:scale-[0.985] active:duration-[120ms]",
     "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background",
     "disabled:pointer-events-none disabled:opacity-50",
     "[&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
@@ -38,10 +54,16 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
+        /*
+         * The filled variants lift AND deepen their shadow together. Moving a
+         * button up without growing its shadow reads as a glitch, because the
+         * light source implies the shadow should follow — the two changes are
+         * one gesture, not two.
+         */
         spark:
-          "bg-spark text-spark-foreground shadow-spark hover:bg-spark-hover hover:-translate-y-px",
+          "bg-spark text-spark-foreground shadow-spark hover:bg-spark-hover hover:-translate-y-0.5 hover:shadow-lg",
         primary:
-          "bg-primary text-primary-foreground hover:bg-primary-container hover:-translate-y-px",
+          "bg-primary text-primary-foreground shadow-xs hover:bg-primary-container hover:-translate-y-0.5 hover:shadow-md",
         secondary:
           "border border-secondary text-accent hover:bg-secondary hover:text-secondary-foreground",
         outline:

@@ -85,7 +85,7 @@ export function WhatsAppCta() {
         // WhatsApp brand green is intentionally NOT a bangicode token — it is
         // a third-party brand mark and must stay recognisable.
         "bg-[#25D366] text-white shadow-lg",
-        "transition-[transform,opacity] duration-300 motion-reduce:transition-none",
+        "transition-interactive duration-300 motion-reduce:transition-none",
         "hover:scale-110",
         "focus-visible:ring-ring focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
         hidden &&

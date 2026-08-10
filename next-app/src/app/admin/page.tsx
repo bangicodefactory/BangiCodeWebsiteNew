@@ -92,7 +92,7 @@ export default async function AdminDashboard() {
           <Link
             key={card.href}
             href={card.href}
-            className="group border-border bg-card hover:border-secondary focus-visible:ring-ring flex flex-col gap-3 rounded-md border p-6 shadow-xs transition-[border-color,box-shadow,transform] duration-200 ease-out hover:-translate-y-1 hover:shadow-md focus-visible:ring-2 focus-visible:outline-none"
+            className="group border-border bg-card hover:border-secondary focus-visible:ring-ring transition-interactive flex flex-col gap-3 rounded-md border p-6 shadow-xs hover:-translate-y-0.5 hover:shadow-md focus-visible:ring-2 focus-visible:outline-none"
           >
             <card.icon aria-hidden="true" className="text-accent size-5" />
             <span className="font-display text-foreground text-3xl font-bold tracking-tight">
