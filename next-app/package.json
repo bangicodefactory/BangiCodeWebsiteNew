@@ -23,7 +23,6 @@
     "check:messages": "node scripts/check-messages-parity.mjs"
   },
   "dependencies": {
-    "@calcom/embed-react": "^1.5.3",
     "@hookform/resolvers": "^5.4.0",
     "@radix-ui/react-checkbox": "^1.3.3",
     "@radix-ui/react-dialog": "^1.1.15",
@@ -52,7 +51,6 @@
     "zod": "^4.4.3"
   },
   "devDependencies": {
-    "@calcom/embed-core": "^1.5.3",
     "@playwright/test": "^1.60.0",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^22",

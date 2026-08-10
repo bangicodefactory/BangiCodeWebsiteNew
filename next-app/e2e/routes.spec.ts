@@ -209,3 +209,40 @@ test("@smoke canonical-host redirect is derived, and off on localhost", async ({
   expect(canonical).toContain("/en");
   expect(canonical).not.toContain("www.");
 });
+
+/*
+ * Booking degrades to a human when the widget cannot run.
+ *
+ * The previous integration pointed at cal.com/bangicode/30min-discovery, which
+ * had never been created and returned 404 — so "Book 30 min" led to a page
+ * whose widget silently failed. Nothing caught it because the PAGE was fine;
+ * only the thing inside it was dead.
+ *
+ * CI has no NEXT_PUBLIC_CALENDLY_URL, so this exercises exactly that state: an
+ * unconfigured deploy must still offer email and WhatsApp rather than an empty
+ * box. It also asserts no third-party request is made when there is nothing to
+ * embed — an unconfigured page should not be reaching out to Calendly at all.
+ */
+test("@smoke booking falls back to email and WhatsApp when unconfigured", async ({
+  page,
+}) => {
+  const calendlyRequests: string[] = [];
+  page.on("request", (r) => {
+    if (r.url().includes("calendly")) calendlyRequests.push(r.url());
+  });
+
+  const response = await page.goto("/en/book");
+  expect(response?.status()).toBe(200);
+
+  const main = page.getByRole("main");
+  await expect(main).toContainText(/unavailable/i);
+  await expect(main.locator('a[href^="mailto:"]')).toBeVisible();
+  await expect(main.locator('a[href*="wa.me"]')).toBeVisible();
+
+  // The widget container is not rendered at all in the fallback state.
+  await expect(page.getByTestId("calendly-inline")).toHaveCount(0);
+  expect(
+    calendlyRequests,
+    "an unconfigured page should not contact Calendly",
+  ).toHaveLength(0);
+});

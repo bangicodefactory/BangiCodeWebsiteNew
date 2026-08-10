@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
-import { routing, type Locale } from "@/i18n/routing";
-import { CalInline } from "@/components/CalEmbed";
+import { routing } from "@/i18n/routing";
+import { CalendlyInline } from "@/components/CalendlyEmbed";
 import { buildAlternates } from "@/lib/alternates";
 
 export function generateStaticParams() {
@@ -21,29 +21,32 @@ export async function generateMetadata({
   };
 }
 
-export default async function BookPage({
-  params,
-}: {
-  params: Promise<{ locale: string }>;
-}) {
-  const { locale } = await params;
-  // Cal.com may require an absolute URL for redirectUrl depending on its hosting mode.
-  // SITE_URL is set by CI/production; falls back to the live domain.
-  const siteUrl = process.env.SITE_URL ?? "https://bangicode.ma";
-  const redirectUrl = `${siteUrl}/${locale}?booked=true`;
-
+export default async function BookPage() {
   return (
     <>
-      {/* Warm up the Cal.com connection before the embed JS runs */}
-      <link rel="preconnect" href="https://cal.com" crossOrigin="anonymous" />
+      {/*
+       * Warm up Calendly before the embed JS runs. Two hosts: the script comes
+       * from assets.calendly.com and the booking iframe from calendly.com, so
+       * preconnecting only one still leaves a cold handshake on the slower half.
+       */}
       <link
         rel="preconnect"
-        href="https://app.cal.com"
+        href="https://assets.calendly.com"
+        crossOrigin="anonymous"
+      />
+      <link
+        rel="preconnect"
+        href="https://calendly.com"
         crossOrigin="anonymous"
       />
       <div className="mx-auto w-full max-w-3xl px-4 py-8 sm:px-6">
         <div className="h-[calc(100vh-8rem)] min-h-96">
-          <CalInline locale={locale as Locale} redirectUrl={redirectUrl} />
+          {/*
+           * The post-booking path is relative, and next-intl's router adds the
+           * locale prefix — so a French visitor lands on /fr?booked=true and
+           * sees the toast in their own language.
+           */}
+          <CalendlyInline bookedPath="/?booked=true" />
         </div>
       </div>
     </>

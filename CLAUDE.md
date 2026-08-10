@@ -73,7 +73,7 @@ Shape / depth / motion:
 - **Fonts:** **Chakra Petch** (display), **Manrope** (body), **JetBrains Mono** (technical) via `next/font`. For `ar`, **IBM Plex Sans Arabic** replaces BOTH display and body — Chakra Petch and Manrope have no Arabic coverage. One family covers both roles to keep `/ar` to a single extra download.
 - **Font stacks are indirected** through `--font-display-stack` / `--font-body-stack` / `--font-mono-stack` in `tokens.css`. Do NOT point a utility straight at a `next/font` variable via `@theme inline` — `inline` bakes the value into the utility, so any `[lang=…]` override silently stops working and Tailwind drops the rule. That bug shipped twice.
 - **Analytics:** GA4, gated by the cookie consent banner (IST-156). NOT Plausible.
-- **Booking:** Cal.com via `@calcom/embed-react`.
+- **Booking:** Calendly, embedded from its own script — see [ADR 0004](docs/adr/0004-calendly-booking.md). Cal.com was the documented choice and the integration was built, but the event it pointed at never existed (404), so booking had never worked. The event link is `NEXT_PUBLIC_CALENDLY_URL`; without it `/book` shows the email + WhatsApp fallback rather than an empty box.
 - **Forms:** React Hook Form + Zod — both come from the library via `@bangicode/form` (already wired upstream).
 
 ---
