@@ -43,10 +43,23 @@ export function SiteNav({ locale }: SiteNavProps) {
    * than browse into.
    */
   const navItems: NavLink[] = [
+    /*
+     * Home is an explicit item, not only the logo. The logo does link home and
+     * always has, but that is a convention people have to know rather than see
+     * — and on a deep page like a case study there was no visible way back to
+     * the landing page. A named link costs one slot and removes the guess.
+     */
+    { label: t("home"), href: "/" },
     { label: t("services"), href: "/services" },
     { label: t("solutions"), href: "/solutions" },
     { label: t("portfolio"), href: "/portfolio" },
     { label: t("about"), href: "/about" },
+    /*
+     * Labelled "Case studies" while the route stays /blog. The label is what
+     * visitors read; the path is what inbound links, the sitemap and the CMS
+     * all point at. Renaming the route would break every published URL for a
+     * wording change, so it deliberately stays put.
+     */
     { label: t("blog"), href: "/blog" },
     { label: t("contact"), href: "/contact" },
   ];

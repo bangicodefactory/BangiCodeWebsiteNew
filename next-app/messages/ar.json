@@ -154,8 +154,8 @@
     },
     "founder": {
       "label": "جهة التواصل",
-      "headline": "تحدث مع أحمد — المؤسس.",
-      "avatarAlt": "أحمد، مؤسس Bangicode",
+      "headline": "تحدث مع المؤسسين.",
+      "avatarAlt": "مؤسسو Bangicode",
       "ctaPrimary": "احجز 30 دقيقة",
       "ctaSecondaryPrefix": "أو",
       "whatsapp": "واتساب",
@@ -459,11 +459,12 @@
     "ar": "العربية"
   },
   "Nav": {
+    "home": "الرئيسية",
     "services": "الخدمات",
     "solutions": "الحلول",
     "portfolio": "أعمالنا",
     "about": "من نحن",
-    "blog": "المدونة",
+    "blog": "دراسات الحالة",
     "contact": "تواصل",
     "process": "المنهجية",
     "careers": "الوظائف",

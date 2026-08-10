@@ -154,8 +154,8 @@
     },
     "founder": {
       "label": "your point of contact",
-      "headline": "Talk to Ahmed — founder.",
-      "avatarAlt": "Ahmed, founder of Bangicode",
+      "headline": "Talk to the founders.",
+      "avatarAlt": "The founders of Bangicode",
       "ctaPrimary": "Book 30 min",
       "ctaSecondaryPrefix": "or",
       "whatsapp": "whatsapp",
@@ -459,11 +459,12 @@
     "ar": "Arabic"
   },
   "Nav": {
+    "home": "Home",
     "services": "Services",
     "solutions": "Solutions",
     "portfolio": "Portfolio",
     "about": "About",
-    "blog": "Blog",
+    "blog": "Case studies",
     "contact": "Contact",
     "process": "Process",
     "careers": "Careers",
