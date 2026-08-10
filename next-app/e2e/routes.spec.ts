@@ -162,8 +162,6 @@ test("@smoke primary nav is the Design D IA", async ({ page }) => {
     "/en/solutions",
     "/en/portfolio",
     "/en/about",
-    // Labelled "Case studies"; the route stays /blog so published URLs, the
-    // sitemap and the CMS all keep working.
     "/en/blog",
     "/en/contact",
   ]) {

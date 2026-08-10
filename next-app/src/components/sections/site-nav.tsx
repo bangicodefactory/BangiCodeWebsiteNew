@@ -55,10 +55,11 @@ export function SiteNav({ locale }: SiteNavProps) {
     { label: t("portfolio"), href: "/portfolio" },
     { label: t("about"), href: "/about" },
     /*
-     * Labelled "Case studies" while the route stays /blog. The label is what
-     * visitors read; the path is what inbound links, the sitemap and the CMS
-     * all point at. Renaming the route would break every published URL for a
-     * wording change, so it deliberately stays put.
+     * Stays "Blog". It was briefly relabelled "Case studies", which collided
+     * with /portfolio — that IS the case studies section (CLAUDE.md defines
+     * them as the one-screen project summaries), so the nav offered two
+     * entries for the same idea and pointed the clearer name at the emptier
+     * page.
      */
     { label: t("blog"), href: "/blog" },
     { label: t("contact"), href: "/contact" },

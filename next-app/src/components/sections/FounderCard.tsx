@@ -11,10 +11,13 @@ const WA_NUMBER = process.env.NEXT_PUBLIC_WA_NUMBER ?? "212664571370";
  * two pages competing copies of the same intake. The band carries the ask and
  * hands off.
  *
- * Home.founder stays as the frame: reaching the founders directly is more
- * distinctive than D's anonymous "get in touch". It named Ahmed specifically
- * until 2026-08-10; the plural is the owner's call, and it also stops the
- * section needing an edit whenever the founding team changes.
+ * Home.founder stays as the frame: reaching the people who build the thing is
+ * more distinctive than D's anonymous "get in touch".
+ *
+ * It named Ahmed specifically until 2026-08-10. Bangicode has two founders —
+ * Ahmed Chioua and Achraf Znagui — so a headline naming one was wrong, and
+ * naming both would date the moment a third person joins. "The team" is
+ * accurate at any headcount, which is why it is not "the founders" either.
  */
 export async function FounderCard() {
   const t = await getTranslations("Home.founder");
@@ -38,10 +41,9 @@ export async function FounderCard() {
 
           {/*
            * The brand mark, not an initial. This was a hardcoded "A" for
-           * Ahmed, which contradicted the headline the moment it became
-           * "Talk to the founders" — one letter reads as one person. A neutral
-           * mark says "the studio" without implying a name, and needs no
-           * second avatar the moment a third founder appears.
+           * Ahmed, which reads as one person under a headline about the team.
+           * Two initials would be no better — both founders' names begin with
+           * A. A neutral mark says "the studio" and never needs revisiting.
            */}
           <div
             className="bg-primary text-primary-foreground font-display mx-auto mt-6 flex h-16 w-16 items-center justify-center rounded-full text-2xl font-bold"
