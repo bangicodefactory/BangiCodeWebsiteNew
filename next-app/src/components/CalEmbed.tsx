@@ -5,8 +5,16 @@ import Cal, { getCalApi } from "@calcom/embed-react";
 import { useTranslations } from "next-intl";
 import { trackBookingCompleted } from "@/lib/analytics";
 
-export const CAL_EVENT_SLUG =
-  process.env.NEXT_PUBLIC_CAL_EVENT_SLUG ?? "bangicode/30min-discovery";
+/*
+ * No default. There was one — "bangicode/30min-discovery" — and that slug 404s:
+ * the account was never created. Because a 404 happens INSIDE the cross-origin
+ * iframe, CalErrorBoundary cannot see it, so the fallback below never fired and
+ * every visitor to /book got Cal.com's own error page framed inside ours. A
+ * hardcoded default is precisely what let that hide, so the unconfigured state
+ * is now explicit and renders the fallback.
+ */
+export const CAL_EVENT_SLUG: string | undefined =
+  process.env.NEXT_PUBLIC_CAL_EVENT_SLUG?.trim() || undefined;
 
 const FALLBACK_EMAIL = "hello@bangicode.ma";
 const FALLBACK_WA = "https://wa.me/212664571370";
@@ -87,6 +95,10 @@ export function CalInline({
   }, [eventSlug]);
 
   useEffect(() => {
+    // Nothing to initialise when unconfigured — the fallback renders instead.
+    // Guarded inside the effect rather than before it so the hook order stays
+    // unconditional.
+    if (!eventSlug) return;
     if (initialized.current) return;
     initialized.current = true;
     getCalApi({ namespace: "inline" })
@@ -94,7 +106,7 @@ export function CalInline({
         cal("on", {
           action: "bookingSuccessful",
           callback: () => {
-            trackBookingCompleted(eventSlugRef.current ?? CAL_EVENT_SLUG);
+            trackBookingCompleted(eventSlugRef.current ?? eventSlug);
             onBookedRef.current?.();
           },
         });
@@ -102,7 +114,7 @@ export function CalInline({
       .catch(() => {
         // Embed script failed to load — CalFallback handles the UI.
       });
-  }, []);
+  }, [eventSlug]);
 
   // Cal.com's PrefillAndIframeAttrsConfig extends Record<string, string | ...> so
   // arbitrary prefill keys (like redirectUrl) are valid even though they're not
@@ -110,6 +122,17 @@ export function CalInline({
   // the open-ended shape of the real type.
   const config: Record<string, string> = { locale, layout: "month_view" };
   if (redirectUrl) config.redirectUrl = redirectUrl;
+
+  // Unconfigured: show the email + WhatsApp route rather than embedding a 404.
+  if (!eventSlug) {
+    return (
+      <CalFallback
+        message={t("fallback")}
+        contactLabel={t("fallbackContact")}
+        whatsAppLabel={t("fallbackWhatsApp")}
+      />
+    );
+  }
 
   return (
     <CalErrorBoundary
@@ -152,6 +175,16 @@ export function CalBookButton({
   children,
   className,
 }: CalBookButtonProps) {
+  // Unconfigured: a button wired to a missing event opens an empty modal, so
+  // degrade to the mail route instead.
+  if (!eventSlug) {
+    return (
+      <a href={`mailto:${FALLBACK_EMAIL}`} className={className}>
+        {children}
+      </a>
+    );
+  }
+
   return (
     <button
       type="button"
@@ -187,6 +220,7 @@ export function CalModalInit({
   }, [eventSlug]);
 
   useEffect(() => {
+    if (!eventSlug) return;
     if (initialized.current) return;
     initialized.current = true;
     getCalApi({ namespace: "modal" })
@@ -195,7 +229,7 @@ export function CalModalInit({
         cal("on", {
           action: "bookingSuccessful",
           callback: () => {
-            trackBookingCompleted(eventSlugRef.current ?? CAL_EVENT_SLUG);
+            trackBookingCompleted(eventSlugRef.current ?? eventSlug);
             onBookedRef.current?.();
           },
         });
@@ -203,7 +237,10 @@ export function CalModalInit({
       .catch(() => {
         // Script failed to load — silent; button falls back to href gracefully.
       });
-  }, []);
+  }, [eventSlug]);
+
+  // Unconfigured: no namespace to seed. CalBookButton degrades to mailto.
+  if (!eventSlug) return null;
 
   // Invisible seed element that initialises the namespace.
   return (
