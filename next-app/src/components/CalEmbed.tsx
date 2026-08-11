@@ -5,16 +5,10 @@ import Cal, { getCalApi } from "@calcom/embed-react";
 import { useTranslations } from "next-intl";
 import { trackBookingCompleted } from "@/lib/analytics";
 
-/*
- * No default. There was one — "bangicode/30min-discovery" — and that slug 404s:
- * the account was never created. Because a 404 happens INSIDE the cross-origin
- * iframe, CalErrorBoundary cannot see it, so the fallback below never fired and
- * every visitor to /book got Cal.com's own error page framed inside ours. A
- * hardcoded default is precisely what let that hide, so the unconfigured state
- * is now explicit and renders the fallback.
- */
-export const CAL_EVENT_SLUG: string | undefined =
-  process.env.NEXT_PUBLIC_CAL_EVENT_SLUG?.trim() || undefined;
+// Resolved in lib/cal.ts so /book's server component can read it too — see the
+// note there for why there is no default.
+export { CAL_EVENT_SLUG } from "@/lib/cal";
+import { CAL_EVENT_SLUG } from "@/lib/cal";
 
 const FALLBACK_EMAIL = "hello@bangicode.ma";
 const FALLBACK_WA = "https://wa.me/212664571370";
