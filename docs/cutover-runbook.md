@@ -24,16 +24,40 @@ The site runs as a **Node.js server** (`next start` after `next build`). It requ
 
 ### Environment variables to set on the server
 
-Create `/var/www/bangicode/.env.production` (or set via cPanel → Environment Variables):
+**`NEXT_PUBLIC_*` vars do NOT belong on the server.** Next inlines them into the
+server and client chunks when `next build` runs, and that happens in CI — not on
+cPanel. By the time Passenger reads its environment the value is already
+compiled in, so setting one there changes nothing and fails silently. Verify with
+`grep -rl "<your value>" .next/` after a build: a build-time var appears in
+`.next/static/chunks/`, a runtime var does not.
 
-| Variable                     | Value                                       |
-| ---------------------------- | ------------------------------------------- |
-| `SITE_URL`                   | `https://bangicode.ma`                      |
-| `NEXT_PUBLIC_GA_ID`          | `G-XXXXXXXXXX` (from GA4 property)          |
-| `NEXT_PUBLIC_WA_NUMBER`      | `212664571370`                              |
-| `NEXT_PUBLIC_CAL_EVENT_SLUG` | `bangicode/30min-discovery`                 |
-| `RESEND_API_KEY`             | (set when email delivery is wired, BAN-146) |
-| `NODE_ENV`                   | `production`                                |
+Set these as **GitHub repository variables** (Settings → Secrets and variables →
+Actions → Variables), read by the "Build standalone bundle" step. They are repo
+*variables* rather than secrets because each one ships to every browser in the
+client bundle.
+
+| Variable                     | Value                              |
+| ---------------------------- | ---------------------------------- |
+| `NEXT_PUBLIC_GA_ID`          | `G-XXXXXXXXXX` (from GA4 property) |
+| `NEXT_PUBLIC_WA_NUMBER`      | `212664571370`                     |
+| `NEXT_PUBLIC_CAL_EVENT_SLUG` | e.g. `bangicode/discovery`         |
+
+`NEXT_PUBLIC_CAL_EVENT_SLUG` must name an event that exists — confirm with
+`curl -o /dev/null -w '%{http_code}\n' https://cal.com/<username>/<event>`.
+Leaving it unset is supported: `/book` serves the email + WhatsApp fallback.
+A slug that 404s does not, because the error occurs inside the cross-origin
+iframe where the page cannot react to it.
+
+Set these on the **server** (cPanel → Setup Node.js App → Environment
+variables). These are read at runtime, so a change takes effect on restart with
+no rebuild:
+
+| Variable               | Value                                       |
+| ---------------------- | ------------------------------------------- |
+| `SITE_URL`             | `https://bangicode.ma`                       |
+| `RESEND_API_KEY`       | (set when email delivery is wired, BAN-146) |
+| `NODE_ENV`             | `production`                                |
+| `DB_*`, `ADMIN_SESSION_SECRET` | see `next-app/.env.example`         |
 
 ### Build + start commands
 
@@ -202,7 +226,11 @@ Run these within 30 minutes of DNS swap:
 - [ ] `/en/about` — founder section visible
 - [ ] `/en/process` — 4 steps visible
 - [ ] `/en/contact` — form renders, submits successfully (use test email)
-- [ ] `/en/book` — Cal.com inline embed loads
+- [ ] `/en/book` — Cal.com inline embed loads, **and a real date is selectable**.
+      Check the network tab: the `app.cal.com/.../embed` request must return 200.
+      "The page rendered" is not enough — a 404 inside the iframe looks like a
+      loaded page, which is exactly how this shipped broken. If no slug is
+      configured, the expected result is the email + WhatsApp fallback.
 - [ ] `/en/careers` — empty state renders
 - [ ] `/en/legal/privacy` — MDX content renders
 
