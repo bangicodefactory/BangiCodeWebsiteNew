@@ -85,6 +85,13 @@ test("@smoke /book — never embeds a Cal.com event that 404s", async ({
     await expect(
       page.getByRole("link", { name: /hello@bangicode\.ma/ }),
     ).toBeVisible();
+
+    // And the page must be genuinely inert: the preconnect hints were once
+    // unconditional, so an unconfigured /book still opened a TCP + TLS
+    // connection to cal.com that nothing used.
+    await expect(
+      page.locator('link[rel="preconnect"][href*="cal.com"]'),
+    ).toHaveCount(0);
   }
 });
 
