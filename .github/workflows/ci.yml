@@ -582,19 +582,46 @@ jobs:
       # the restart, the PREVIOUS build answers 200 perfectly happily and the
       # check passed while the new release was not live at all. Nothing extra is
       # published to do this — the id is already in the HTML.
+      # DEPLOY_ALLOW_SELF_SIGNED exists because this check asks two questions and
+      # only one of them is its job. "Did the new build go live?" is what it is
+      # for. "Is the TLS certificate trusted?" is not — and conflating them cost
+      # a healthy release: new.bangicode.ma serves a self-signed cert, curl
+      # returned 000 twenty times running, and the rollback threw away a deploy
+      # whose upload, migration and restart had all succeeded.
+      #
+      # Set the variable to "true" ONLY for a staging host with a known
+      # self-signed cert. The BUILD_ID comparison still runs in full, so the
+      # check keeps the value it was written for — catching Passenger failing to
+      # respawn, which has happened on every deploy so far. What it stops doing
+      # is treating an untrusted cert as a dead site.
+      #
+      # It logs loudly, so this cannot quietly become the permanent arrangement.
       - name: Verify the site is serving the new build
         if: inputs.skip_live_check != true
+        env:
+          ALLOW_SELF_SIGNED: ${{ vars.DEPLOY_ALLOW_SELF_SIGNED }}
         run: |
           BUILD_ID="$(cat .next/BUILD_ID)"
           echo "expecting build $BUILD_ID"
+
+          INSECURE=""
+          if [ "$ALLOW_SELF_SIGNED" = "true" ]; then
+            INSECURE="--insecure"
+            echo "::warning::DEPLOY_ALLOW_SELF_SIGNED is on — the live check is NOT validating the TLS certificate for ${{ secrets.SITE_URL }}. Install a real certificate and unset this."
+          fi
+
           for i in $(seq 1 20); do
-            code=$(curl -s -o /tmp/live.html -w "%{http_code}" "${{ secrets.SITE_URL }}/en" || true)
+            code=$(curl -s $INSECURE -o /tmp/live.html -w "%{http_code}" "${{ secrets.SITE_URL }}/en" || true)
             if [ "$code" = "200" ] && grep -q "$BUILD_ID" /tmp/live.html; then
               echo "live and serving $BUILD_ID"
               exit 0
             fi
             if [ "$code" = "200" ]; then
               echo "attempt $i: HTTP 200 but still the previous build — waiting for Passenger"
+            elif [ "$code" = "000" ] && [ -z "$INSECURE" ]; then
+              # 000 is curl failing before it ever got a response. Against an
+              # https:// URL that is usually the certificate, not the app.
+              echo "attempt $i: HTTP 000 — no response. If ${{ secrets.SITE_URL }} uses a self-signed certificate this is the CERT, not the site; set the DEPLOY_ALLOW_SELF_SIGNED repo variable to 'true'."
             else
               echo "attempt $i: HTTP $code — waiting for Passenger to respawn"
             fi
