@@ -8,7 +8,7 @@ import { trackBookingCompleted } from "@/lib/analytics";
 // Resolved in lib/cal.ts so /book's server component can read it too — see the
 // note there for why there is no default.
 export { CAL_EVENT_SLUG } from "@/lib/cal";
-import { CAL_EVENT_SLUG } from "@/lib/cal";
+import { CAL_EVENT_SLUG, CAL_GUESTS } from "@/lib/cal";
 
 const FALLBACK_EMAIL = "hello@bangicode.ma";
 const FALLBACK_WA = "https://wa.me/212664571370";
@@ -112,10 +112,17 @@ export function CalInline({
 
   // Cal.com's PrefillAndIframeAttrsConfig extends Record<string, string | ...> so
   // arbitrary prefill keys (like redirectUrl) are valid even though they're not
-  // in KnownConfig. Using Record<string, string> avoids the import while retaining
-  // the open-ended shape of the real type.
-  const config: Record<string, string> = { locale, layout: "month_view" };
+  // in KnownConfig. Using Record<string, string | string[]> avoids the import
+  // while retaining the open-ended shape of the real type. The array case is
+  // `guests`, which Cal.com serialises as a repeated query parameter.
+  const config: Record<string, string | string[]> = {
+    locale,
+    layout: "month_view",
+  };
   if (redirectUrl) config.redirectUrl = redirectUrl;
+  // Prefills Cal.com's "Add guests" question so both founders are on the
+  // invite. See lib/cal.ts for what this does and does not cover.
+  if (CAL_GUESTS.length > 0) config.guests = CAL_GUESTS;
 
   // Unconfigured: show the email + WhatsApp route rather than embedding a 404.
   if (!eventSlug) {

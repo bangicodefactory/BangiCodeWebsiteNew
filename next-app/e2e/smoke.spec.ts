@@ -68,14 +68,22 @@ test("@smoke /book — never embeds a Cal.com event that 404s", async ({
     }
   });
 
-  await page.goto("/en/book");
+  await page.goto("/en/book", { waitUntil: "networkidle" });
 
   const fallback = page.getByText(/Booking widget unavailable/i);
-  const iframe = page.locator("iframe");
-  await expect(fallback.or(iframe).first()).toBeVisible();
 
+  /*
+   * Only 4xx fails. A wrong or deleted slug answers 404 every single time and
+   * is a real defect; 5xx and timeouts are Cal.com having a bad minute and say
+   * nothing about this repo. An earlier version asserted the iframe was VISIBLE,
+   * which made a green suite depend on a third party painting fast enough — it
+   * flaked on the very first configured run.
+   */
   for (const e of embeds) {
-    expect(e.status, `Cal.com embed must resolve: ${e.url}`).toBeLessThan(400);
+    expect(
+      e.status >= 400 && e.status < 500,
+      `Cal.com rejected the configured event (HTTP ${e.status}) — the slug is probably wrong or the event was deleted: ${e.url}`,
+    ).toBe(false);
   }
 
   // No embed request at all means unconfigured — the fallback must carry it,
