@@ -454,6 +454,9 @@ jobs:
           # Unset is a supported state: /book then serves the email + WhatsApp
           # fallback instead of embedding a booking widget that 404s.
           NEXT_PUBLIC_CAL_EVENT_SLUG: ${{ vars.NEXT_PUBLIC_CAL_EVENT_SLUG }}
+          # Prefills Cal.com's "Add guests" question so both founders are on
+          # every invite. Same build-time rule as the slug above.
+          NEXT_PUBLIC_CAL_GUESTS: ${{ vars.NEXT_PUBLIC_CAL_GUESTS }}
 
       # server.js serves public/ and .next/static ONLY if they sit inside the
       # standalone directory — Next does not copy them. Skipping this step
