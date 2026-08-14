@@ -81,7 +81,7 @@ const INVARIANT_KEYS = new Set([
   "Contact.officeWhatsApp",
   "Contact.formNamePlaceholder", // "Ahmed Benali"
   "Contact.formEmailPlaceholder", // "you@example.com"
-  "Contact.officeEmail", // admin@bangicode.ma
+  "Contact.officeEmail", // contact@bangicode.ma
   "Home.featuredCase.client", // "RentCar.ma"
   "Services.training.cap02Title", // "Laravel & PHP"
   // locked by CLAUDE.md — must read identically in every locale
