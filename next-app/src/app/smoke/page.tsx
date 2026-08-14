@@ -44,7 +44,6 @@ const SECTIONS = [
   { slug: "testimonials", component: "TestimonialsSection" },
   { slug: "faq", component: "FaqSection" },
   { slug: "founder-card", component: "FounderCard" },
-  { slug: "studio-status-panel", component: "StudioStatusPanel" },
 ] as const;
 
 /** Primitives that also have a /smoke/<name> page of their own. */

@@ -1,7 +1,6 @@
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
-import { StudioStatusPanel } from "@/components/sections/StudioStatusPanel";
 import { HeroGridGlow } from "@/components/sections/HeroGridGlow";
 
 /*
@@ -17,7 +16,6 @@ import { HeroGridGlow } from "@/components/sections/HeroGridGlow";
  */
 export async function HeroSection() {
   const t = await getTranslations("Home.hero");
-  const ts = await getTranslations("Home.status");
 
   return (
     <section
@@ -74,21 +72,6 @@ export async function HeroSection() {
         <p className="text-muted-foreground mt-5 font-mono text-xs">
           {t("microcopy")}
         </p>
-
-        <div className="mt-12">
-          <StudioStatusPanel
-            variant="strip"
-            ariaLabel={ts("ariaLabel")}
-            online={ts("online")}
-            sprintLabel={ts("sprintLabel")}
-            sprint={ts("sprint")}
-            availabilityLabel={ts("availabilityLabel")}
-            availability={ts("availability")}
-            teamLabel={ts("teamLabel")}
-            team={ts("team")}
-            timeLabel={ts("timeLabel")}
-          />
-        </div>
       </div>
     </section>
   );

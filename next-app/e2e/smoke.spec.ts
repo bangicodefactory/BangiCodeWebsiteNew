@@ -91,7 +91,7 @@ test("@smoke /book — never embeds a Cal.com event that 404s", async ({
   if (embeds.length === 0) {
     await expect(fallback).toBeVisible();
     await expect(
-      page.getByRole("link", { name: /hello@bangicode\.ma/ }),
+      page.getByRole("link", { name: /contact@bangicode\.ma/ }),
     ).toBeVisible();
 
     // And the page must be genuinely inert: the preconnect hints were once

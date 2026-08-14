@@ -9,17 +9,6 @@
       "ctaSecondary": "اطلع على أعمالنا",
       "microcopy": "مكالمة استكشافية 30 دقيقة · نرد خلال 24 ساعة"
     },
-    "status": {
-      "online": "متاح",
-      "sprintLabel": "السبرينت الحالي",
-      "sprint": "Friterie.ma iOS",
-      "availabilityLabel": "أقرب موعد متاح",
-      "availability": "أواخر يوليو 2026",
-      "teamLabel": "الفريق",
-      "team": "12 شخصاً · 4 تخصصات",
-      "timeLabel": "التوقيت المحلي",
-      "ariaLabel": "حالة الشركة"
-    },
     "thesis": {
       "eyebrow": "// الفلسفة",
       "headline": "مهندسون متمرسون. تسليم سريع. كود يدوم.",
@@ -159,7 +148,7 @@
       "ctaPrimary": "احجز 30 دقيقة",
       "ctaSecondaryPrefix": "أو",
       "whatsapp": "واتساب",
-      "email": "admin@bangicode.ma",
+      "email": "contact@bangicode.ma",
       "body": "أخبرنا بما تبنيه. سنرد في يوم عمل واحد.",
       "ctaSecondary": "أرسل رسالة"
     }
@@ -398,7 +387,7 @@
     "officeAddress": "شارع علي يعتى\nالمركز التجاري ولاية سنتر\nالطابق 6، رقم 69\nتطوان، المغرب",
     "officeHours": "الإثنين–الجمعة 9ص–6م",
     "officeWhatsApp": "واتساب",
-    "officeEmail": "admin@bangicode.ma",
+    "officeEmail": "contact@bangicode.ma",
     "mapTitle": "موقع مكتب Bangicode — تطوان، المغرب"
   },
   "Work": {

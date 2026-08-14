@@ -9,17 +9,6 @@
       "ctaSecondary": "See our work",
       "microcopy": "30-min discovery call · we reply within 24h"
     },
-    "status": {
-      "online": "online",
-      "sprintLabel": "current sprint",
-      "sprint": "Friterie.ma iOS",
-      "availabilityLabel": "next availability",
-      "availability": "late july 2026",
-      "teamLabel": "team",
-      "team": "12 people · 4 practices",
-      "timeLabel": "local time",
-      "ariaLabel": "Agency status"
-    },
     "thesis": {
       "eyebrow": "// the thesis",
       "headline": "Senior engineers. Fast delivery. Code that lasts.",
@@ -159,7 +148,7 @@
       "ctaPrimary": "Book 30 min",
       "ctaSecondaryPrefix": "or",
       "whatsapp": "whatsapp",
-      "email": "admin@bangicode.ma",
+      "email": "contact@bangicode.ma",
       "body": "Tell us what you're building. We'll reply within one business day.",
       "ctaSecondary": "Send a message"
     }
@@ -398,7 +387,7 @@
     "officeAddress": "Av. Ali Yaeta\nCentre Commercial Wilaya Center\nEtage 6, N69\nTetouan, Morocco",
     "officeHours": "Mon–Fri 9h–18h",
     "officeWhatsApp": "WhatsApp",
-    "officeEmail": "admin@bangicode.ma",
+    "officeEmail": "contact@bangicode.ma",
     "mapTitle": "Bangicode office location — Tetouan, Morocco"
   },
   "Work": {

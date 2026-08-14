@@ -9,17 +9,6 @@
       "ctaSecondary": "Voir nos réalisations",
       "microcopy": "Appel découverte de 30 min · réponse sous 24h"
     },
-    "status": {
-      "online": "en ligne",
-      "sprintLabel": "sprint actuel",
-      "sprint": "Friterie.ma iOS",
-      "availabilityLabel": "prochaine disponibilité",
-      "availability": "fin juillet 2026",
-      "teamLabel": "équipe",
-      "team": "12 personnes · 4 expertises",
-      "timeLabel": "heure locale",
-      "ariaLabel": "Statut de l'agence"
-    },
     "thesis": {
       "eyebrow": "// la thèse",
       "headline": "Ingénieurs seniors. Livraison rapide. Code qui dure.",
@@ -159,7 +148,7 @@
       "ctaPrimary": "Réserver 30 min",
       "ctaSecondaryPrefix": "ou",
       "whatsapp": "whatsapp",
-      "email": "admin@bangicode.ma",
+      "email": "contact@bangicode.ma",
       "body": "Dites-nous ce que vous construisez. Nous répondrons en un jour ouvré.",
       "ctaSecondary": "Envoyer un message"
     }
@@ -398,7 +387,7 @@
     "officeAddress": "Av. Ali Yaeta\nCentre Commercial Wilaya Center\nEtage 6, N69\nTétouan, Maroc",
     "officeHours": "Lun–Ven 9h–18h",
     "officeWhatsApp": "WhatsApp",
-    "officeEmail": "admin@bangicode.ma",
+    "officeEmail": "contact@bangicode.ma",
     "mapTitle": "Emplacement du bureau Bangicode — Tétouan, Maroc"
   },
   "Work": {
