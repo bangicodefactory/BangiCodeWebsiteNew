@@ -1,6 +1,6 @@
 # ADR 0001 — Adopt the Claude Design System token set, authored locally
 
-- **Status:** Accepted
+- **Status:** Accepted · one decision reversed — see the `StudioStatusPanel` note below (2026-08-14)
 - **Date:** 2026-08-05
 - **Supersedes:** `DESIGN.md` (colour values), `REDESIGN_PLAN.md` §1 (Styling / Visual reference), §1A, §1B, §4; `CLAUDE.md` "Token source of truth" and "Component library" rule 1.
 
@@ -110,6 +110,20 @@ brand name, verb-first CTAs) and CLAUDE.md's software-company-not-marketing posi
 **We take D's layout, structure, section order and visual language; we keep the existing
 voice and the existing 92-string `Home` catalog.** The design project's own author flagged
 this contradiction and asked which positioning was final — this ADR is the answer.
+
+> **⚠ Reversed on 2026-08-14 — the panel was removed.** Everything below about
+> `StudioStatusPanel` describes a component that no longer exists. Kept as the record of
+> what was decided, not as a description of the code.
+>
+> The argument below rests on the panel being *live* — current sprint, next availability,
+> local time. Nothing kept those fields current, so in practice it advertised a sprint on
+> "Friterie.ma iOS" and availability in "late july 2026". A staleness-prone differentiator
+> is a liability rather than a differentiator, and the honest fix was to drop it rather
+> than to promise upkeep nobody had signed up for. `LocalClock` went with it, having had no
+> other consumer. See the "Consumer-specific sections" note in CLAUDE.md.
+>
+> Design D's assignment of spark-red to "the active dot" still stands as a token decision;
+> it simply no longer has a consumer.
 
 **`StudioStatusPanel` is kept.** Design D has no slot for it. It stays anyway: live local
 time, current sprint and next availability are a genuine differentiator, it is called out
