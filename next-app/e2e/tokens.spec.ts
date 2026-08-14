@@ -385,3 +385,120 @@ test("@smoke hero grid lights under the pointer and follows it", async ({
     first.x,
   );
 });
+
+/*
+ * The case that shipped broken.
+ *
+ * Turning the light on used to live in a `pointerenter` handler, and
+ * pointerenter does NOT fire for an element that appears under a STATIONARY
+ * cursor. The hero fills the viewport, so arriving with the cursor already over
+ * it is the normal case — click a link, land, move your hand. `--glow-x`
+ * tracked correctly the whole time while `--glow-strength` stayed unset, so the
+ * effect was silently dead until you left the hero and came back.
+ *
+ * The original test moved in from (0,0), outside the hero — the one path where
+ * pointerenter does fire — which is exactly why it passed.
+ */
+test("@smoke hero glow lights even if the cursor was already there on load", async ({
+  page,
+}) => {
+  // Park the cursor where the hero will render, BEFORE navigating.
+  await page.mouse.move(640, 300);
+  await page.goto("/en");
+  // Wait for hydration, or the nudge below lands before the listener is
+  // attached and the test measures the hydration race rather than the bug.
+  await page.waitForLoadState("networkidle");
+
+  // A small movement, still inside the hero — never crossing its boundary.
+  await page.mouse.move(660, 310);
+  await page.waitForTimeout(600);
+
+  const glow = page.locator(".hero-grid-glow");
+  await expect(
+    glow,
+    "the glow must light without the pointer having to cross into the hero",
+  ).toHaveCSS("opacity", "1");
+});
+
+/*
+ * A light that chases a finger it cannot track sits frozen wherever the last
+ * tap landed, so the effect is skipped entirely on touch and under reduced
+ * motion. Without these, both guards could be deleted and every other test
+ * would still pass.
+ */
+test.describe("hero glow opt-outs", () => {
+  test.use({ hasTouch: true, isMobile: true });
+
+  /*
+   * This test dispatches a synthetic `pointermove` rather than tapping.
+   *
+   * The first version tapped the screen and asserted the glow stayed dark — and
+   * it passed with the opt-out DELETED, because a tap never produces a
+   * pointermove in the first place. It could not distinguish a working guard
+   * from no guard at all. Self-testing caught it; the reduced-motion sibling
+   * failed correctly while this one sat green.
+   *
+   * A synthetic mouse pointermove is the discriminator: with the media gate in
+   * place no listener is attached and nothing happens, and without it the glow
+   * lights on a device that can never move a cursor.
+   */
+  test("@smoke stays dark on touch devices", async ({ page }) => {
+    await page.goto("/en");
+    await page.waitForLoadState("networkidle");
+
+    expect(
+      await page.evaluate(
+        () => matchMedia("(hover: hover) and (pointer: fine)").matches,
+      ),
+      "this context must NOT report hover, or the test proves nothing",
+    ).toBe(false);
+
+    await page.evaluate(() => {
+      document.querySelector("#hero")!.dispatchEvent(
+        new PointerEvent("pointermove", {
+          pointerType: "mouse",
+          clientX: 200,
+          clientY: 300,
+          bubbles: true,
+        }),
+      );
+    });
+    await page.waitForTimeout(500);
+
+    await expect(
+      page.locator(".hero-grid-glow"),
+      "no hover means the handler must never have been attached",
+    ).toHaveCSS("opacity", "0");
+  });
+});
+
+/*
+ * `page.emulateMedia()`, NOT `test.use({ reducedMotion })`.
+ *
+ * test.use is silently ignored in this setup — the page reports
+ * `matchMedia("(prefers-reduced-motion: reduce)").matches === false` — so a
+ * test written that way passes for the wrong reason: nothing is emulated, the
+ * glow behaves normally, and only an assertion inverted by luck would fail.
+ * Verified both: test.use gives false, emulateMedia gives true.
+ */
+test("@smoke hero glow stays dark when reduced motion is requested", async ({
+  page,
+}) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  expect(
+    await page.evaluate(
+      () => matchMedia("(prefers-reduced-motion: reduce)").matches,
+    ),
+    "the emulation itself must be in effect, or this test proves nothing",
+  ).toBe(true);
+
+  await page.goto("/en");
+  await page.waitForLoadState("networkidle");
+
+  const hero = page.locator("#hero");
+  const box = (await hero.boundingBox())!;
+  await page.mouse.move(box.x + 400, box.y + 250);
+  await page.waitForTimeout(500);
+
+  await expect(page.locator(".hero-grid-glow")).toHaveCSS("opacity", "0");
+});

@@ -20,12 +20,12 @@ export function HeroGridGlow() {
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const el = ref.current;
+    const node = ref.current;
     // The hero is the pointer target, not this layer: the layer is
     // pointer-events-none and sits behind the content, so it never sees the
     // cursor itself.
-    const host = el?.closest("section");
-    if (!el || !host) return;
+    const host = node?.closest("section");
+    if (!node || !host) return;
 
     /*
      * Skip entirely on touch and for reduced motion.
@@ -34,19 +34,37 @@ export function HeroGridGlow() {
      * no hover, and a light that follows a finger it cannot track would sit
      * frozen wherever the last tap landed. Checking the viewport width instead
      * would light up a touchscreen laptop and skip a small desktop window.
+     *
+     * Re-evaluated on change rather than only at mount, so toggling the OS
+     * reduced-motion setting or plugging in a mouse takes effect without a
+     * reload.
      */
     const canHover = window.matchMedia("(hover: hover) and (pointer: fine)");
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
-    if (!canHover.matches || reduced.matches) return;
 
     let frame = 0;
     let x = 0;
     let y = 0;
+    let attached = false;
 
     function paint() {
       frame = 0;
-      el!.style.setProperty("--glow-x", `${x}px`);
-      el!.style.setProperty("--glow-y", `${y}px`);
+      node!.style.setProperty("--glow-x", `${x}px`);
+      node!.style.setProperty("--glow-y", `${y}px`);
+      /*
+       * Turning the light ON lives here, not in a pointerenter handler.
+       *
+       * pointerenter does not fire for an element that appears under a
+       * STATIONARY cursor — and the hero fills the viewport, so landing on the
+       * page with the cursor already over it is the normal case: click a link,
+       * arrive, move your hand. With the enter handler owning this, --glow-x
+       * tracked correctly while --glow-strength stayed unset, so the effect was
+       * silently dead until you left the hero and came back.
+       *
+       * pointermove fires on entry too, so this covers both paths with one
+       * listener.
+       */
+      node!.style.setProperty("--glow-strength", "1");
     }
 
     function onPointerMove(event: PointerEvent) {
@@ -61,28 +79,43 @@ export function HeroGridGlow() {
       if (!frame) frame = requestAnimationFrame(paint);
     }
 
-    function onPointerEnter(event: PointerEvent) {
-      if (event.pointerType === "touch") return;
-      // Place the light before fading it in, so it does not appear at the
-      // centre and slide to the cursor on the first move.
-      onPointerMove(event);
-      paint();
-      el!.style.setProperty("--glow-strength", "1");
-    }
-
     function onPointerLeave() {
-      el!.style.setProperty("--glow-strength", "0");
+      node!.style.setProperty("--glow-strength", "0");
     }
 
-    host.addEventListener("pointermove", onPointerMove, { passive: true });
-    host.addEventListener("pointerenter", onPointerEnter, { passive: true });
-    host.addEventListener("pointerleave", onPointerLeave, { passive: true });
+    function attach() {
+      if (attached) return;
+      attached = true;
+      host!.addEventListener("pointermove", onPointerMove, { passive: true });
+      host!.addEventListener("pointerleave", onPointerLeave, { passive: true });
+    }
+
+    function detach() {
+      if (!attached) return;
+      attached = false;
+      if (frame) {
+        cancelAnimationFrame(frame);
+        frame = 0;
+      }
+      host!.removeEventListener("pointermove", onPointerMove);
+      host!.removeEventListener("pointerleave", onPointerLeave);
+      // Leave nothing lit behind when the preference flips mid-session.
+      node!.style.setProperty("--glow-strength", "0");
+    }
+
+    function sync() {
+      if (canHover.matches && !reduced.matches) attach();
+      else detach();
+    }
+
+    sync();
+    canHover.addEventListener("change", sync);
+    reduced.addEventListener("change", sync);
 
     return () => {
-      if (frame) cancelAnimationFrame(frame);
-      host.removeEventListener("pointermove", onPointerMove);
-      host.removeEventListener("pointerenter", onPointerEnter);
-      host.removeEventListener("pointerleave", onPointerLeave);
+      canHover.removeEventListener("change", sync);
+      reduced.removeEventListener("change", sync);
+      detach();
     };
   }, []);
 
