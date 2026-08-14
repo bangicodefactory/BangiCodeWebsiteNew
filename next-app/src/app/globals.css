@@ -73,6 +73,56 @@ body {
     translate, scale;
 }
 
+/*
+ * The hero grid lit under the pointer.
+ *
+ * A SECOND grid drawn in sky over the navy one, revealed only through a circle
+ * that follows the cursor. The base grid in HeroSection is untouched: it is the
+ * LCP band, it server-renders with no JS, and it must look finished before this
+ * layer ever loads.
+ *
+ * Driven entirely by custom properties so the pointer handler can write to
+ * style directly — no React state, so moving the mouse never re-renders. The
+ * only animated properties are opacity and the mask position, both of which
+ * stay off the main thread.
+ *
+ * `background-size` MUST match the base grid's 80px or the two sets of lines
+ * sit slightly apart and the effect reads as a rendering fault rather than a
+ * highlight.
+ *
+ * Two masks, intersected: the pointer circle AND the hero's own radial fade, so
+ * the lit grid can never extend past where the base grid has already faded out.
+ */
+@utility hero-grid-glow {
+  background-image:
+    linear-gradient(to right, var(--color-sky-500) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--color-sky-500) 1px, transparent 1px);
+  background-size: 80px 80px;
+
+  --glow-x: 50%;
+  --glow-y: 50%;
+
+  -webkit-mask-image:
+    radial-gradient(
+      circle 190px at var(--glow-x) var(--glow-y),
+      black,
+      transparent 70%
+    ),
+    radial-gradient(ellipse at center, black, transparent 78%);
+  mask-image:
+    radial-gradient(
+      circle 190px at var(--glow-x) var(--glow-y),
+      black,
+      transparent 70%
+    ),
+    radial-gradient(ellipse at center, black, transparent 78%);
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+
+  opacity: var(--glow-strength, 0);
+  transition: opacity 400ms var(--ease-out);
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

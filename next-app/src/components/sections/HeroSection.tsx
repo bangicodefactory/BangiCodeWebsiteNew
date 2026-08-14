@@ -2,6 +2,7 @@ import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { StudioStatusPanel } from "@/components/sections/StudioStatusPanel";
+import { HeroGridGlow } from "@/components/sections/HeroGridGlow";
 
 /*
  * Design D's hero: a dark navy band, centred, with a mono eyebrow between two
@@ -29,6 +30,12 @@ export async function HeroSection() {
         aria-hidden="true"
         className="pointer-events-none absolute inset-0 -z-10 [background-image:linear-gradient(to_right,var(--color-navy-900)_1px,transparent_1px),linear-gradient(to_bottom,var(--color-navy-900)_1px,transparent_1px)] [mask-image:radial-gradient(ellipse_at_center,black,transparent_78%)] [background-size:80px_80px]"
       />
+      {/*
+       * The same grid in sky, lit under the pointer. A later sibling at the
+       * same -z-10, so it paints over the navy grid and still sits behind the
+       * copy. Client-side and purely additive — see HeroGridGlow.
+       */}
+      <HeroGridGlow />
       {/* spark bloom — the ~5% of red this band is allowed */}
       <div
         aria-hidden="true"

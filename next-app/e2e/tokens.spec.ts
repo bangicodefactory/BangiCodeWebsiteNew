@@ -327,3 +327,61 @@ test("@smoke a hover eases rather than snapping", async ({ page }) => {
     `expected intermediate positions, saw only: ${[...seen].join(" | ")}`,
   ).toBeGreaterThan(2);
 });
+
+/*
+ * The hero grid lights under the pointer and follows it.
+ *
+ * The value of this test is mostly the LAST assertion. The lit layer is a
+ * client component sitting in the LCP band, and the base grid it sits over is a
+ * server-rendered CSS background with no JavaScript. If someone ever "tidies"
+ * the two into one client component, the hero would render its texture only
+ * after hydration — invisible in review, and a direct hit on an LCP budget that
+ * is CI-enforced at under 2.0s. So this asserts the base grid is still in the
+ * SERVED HTML, not merely in the live DOM.
+ *
+ * The alignment assertion matters too: the two grids must share an 80px cell or
+ * the lit lines sit beside the dim ones and it reads as a rendering fault
+ * rather than a highlight.
+ */
+test("@smoke hero grid lights under the pointer and follows it", async ({
+  page,
+}) => {
+  const response = await page.goto("/en");
+
+  // The dim grid must come from the server, before any JS runs.
+  const html = (await response?.text()) ?? "";
+  expect(
+    html,
+    "the base hero grid must be server-rendered — it is the LCP band",
+  ).toContain("--color-navy-900");
+
+  const glow = page.locator(".hero-grid-glow");
+  await expect(glow).toBeAttached();
+  await expect(glow).toHaveCSS("opacity", "0");
+
+  const hero = page.locator("#hero");
+  const box = (await hero.boundingBox())!;
+
+  await page.mouse.move(box.x + 300, box.y + 200);
+  await page.waitForTimeout(500);
+  const first = await glow.evaluate((el) => ({
+    x: el.style.getPropertyValue("--glow-x"),
+    opacity: getComputedStyle(el).opacity,
+    bg: getComputedStyle(el).backgroundSize,
+  }));
+
+  expect(first.opacity, "must light up on hover").toBe("1");
+  expect(first.x, "must record the pointer position").not.toBe("");
+  expect(first.bg, "lit grid must share the base grid's 80px cell").toContain(
+    "80px",
+  );
+
+  await page.mouse.move(box.x + 900, box.y + 350);
+  await page.waitForTimeout(500);
+  const second = await glow.evaluate((el) =>
+    el.style.getPropertyValue("--glow-x"),
+  );
+  expect(second, "must follow the pointer, not stay where it started").not.toBe(
+    first.x,
+  );
+});
