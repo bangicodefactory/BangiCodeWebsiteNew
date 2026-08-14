@@ -144,10 +144,10 @@ export async function SiteFooter() {
                   +212 664 571 370
                 </a>
                 <a
-                  href="mailto:admin@bangicode.ma"
+                  href="mailto:contact@bangicode.ma"
                   className={MONO_CONTACT_LINK_CLASS}
                 >
-                  admin@bangicode.ma
+                  contact@bangicode.ma
                 </a>
                 <a
                   href="https://wa.me/212664571370"
