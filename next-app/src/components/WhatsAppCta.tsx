@@ -10,18 +10,39 @@ const WA_NUMBER = process.env.NEXT_PUBLIC_WA_NUMBER ?? "212664571370";
 export function WhatsAppCta() {
   const t = useTranslations("WhatsAppCta");
   const [inputFocused, setInputFocused] = useState(false);
+  const [footerVisible, setFooterVisible] = useState(false);
 
   /*
-   * The button used to hide while scrolling DOWN and reappear on the way up
-   * (`visible = y < lastScrollY || y < 80`, here since BAN-136). That is the
-   * right pattern for a sticky nav bar, which competes with the page for
-   * reading space. This is a 56px circle in a corner and it is the conversion
-   * CTA — so it was hiding at precisely the moment someone reads far enough
-   * into a service page or case study to want to make contact.
+   * Step aside once the footer is on screen.
    *
-   * Hiding on input focus stays: on a phone a floating button sitting over the
-   * field you are typing into is genuinely in the way.
+   * The button is `fixed bottom-5 end-5`, and the footer's legal row sits in
+   * that same corner — so at the bottom of the page it covered the "Cookies"
+   * link by 77% on desktop and `elementFromPoint` at the link's own centre
+   * returned the BUTTON. The link was unclickable, and keyboard focus landed
+   * underneath it (WCAG 2.2 SC 2.4.11). Every page shares the footer, so this
+   * was every page.
+   *
+   * This was hidden for as long as it was because the old scroll-direction
+   * hiding masked it: the button was always gone by the time you reached the
+   * footer. Removing that hiding is what exposed it.
+   *
+   * Keyed on the footer intersecting rather than on scroll direction, so the
+   * button stays put while reading — which is the entire point of the change —
+   * and only yields where it would actually obscure something.
    */
+  useEffect(() => {
+    const footer = document.querySelector("footer");
+    if (!footer) return;
+    const io = new IntersectionObserver(
+      (entries) => setFooterVisible(entries.some((e) => e.isIntersecting)),
+      // Let the footer come properly into view before yielding, so the button
+      // does not flicker away on a scroll that merely grazes it.
+      { rootMargin: "0px 0px -48px 0px" },
+    );
+    io.observe(footer);
+    return () => io.disconnect();
+  }, []);
+
   useEffect(() => {
     const INPUT_SELECTOR = "input, textarea, select";
     function onFocusIn(e: FocusEvent) {
@@ -45,7 +66,18 @@ export function WhatsAppCta() {
     };
   }, []);
 
-  const hidden = inputFocused;
+  /*
+   * It used to hide whenever you scrolled DOWN past 80px and return on the way
+   * up (`visible = y < lastScrollY || y < 80`, here since BAN-136). That is the
+   * right pattern for a sticky nav bar, which competes with the page for
+   * reading space. This is a 56px circle in a corner and it is the conversion
+   * CTA, so it was disappearing at precisely the moment someone reads far
+   * enough into a service page or case study to want to make contact.
+   *
+   * What remains are the two cases where it is genuinely in the way: over a
+   * field being typed into, and over the footer.
+   */
+  const hidden = inputFocused || footerVisible;
   const href = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(t("prefill"))}`;
 
   const handleClick = useCallback(() => {
@@ -66,11 +98,12 @@ export function WhatsAppCta() {
         // WhatsApp brand green is intentionally NOT a bangicode token — it is
         // a third-party brand mark and must stay recognisable.
         "bg-[#25D366] text-white shadow-lg",
-        // 300ms, not the 200ms used for hovers: this transition carries the
-        // ENTRANCE (translate-y-20 + opacity), and a floating button sliding
-        // in wants a slower, calmer curve than a button responding to a
-        // pointer. The duration lives here because transition-interactive
-        // deliberately does not set one — see the note in globals.css.
+        // 300ms, not the 200ms used for hovers: this carries the button
+        // sliding out of and back into the corner (translate-y-20 + opacity)
+        // when a field takes focus or the footer arrives, and that wants a
+        // slower, calmer curve than a button responding to a pointer. The
+        // duration lives here because transition-interactive deliberately does
+        // not set one — see the note in globals.css.
         "transition-interactive duration-300 ease-out motion-reduce:transition-none",
         "hover:scale-110",
         "focus-visible:ring-ring focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",

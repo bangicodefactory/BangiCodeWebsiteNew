@@ -109,20 +109,31 @@ test("@smoke /book — never embeds a Cal.com event that 404s", async ({
  * asserted the button was visible — which it is, at scroll position 0. It was
  * reported as a bug from the live site.
  *
- * Deep in the page is exactly where someone decides to make contact, so this
- * asserts it survives the scroll rather than merely existing on arrival.
- * Opacity, not just visibility: the hidden state was `opacity-0` plus
- * `translate-y-20`, and an opacity-0 element still passes toBeVisible().
+ * Mid-page is exactly where someone decides to make contact, so this asserts it
+ * survives the scroll rather than merely existing on arrival.
+ *
+ * Opacity, not just visibility: the hidden state is `opacity-0` plus
+ * `translate-y-20`, and an opacity-0 element STILL PASSES toBeVisible(). Proved
+ * by reinstating the old behaviour — toBeVisible() passed, the opacity check
+ * failed with "Expected: 1, Received: 0". Asserting visibility alone would ship
+ * green against the bug it exists to catch.
+ *
+ * The explicit wait is load-bearing, not cosmetic: toHaveCSS auto-retries, so
+ * without it the assertion passes instantly at opacity 1 — before a
+ * scroll-driven hide could ever run — and the guard silently becomes a no-op.
  */
-test("@smoke WhatsApp CTA — stays visible when scrolled to the bottom", async ({
+test("@smoke WhatsApp CTA — survives scrolling down the page", async ({
   page,
 }) => {
   await page.goto("/en");
   const cta = page.getByTestId("whatsapp-cta");
   await expect(cta).toBeVisible();
 
-  await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
-  // Settle the scroll handler and any transition it may have started.
+  // Mid-page: past the fold, but short of the footer, which the button yields
+  // to on purpose (see the obscuring test below).
+  await page.evaluate(() =>
+    window.scrollTo(0, Math.round(document.body.scrollHeight / 2)),
+  );
   await page.waitForTimeout(600);
 
   await expect(cta).toBeVisible();
@@ -131,6 +142,57 @@ test("@smoke WhatsApp CTA — stays visible when scrolled to the bottom", async 
     await page.evaluate(() => window.scrollY),
     "the page must actually have scrolled for this test to mean anything",
   ).toBeGreaterThan(200);
+});
+
+/*
+ * Making the button always-visible made it cover the footer's "Cookies" link by
+ * 77% on desktop — elementFromPoint at the link's own centre returned the
+ * BUTTON, so the link could not be clicked and keyboard focus landed underneath
+ * it (WCAG 2.2 SC 2.4.11). The scroll-direction hiding had masked it: the
+ * button was always gone by the time you reached the footer.
+ *
+ * Asserting on the Cookies link specifically would guard one symptom. This asks
+ * the real question — is the button covering ANY interactive element — so it
+ * still holds when the footer is rearranged or the button moves.
+ */
+test("@smoke WhatsApp CTA — never covers an interactive element", async ({
+  page,
+}) => {
+  for (const path of ["/en", "/en/contact", "/en/portfolio/rentcar"]) {
+    await page.goto(path);
+    await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+    await page.waitForTimeout(600);
+
+    const blocked = await page.evaluate(() => {
+      const sel = '[data-testid="whatsapp-cta"]';
+      const cta = document.querySelector(sel);
+      if (!cta) return ["the CTA is not on the page at all"];
+      const hits: string[] = [];
+      for (const el of document.querySelectorAll(
+        "a, button, input, textarea, select",
+      )) {
+        if (el.closest(sel)) continue;
+        const b = el.getBoundingClientRect();
+        // On screen and actually rendered.
+        if (!b.width || !b.height) continue;
+        if (b.bottom < 0 || b.top > window.innerHeight) continue;
+        const top = document.elementFromPoint(
+          b.x + b.width / 2,
+          b.y + b.height / 2,
+        );
+        if (top?.closest(sel))
+          hits.push(
+            `<${el.tagName.toLowerCase()}> "${(el.textContent || "").trim().slice(0, 40)}"`,
+          );
+      }
+      return hits;
+    });
+
+    expect(
+      blocked,
+      `the WhatsApp CTA is covering interactive elements on ${path}`,
+    ).toEqual([]);
+  }
 });
 
 test("@smoke WhatsApp CTA — visible on each locale", async ({ page }) => {
