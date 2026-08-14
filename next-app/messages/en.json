@@ -9,17 +9,6 @@
       "ctaSecondary": "See our work",
       "microcopy": "30-min discovery call · we reply within 24h"
     },
-    "status": {
-      "online": "online",
-      "sprintLabel": "current sprint",
-      "sprint": "Friterie.ma iOS",
-      "availabilityLabel": "next availability",
-      "availability": "late july 2026",
-      "teamLabel": "team",
-      "team": "12 people · 4 practices",
-      "timeLabel": "local time",
-      "ariaLabel": "Agency status"
-    },
     "thesis": {
       "eyebrow": "// the thesis",
       "headline": "Senior engineers. Fast delivery. Code that lasts.",

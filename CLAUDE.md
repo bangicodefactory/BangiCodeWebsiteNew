@@ -90,7 +90,7 @@ Primitives live locally in `next-app/src/components/ui/`: badge · button · car
 
 1. **Author tokens in `next-app/src/styles/tokens.css`.** Keep them in that file rather than inline in `globals.css`, so there's a single seam to remove if a real registry ever ships. Define every token in **both** semantic vocabularies (shadcn + Material-3) — see "Token source of truth" above.
 2. **Prefer editing a primitive over forking it.** A page-level wrapper that composes primitives is fine; a near-duplicate of `ui/<name>.tsx` is not.
-3. **Consumer-specific sections** (StudioStatusPanel, ThesisLineStats, FeaturedCase, PeekCards, WhatHappensNext, FounderCard, TrustedByRow, WhyBangicode, SolutionsSection, FaqSection) live in `next-app/src/components/sections/`. They use **only** token classes — **no raw hex**. The old `#ffb4a9` exception for the online dot is retired; that dot now uses the spark token.
+3. **Consumer-specific sections** (ThesisLineStats, FeaturedCase, PeekCards, WhatHappensNext, FounderCard, TrustedByRow, WhyBangicode, SolutionsSection, FaqSection) live in `next-app/src/components/sections/`. They use **only** token classes — **no raw hex**. StudioStatusPanel was removed on 2026-08-14 along with its `● online` dot and `LocalClock`, which had no other consumer; the retired `#ffb4a9` exception went with it.
 4. **The smoke gallery** (`src/app/smoke/`, gated by `SMOKE_GALLERY=1`) is the per-section verification surface. Add a page when you add a section, register it in the `SECTIONS` list in `src/app/smoke/page.tsx`, and remove both when you drop one. Note it is a **separate root layout** — it inherits nothing from `[locale]/layout.tsx`, so `smoke/layout.tsx` must keep its own `globals.css` import and font variables (ADR 0001, bug 5).
 5. **`pnpm check:registry-pin`** guards a registry we no longer consume. Disable or repoint it — tracked separately.
 6. **Still to build consumer-side:** NavigationMenu (IST-127, already bespoke in `components/nav/`) and any page-specific composition. An `Accordion` primitive is **not** needed — `FaqSection` uses native `<details>`/`<summary>`, which gives the disclosure semantics and keyboard handling for free and keeps the section off the client bundle (ADR 0001).
@@ -138,7 +138,6 @@ per run — never a production database).
 - **Footer services list:** Custom software / E-commerce / Technical training / Social presence. (NOT the generic "Web Development / Mobile Solutions / UI/UX Strategy / Cloud Systems" that Stitch hallucinated.)
 - **Testimonials:** keep the Youssef B. / Friterie.ma placeholder. Mark it `data-placeholder="true"` so it's grep-able.
 - **Case studies:** short 1-screen summaries with "Full case study available on request — contact us" CTA. NOT long-form.
-- **Studio status panel `● online` indicator:** uses the **spark** token (brand red `#D30F33` family). The design system assigns spark-red to "the active dot", which matches the original intent behind the retired `#ffb4a9` hex. Do not use sky-blue here.
 - **Hero CTA naming:** "Start a project" everywhere (in both nav and body). NOT "Let's Build" (Stitch swap).
 
 ---

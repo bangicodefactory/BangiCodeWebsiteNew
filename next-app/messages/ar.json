@@ -9,17 +9,6 @@
       "ctaSecondary": "اطلع على أعمالنا",
       "microcopy": "مكالمة استكشافية 30 دقيقة · نرد خلال 24 ساعة"
     },
-    "status": {
-      "online": "متاح",
-      "sprintLabel": "السبرينت الحالي",
-      "sprint": "Friterie.ma iOS",
-      "availabilityLabel": "أقرب موعد متاح",
-      "availability": "أواخر يوليو 2026",
-      "teamLabel": "الفريق",
-      "team": "12 شخصاً · 4 تخصصات",
-      "timeLabel": "التوقيت المحلي",
-      "ariaLabel": "حالة الشركة"
-    },
     "thesis": {
       "eyebrow": "// الفلسفة",
       "headline": "مهندسون متمرسون. تسليم سريع. كود يدوم.",
