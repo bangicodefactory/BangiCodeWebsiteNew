@@ -103,6 +103,36 @@ test("@smoke /book — never embeds a Cal.com event that 404s", async ({
   }
 });
 
+/*
+ * The CTA used to hide while scrolling DOWN and return on the way up. Nothing
+ * caught that as surprising because the only coverage loaded the page and
+ * asserted the button was visible — which it is, at scroll position 0. It was
+ * reported as a bug from the live site.
+ *
+ * Deep in the page is exactly where someone decides to make contact, so this
+ * asserts it survives the scroll rather than merely existing on arrival.
+ * Opacity, not just visibility: the hidden state was `opacity-0` plus
+ * `translate-y-20`, and an opacity-0 element still passes toBeVisible().
+ */
+test("@smoke WhatsApp CTA — stays visible when scrolled to the bottom", async ({
+  page,
+}) => {
+  await page.goto("/en");
+  const cta = page.getByTestId("whatsapp-cta");
+  await expect(cta).toBeVisible();
+
+  await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+  // Settle the scroll handler and any transition it may have started.
+  await page.waitForTimeout(600);
+
+  await expect(cta).toBeVisible();
+  await expect(cta).toHaveCSS("opacity", "1");
+  expect(
+    await page.evaluate(() => window.scrollY),
+    "the page must actually have scrolled for this test to mean anything",
+  ).toBeGreaterThan(200);
+});
+
 test("@smoke WhatsApp CTA — visible on each locale", async ({ page }) => {
   for (const locale of ["en", "fr", "ar"]) {
     await page.goto(`/${locale}`);

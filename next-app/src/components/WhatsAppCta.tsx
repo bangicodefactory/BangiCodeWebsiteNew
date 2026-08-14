@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import { trackWhatsappClick } from "@/lib/analytics";
@@ -9,38 +9,19 @@ const WA_NUMBER = process.env.NEXT_PUBLIC_WA_NUMBER ?? "212664571370";
 
 export function WhatsAppCta() {
   const t = useTranslations("WhatsAppCta");
-  const [visible, setVisible] = useState(true);
   const [inputFocused, setInputFocused] = useState(false);
-  const lastScrollY = useRef(0);
-  const ticking = useRef(false);
 
-  // Sync initial visibility with any scroll position already restored by the browser.
-  // rAF keeps setState out of the effect body, satisfying react-hooks/set-state-in-effect.
-  useEffect(() => {
-    const id = requestAnimationFrame(() => {
-      lastScrollY.current = window.scrollY;
-      setVisible(window.scrollY < 80);
-    });
-    return () => cancelAnimationFrame(id);
-  }, []);
-
-  useEffect(() => {
-    function onScroll() {
-      if (ticking.current) return;
-      ticking.current = true;
-      requestAnimationFrame(() => {
-        const y = window.scrollY;
-        if (Math.abs(y - lastScrollY.current) > 4) {
-          setVisible(y < lastScrollY.current || y < 80);
-          lastScrollY.current = y;
-        }
-        ticking.current = false;
-      });
-    }
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
+  /*
+   * The button used to hide while scrolling DOWN and reappear on the way up
+   * (`visible = y < lastScrollY || y < 80`, here since BAN-136). That is the
+   * right pattern for a sticky nav bar, which competes with the page for
+   * reading space. This is a 56px circle in a corner and it is the conversion
+   * CTA — so it was hiding at precisely the moment someone reads far enough
+   * into a service page or case study to want to make contact.
+   *
+   * Hiding on input focus stays: on a phone a floating button sitting over the
+   * field you are typing into is genuinely in the way.
+   */
   useEffect(() => {
     const INPUT_SELECTOR = "input, textarea, select";
     function onFocusIn(e: FocusEvent) {
@@ -64,7 +45,7 @@ export function WhatsAppCta() {
     };
   }, []);
 
-  const hidden = !visible || inputFocused;
+  const hidden = inputFocused;
   const href = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(t("prefill"))}`;
 
   const handleClick = useCallback(() => {
