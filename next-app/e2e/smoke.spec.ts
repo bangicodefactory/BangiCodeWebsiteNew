@@ -90,8 +90,21 @@ test("@smoke /book — never embeds a Cal.com event that 404s", async ({
   // rather than the page rendering an empty frame.
   if (embeds.length === 0) {
     await expect(fallback).toBeVisible();
+    /*
+     * Scoped to <main>, because the footer carries the same address.
+     *
+     * This locator was unambiguous only while the two differed — the fallback
+     * said hello@ and the footer said admin@. Consolidating everything onto
+     * contact@ made an unscoped match resolve to BOTH links, and Playwright's
+     * strict mode fails on that. Scoping is used rather than matching the
+     * English label ("Email us at …") so the assertion survives a copy change;
+     * CLAUDE.md guarantees exactly one <main id="main-content"> per page, and
+     * the footer sits outside it.
+     */
     await expect(
-      page.getByRole("link", { name: /contact@bangicode\.ma/ }),
+      page.getByRole("main").getByRole("link", {
+        name: /contact@bangicode\.ma/,
+      }),
     ).toBeVisible();
 
     // And the page must be genuinely inert: the preconnect hints were once
