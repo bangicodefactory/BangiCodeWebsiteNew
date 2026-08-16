@@ -17,9 +17,7 @@
       "clientsValue": "20+",
       "clientsLabel": "clients served",
       "yearsValue": "5y",
-      "yearsLabel": "in business",
-      "supportValue": "24/7",
-      "supportLabel": "client support"
+      "yearsLabel": "in business"
     },
     "trustedBy": {
       "label": "trusted by"

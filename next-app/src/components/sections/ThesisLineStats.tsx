@@ -6,7 +6,9 @@ import { getTranslations } from "next-intl/server";
  * meant to read as the bottom of the hero, so it carries the same
  * data-surface="dark" and the same background, joined by a hairline.
  *
- * Order is D's: clients, projects, years, support.
+ * Order is D's: clients, projects, years. D had a fourth, "24/7 client support",
+ * dropped on 2026-08-16 — a studio of this size cannot staff a round-the-clock
+ * desk, and a promise the business cannot keep is worse than no promise.
  */
 export async function ThesisLineStats() {
   const t = await getTranslations("Home.thesis");
@@ -15,7 +17,6 @@ export async function ThesisLineStats() {
     { value: t("clientsValue"), label: t("clientsLabel") },
     { value: t("projectsValue"), label: t("projectsLabel") },
     { value: t("yearsValue"), label: t("yearsLabel") },
-    { value: t("supportValue"), label: t("supportLabel") },
   ];
 
   return (
@@ -36,7 +37,13 @@ export async function ThesisLineStats() {
           {t("headline")}
         </h2>
 
-        <dl className="border-border mt-12 grid grid-cols-2 gap-y-10 border-t pt-12 sm:grid-cols-4">
+        {/*
+          Three across at every width. It was `grid-cols-2 sm:grid-cols-4`,
+          which balanced with four stats — 2×2 on mobile, one row on desktop.
+          With three, that leaves an orphan on the second mobile row and an
+          empty fourth column pulling the row off-centre on desktop.
+        */}
+        <dl className="border-border mt-12 grid grid-cols-3 gap-y-10 border-t pt-12">
           {stats.map((stat) => (
             <div key={stat.label} className="flex flex-col-reverse gap-2">
               <dt className="text-muted-foreground font-mono text-xs tracking-wider">

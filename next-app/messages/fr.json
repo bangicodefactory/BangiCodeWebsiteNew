@@ -17,9 +17,7 @@
       "clientsValue": "20+",
       "clientsLabel": "clients servis",
       "yearsValue": "5y",
-      "yearsLabel": "années d'expérience",
-      "supportValue": "24/7",
-      "supportLabel": "support client"
+      "yearsLabel": "années d'expérience"
     },
     "trustedBy": {
       "label": "ils nous font confiance"
