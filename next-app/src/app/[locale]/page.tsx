@@ -31,13 +31,23 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "Home.hero" });
   const meta = await getTranslations({ locale, namespace: "Meta" });
   return {
     // `absolute` opts out of the layout's "%s | Bangicode" template — the
     // localized home title already carries the brand.
     title: { absolute: meta("homeTitle") },
-    description: t("body"),
+    /*
+     * No `description` here on purpose — the layout sets `Meta.description`,
+     * and metadata is merged, so omitting it inherits the right one.
+     *
+     * This used to override it with `Home.hero.body`, the hero PARAGRAPH. That
+     * copy is written to be read on the page, not to fit a search result: 227
+     * characters in en, 307 in fr, against the ~155 Google renders. Roughly
+     * half the French description never reached a search result, and the
+     * sentence naming Tétouan — the whole local-SEO point — sat past the cut in
+     * every locale. Meta.description exists precisely for this and was already
+     * being used for the JSON-LD below; only the meta tag disagreed.
+     */
     alternates: buildAlternates("/", locale),
   };
 }
