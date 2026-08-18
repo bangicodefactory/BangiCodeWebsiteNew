@@ -1,4 +1,5 @@
 import { getTranslations } from "next-intl/server";
+import { NewTabHint } from "@/components/NewTabHint";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 
@@ -79,6 +80,7 @@ export async function FounderCard() {
               className="text-foreground focus-visible:ring-ring rounded-sm underline underline-offset-4 transition-opacity duration-200 ease-out hover:opacity-80 focus-visible:ring-2 focus-visible:outline-none"
             >
               {t("whatsapp")}
+              <NewTabHint />
             </a>
             {" · "}
             <a

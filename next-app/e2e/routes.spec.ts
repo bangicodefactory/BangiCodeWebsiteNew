@@ -46,24 +46,60 @@ test("@smoke case study renders — the page that used to 500", async ({
   }
 });
 
-test("@smoke /solutions — index lists all four platforms", async ({ page }) => {
+test("@smoke /solutions — leads with DriveDesk, then the three patterns", async ({
+  page,
+}) => {
   const response = await page.goto("/en/solutions");
   expect(response?.status()).toBe(200);
-  for (const name of ["RentFlow", "TableServe", "Scholaris", "ShopCore"]) {
+  for (const name of ["DriveDesk", "TableServe", "Scholaris", "ShopCore"]) {
     await expect(page.getByRole("heading", { name })).toBeVisible();
   }
+  // RentFlow was the invented placeholder DriveDesk replaced. It must be gone.
+  await expect(page.getByText("RentFlow")).toHaveCount(0);
+});
+
+/*
+ * The whole point of the two-tier split: DriveDesk is a real product and must
+ * NOT be marked illustrative, because the visible disclaimer beside that marker
+ * says these are "not sold off the shelf" — false for a product with a login.
+ */
+test("@smoke /solutions — DriveDesk links out and is not marked illustrative", async ({
+  page,
+}) => {
+  await page.goto("/en/solutions");
+  const link = page.getByRole("link", { name: /drivedesk\.ma/i }).first();
+  await expect(link).toHaveAttribute("href", "https://drivedesk.ma");
+  await expect(link).toHaveAttribute("target", "_blank");
+  await expect(link).toHaveAttribute("rel", /noopener/);
+
+  // The panel carrying the DriveDesk heading must not be inside a placeholder.
+  await expect(
+    page.locator('[data-placeholder="true"]', {
+      has: page.getByRole("heading", { name: "DriveDesk" }),
+    }),
+  ).toHaveCount(0);
 });
 
 test("@smoke /solutions/:slug — renders and is marked illustrative", async ({
   page,
 }) => {
-  const response = await page.goto("/en/solutions/rentflow");
+  const response = await page.goto("/en/solutions/tableserve");
   expect(response?.status()).toBe(200);
-  await expect(page.getByRole("heading", { level: 1 })).toHaveText("RentFlow");
-  // Decision 4: these are patterns, not products. The marker must survive.
+  await expect(page.getByRole("heading", { level: 1 })).toHaveText(
+    "TableServe",
+  );
+  // These three are patterns, not products. The marker must survive.
   await expect(
     page.locator('[data-placeholder="true"]').first(),
   ).toBeAttached();
+});
+
+test("@smoke /solutions/rentflow — the retired slug 301s instead of 404ing", async ({
+  page,
+}) => {
+  const response = await page.goto("/en/solutions/rentflow");
+  expect(response?.status()).toBe(200);
+  expect(new URL(page.url()).pathname).toBe("/en/solutions");
 });
 
 test("@smoke /blog — renders in every locale", async ({ page }) => {
@@ -180,9 +216,11 @@ test("@smoke sitemap covers the new IA and drops /work", async ({
   const xml = await (await request.get("/sitemap.xml")).text();
   expect(xml).toContain("/en/portfolio");
   expect(xml).toContain("/en/solutions");
-  expect(xml).toContain("/en/solutions/rentflow");
+  expect(xml).toContain("/en/solutions/tableserve");
   expect(xml).toContain("/en/blog");
   expect(xml).not.toContain("/en/work");
+  // The retired slug now 301s, so it must not be advertised in the sitemap.
+  expect(xml).not.toContain("/en/solutions/rentflow");
 });
 
 /*

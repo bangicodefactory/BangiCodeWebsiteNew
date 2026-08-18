@@ -1,4 +1,7 @@
 import { getTranslations } from "next-intl/server";
+import { ArrowUpRight } from "lucide-react";
+import { NewTabHint } from "@/components/NewTabHint";
+import { DRIVEDESK } from "@/lib/solutions";
 
 /*
  * The stats strip that closes Design D's dark hero band. It is a separate
@@ -10,7 +13,18 @@ import { getTranslations } from "next-intl/server";
  * dropped on 2026-08-16 — a studio of this size cannot staff a round-the-clock
  * desk, and a promise the business cannot keep is worse than no promise.
  */
-export async function ThesisLineStats() {
+/**
+ * @param showProduct - render the DriveDesk line under the stats. Default true
+ *   (the home page). /about passes false: it renders this same component AND
+ *   has its own DriveDesk entry in the founding-story column, where the fact
+ *   sits better next to "founded 2020 / 12 people / four practices". Without
+ *   this the product would appear twice on one page.
+ */
+export async function ThesisLineStats({
+  showProduct = true,
+}: {
+  showProduct?: boolean;
+}) {
   const t = await getTranslations("Home.thesis");
 
   const stats = [
@@ -26,10 +40,7 @@ export async function ThesisLineStats() {
       className="border-border bg-background border-t"
     >
       <div className="max-w-content mx-auto px-4 py-14 text-center sm:px-6 sm:py-16">
-        <p
-          dir="ltr"
-          className="text-muted-foreground font-mono text-xs tracking-widest uppercase"
-        >
+        <p className="text-muted-foreground font-mono text-xs tracking-widest uppercase">
           {t("eyebrow")}
         </p>
 
@@ -55,6 +66,50 @@ export async function ThesisLineStats() {
             </div>
           ))}
         </dl>
+
+        {/*
+         * DriveDesk, one screen below the hero.
+         *
+         * Everything above this line is a claim — 20+, 24+, 5y, "code that
+         * lasts" — and a visitor has no way to check any of it until the
+         * featured case, a screen further down. This is the one thing on the
+         * page they can verify in a click: a product we built and run, live on
+         * its own domain. It belongs where the claims are made, not only in
+         * /solutions where someone has to go looking for it.
+         *
+         * A line, not a card. The stats are the point of this band; this sits
+         * under them as a footnote with a link, so it adds ~90px rather than
+         * pushing the whole page down.
+         */}
+        {showProduct && (
+          <div className="border-border mt-10 border-t pt-8">
+            <p className="text-muted-foreground font-mono text-xs tracking-widest uppercase">
+              {t("productLabel")}
+            </p>
+            <div className="mt-3 flex flex-col items-center justify-center gap-x-3 gap-y-2 sm:flex-row sm:flex-wrap">
+              <span className="font-display text-foreground text-xl font-bold tracking-tight">
+                {t("productName")}
+              </span>
+              <span className="font-body text-muted-foreground text-sm text-balance">
+                {t("productBody")}
+              </span>
+            </div>
+            {/* Plain <a>: leaves the site, so it must not be locale-prefixed. */}
+            <a
+              href={DRIVEDESK.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-secondary-container focus-visible:ring-ring mt-4 inline-flex items-center gap-1.5 rounded-sm py-1.5 font-mono text-sm underline-offset-4 hover:underline focus-visible:ring-2 focus-visible:outline-none"
+            >
+              {t("productCta")}
+              <ArrowUpRight
+                aria-hidden="true"
+                className="size-4 rtl:-scale-x-100"
+              />
+              <NewTabHint />
+            </a>
+          </div>
+        )}
       </div>
     </section>
   );

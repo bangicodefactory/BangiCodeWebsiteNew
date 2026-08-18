@@ -45,10 +45,7 @@ export default async function PrivacyPolicyPage({
       <div className="mx-auto max-w-3xl px-4 pt-24 pb-20 sm:px-6 sm:pt-32">
         {/* Header */}
         <div className="mb-12">
-          <p
-            dir="ltr"
-            className="text-muted-foreground mb-4 font-mono text-xs tracking-widest uppercase"
-          >
+          <p className="text-muted-foreground mb-4 font-mono text-xs tracking-widest uppercase">
             {t("legalEyebrow")}
           </p>
           <h1 className="font-display text-foreground mb-4 text-4xl font-bold tracking-tight sm:text-5xl">

@@ -79,10 +79,7 @@ export default async function SolutionPage({
       </section>
 
       <section className="max-w-content mx-auto px-4 pb-8 sm:px-6">
-        <p
-          dir="ltr"
-          className="text-muted-foreground mb-6 font-mono text-xs tracking-widest uppercase"
-        >
+        <p className="text-muted-foreground mb-6 font-mono text-xs tracking-widest uppercase">
           {t("includedLabel")}
         </p>
         <ul className="grid max-w-3xl list-none grid-cols-1 gap-4 p-0 sm:grid-cols-2">
@@ -102,10 +99,7 @@ export default async function SolutionPage({
 
       <section className="max-w-content mx-auto px-4 pb-16 sm:px-6">
         <div className="max-w-3xl">
-          <p
-            dir="ltr"
-            className="text-muted-foreground mb-2 font-mono text-xs tracking-widest uppercase"
-          >
+          <p className="text-muted-foreground mb-2 font-mono text-xs tracking-widest uppercase">
             {t("timelineLabel")}
           </p>
           <p className="font-body text-foreground text-base">

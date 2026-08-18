@@ -148,6 +148,30 @@ const nextConfig: NextConfig = {
         destination: "/en/portfolio/:slug",
         permanent: true,
       },
+      /*
+       * /solutions/rentflow → /solutions.
+       *
+       * RentFlow was an invented placeholder name for the rental-and-fleet
+       * pattern. It has been replaced by DriveDesk, a real product on its own
+       * domain, so the slug no longer resolves and would 404 for anything
+       * holding the old URL — including a crawler that already indexed it from
+       * the sitemap.
+       *
+       * The target is /solutions rather than drivedesk.ma: a 301 should land on
+       * a page we control, and /solutions now leads with DriveDesk anyway.
+       * Both the prefixed and bare forms, for the same middleware-ordering
+       * reason as the /work rules above.
+       */
+      {
+        source: "/:locale(en|fr|ar)/solutions/rentflow",
+        destination: "/:locale/solutions",
+        permanent: true,
+      },
+      {
+        source: "/solutions/rentflow",
+        destination: "/en/solutions",
+        permanent: true,
+      },
     ];
   },
 };

@@ -50,10 +50,7 @@ export default async function BlogIndexPage({
   return (
     <div>
       <section className="max-w-content mx-auto px-4 pt-24 pb-12 sm:px-6 sm:pt-32">
-        <p
-          dir="ltr"
-          className="text-muted-foreground mb-4 font-mono text-xs tracking-widest uppercase"
-        >
+        <p className="text-muted-foreground mb-4 font-mono text-xs tracking-widest uppercase">
           {t("eyebrow")}
         </p>
         <h1 className="font-display text-foreground mb-4 text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">

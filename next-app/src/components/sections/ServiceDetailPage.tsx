@@ -43,10 +43,7 @@ export function ServiceDetailPage({
     <div>
       {/* Hero */}
       <section className="max-w-content mx-auto px-4 pt-24 pb-16 sm:px-6 sm:pt-32 sm:pb-20">
-        <p
-          dir="ltr"
-          className="text-muted-foreground mb-4 font-mono text-xs tracking-widest uppercase"
-        >
+        <p className="text-muted-foreground mb-4 font-mono text-xs tracking-widest uppercase">
           {eyebrow}
         </p>
         <h1 className="font-display text-foreground mb-4 text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
@@ -60,10 +57,7 @@ export function ServiceDetailPage({
       {/* Capabilities */}
       <section className="border-border border-t py-16 sm:py-20">
         <div className="max-w-content mx-auto px-4 sm:px-6">
-          <p
-            dir="ltr"
-            className="text-muted-foreground mb-10 font-mono text-xs tracking-widest uppercase"
-          >
+          <p className="text-muted-foreground mb-10 font-mono text-xs tracking-widest uppercase">
             {capEyebrow}
           </p>
           <div className="bg-border grid grid-cols-1 gap-px sm:grid-cols-3">
@@ -87,10 +81,7 @@ export function ServiceDetailPage({
       {/* Stack */}
       <section className="bg-surface-container py-10">
         <div className="max-w-content mx-auto px-4 sm:px-6">
-          <p
-            dir="ltr"
-            className="text-muted-foreground mb-4 font-mono text-xs tracking-widest uppercase"
-          >
+          <p className="text-muted-foreground mb-4 font-mono text-xs tracking-widest uppercase">
             {stackEyebrow}
           </p>
           <div className="flex flex-wrap gap-2">
@@ -106,10 +97,7 @@ export function ServiceDetailPage({
       {/* Process */}
       <section className="py-16 sm:py-20">
         <div className="max-w-content mx-auto px-4 sm:px-6">
-          <p
-            dir="ltr"
-            className="text-muted-foreground mb-10 font-mono text-xs tracking-widest uppercase"
-          >
+          <p className="text-muted-foreground mb-10 font-mono text-xs tracking-widest uppercase">
             {processEyebrow}
           </p>
           <ol className="bg-border grid grid-cols-1 gap-px sm:grid-cols-2 lg:grid-cols-4">
@@ -133,10 +121,7 @@ export function ServiceDetailPage({
       {/* Featured case */}
       <section className="bg-primary py-16 sm:py-20">
         <div className="max-w-content mx-auto px-4 sm:px-6">
-          <p
-            dir="ltr"
-            className="text-primary-foreground/60 mb-4 font-mono text-xs tracking-widest uppercase"
-          >
+          <p className="text-primary-foreground/60 mb-4 font-mono text-xs tracking-widest uppercase">
             {caseEyebrow}
           </p>
           <h2 className="font-display text-secondary-container mb-3 text-2xl font-bold tracking-tight sm:text-3xl">

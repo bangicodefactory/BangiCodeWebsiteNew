@@ -123,6 +123,28 @@ body {
   transition: opacity 400ms var(--ease-out);
 }
 
+/*
+ * Section eyebrows used to carry dir="ltr" and there was a rule here forcing
+ * them back to text-align: right on RTL pages. Both are gone — the attribute
+ * was the bug and the rule was a patch on it.
+ *
+ * dir="ltr" made `text-align: start` resolve against the EYEBROW's direction
+ * (left) while the heading beside it resolved against the PAGE's (right), so on
+ * /ar every left-aligned section had its label at one end of the block and its
+ * heading at the other. Pinning them to `right` fixed those but broke the
+ * CENTRED ones: in #thesis the label sat flush against the right edge while the
+ * headline, stats and product line under it stayed centred.
+ *
+ * Dropping the attribute fixes both at once, because a paragraph in the page's
+ * own direction inherits whatever alignment its section already uses. The "//"
+ * marker also lands correctly without help: it is neutral characters at the
+ * start of the string, so bidi resolves it to the paragraph direction — left in
+ * LTR, right in RTL, leading either way.
+ *
+ * Inline dir="ltr" stays where it is genuinely needed (dates, phone numbers,
+ * tabular figures) — those are runs inside prose, not blocks.
+ */
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

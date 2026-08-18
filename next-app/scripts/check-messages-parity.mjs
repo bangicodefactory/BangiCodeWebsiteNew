@@ -156,6 +156,43 @@ for (const locale of LOCALES.filter((l) => l !== REFERENCE)) {
   }
 }
 
+/*
+ * Check 4 — meta descriptions must fit a search result.
+ *
+ * This has now shipped twice. The home page fed the hero PARAGRAPH into its
+ * meta description (227 chars en, 307 fr) and /solutions fed it the on-page
+ * subhead (201 en, 270 fr). Both render fine on the page and both were cut in
+ * half by Google, in the French case removing the sentence that named what the
+ * page actually offers.
+ *
+ * Nothing caught either one, because a too-long description is not a broken
+ * build, a failed type, or a visibly wrong page — it is only wrong in a search
+ * result nobody looks at during review. So it gets a check.
+ *
+ * 155 is where Google typically truncates on desktop; the limit here is a
+ * little looser because the cut is soft and varies by pixel width, and a hard
+ * 155 would fail on a description that renders fine.
+ */
+const DESCRIPTION_MAX = 165;
+// catalogs are already flattened to dotted keys above.
+const DESCRIPTION_KEYS = Object.keys(catalogs[REFERENCE]).filter((k) =>
+  /(^|\.)(metaDescription|description)$/.test(k),
+);
+
+for (const locale of LOCALES) {
+  for (const key of DESCRIPTION_KEYS) {
+    const value = catalogs[locale][key];
+    if (typeof value !== "string") continue;
+    if (value.length > DESCRIPTION_MAX) {
+      problems.push(
+        `${locale}: META TOO LONG ${key} — ${value.length} chars, max ${DESCRIPTION_MAX}. ` +
+          `Search results cut this at ~155; write a separate short key rather than ` +
+          `reusing on-page copy.`,
+      );
+    }
+  }
+}
+
 if (problems.length > 0) {
   console.error("check-messages-parity: FAILED\n");
   for (const p of problems.slice(0, 60)) console.error("  " + p);

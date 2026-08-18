@@ -80,12 +80,17 @@ export async function PeekCards() {
       className="border-border bg-background border-t py-16 sm:py-20"
     >
       <div className="max-w-content mx-auto px-4 sm:px-6">
-        <p
-          dir="ltr"
-          className="text-muted-foreground mb-8 font-mono text-xs tracking-widest uppercase"
-        >
+        {/*
+         * h2, not p. This section has three project h3s and used to have no
+         * heading of its own, so they attached to the previous section's h2 —
+         * the RentCar.ma featured case. Anyone navigating by headings heard
+         * three unrelated clients announced as parts of that one case study.
+         * The eyebrow already IS this section's label, so promoting it costs
+         * nothing visually.
+         */}
+        <h2 className="text-muted-foreground mb-8 font-mono text-xs font-normal tracking-widest uppercase">
           {t("eyebrow")}
-        </p>
+        </h2>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {cards.map((card) => (
@@ -95,7 +100,9 @@ export async function PeekCards() {
 
         <Link
           href="/portfolio"
-          className="group text-secondary-container focus-visible:ring-ring mt-10 inline-flex items-center gap-1.5 rounded-sm font-mono text-sm focus-visible:ring-2 focus-visible:outline-none"
+          // py-1.5 takes this from 20px to 32px — SC 2.5.8 wants 24×24 and a
+          // standalone link like this gets no inline-in-a-sentence exception.
+          className="group text-secondary-container focus-visible:ring-ring mt-10 inline-flex items-center gap-1.5 rounded-sm py-1.5 font-mono text-sm focus-visible:ring-2 focus-visible:outline-none"
         >
           {t("ctaAll")}
           <ArrowRight

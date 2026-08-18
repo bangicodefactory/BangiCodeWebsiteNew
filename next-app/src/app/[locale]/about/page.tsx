@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
+import { ArrowUpRight } from "lucide-react";
+import { NewTabHint } from "@/components/NewTabHint";
+import { DRIVEDESK } from "@/lib/solutions";
 import { routing } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
@@ -42,10 +45,7 @@ export default async function AboutPage() {
       />
       {/* Hero */}
       <section className="max-w-content mx-auto px-4 pt-24 pb-16 sm:px-6 sm:pt-32 sm:pb-20">
-        <p
-          dir="ltr"
-          className="text-muted-foreground mb-4 font-mono text-xs tracking-widest uppercase"
-        >
+        <p className="text-muted-foreground mb-4 font-mono text-xs tracking-widest uppercase">
           {t("eyebrow")}
         </p>
         <h1 className="font-display text-foreground mb-4 text-4xl font-bold tracking-tight sm:text-5xl lg:text-6xl">
@@ -57,17 +57,16 @@ export default async function AboutPage() {
       </section>
 
       {/* Stats */}
-      <ThesisLineStats />
+      {/* showProduct={false}: DriveDesk appears in the founding-story column
+          below, and this page renders the same stats band as the home page. */}
+      <ThesisLineStats showProduct={false} />
 
       {/* Story */}
       <section className="border-border border-t py-16 sm:py-20">
         <div className="max-w-content mx-auto px-4 sm:px-6">
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-3">
             <div className="lg:col-span-2">
-              <p
-                dir="ltr"
-                className="text-muted-foreground mb-6 font-mono text-xs tracking-widest uppercase"
-              >
+              <p className="text-muted-foreground mb-6 font-mono text-xs tracking-widest uppercase">
                 {t("storyEyebrow")}
               </p>
               <h2 className="font-display text-foreground mb-6 text-2xl font-bold tracking-tight sm:text-3xl">
@@ -104,6 +103,35 @@ export default async function AboutPage() {
                     {t("storyPracticesValue")}
                   </dd>
                 </div>
+                {/*
+                 * The story above talks about how we treat clients. This is the
+                 * one entry in the column that is not a number about ourselves:
+                 * a product we built and run, that the reader can go and look
+                 * at. Plain <a> — it leaves the site, so no locale prefix.
+                 */}
+                <div>
+                  <dt className="text-muted-foreground mb-1 font-mono text-xs">
+                    {t("storyProduct")}
+                  </dt>
+                  <dd className="font-display text-primary text-3xl font-bold">
+                    <a
+                      href={DRIVEDESK.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="focus-visible:ring-ring inline-flex items-center gap-1.5 rounded-sm underline-offset-4 hover:underline focus-visible:ring-2 focus-visible:outline-none"
+                    >
+                      {t("storyProductValue")}
+                      <ArrowUpRight
+                        aria-hidden="true"
+                        className="size-5 rtl:-scale-x-100"
+                      />
+                      <NewTabHint />
+                    </a>
+                  </dd>
+                  <p className="font-body text-muted-foreground mt-1 text-sm">
+                    {t("storyProductNote")}
+                  </p>
+                </div>
               </dl>
             </aside>
           </div>
@@ -113,10 +141,7 @@ export default async function AboutPage() {
       {/* Values */}
       <section className="border-border border-t py-16 sm:py-20">
         <div className="max-w-content mx-auto px-4 sm:px-6">
-          <p
-            dir="ltr"
-            className="text-muted-foreground mb-10 font-mono text-xs tracking-widest uppercase"
-          >
+          <p className="text-muted-foreground mb-10 font-mono text-xs tracking-widest uppercase">
             {t("valuesEyebrow")}
           </p>
           <div className="bg-border grid grid-cols-1 gap-px sm:grid-cols-3">
@@ -140,10 +165,7 @@ export default async function AboutPage() {
       {/* Team */}
       <section className="bg-surface-container py-16 sm:py-20">
         <div className="max-w-content mx-auto px-4 sm:px-6">
-          <p
-            dir="ltr"
-            className="text-muted-foreground mb-4 font-mono text-xs tracking-widest uppercase"
-          >
+          <p className="text-muted-foreground mb-4 font-mono text-xs tracking-widest uppercase">
             {t("teamEyebrow")}
           </p>
           <h2 className="font-display text-foreground mb-3 text-2xl font-bold tracking-tight sm:text-3xl">

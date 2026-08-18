@@ -1,21 +1,44 @@
 import Image from "next/image";
+import { NewTabHint } from "@/components/NewTabHint";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { Separator } from "@/components/ui/separator";
 
-const LINK_CLASS =
+/*
+ * WCAG 2.2 SC 2.5.8 wants every target at least 24×24 CSS px. None of these
+ * links are "inline in a sentence", so none of them qualify for that exception —
+ * they are standalone links in lists and a nav, and they were measured at 19px
+ * (the Services / Company columns) and 16px (LinkedIn, GitHub, and the legal
+ * row) on a 375px viewport. Only the address block had been fixed.
+ *
+ * `py-1.5` adds 12px to each, taking the body links to 31px and the mono links
+ * to 28px. `inline-block` is what makes vertical padding actually grow the box —
+ * on a pure inline element it paints outside the layout and the hit area does
+ * not change — and `w-fit` keeps the focus ring wrapped to the text rather than
+ * stretched across the column.
+ */
+/*
+ * The display utility is NOT part of the shared bases below, and that is
+ * load-bearing. Composing `${MONO_LINK_CLASS} block` put `inline-block` and
+ * `block` in the same class list, and the winner is decided by order in the
+ * generated stylesheet, not order in the attribute — so the stacked phone /
+ * email / WhatsApp links silently became inline and ran together as
+ * "+212 664 571 370contact@bangicode.ma". Each base ships displayless and every
+ * consumer picks its own.
+ */
+const TARGET_SIZE = "inline-block w-fit py-1.5";
+const TARGET_SIZE_STACKED = "block w-fit py-1.5";
+
+const LINK_BASE =
   "font-body text-sm text-foreground/80 transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm";
 
-const MONO_LINK_CLASS =
+const MONO_LINK_BASE =
   "font-mono text-xs text-muted-foreground transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm";
 
-/*
- * The phone / email / WhatsApp links in the address block are stacked full-width
- * anchors around 12px text, so they measured 16px tall — under WCAG 2.2's 24×24
- * minimum target size (2.5.8), and too close to their neighbours. `block` plus
- * vertical padding takes each to 28px without changing how the column reads.
- */
-const MONO_CONTACT_LINK_CLASS = `${MONO_LINK_CLASS} block w-fit py-1.5`;
+const LINK_CLASS = `${LINK_BASE} ${TARGET_SIZE}`;
+const MONO_LINK_CLASS = `${MONO_LINK_BASE} ${TARGET_SIZE}`;
+// The address block stacks full-width, one link per line.
+const MONO_CONTACT_LINK_CLASS = `${MONO_LINK_BASE} ${TARGET_SIZE_STACKED}`;
 
 export async function SiteFooter() {
   const t = await getTranslations("Footer");
@@ -77,6 +100,7 @@ export async function SiteFooter() {
                 className={MONO_LINK_CLASS}
               >
                 {t("linkedin")}
+                <NewTabHint />
               </a>
               <a
                 href="https://github.com/bangicodefactory"
@@ -85,18 +109,24 @@ export async function SiteFooter() {
                 className={MONO_LINK_CLASS}
               >
                 {t("github")}
+                <NewTabHint />
               </a>
             </div>
           </div>
 
           <div className="flex flex-col gap-4">
-            <p
-              dir="ltr"
-              className="text-muted-foreground font-mono text-xs tracking-widest uppercase"
-            >
+            <p className="text-muted-foreground font-mono text-xs tracking-widest uppercase">
               {t("servicesTitle")}
             </p>
-            <ul className="list-none space-y-3 p-0">
+            {/*
+             * space-y-1, not space-y-3. The links now carry 12px of their own
+             * vertical padding for the target-size fix above, so keeping the
+             * old 12px gap would have pushed the row pitch from 31px to 43px
+             * and left the column looking unintentionally airy. 4px here lands
+             * it at 35px — close to the original rhythm, with a real gap
+             * between neighbouring targets.
+             */}
+            <ul className="list-none space-y-1 p-0">
               {services.map((item) => (
                 <li key={item.label}>
                   <Link href={item.href} className={LINK_CLASS}>
@@ -108,13 +138,18 @@ export async function SiteFooter() {
           </div>
 
           <div className="flex flex-col gap-4">
-            <p
-              dir="ltr"
-              className="text-muted-foreground font-mono text-xs tracking-widest uppercase"
-            >
+            <p className="text-muted-foreground font-mono text-xs tracking-widest uppercase">
               {t("companyTitle")}
             </p>
-            <ul className="list-none space-y-3 p-0">
+            {/*
+             * space-y-1, not space-y-3. The links now carry 12px of their own
+             * vertical padding for the target-size fix above, so keeping the
+             * old 12px gap would have pushed the row pitch from 31px to 43px
+             * and left the column looking unintentionally airy. 4px here lands
+             * it at 35px — close to the original rhythm, with a real gap
+             * between neighbouring targets.
+             */}
+            <ul className="list-none space-y-1 p-0">
               {company.map((item) => (
                 <li key={item.href}>
                   <Link href={item.href} className={LINK_CLASS}>
@@ -126,10 +161,7 @@ export async function SiteFooter() {
           </div>
 
           <div className="flex flex-col gap-4">
-            <p
-              dir="ltr"
-              className="text-muted-foreground font-mono text-xs tracking-widest uppercase"
-            >
+            <p className="text-muted-foreground font-mono text-xs tracking-widest uppercase">
               {t("locationTitle")}
             </p>
             <address className="not-italic">
@@ -140,7 +172,19 @@ export async function SiteFooter() {
                 <p className="text-muted-foreground font-mono text-xs">
                   {t("hours")}
                 </p>
-                <a href="tel:+212664571370" className={MONO_CONTACT_LINK_CLASS}>
+                {/*
+                 * dir="ltr" — a phone number is an LTR sequence in every
+                 * locale. Without it the leading "+" is a neutral character at
+                 * the start of an RTL paragraph, so bidi moves it to the other
+                 * end and /ar rendered "212 664 571 370+". Measured: the "+"
+                 * painted at x=357 and the final "0" at x=264, i.e. the whole
+                 * run laid out right-to-left.
+                 */}
+                <a
+                  href="tel:+212664571370"
+                  dir="ltr"
+                  className={MONO_CONTACT_LINK_CLASS}
+                >
                   +212 664 571 370
                 </a>
                 <a
@@ -156,6 +200,7 @@ export async function SiteFooter() {
                   className={MONO_CONTACT_LINK_CLASS}
                 >
                   {t("whatsapp")}
+                  <NewTabHint />
                 </a>
               </div>
             </address>
@@ -165,7 +210,19 @@ export async function SiteFooter() {
         <Separator className="my-8" />
 
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-muted-foreground font-mono text-xs">
+          {/*
+           * dir="ltr" — the copyright line is locked verbatim by CLAUDE.md and
+           * is the same Latin sentence in all three locales, so on /ar it was a
+           * Latin run inside an RTL paragraph. The trailing full stop is a
+           * neutral character at the paragraph end, so bidi sent it to the
+           * opposite side and the footer read
+           * ".Bangicode SARL. Crafted with Moroccan precision 2026–2020 ©".
+           * Measured: "©" painted at x=1341 and the final "." at x=916.
+           *
+           * This predates the eyebrow work — it never carried a direction and
+           * has no `tracking-widest`, so it was outside that sweep.
+           */}
+          <p dir="ltr" className="text-muted-foreground font-mono text-xs">
             {t("copyright")}
           </p>
           <nav aria-label={t("legalNav")} className="flex flex-wrap gap-4">

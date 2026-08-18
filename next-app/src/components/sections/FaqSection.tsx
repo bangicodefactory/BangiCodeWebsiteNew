@@ -30,10 +30,7 @@ export async function FaqSection() {
     <section id="faq" className="py-16 sm:py-24">
       <div className="max-w-content mx-auto px-4 sm:px-6">
         <div className="mx-auto max-w-3xl">
-          <p
-            dir="ltr"
-            className="text-muted-foreground font-mono text-xs tracking-widest uppercase"
-          >
+          <p className="text-muted-foreground font-mono text-xs tracking-widest uppercase">
             {t("eyebrow")}
           </p>
           <h2 className="font-display text-foreground mt-4 text-3xl font-bold tracking-tight text-balance sm:text-4xl">

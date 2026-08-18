@@ -9,6 +9,14 @@ const WA_NUMBER = process.env.NEXT_PUBLIC_WA_NUMBER ?? "212664571370";
 
 export function WhatsAppCta() {
   const t = useTranslations("WhatsAppCta");
+  const tCommon = useTranslations("Common");
+  /*
+   * The new-tab note is appended to the LABEL rather than added as an sr-only
+   * child, because aria-label replaces the accessible name — a child element
+   * here would never be announced. Every other outbound link on the site uses
+   * <NewTabHint /> for this; this one cannot.
+   */
+  const newTabLabel = `${t("ariaLabel")} ${tCommon("opensInNewTab")}`;
   const [inputFocused, setInputFocused] = useState(false);
   const [footerVisible, setFooterVisible] = useState(false);
 
@@ -89,11 +97,14 @@ export function WhatsAppCta() {
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label={t("ariaLabel")}
+      aria-label={newTabLabel}
       data-testid="whatsapp-cta"
       onClick={handleClick}
       className={cn(
-        "fixed end-5 bottom-5 z-40",
+        // bottom-5 was a flat 20px, which on a device with a home indicator
+        // puts a 56px circle partly inside the gesture strip. max() keeps the
+        // same 20px where there is no inset and lifts it clear where there is.
+        "fixed end-5 bottom-[max(1.25rem,env(safe-area-inset-bottom))] z-40",
         "flex h-14 w-14 items-center justify-center rounded-full",
         // WhatsApp brand green is intentionally NOT a bangicode token — it is
         // a third-party brand mark and must stay recognisable.

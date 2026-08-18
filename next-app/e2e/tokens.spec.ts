@@ -253,6 +253,130 @@ test("@smoke fonts — /en does NOT get the Arabic face", async ({ page }) => {
 });
 
 /*
+ * Section eyebrows must line up with the sections they label, on /ar.
+ *
+ * The eyebrows once carried dir="ltr" so the "//" marker kept its Latin order.
+ * The cost was that `text-align: start` then resolved against the EYEBROW's
+ * direction (left) while the heading beside it resolved against the PAGE's
+ * (right): on /ar every left-aligned section had its label at one end of the
+ * block and its heading at the other, roughly 1,270px apart at desktop width.
+ *
+ * The first fix — pinning them to text-align: right on RTL pages — traded one
+ * bug for another, because it also hit the CENTRED sections, where the label
+ * then sat flush against the right edge while everything under it stayed
+ * centred. So this asserts BOTH shapes: aligned in a left-aligned section,
+ * centred in a centred one. Either fix alone passes one and fails the other.
+ *
+ * Geometry rather than CSS, deliberately — the property that broke was never
+ * the one being set, it was how `start` resolved.
+ */
+test("@smoke /ar — eyebrows align with the section they label", async ({
+  page,
+}) => {
+  await page.goto("/ar");
+
+  const geometry = await page.evaluate(() => {
+    // Measured on the TEXT, not the block: both span the full column.
+    const textBox = (el: Element) => {
+      const r = document.createRange();
+      r.selectNodeContents(el);
+      return r.getBoundingClientRect();
+    };
+    const eyebrowOf = (id: string) =>
+      document.querySelector(`#${id} p`) as HTMLElement;
+
+    const why = document.getElementById("why")!;
+    const whyEyebrow = textBox(eyebrowOf("why"));
+    const whyHeading = textBox(why.querySelector("h2")!);
+
+    const thesisEyebrow = eyebrowOf("thesis");
+    const box = thesisEyebrow.getBoundingClientRect();
+    const text = textBox(thesisEyebrow);
+
+    return {
+      whyEyebrowRight: Math.round(whyEyebrow.right),
+      whyHeadingRight: Math.round(whyHeading.right),
+      thesisLeftGap: Math.round(text.left - box.left),
+      thesisRightGap: Math.round(box.right - text.right),
+    };
+  });
+
+  // Left-aligned section: label and heading share the RTL start edge.
+  expect(
+    Math.abs(geometry.whyEyebrowRight - geometry.whyHeadingRight),
+    "eyebrow and heading must share the start edge in a left-aligned section",
+  ).toBeLessThanOrEqual(2);
+
+  // Centred section: equal slack either side, i.e. actually centred.
+  expect(
+    Math.abs(geometry.thesisLeftGap - geometry.thesisRightGap),
+    "eyebrow must stay centred in a centred section",
+  ).toBeLessThanOrEqual(4);
+});
+
+/*
+ * Latin runs with edge punctuation must not be re-ordered on /ar.
+ *
+ * A Latin string inside an RTL paragraph keeps its letters in order, but any
+ * NEUTRAL character at either end — "+", a trailing full stop, "©" — belongs to
+ * the paragraph, not the run, so bidi moves it to the other side. Two shipped
+ * that way:
+ *
+ *   the phone number rendered "212 664 571 370+"
+ *   the copyright read ".Bangicode SARL. Crafted with Moroccan precision … ©"
+ *
+ * Both look like typos rather than layout bugs, which is why they survived: the
+ * text is all present and correct, only its order is wrong, and it is only
+ * wrong in a locale most reviewers do not read.
+ *
+ * Asserted by painting position rather than by the dir attribute, because the
+ * attribute is the fix, not the property that matters — an element can carry
+ * dir="ltr" and still be re-ordered by an ancestor.
+ */
+test("@smoke /ar — phone and copyright keep Latin order", async ({ page }) => {
+  await page.goto("/ar");
+
+  const runs = await page.evaluate(() => {
+    // x of the first glyph vs the last: if first is to the RIGHT, it flipped.
+    const probe = (el: Element | undefined) => {
+      if (!el) return null;
+      const node = [...el.childNodes].find(
+        (n) => n.nodeType === 3 && n.textContent!.trim(),
+      );
+      if (!node) return null;
+      const txt = node.textContent!;
+      const first = txt.search(/\S/);
+      const last = txt.length - 1 - [...txt].reverse().join("").search(/\S/);
+      const at = (i: number) => {
+        const r = document.createRange();
+        r.setStart(node, i);
+        r.setEnd(node, i + 1);
+        return r.getBoundingClientRect().left;
+      };
+      return { text: txt.trim().slice(0, 40), flipped: at(first) > at(last) };
+    };
+    const footer = document.querySelector("footer")!;
+    const byText = (sel: string, re: RegExp) =>
+      [...footer.querySelectorAll(sel)].find((e) => re.test(e.textContent!));
+    return {
+      phone: probe(byText("a", /\+212/)),
+      copyright: probe(byText("p", /Crafted with Moroccan/)),
+    };
+  });
+
+  expect(runs.phone, "phone number not found in the footer").not.toBeNull();
+  expect(runs.copyright, "copyright not found in the footer").not.toBeNull();
+  expect(
+    runs.phone!.flipped,
+    `phone rendered right-to-left on /ar: "${runs.phone!.text}"`,
+  ).toBe(false);
+  expect(
+    runs.copyright!.flipped,
+    `copyright rendered right-to-left on /ar: "${runs.copyright!.text}"`,
+  ).toBe(false);
+});
+
+/*
  * Hover and press must actually animate.
  *
  * Every interactive element was written as `transition-[…,transform]`, which

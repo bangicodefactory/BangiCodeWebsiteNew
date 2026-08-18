@@ -29,20 +29,24 @@ export async function FeaturedCase() {
       className="bg-background py-16 sm:py-24"
     >
       <div className="max-w-content mx-auto px-4 sm:px-6">
-        <p
-          dir="ltr"
-          className="text-muted-foreground mb-4 font-mono text-xs tracking-widest uppercase"
-        >
+        <p className="text-muted-foreground mb-4 font-mono text-xs tracking-widest uppercase">
           {t("eyebrow")}
         </p>
 
         <div className="grid grid-cols-1 gap-12 lg:grid-cols-2 lg:gap-16">
           {/* Left — client info */}
           <div className="flex flex-col gap-6">
-            <h2 className="font-display text-foreground text-3xl font-bold tracking-tight text-balance sm:text-4xl">
-              <span className="text-secondary-container">{t("client")}</span>
-              <br />
-              {t("headline")}
+            {/*
+             * Block spans plus an explicit {" "}, for the same reason as the
+             * hero h1: `<br>` adds nothing to textContent, so this heading
+             * flattened to "RentCar.maEnd-to-end fleet management…" for the
+             * accessible name and for anything scraping the page.
+             */}
+            <h2 className="font-display text-foreground text-3xl font-bold tracking-tight sm:text-4xl">
+              <span className="text-secondary-container block">
+                {t("client")}
+              </span>{" "}
+              <span className="block text-balance">{t("headline")}</span>
             </h2>
 
             <div className="flex flex-wrap gap-2">
@@ -58,7 +62,10 @@ export async function FeaturedCase() {
 
             <Link
               href="/contact"
-              className="text-secondary-container focus-visible:ring-ring w-fit rounded-sm font-mono text-sm underline underline-offset-4 transition-opacity duration-200 ease-out hover:opacity-80 focus-visible:ring-2 focus-visible:outline-none"
+              // inline-block + py-1.5: this measured 20px tall, under WCAG 2.2
+              // SC 2.5.8's 24×24, and it is a standalone link rather than one
+              // inside a sentence, so the inline exception does not apply.
+              className="text-secondary-container focus-visible:ring-ring inline-block w-fit rounded-sm py-1.5 font-mono text-sm underline underline-offset-4 transition-opacity duration-200 ease-out hover:opacity-80 focus-visible:ring-2 focus-visible:outline-none"
             >
               {t("cta")}
             </Link>
