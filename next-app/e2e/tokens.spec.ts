@@ -315,6 +315,68 @@ test("@smoke /ar — eyebrows align with the section they label", async ({
 });
 
 /*
+ * Latin runs with edge punctuation must not be re-ordered on /ar.
+ *
+ * A Latin string inside an RTL paragraph keeps its letters in order, but any
+ * NEUTRAL character at either end — "+", a trailing full stop, "©" — belongs to
+ * the paragraph, not the run, so bidi moves it to the other side. Two shipped
+ * that way:
+ *
+ *   the phone number rendered "212 664 571 370+"
+ *   the copyright read ".Bangicode SARL. Crafted with Moroccan precision … ©"
+ *
+ * Both look like typos rather than layout bugs, which is why they survived: the
+ * text is all present and correct, only its order is wrong, and it is only
+ * wrong in a locale most reviewers do not read.
+ *
+ * Asserted by painting position rather than by the dir attribute, because the
+ * attribute is the fix, not the property that matters — an element can carry
+ * dir="ltr" and still be re-ordered by an ancestor.
+ */
+test("@smoke /ar — phone and copyright keep Latin order", async ({ page }) => {
+  await page.goto("/ar");
+
+  const runs = await page.evaluate(() => {
+    // x of the first glyph vs the last: if first is to the RIGHT, it flipped.
+    const probe = (el: Element | undefined) => {
+      if (!el) return null;
+      const node = [...el.childNodes].find(
+        (n) => n.nodeType === 3 && n.textContent!.trim(),
+      );
+      if (!node) return null;
+      const txt = node.textContent!;
+      const first = txt.search(/\S/);
+      const last = txt.length - 1 - [...txt].reverse().join("").search(/\S/);
+      const at = (i: number) => {
+        const r = document.createRange();
+        r.setStart(node, i);
+        r.setEnd(node, i + 1);
+        return r.getBoundingClientRect().left;
+      };
+      return { text: txt.trim().slice(0, 40), flipped: at(first) > at(last) };
+    };
+    const footer = document.querySelector("footer")!;
+    const byText = (sel: string, re: RegExp) =>
+      [...footer.querySelectorAll(sel)].find((e) => re.test(e.textContent!));
+    return {
+      phone: probe(byText("a", /\+212/)),
+      copyright: probe(byText("p", /Crafted with Moroccan/)),
+    };
+  });
+
+  expect(runs.phone, "phone number not found in the footer").not.toBeNull();
+  expect(runs.copyright, "copyright not found in the footer").not.toBeNull();
+  expect(
+    runs.phone!.flipped,
+    `phone rendered right-to-left on /ar: "${runs.phone!.text}"`,
+  ).toBe(false);
+  expect(
+    runs.copyright!.flipped,
+    `copyright rendered right-to-left on /ar: "${runs.copyright!.text}"`,
+  ).toBe(false);
+});
+
+/*
  * Hover and press must actually animate.
  *
  * Every interactive element was written as `transition-[…,transform]`, which

@@ -172,7 +172,19 @@ export async function SiteFooter() {
                 <p className="text-muted-foreground font-mono text-xs">
                   {t("hours")}
                 </p>
-                <a href="tel:+212664571370" className={MONO_CONTACT_LINK_CLASS}>
+                {/*
+                 * dir="ltr" — a phone number is an LTR sequence in every
+                 * locale. Without it the leading "+" is a neutral character at
+                 * the start of an RTL paragraph, so bidi moves it to the other
+                 * end and /ar rendered "212 664 571 370+". Measured: the "+"
+                 * painted at x=357 and the final "0" at x=264, i.e. the whole
+                 * run laid out right-to-left.
+                 */}
+                <a
+                  href="tel:+212664571370"
+                  dir="ltr"
+                  className={MONO_CONTACT_LINK_CLASS}
+                >
                   +212 664 571 370
                 </a>
                 <a
@@ -198,7 +210,19 @@ export async function SiteFooter() {
         <Separator className="my-8" />
 
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <p className="text-muted-foreground font-mono text-xs">
+          {/*
+           * dir="ltr" — the copyright line is locked verbatim by CLAUDE.md and
+           * is the same Latin sentence in all three locales, so on /ar it was a
+           * Latin run inside an RTL paragraph. The trailing full stop is a
+           * neutral character at the paragraph end, so bidi sent it to the
+           * opposite side and the footer read
+           * ".Bangicode SARL. Crafted with Moroccan precision 2026–2020 ©".
+           * Measured: "©" painted at x=1341 and the final "." at x=916.
+           *
+           * This predates the eyebrow work — it never carried a direction and
+           * has no `tracking-widest`, so it was outside that sweep.
+           */}
+          <p dir="ltr" className="text-muted-foreground font-mono text-xs">
             {t("copyright")}
           </p>
           <nav aria-label={t("legalNav")} className="flex flex-wrap gap-4">

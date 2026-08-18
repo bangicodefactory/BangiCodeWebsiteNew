@@ -24,7 +24,7 @@ export async function ThesisLineStats({
   showProduct = true,
 }: {
   showProduct?: boolean;
-} = {}) {
+}) {
   const t = await getTranslations("Home.thesis");
 
   const stats = [
