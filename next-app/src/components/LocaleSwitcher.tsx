@@ -40,7 +40,13 @@ export function LocaleSwitcher({
    * second switcher elsewhere on the page (e.g. the footer) — two matching
    * navs break the strict-mode locator.
    *
-   * The 48px hit target is deliberate (WCAG 2.5.8); the visual pill is smaller.
+   * Hit target: 40×44. The comment here used to claim 48px while the class said
+   * h-9 — 36px, under the 40px a thumb wants and only just over WCAG 2.2 SC
+   * 2.5.8's 24px floor. h-10 makes the number and the claim agree.
+   *
+   * The track is `p-0.5` (2px) around a `rounded-full` control, which is
+   * concentric by construction: a pill inside a pill is correct at any padding,
+   * because both radii are already larger than half the height.
    */
   return (
     <Wrapper
@@ -53,7 +59,14 @@ export function LocaleSwitcher({
           type="button"
           onClick={() => switchLocale(locale)}
           aria-current={locale === currentLocale ? "true" : undefined}
-          className={`inline-flex h-9 min-w-[44px] items-center justify-center rounded-full px-3 font-mono text-xs tracking-wider uppercase transition-colors duration-200 ease-out focus-visible:outline-none ${
+          /*
+           * The press scale matches Button's 0.96. This is the one control on
+           * the bar that navigates without looking like a button, so the tactile
+           * acknowledgement matters more here than on something already obviously
+           * pressable — and a locale switch reloads the route, which means the
+           * press is the only feedback there is before the page changes.
+           */
+          className={`inline-flex h-10 min-w-[44px] items-center justify-center rounded-full px-3 font-mono text-xs tracking-wider uppercase transition-[color,background-color,scale] duration-200 ease-out focus-visible:outline-none active:scale-[0.96] active:duration-[120ms] ${
             locale === currentLocale
               ? "bg-secondary text-secondary-foreground"
               : "text-muted-foreground hover:text-foreground"

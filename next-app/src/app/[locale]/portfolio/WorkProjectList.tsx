@@ -75,7 +75,7 @@ export async function WorkProjectList({
             {filtered.map((project) => (
               <article
                 key={project.slug}
-                className="border-border bg-background hover:border-secondary-container flex flex-col rounded-sm border p-6 transition hover:shadow-md"
+                className="border-border bg-background hover:border-secondary-container transition-interactive flex flex-col rounded-lg border p-6 duration-200 ease-out hover:-translate-y-1 hover:shadow-md"
               >
                 <h2 className="font-display text-foreground mb-2 text-lg font-semibold">
                   <Link

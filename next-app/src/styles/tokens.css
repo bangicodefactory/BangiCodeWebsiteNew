@@ -138,6 +138,14 @@
    */
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  /*
+   * The exact mirror of --ease-out, for the return leg of a reversible
+   * transition: a curve (x1,y1,x2,y2) is inverted as (1-x2, 1-y2, 1-x1, 1-y1).
+   * Pairing --ease-out on the way in with a generic `ease-in` on the way out
+   * makes the outbound and return paths different shapes, which reads as the
+   * element behaving differently depending on which direction it is going.
+   */
+  --ease-in: cubic-bezier(0.7, 0, 0.84, 0);
 
   /* ── Layout — 1320px content width (generates max-w-content) ──────────── */
   --container-content: 82.5rem;

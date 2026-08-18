@@ -118,7 +118,7 @@ export default async function ProcessPage() {
           <p className="text-muted-foreground mb-10 font-mono text-xs tracking-widest uppercase">
             {t("principlesEyebrow")}
           </p>
-          <div className="bg-border grid grid-cols-1 gap-px sm:grid-cols-3">
+          <div className="reveal-stagger bg-border grid grid-cols-1 gap-px sm:grid-cols-3">
             {PRINCIPLES.map((key) => (
               <article
                 key={key}
@@ -137,12 +137,12 @@ export default async function ProcessPage() {
       </section>
 
       {/* CTA */}
-      <section className="bg-primary py-16 sm:py-24">
+      <section className="bg-primary py-20 sm:py-28 lg:py-32">
         <div className="max-w-content mx-auto px-4 text-center sm:px-6">
           <h2 className="font-display text-primary-foreground mb-8 text-2xl font-bold tracking-tight sm:text-3xl">
             {t("ctaHeadline")}
           </h2>
-          <Button asChild variant="secondary" size="lg">
+          <Button asChild variant="secondary" size="lg" shape="pill">
             <Link href="/contact">{t("ctaButton")}</Link>
           </Button>
         </div>

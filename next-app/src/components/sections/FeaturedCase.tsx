@@ -26,7 +26,7 @@ export async function FeaturedCase() {
     <section
       id="work"
       data-surface="dark"
-      className="bg-background py-16 sm:py-24"
+      className="bg-background py-20 sm:py-28 lg:py-32"
     >
       <div className="max-w-content mx-auto px-4 sm:px-6">
         <p className="text-muted-foreground mb-4 font-mono text-xs tracking-widest uppercase">
@@ -71,17 +71,26 @@ export async function FeaturedCase() {
             </Link>
           </div>
 
-          {/* Right — metrics */}
-          <dl className="grid grid-cols-2 gap-3">
+          {/*
+           * Right — metrics. These four are the strongest proof on the page, so
+           * they are the one place the reveal is doing rhetorical work rather
+           * than decoration: staggered, they land one at a time and each gets
+           * read. Arriving together they would be a block of blue numbers.
+           *
+           * tabular-nums for the same reason as the stats band — "-60%", "3→1",
+           * "14mo" and "99.9%" sit in a 2×2 grid and proportional digits give
+           * each a different optical start.
+           */}
+          <dl className="reveal-stagger grid grid-cols-2 gap-3">
             {metrics.map((m) => (
               <div
                 key={m.label}
-                className="border-border bg-card flex flex-col-reverse items-start gap-1 rounded-md border p-6"
+                className="border-border bg-card flex flex-col-reverse items-start gap-1 rounded-lg border p-6"
               >
                 <dt className="text-muted-foreground font-mono text-xs">
                   {m.label}
                 </dt>
-                <dd className="font-display text-secondary-container text-4xl font-bold tracking-tight">
+                <dd className="font-display text-secondary-container text-4xl font-bold tracking-tight tabular-nums">
                   {m.value}
                 </dd>
               </div>

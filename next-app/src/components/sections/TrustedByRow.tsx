@@ -35,7 +35,13 @@ export async function TrustedByRow() {
            * muted-foreground is the token that already means "quiet" and clears
            * AA at 6.4:1 here.
            */}
-          <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4">
+          {/*
+           * The one place a stagger earns its keep on a logo wall: six names
+           * arriving in sequence read as a list being counted out, which is the
+           * claim this strip is making. Capped at the fourth step in the CSS, so
+           * the last three land together rather than trailing.
+           */}
+          <div className="reveal-stagger flex flex-wrap items-center justify-center gap-x-10 gap-y-4">
             {CLIENTS.map((name) => (
               <span
                 key={name}

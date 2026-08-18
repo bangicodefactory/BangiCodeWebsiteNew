@@ -54,14 +54,35 @@ export function NavigationMenu({
                   onClick={() => onItemClick?.(item)}
                   className={cn(
                     "font-body relative inline-flex items-center rounded-sm px-3 py-2",
-                    "text-foreground text-sm font-medium transition-colors",
+                    "text-foreground text-sm font-medium transition-colors duration-200 ease-out",
                     "hover:bg-muted hover:text-foreground",
                     "focus-visible:ring-ring focus-visible:ring-offset-background focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none",
-                    isActive && [
-                      "after:absolute after:inset-x-3 after:bottom-0",
-                      "after:bg-secondary-container after:h-0.5 after:rounded-full",
-                      "after:content-['']",
-                    ],
+                    /*
+                     * The underline is now on EVERY item, not only the active
+                     * one — parked at scale-x-0 and grown from the centre on
+                     * hover and focus.
+                     *
+                     * Before, the active item's bar simply existed and hover
+                     * was a background fill, so pointing at a nav item told you
+                     * nothing about the item you were pointing at; it just
+                     * shaded a rectangle. Sharing one indicator between "where
+                     * you are" and "where you would go" is what makes a nav bar
+                     * feel connected to the pointer.
+                     *
+                     * scale-x rather than width: width is a layout property and
+                     * would relayout the row on every hover. A transform on a
+                     * pseudo-element stays on the compositor.
+                     */
+                    "after:absolute after:inset-x-3 after:bottom-0 after:content-['']",
+                    "after:bg-secondary-container after:h-0.5 after:rounded-full",
+                    "after:origin-center after:scale-x-0 after:transition-transform after:duration-200 after:ease-out",
+                    "hover:after:scale-x-100 focus-visible:after:scale-x-100",
+                    /*
+                     * Last, so tailwind-merge drops the scale-x-0 above rather
+                     * than the other way round. Order in this array is the only
+                     * thing deciding which one survives.
+                     */
+                    isActive && "after:scale-x-100",
                   )}
                 >
                   {item.label}

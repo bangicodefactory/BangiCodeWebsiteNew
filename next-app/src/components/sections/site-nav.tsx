@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState, useEffect, type CSSProperties } from "react";
 import { Menu } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { usePathname, Link } from "@/i18n/navigation";
@@ -80,12 +80,34 @@ export function SiteNav({ locale }: SiteNavProps) {
    * Replace with brand/logo-inverted.svg once that asset exists (CLAUDE.md
    * lists it under "Variants still needed").
    */
+  /*
+   * The bar becomes a MATERIAL once there is something under it.
+   *
+   * It carried `backdrop-blur-sm` on scroll already, over a fill that stayed
+   * FULLY OPAQUE — so the blur had nothing to reach: the fill behind it was
+   * hiding every pixel it would have blurred. The two scroll states were
+   * "solid slab" and "solid slab with a shadow".
+   *
+   * All of the material lives in `.site-chrome` in globals.css rather than in
+   * utilities here, for two reasons that both bite in this exact spot:
+   * `backdrop-filter` has to declare its identity value at rest or it snaps
+   * instead of animating, and `prefers-reduced-transparency` /
+   * `prefers-contrast` need to override the whole thing — neither is
+   * expressible as a Tailwind variant chain without becoming unreadable.
+   *
+   * `data-floating` rather than a class swap, so the CSS can key three separate
+   * effects (fill, blur, scroll edge) off one attribute and keep them in sync.
+   *
+   * `border-b border-transparent` looks pointless and is not: it reserves the
+   * hairline so `prefers-contrast: more` can colour it in without the bar
+   * changing height. No shadow and no visible border in the default path — the
+   * scroll edge gradient does that job now.
+   */
   return (
     <header
       data-surface="dark"
-      className={`bg-background sticky top-0 z-40 h-14 w-full transition-[background-color,border-color,box-shadow] sm:h-16 ${
-        scrolled ? "border-border border-b shadow-lg backdrop-blur-sm" : ""
-      }`}
+      data-floating={scrolled ? "true" : undefined}
+      className="site-chrome bg-background sticky top-0 z-40 h-14 w-full border-b border-transparent sm:h-16"
     >
       <div className="max-w-content mx-auto flex h-full items-center justify-between px-4 sm:px-6">
         <Link
@@ -118,7 +140,10 @@ export function SiteNav({ locale }: SiteNavProps) {
             onItemClick={(item) => trackNavClick(item.href)}
           />
           <LocaleSwitcher currentLocale={locale} />
-          <Button variant="spark" size="sm" asChild>
+          {/* shape="pill" — the marketing CTA shape. It sits next to a pill
+              locale switcher, not next to a form field, so the 10px input
+              radius has nothing here to pair with. */}
+          <Button variant="spark" size="sm" shape="pill" asChild>
             <Link href="/contact">{t("startProject")}</Link>
           </Button>
         </nav>
@@ -143,14 +168,25 @@ export function SiteNav({ locale }: SiteNavProps) {
                 </Link>
                 <SheetTitle className="sr-only">{t("mobileTitle")}</SheetTitle>
               </SheetHeader>
+              {/*
+               * sheet-stagger: the rows arrive just behind the panel rather
+               * than with it, so the menu reads as opening instead of as a
+               * finished picture sliding in. --sheet-i is the row index; the
+               * CSS turns it into a 28ms step (see globals.css).
+               *
+               * Index on the element rather than nth-child so the delay does
+               * not silently re-time itself the next time an item is added,
+               * removed or reordered in navItems.
+               */}
               <nav
-                className="mt-4 flex flex-col gap-1"
+                className="sheet-stagger mt-4 flex flex-col gap-1"
                 aria-label={t("mobileNav")}
               >
-                {navItems.map((item) => (
+                {navItems.map((item, i) => (
                   <Link
                     key={item.href}
                     href={item.href}
+                    style={{ "--sheet-i": i } as CSSProperties}
                     onClick={() => {
                       setOpen(false);
                       trackNavClick(item.href);
@@ -189,7 +225,13 @@ export function SiteNav({ locale }: SiteNavProps) {
               <div className="border-border mt-auto border-t px-6 pt-4 pb-[max(1.5rem,env(safe-area-inset-bottom))]">
                 <LocaleSwitcher currentLocale={locale} hideNavRole />
                 <div className="mt-3">
-                  <Button variant="spark" size="lg" className="w-full" asChild>
+                  <Button
+                    variant="spark"
+                    size="lg"
+                    shape="pill"
+                    className="w-full"
+                    asChild
+                  >
                     <Link href="/contact" onClick={() => setOpen(false)}>
                       {t("startProject")}
                     </Link>

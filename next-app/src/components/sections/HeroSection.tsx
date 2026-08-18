@@ -40,7 +40,17 @@ export async function HeroSection() {
         className="bg-spark/15 pointer-events-none absolute -top-32 left-1/2 -z-10 h-72 w-[36rem] -translate-x-1/2 rounded-full blur-[120px]"
       />
 
-      <div className="max-w-content mx-auto px-4 pt-20 pb-10 text-center sm:px-6 sm:pt-28 sm:pb-14">
+      {/*
+       * hero-enter staggers the five children below — eyebrow, headline, body,
+       * buttons, microcopy — rather than fading the block as one piece. See the
+       * note in globals.css for why the HEADLINE is not delayed: it is the LCP
+       * element and Chrome does not record an LCP candidate at opacity 0, so a
+       * delay on that one child is paid straight into the metric.
+       *
+       * Adding or reordering children here re-times the stagger, because the
+       * delays are nth-child. Five is the count the CSS is written for.
+       */}
+      <div className="hero-enter max-w-content mx-auto px-4 pt-20 pb-10 text-center sm:px-6 sm:pt-28 sm:pb-14">
         <p className="text-muted-foreground flex items-center justify-center gap-3 font-mono text-xs tracking-widest uppercase">
           <span aria-hidden="true" className="bg-spark h-px w-6 sm:w-10" />
           {t("eyebrow")}
@@ -72,7 +82,19 @@ export async function HeroSection() {
          * FR tagline, but with 8px to spare, which one copy edit or font-metric
          * shift would undo.
          */}
-        <h1 className="font-display text-foreground mx-auto mt-8 max-w-4xl text-4xl font-bold tracking-tight sm:text-6xl lg:max-w-[68rem] lg:text-7xl">
+        {/*
+         * Tracking is SIZE-SPECIFIC, not one value for the whole range. This
+         * headline runs 36px → 60px → 72px across two breakpoints and carried a
+         * single `tracking-tight` (-0.025em) at every one of them. Letters read
+         * progressively further apart as type grows, so a value tuned for 36px
+         * is loose at 72px; -0.025 / -0.03 / -0.035 keeps the apparent spacing
+         * constant instead of the numeric spacing.
+         *
+         * Safe against the French fold constraint below: tighter tracking only
+         * makes the line NARROWER, so the measured widths that lg:max-w-[68rem]
+         * was chosen from remain upper bounds.
+         */}
+        <h1 className="font-display text-foreground mx-auto mt-8 max-w-4xl text-4xl font-bold tracking-tight sm:text-6xl sm:tracking-[-0.03em] lg:max-w-[68rem] lg:text-7xl lg:tracking-[-0.035em]">
           <span className="block text-balance">{t("h1")}</span>{" "}
           <span className="text-secondary-container block text-balance">
             {t("tagline")}
@@ -91,10 +113,10 @@ export async function HeroSection() {
            * The calendar is still reachable from "Book 30 min" in the closing
            * band and from /book directly.
            */}
-          <Button asChild variant="spark" size="lg">
+          <Button asChild variant="spark" size="lg" shape="pill">
             <Link href="/contact">{t("ctaPrimary")}</Link>
           </Button>
-          <Button asChild variant="secondary" size="lg">
+          <Button asChild variant="secondary" size="lg" shape="pill">
             <Link href="#work">{t("ctaSecondary")}</Link>
           </Button>
         </div>

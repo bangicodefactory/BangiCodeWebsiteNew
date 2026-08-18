@@ -60,7 +60,7 @@ export function ServiceDetailPage({
           <p className="text-muted-foreground mb-10 font-mono text-xs tracking-widest uppercase">
             {capEyebrow}
           </p>
-          <div className="bg-border grid grid-cols-1 gap-px sm:grid-cols-3">
+          <div className="reveal-stagger bg-border grid grid-cols-1 gap-px sm:grid-cols-3">
             {capabilities.map((cap) => (
               <article
                 key={cap.title}
@@ -100,7 +100,7 @@ export function ServiceDetailPage({
           <p className="text-muted-foreground mb-10 font-mono text-xs tracking-widest uppercase">
             {processEyebrow}
           </p>
-          <ol className="bg-border grid grid-cols-1 gap-px sm:grid-cols-2 lg:grid-cols-4">
+          <ol className="reveal-stagger bg-border grid grid-cols-1 gap-px sm:grid-cols-2 lg:grid-cols-4">
             {steps.map((step, i) => (
               <li key={step} className="bg-background flex flex-col gap-3 p-8">
                 <span
@@ -140,12 +140,12 @@ export function ServiceDetailPage({
       </section>
 
       {/* CTA */}
-      <section className="border-border border-t py-16 sm:py-24">
+      <section className="border-border border-t py-20 sm:py-28 lg:py-32">
         <div className="max-w-content mx-auto px-4 text-center sm:px-6">
           <h2 className="font-display text-foreground mb-8 text-2xl font-bold tracking-tight sm:text-3xl">
             {ctaHeadline}
           </h2>
-          <Button asChild variant="primary" size="lg">
+          <Button asChild variant="primary" size="lg" shape="pill">
             <Link href={contactHref}>{ctaButton}</Link>
           </Button>
         </div>

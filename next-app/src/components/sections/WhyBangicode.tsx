@@ -21,7 +21,7 @@ export async function WhyBangicode() {
   const us = [t("us01"), t("us02"), t("us03"), t("us04")];
 
   return (
-    <section id="why" className="py-16 sm:py-24">
+    <section id="why" className="py-20 sm:py-28 lg:py-32">
       <div className="max-w-content mx-auto px-4 sm:px-6">
         <p className="text-muted-foreground font-mono text-xs tracking-widest uppercase">
           {t("eyebrow")}
@@ -30,8 +30,14 @@ export async function WhyBangicode() {
           {t("headline")}
         </h2>
 
-        <div className="mt-12 grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-6">
-          <div className="bg-card border-border rounded-lg border p-8">
+        {/*
+         * Two panels, staggered by one step. The quiet "what usually happens"
+         * card arrives first and the navy commitment card follows it, which is
+         * the order the argument is made in — the stagger is carrying the
+         * rhetoric, not decorating it.
+         */}
+        <div className="reveal-stagger mt-12 grid grid-cols-1 gap-4 lg:grid-cols-2 lg:gap-6">
+          <div className="bg-card border-border rounded-xl border p-8">
             <p className="text-muted-foreground font-mono text-xs tracking-widest uppercase">
               {t("themTitle")}
             </p>
@@ -50,9 +56,16 @@ export async function WhyBangicode() {
             </ul>
           </div>
 
+          {/*
+           * rounded-xl (28px) on both panels, up from rounded-lg (20px). These
+           * are the largest surfaces on the page at ~560×420 — CLAUDE.md files
+           * 28px under "large feature panels" and that is exactly what they are.
+           * At 20px a panel this size reads as a box with softened corners
+           * rather than as a rounded surface.
+           */}
           <div
             data-surface="dark"
-            className="bg-card border-border shadow-brand rounded-lg border p-8"
+            className="bg-card border-border shadow-brand rounded-xl border p-8"
           >
             <p className="text-muted-foreground font-mono text-xs tracking-widest uppercase">
               {t("usTitle")}

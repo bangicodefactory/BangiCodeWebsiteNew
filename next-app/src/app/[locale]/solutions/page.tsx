@@ -71,7 +71,7 @@ export default async function SolutionsPage() {
       <section className="max-w-content mx-auto px-4 pb-12 sm:px-6">
         <article
           data-surface="dark"
-          className="border-secondary bg-background rounded-lg border p-8 sm:p-10"
+          className="reveal border-secondary bg-background rounded-xl border p-8 sm:p-10"
         >
           <div className="flex flex-wrap items-center gap-3">
             <span className="bg-spark text-spark-foreground w-fit rounded-full px-2.5 py-1 font-mono text-xs">
@@ -92,7 +92,7 @@ export default async function SolutionsPage() {
             {t("ddBody")}
           </p>
 
-          <ul className="mt-6 flex list-none flex-wrap gap-2 p-0">
+          <ul className="reveal-stagger mt-6 flex list-none flex-wrap gap-2 p-0">
             {DRIVEDESK.featureKeys.map((k) => (
               <li
                 key={k}
@@ -105,7 +105,7 @@ export default async function SolutionsPage() {
 
           {/* Plain <a>: leaves the site, so it must not be locale-prefixed. */}
           <div className="mt-8">
-            <Button asChild variant="spark" size="lg">
+            <Button asChild variant="spark" size="lg" shape="pill">
               <a href={DRIVEDESK.url} target="_blank" rel="noopener noreferrer">
                 {t("ddCta")}
                 <ArrowUpRight aria-hidden="true" className="rtl:-scale-x-100" />
@@ -120,13 +120,13 @@ export default async function SolutionsPage() {
         <p className="text-muted-foreground mb-6 font-mono text-xs tracking-widest uppercase">
           {t("patternsLabel")}
         </p>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+        <div className="reveal-stagger grid grid-cols-1 gap-4 sm:grid-cols-2">
           {SOLUTIONS.map((s) => (
             <Link
               key={s.slug}
               href={`/solutions/${s.slug}`}
               data-placeholder="true"
-              className="group border-border bg-card hover:border-secondary focus-visible:ring-ring transition-interactive flex flex-col gap-3 rounded-md border p-8 shadow-xs duration-200 ease-out hover:-translate-y-1 hover:shadow-md focus-visible:ring-2 focus-visible:outline-none"
+              className="group border-border bg-card hover:border-secondary focus-visible:ring-ring transition-interactive flex flex-col gap-3 rounded-lg border p-8 shadow-xs duration-200 ease-out hover:-translate-y-1 hover:shadow-md focus-visible:ring-2 focus-visible:outline-none"
             >
               <span className="text-muted-foreground bg-muted w-fit rounded-full px-2.5 py-1 font-mono text-xs">
                 {t(`${s.key}Tag`)}
@@ -158,7 +158,7 @@ export default async function SolutionsPage() {
             {t("ctaBody")}
           </p>
           <div className="mt-8">
-            <Button asChild variant="spark" size="lg">
+            <Button asChild variant="spark" size="lg" shape="pill">
               <Link href="/contact">{t("ctaButton")}</Link>
             </Button>
           </div>

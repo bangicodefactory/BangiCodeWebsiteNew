@@ -54,13 +54,24 @@ export async function ThesisLineStats({
           With three, that leaves an orphan on the second mobile row and an
           empty fourth column pulling the row off-centre on desktop.
         */}
-        <dl className="border-border mt-12 grid grid-cols-3 gap-y-10 border-t pt-12">
+        {/*
+         * tabular-nums on the values. These are three numbers set side by side
+         * in a grid at 48px, and proportional digits give "20", "24" and "5"
+         * three different optical widths under three centred labels — the kind
+         * of misalignment that is invisible until you notice it and then cannot
+         * be unseen. Tabular figures are what a numeric column wants.
+         *
+         * It also protects the /ar values, which are authored with the sign on
+         * the far side to survive bidi; equal-width digits keep those from
+         * drifting relative to their labels.
+         */}
+        <dl className="reveal-stagger border-border mt-12 grid grid-cols-3 gap-y-10 border-t pt-12">
           {stats.map((stat) => (
             <div key={stat.label} className="flex flex-col-reverse gap-2">
               <dt className="text-muted-foreground font-mono text-xs tracking-wider">
                 {stat.label}
               </dt>
-              <dd className="font-display text-secondary-container text-4xl font-bold tracking-tight sm:text-5xl">
+              <dd className="font-display text-secondary-container text-4xl font-bold tracking-tight tabular-nums sm:text-5xl">
                 {stat.value}
               </dd>
             </div>
