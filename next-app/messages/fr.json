@@ -17,6 +17,10 @@
       "clientsValue": "20+",
       "clientsLabel": "clients servis",
       "yearsValue": "5y",
+      "productLabel": "notre propre produit",
+      "productName": "DriveDesk",
+      "productBody": "Le système d’exploitation de la location de voitures — nous l’avons conçu, nous le publions, nous l’exploitons.",
+      "productCta": "Découvrir drivedesk.ma",
       "yearsLabel": "années d'expérience"
     },
     "trustedBy": {
@@ -304,6 +308,9 @@
     "storySize": "Équipe",
     "storySizeValue": "12 personnes",
     "storyPractices": "Expertises",
+    "storyProduct": "Notre propre produit",
+    "storyProductValue": "DriveDesk",
+    "storyProductNote": "Plateforme de location de voitures, en ligne sur drivedesk.ma",
     "storyPracticesValue": "4",
     "valuesEyebrow": "// comment nous travaillons",
     "val01Title": "Artisanat senior",

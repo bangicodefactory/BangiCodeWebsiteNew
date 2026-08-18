@@ -17,6 +17,10 @@
       "clientsValue": "20+",
       "clientsLabel": "clients served",
       "yearsValue": "5y",
+      "productLabel": "our own product",
+      "productName": "DriveDesk",
+      "productBody": "The operating system for car rental — we built it, we ship it, we run it.",
+      "productCta": "Visit drivedesk.ma",
       "yearsLabel": "in business"
     },
     "trustedBy": {
@@ -304,6 +308,9 @@
     "storySize": "Team",
     "storySizeValue": "12 people",
     "storyPractices": "Practices",
+    "storyProduct": "Our own product",
+    "storyProductValue": "DriveDesk",
+    "storyProductNote": "Car-rental platform, live at drivedesk.ma",
     "storyPracticesValue": "4",
     "valuesEyebrow": "// how we work",
     "val01Title": "Senior craft",

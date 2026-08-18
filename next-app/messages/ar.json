@@ -17,6 +17,10 @@
       "clientsValue": "+20",
       "clientsLabel": "عميل",
       "yearsValue": "5 سنوات",
+      "productLabel": "منتجنا الخاص",
+      "productName": "DriveDesk",
+      "productBody": "نظام تشغيل تأجير السيارات — نحن بنيناه ونُصدره ونشغّله.",
+      "productCta": "زُر drivedesk.ma",
       "yearsLabel": "في المجال"
     },
     "trustedBy": {
@@ -304,6 +308,9 @@
     "storySize": "الفريق",
     "storySizeValue": "12 شخصاً",
     "storyPractices": "التخصصات",
+    "storyProduct": "منتجنا الخاص",
+    "storyProductValue": "DriveDesk",
+    "storyProductNote": "منصة لتأجير السيارات، متاحة على drivedesk.ma",
     "storyPracticesValue": "4",
     "valuesEyebrow": "// كيف نعمل",
     "val01Title": "حِرفية المحترفين",
