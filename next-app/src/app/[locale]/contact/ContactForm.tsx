@@ -103,7 +103,22 @@ export function ContactForm() {
       </div>
 
       <div className="flex flex-col gap-2">
-        <Label htmlFor="contact-service-trigger">{t("formService")}</Label>
+        {/*
+         * Marking the one OPTIONAL field, not the three required ones.
+         *
+         * `required` was already on name/email/message in the DOM, but the form
+         * sets noValidate and nothing was marked visually, so the only way to
+         * learn what was mandatory was to submit and fail. When required fields
+         * outnumber optional ones, three asterisks read as noise and an
+         * "(optional)" on the single exception carries the same information.
+         * It is part of the label element, so screen readers get it too.
+         */}
+        <Label htmlFor="contact-service-trigger">
+          {t("formService")}{" "}
+          <span className="text-muted-foreground font-normal">
+            {t("formOptional")}
+          </span>
+        </Label>
         <Select name="service" onValueChange={setSelectedService}>
           <SelectTrigger id="contact-service-trigger">
             <SelectValue placeholder={t("formServicePlaceholder")} />
@@ -136,9 +151,16 @@ export function ContactForm() {
         </p>
       )}
 
+      {/*
+       * spark, not primary. Every other "do the thing" button on the site is
+       * the red pill — nav, hero, "Book 30 min". This one is the last step of
+       * the funnel those buttons feed, and it was the quietest button on the
+       * page. The ~5% red rule is about area, and one submit button on an
+       * otherwise light form is well inside it.
+       */}
       <Button
         type="submit"
-        variant="primary"
+        variant="spark"
         size="lg"
         disabled={isPending}
         className="self-start"

@@ -173,11 +173,23 @@ export function SiteNav({ locale }: SiteNavProps) {
                 ))}
               </nav>
               {/* The Sheet renders in a Radix portal, so it sits OUTSIDE the
-                  header's data-surface="dark" scope and stays light. */}
-              <div className="border-border mt-auto border-t pt-4">
+                  header's data-surface="dark" scope and stays light.
+
+                  The bottom inset is not decorative. SheetContent has no
+                  padding of its own, so this block ended flush with the
+                  viewport: the CTA measured bottom=812 on a 375×812 emulation,
+                  which on any device with a home indicator puts the menu's
+                  primary action inside the system gesture strip. `max()` keeps
+                  the 24px it had on hardware with no inset and grows to clear
+                  the indicator where there is one.
+
+                  The button was also size="sm" — 32px tall for the most
+                  important target in the menu, against 44px nav rows above it.
+                  size="lg" (48px) matches the weight of the action. */}
+              <div className="border-border mt-auto border-t px-6 pt-4 pb-[max(1.5rem,env(safe-area-inset-bottom))]">
                 <LocaleSwitcher currentLocale={locale} hideNavRole />
                 <div className="mt-3">
-                  <Button variant="spark" size="sm" className="w-full" asChild>
+                  <Button variant="spark" size="lg" className="w-full" asChild>
                     <Link href="/contact" onClick={() => setOpen(false)}>
                       {t("startProject")}
                     </Link>

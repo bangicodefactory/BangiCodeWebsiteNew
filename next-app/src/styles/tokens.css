@@ -295,13 +295,38 @@
  * (already broken) behaviour. --font-plex-arabic is set on <html> by the
  * IBM_Plex_Sans_Arabic next/font instance, emitted only on /ar routes.
  *
- * Mono is deliberately NOT swapped: JetBrains Mono has no Arabic either, but
- * mono is used only for eyebrows and metadata, which components already render
- * with dir="ltr" as Latin technical markers (— SERVICES, // the thesis).
+ * Mono IS swapped — appended, not replaced. The old note here claimed mono was
+ * safe to leave alone because those slots render "as Latin technical markers".
+ * That is not what ships: on /ar the eyebrows, stat labels, step times and hero
+ * microcopy are translated Arabic strings, and dir="ltr" sets paragraph
+ * direction, not glyph coverage. Measured on /ar, the hero eyebrow computed to
+ * "JetBrains Mono, JetBrains Mono Fallback" while displaying
+ * "شركة برمجة · تطوان، المغرب" — i.e. every Arabic glyph in a mono slot was
+ * falling through to whatever the OS picked (Tahoma on Windows, Geeza Pro on
+ * macOS), so /ar rendered differently per device.
+ *
+ * Appending rather than replacing keeps the monospace look where it can apply:
+ * font fallback is per-glyph, so Latin letters, digits and separators still get
+ * JetBrains Mono and only the Arabic runs resolve to Plex Arabic.
  */
 [lang="ar"] {
   --font-display-stack: var(--font-plex-arabic);
   --font-body-stack: var(--font-plex-arabic);
+  --font-mono-stack: var(--font-jetbrains-mono), var(--font-plex-arabic);
+}
+
+/*
+ * Arabic needs more leading than the display face is tuned for. Tailwind's
+ * text-6xl/text-7xl ship line-height: 1, which is a deliberate look for Chakra
+ * Petch; on Plex Arabic at 72px it measured 72px/72px and the descenders and
+ * dots of one line ran into the next. 1.45 is the low end of what Arabic
+ * typography wants and keeps the headline compact.
+ *
+ * [lang="ar"] :is(h1,h2,h3) is (0,1,1) against a utility's (0,1,0), so this
+ * wins without !important.
+ */
+[lang="ar"] :is(h1, h2, h3) {
+  line-height: 1.45;
 }
 
 /* ═══ Layer 3 — bridge ═══════════════════════════════════════════════════

@@ -72,15 +72,28 @@ export default async function LocalePage() {
        * Design D's section order. Three dark navy bands carry the page:
        * hero + stats, the portfolio (featured case + more work), and the
        * closing contact band. Everything between them is light.
+       *
+       * The portfolio band moved up ahead of services/solutions. Measured on a
+       * 375px viewport, the first case study used to start at 4,604px of a
+       * 10,046px page — 4.2 screens of same-shaped light card grids (why,
+       * services, solutions: 3,397px combined) before a visitor saw a single
+       * piece of evidence. It now lands at ~2,190px, straight after the "how we
+       * work" contrast, so the argument is made and then immediately paid off.
+       *
+       * Known trade-off: this leaves services → solutions → process →
+       * testimonials → faq as five consecutive light bands. The alternation was
+       * better before; the proof placement matters more. If that tail starts to
+       * read flat, give WhatHappensNext the dark surface rather than moving
+       * this back.
        */}
       <HeroSection />
       <ThesisLineStats />
       <TrustedByRow />
       <WhyBangicode />
-      <ServicesSection />
-      <SolutionsSection />
       <FeaturedCase />
       <PeekCards />
+      <ServicesSection />
+      <SolutionsSection />
       <WhatHappensNext />
       <TestimonialsSection />
       <FaqSection />

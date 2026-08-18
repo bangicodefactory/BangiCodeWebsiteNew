@@ -123,6 +123,31 @@ body {
   transition: opacity 400ms var(--ease-out);
 }
 
+/*
+ * Section eyebrows on RTL pages.
+ *
+ * Eyebrows carry dir="ltr" so the "//" marker keeps its Latin order. The side
+ * effect is that `text-align: start` — which every section relies on — then
+ * resolves against the EYEBROW's direction (left) while the heading right below
+ * it resolves against the PAGE's (right). Measured on /ar at 1440px: the "why"
+ * eyebrow sat at x=76 and the h2 it labels at x=580, in a block that spans
+ * 76→1348. Every left-aligned section on /ar had its label at one end and its
+ * heading at the other.
+ *
+ * Scoped to p/h2 on purpose. Inline `dir="ltr"` spans — dates, phone numbers,
+ * the tech-stack chips — are unaffected, and the hero eyebrow is a flex row so
+ * text-align does not reach it either.
+ *
+ * This fixes the alignment, not the marker side: "//" still renders on the
+ * trailing side for an Arabic reader. Doing that properly means lifting "//"
+ * out of all 51 translated strings and rendering it as presentation, which is
+ * a shared-component refactor rather than a CSS rule.
+ */
+[dir="rtl"] p[dir="ltr"],
+[dir="rtl"] h2[dir="ltr"] {
+  text-align: right;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

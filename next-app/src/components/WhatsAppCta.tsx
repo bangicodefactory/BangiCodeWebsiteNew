@@ -93,7 +93,10 @@ export function WhatsAppCta() {
       data-testid="whatsapp-cta"
       onClick={handleClick}
       className={cn(
-        "fixed end-5 bottom-5 z-40",
+        // bottom-5 was a flat 20px, which on a device with a home indicator
+        // puts a 56px circle partly inside the gesture strip. max() keeps the
+        // same 20px where there is no inset and lifts it clear where there is.
+        "fixed end-5 bottom-[max(1.25rem,env(safe-area-inset-bottom))] z-40",
         "flex h-14 w-14 items-center justify-center rounded-full",
         // WhatsApp brand green is intentionally NOT a bangicode token — it is
         // a third-party brand mark and must stay recognisable.

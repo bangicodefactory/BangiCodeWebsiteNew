@@ -88,8 +88,16 @@ export default async function CaseStudyPage({
         </h1>
       </section>
 
-      {/* Hero image */}
-      <div className="bg-surface-container max-w-content mx-auto px-4 sm:px-6">
+      {/*
+       * Hero image.
+       *
+       * No bg on this wrapper. It carried `bg-surface-container` while the
+       * placeholder inside carries the same token, so the grey band painted out
+       * to the wrapper's own edge (x=60 at 1440) while the header above it sat
+       * at the padded edge (x=84). Two grey rectangles, one nested in the other,
+       * reading as a single misaligned one. The inner element owns the fill.
+       */}
+      <div className="max-w-content mx-auto px-4 sm:px-6">
         {!hero.placeholder ? (
           <Image
             src={hero.webp}
@@ -117,63 +125,74 @@ export default async function CaseStudyPage({
         )}
       </div>
 
-      {/* Body */}
-      <section className="mx-auto max-w-3xl px-4 py-12 sm:px-6">
-        {/* Summary */}
-        <p className="font-body text-foreground mb-8 text-lg leading-relaxed">
-          {c.summary}
-        </p>
-
-        {/* Stack strip */}
-        <div className="mb-8">
-          <p
-            dir="ltr"
-            className="text-muted-foreground mb-3 font-mono text-xs tracking-widest uppercase"
-          >
-            {t("stackLabel")}
+      {/*
+       * Body.
+       *
+       * The measure stays max-w-3xl — that is the readable line length and it
+       * should not change. What changed is where it starts: this used to be
+       * `mx-auto max-w-3xl`, which centred the column and put its left edge at
+       * x=360 while the breadcrumb, the h1 and the image all began at x=84.
+       * Three left edges on a page with five elements. Now the outer wrapper
+       * shares the page gutter and the measure is capped inside it.
+       */}
+      <section className="max-w-content mx-auto px-4 py-12 sm:px-6">
+        <div className="max-w-3xl">
+          {/* Summary */}
+          <p className="font-body text-foreground mb-8 text-lg leading-relaxed">
+            {c.summary}
           </p>
-          <div className="flex flex-wrap gap-2">
-            {project.tags.map((tag) => (
-              <Badge
-                key={tag}
-                variant="outline"
-                className="font-mono uppercase"
-              >
-                {tag}
-              </Badge>
-            ))}
+
+          {/* Stack strip */}
+          <div className="mb-8">
+            <p
+              dir="ltr"
+              className="text-muted-foreground mb-3 font-mono text-xs tracking-widest uppercase"
+            >
+              {t("stackLabel")}
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {project.tags.map((tag) => (
+                <Badge
+                  key={tag}
+                  variant="outline"
+                  className="font-mono uppercase"
+                >
+                  {tag}
+                </Badge>
+              ))}
+            </div>
           </div>
-        </div>
 
-        {/* Outcome */}
-        <div className="border-secondary-container mb-12 border-s-2 ps-4">
-          <p
-            dir="ltr"
-            className="text-muted-foreground mb-1 font-mono text-xs tracking-widest uppercase"
+          {/* Outcome */}
+          <div className="border-secondary-container mb-12 border-s-2 ps-4">
+            <p
+              dir="ltr"
+              className="text-muted-foreground mb-1 font-mono text-xs tracking-widest uppercase"
+            >
+              {t("outcomeLabel")}
+            </p>
+            <p className="font-body text-foreground text-base font-medium">
+              {c.outcome}
+            </p>
+          </div>
+
+          {/*
+           * CTA. This label is a full sentence — CLAUDE.md locks it as "Full case
+           * study available on request — contact us" — and Button's base carries
+           * whitespace-nowrap, which is fine for the two-word labels everywhere
+           * else. At 390px it measured 412px wide in EN and 540px in FR, pushing
+           * the whole page into horizontal scroll. Allow this one to wrap and let
+           * the height follow instead of overriding the primitive for everyone.
+           */}
+          <Button
+            asChild
+            variant="spark"
+            size="lg"
+            className="h-auto max-w-full py-3 text-center whitespace-normal"
           >
-            {t("outcomeLabel")}
-          </p>
-          <p className="font-body text-foreground text-base font-medium">
-            {c.outcome}
-          </p>
+            <Link href="/contact">{t("ctaButton")}</Link>
+          </Button>
         </div>
-
-        {/*
-         * CTA. This label is a full sentence — CLAUDE.md locks it as "Full case
-         * study available on request — contact us" — and Button's base carries
-         * whitespace-nowrap, which is fine for the two-word labels everywhere
-         * else. At 390px it measured 412px wide in EN and 540px in FR, pushing
-         * the whole page into horizontal scroll. Allow this one to wrap and let
-         * the height follow instead of overriding the primitive for everyone.
-         */}
-        <Button
-          asChild
-          variant="primary"
-          size="lg"
-          className="h-auto max-w-full py-3 text-center whitespace-normal"
-        >
-          <Link href="/contact">{t("ctaButton")}</Link>
-        </Button>
       </section>
     </div>
   );
