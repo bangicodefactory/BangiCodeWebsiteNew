@@ -540,6 +540,7 @@
   "Solutions": {
     "eyebrow": "// platforms",
     "h1": "One product of ours. Three we build to order.",
+    "metaDescription": "DriveDesk, our own car-rental platform, plus three platform shapes we build to order for restaurants, schools and online shops.",
     "subhead": "DriveDesk is our own car-rental platform — we built it, we ship it, we run it. Below it are three platform shapes that recur across client work; each is a starting point we build out for your business.",
     "placeholderNote": "The three patterns below DriveDesk are illustrative — shapes from past projects, not products you can buy off the shelf. Every build is scoped and priced for the business that commissions it.",
     "learnMore": "What a build includes",
@@ -593,6 +594,9 @@
     "emptyCtaLink": "see what we've built",
     "backToBlog": "All posts",
     "publishedLabel": "Published"
+  },
+  "Common": {
+    "opensInNewTab": "(opens in a new tab)"
   },
   "Meta": {
     "homeTitle": "Software Agency in Tétouan, Morocco | Bangicode",

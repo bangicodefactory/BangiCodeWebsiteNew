@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { NewTabHint } from "@/components/NewTabHint";
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { Separator } from "@/components/ui/separator";
@@ -99,6 +100,7 @@ export async function SiteFooter() {
                 className={MONO_LINK_CLASS}
               >
                 {t("linkedin")}
+                <NewTabHint />
               </a>
               <a
                 href="https://github.com/bangicodefactory"
@@ -107,15 +109,13 @@ export async function SiteFooter() {
                 className={MONO_LINK_CLASS}
               >
                 {t("github")}
+                <NewTabHint />
               </a>
             </div>
           </div>
 
           <div className="flex flex-col gap-4">
-            <p
-              dir="ltr"
-              className="text-muted-foreground font-mono text-xs tracking-widest uppercase"
-            >
+            <p className="text-muted-foreground font-mono text-xs tracking-widest uppercase">
               {t("servicesTitle")}
             </p>
             {/*
@@ -138,10 +138,7 @@ export async function SiteFooter() {
           </div>
 
           <div className="flex flex-col gap-4">
-            <p
-              dir="ltr"
-              className="text-muted-foreground font-mono text-xs tracking-widest uppercase"
-            >
+            <p className="text-muted-foreground font-mono text-xs tracking-widest uppercase">
               {t("companyTitle")}
             </p>
             {/*
@@ -164,10 +161,7 @@ export async function SiteFooter() {
           </div>
 
           <div className="flex flex-col gap-4">
-            <p
-              dir="ltr"
-              className="text-muted-foreground font-mono text-xs tracking-widest uppercase"
-            >
+            <p className="text-muted-foreground font-mono text-xs tracking-widest uppercase">
               {t("locationTitle")}
             </p>
             <address className="not-italic">
@@ -194,6 +188,7 @@ export async function SiteFooter() {
                   className={MONO_CONTACT_LINK_CLASS}
                 >
                   {t("whatsapp")}
+                  <NewTabHint />
                 </a>
               </div>
             </address>

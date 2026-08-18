@@ -1,5 +1,6 @@
 import { getTranslations } from "next-intl/server";
 import { ArrowUpRight } from "lucide-react";
+import { NewTabHint } from "@/components/NewTabHint";
 import { DRIVEDESK } from "@/lib/solutions";
 
 /*
@@ -39,10 +40,7 @@ export async function ThesisLineStats({
       className="border-border bg-background border-t"
     >
       <div className="max-w-content mx-auto px-4 py-14 text-center sm:px-6 sm:py-16">
-        <p
-          dir="ltr"
-          className="text-muted-foreground font-mono text-xs tracking-widest uppercase"
-        >
+        <p className="text-muted-foreground font-mono text-xs tracking-widest uppercase">
           {t("eyebrow")}
         </p>
 
@@ -85,10 +83,7 @@ export async function ThesisLineStats({
          */}
         {showProduct && (
           <div className="border-border mt-10 border-t pt-8">
-            <p
-              dir="ltr"
-              className="text-muted-foreground font-mono text-xs tracking-widest uppercase"
-            >
+            <p className="text-muted-foreground font-mono text-xs tracking-widest uppercase">
               {t("productLabel")}
             </p>
             <div className="mt-3 flex flex-col items-center justify-center gap-x-3 gap-y-2 sm:flex-row sm:flex-wrap">
@@ -111,6 +106,7 @@ export async function ThesisLineStats({
                 aria-hidden="true"
                 className="size-4 rtl:-scale-x-100"
               />
+              <NewTabHint />
             </a>
           </div>
         )}

@@ -124,29 +124,26 @@ body {
 }
 
 /*
- * Section eyebrows on RTL pages.
+ * Section eyebrows used to carry dir="ltr" and there was a rule here forcing
+ * them back to text-align: right on RTL pages. Both are gone — the attribute
+ * was the bug and the rule was a patch on it.
  *
- * Eyebrows carry dir="ltr" so the "//" marker keeps its Latin order. The side
- * effect is that `text-align: start` — which every section relies on — then
- * resolves against the EYEBROW's direction (left) while the heading right below
- * it resolves against the PAGE's (right). Measured on /ar at 1440px: the "why"
- * eyebrow sat at x=76 and the h2 it labels at x=580, in a block that spans
- * 76→1348. Every left-aligned section on /ar had its label at one end and its
- * heading at the other.
+ * dir="ltr" made `text-align: start` resolve against the EYEBROW's direction
+ * (left) while the heading beside it resolved against the PAGE's (right), so on
+ * /ar every left-aligned section had its label at one end of the block and its
+ * heading at the other. Pinning them to `right` fixed those but broke the
+ * CENTRED ones: in #thesis the label sat flush against the right edge while the
+ * headline, stats and product line under it stayed centred.
  *
- * Scoped to p/h2 on purpose. Inline `dir="ltr"` spans — dates, phone numbers,
- * the tech-stack chips — are unaffected, and the hero eyebrow is a flex row so
- * text-align does not reach it either.
+ * Dropping the attribute fixes both at once, because a paragraph in the page's
+ * own direction inherits whatever alignment its section already uses. The "//"
+ * marker also lands correctly without help: it is neutral characters at the
+ * start of the string, so bidi resolves it to the paragraph direction — left in
+ * LTR, right in RTL, leading either way.
  *
- * This fixes the alignment, not the marker side: "//" still renders on the
- * trailing side for an Arabic reader. Doing that properly means lifting "//"
- * out of all 51 translated strings and rendering it as presentation, which is
- * a shared-component refactor rather than a CSS rule.
+ * Inline dir="ltr" stays where it is genuinely needed (dates, phone numbers,
+ * tabular figures) — those are runs inside prose, not blocks.
  */
-[dir="rtl"] p[dir="ltr"],
-[dir="rtl"] h2[dir="ltr"] {
-  text-align: right;
-}
 
 @media (prefers-reduced-motion: reduce) {
   *,

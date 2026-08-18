@@ -253,6 +253,68 @@ test("@smoke fonts — /en does NOT get the Arabic face", async ({ page }) => {
 });
 
 /*
+ * Section eyebrows must line up with the sections they label, on /ar.
+ *
+ * The eyebrows once carried dir="ltr" so the "//" marker kept its Latin order.
+ * The cost was that `text-align: start` then resolved against the EYEBROW's
+ * direction (left) while the heading beside it resolved against the PAGE's
+ * (right): on /ar every left-aligned section had its label at one end of the
+ * block and its heading at the other, roughly 1,270px apart at desktop width.
+ *
+ * The first fix — pinning them to text-align: right on RTL pages — traded one
+ * bug for another, because it also hit the CENTRED sections, where the label
+ * then sat flush against the right edge while everything under it stayed
+ * centred. So this asserts BOTH shapes: aligned in a left-aligned section,
+ * centred in a centred one. Either fix alone passes one and fails the other.
+ *
+ * Geometry rather than CSS, deliberately — the property that broke was never
+ * the one being set, it was how `start` resolved.
+ */
+test("@smoke /ar — eyebrows align with the section they label", async ({
+  page,
+}) => {
+  await page.goto("/ar");
+
+  const geometry = await page.evaluate(() => {
+    // Measured on the TEXT, not the block: both span the full column.
+    const textBox = (el: Element) => {
+      const r = document.createRange();
+      r.selectNodeContents(el);
+      return r.getBoundingClientRect();
+    };
+    const eyebrowOf = (id: string) =>
+      document.querySelector(`#${id} p`) as HTMLElement;
+
+    const why = document.getElementById("why")!;
+    const whyEyebrow = textBox(eyebrowOf("why"));
+    const whyHeading = textBox(why.querySelector("h2")!);
+
+    const thesisEyebrow = eyebrowOf("thesis");
+    const box = thesisEyebrow.getBoundingClientRect();
+    const text = textBox(thesisEyebrow);
+
+    return {
+      whyEyebrowRight: Math.round(whyEyebrow.right),
+      whyHeadingRight: Math.round(whyHeading.right),
+      thesisLeftGap: Math.round(text.left - box.left),
+      thesisRightGap: Math.round(box.right - text.right),
+    };
+  });
+
+  // Left-aligned section: label and heading share the RTL start edge.
+  expect(
+    Math.abs(geometry.whyEyebrowRight - geometry.whyHeadingRight),
+    "eyebrow and heading must share the start edge in a left-aligned section",
+  ).toBeLessThanOrEqual(2);
+
+  // Centred section: equal slack either side, i.e. actually centred.
+  expect(
+    Math.abs(geometry.thesisLeftGap - geometry.thesisRightGap),
+    "eyebrow must stay centred in a centred section",
+  ).toBeLessThanOrEqual(4);
+});
+
+/*
  * Hover and press must actually animate.
  *
  * Every interactive element was written as `transition-[…,transform]`, which

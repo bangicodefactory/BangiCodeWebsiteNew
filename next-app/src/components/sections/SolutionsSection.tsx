@@ -1,4 +1,5 @@
 import { getTranslations } from "next-intl/server";
+import { NewTabHint } from "@/components/NewTabHint";
 import { ArrowUpRight } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
@@ -21,15 +22,6 @@ import { DRIVEDESK } from "@/lib/solutions";
 export async function SolutionsSection() {
   const t = await getTranslations("Home.solutions");
 
-  const features = [
-    t("ddF01"),
-    t("ddF02"),
-    t("ddF03"),
-    t("ddF04"),
-    t("ddF05"),
-    t("ddF06"),
-  ];
-
   const patterns = [
     { name: t("p02Name"), tag: t("p02Tag"), body: t("p02Body") },
     { name: t("p03Name"), tag: t("p03Tag"), body: t("p03Body") },
@@ -42,10 +34,7 @@ export async function SolutionsSection() {
       className="border-border bg-surface-container border-y py-16 sm:py-24"
     >
       <div className="max-w-content mx-auto px-4 sm:px-6">
-        <p
-          dir="ltr"
-          className="text-muted-foreground font-mono text-xs tracking-widest uppercase"
-        >
+        <p className="text-muted-foreground font-mono text-xs tracking-widest uppercase">
           {t("eyebrow")}
         </p>
         <h2 className="font-display text-foreground mt-4 max-w-3xl text-3xl font-bold tracking-tight text-balance sm:text-4xl">
@@ -64,10 +53,7 @@ export async function SolutionsSection() {
             <span className="bg-spark text-spark-foreground w-fit rounded-full px-2.5 py-1 font-mono text-xs">
               {t("ddBadge")}
             </span>
-            <span
-              dir="ltr"
-              className="text-muted-foreground font-mono text-xs tracking-widest uppercase"
-            >
+            <span className="text-muted-foreground font-mono text-xs tracking-widest uppercase">
               drivedesk.ma
             </span>
           </div>
@@ -83,12 +69,12 @@ export async function SolutionsSection() {
           </p>
 
           <ul className="mt-6 flex list-none flex-wrap gap-2 p-0">
-            {features.map((f) => (
+            {DRIVEDESK.featureKeys.map((k) => (
               <li
-                key={f}
+                key={k}
                 className="border-border text-foreground/80 rounded-full border px-3 py-1 font-mono text-xs"
               >
-                {f}
+                {t(k)}
               </li>
             ))}
           </ul>
@@ -103,16 +89,14 @@ export async function SolutionsSection() {
               <a href={DRIVEDESK.url} target="_blank" rel="noopener noreferrer">
                 {t("ddCta")}
                 <ArrowUpRight aria-hidden="true" className="rtl:-scale-x-100" />
+                <NewTabHint />
               </a>
             </Button>
           </div>
         </article>
 
         {/* ── The three patterns: still illustrative ──────────────────────── */}
-        <p
-          dir="ltr"
-          className="text-muted-foreground mt-12 font-mono text-xs tracking-widest uppercase"
-        >
+        <p className="text-muted-foreground mt-12 font-mono text-xs tracking-widest uppercase">
           {t("patternsLabel")}
         </p>
 

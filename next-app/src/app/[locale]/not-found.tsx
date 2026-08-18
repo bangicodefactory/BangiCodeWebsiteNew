@@ -37,10 +37,7 @@ import { Button } from "@/components/ui/button";
 export default function LocaleNotFound() {
   return (
     <div className="max-w-content mx-auto flex flex-col items-center justify-center px-4 py-32 text-center sm:px-6">
-      <p
-        dir="ltr"
-        className="text-muted-foreground font-mono text-xs tracking-widest uppercase"
-      >
+      <p className="text-muted-foreground font-mono text-xs tracking-widest uppercase">
         {"// 404"}
       </p>
       <h1 className="font-display text-foreground mt-4 text-3xl font-bold tracking-tight sm:text-4xl">

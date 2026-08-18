@@ -9,6 +9,14 @@ const WA_NUMBER = process.env.NEXT_PUBLIC_WA_NUMBER ?? "212664571370";
 
 export function WhatsAppCta() {
   const t = useTranslations("WhatsAppCta");
+  const tCommon = useTranslations("Common");
+  /*
+   * The new-tab note is appended to the LABEL rather than added as an sr-only
+   * child, because aria-label replaces the accessible name — a child element
+   * here would never be announced. Every other outbound link on the site uses
+   * <NewTabHint /> for this; this one cannot.
+   */
+  const newTabLabel = `${t("ariaLabel")} ${tCommon("opensInNewTab")}`;
   const [inputFocused, setInputFocused] = useState(false);
   const [footerVisible, setFooterVisible] = useState(false);
 
@@ -89,7 +97,7 @@ export function WhatsAppCta() {
       href={href}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label={t("ariaLabel")}
+      aria-label={newTabLabel}
       data-testid="whatsapp-cta"
       onClick={handleClick}
       className={cn(

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { NewTabHint } from "@/components/NewTabHint";
 import { getTranslations } from "next-intl/server";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { routing } from "@/i18n/routing";
@@ -20,7 +21,20 @@ export async function generateMetadata({
   const t = await getTranslations({ locale, namespace: "Solutions" });
   return {
     title: t("h1"),
-    description: t("subhead"),
+    /*
+     * A dedicated key, NOT `subhead`.
+     *
+     * The two were the same string, so rewriting the on-page intro for
+     * DriveDesk silently rewrote the meta description with it — to 201 chars in
+     * en, 270 in fr, against the ~155 Google renders. The French sentence
+     * naming what the page actually offers never reached a search result.
+     *
+     * This is the same failure the home page had (see the note in
+     * [locale]/page.tsx): copy written to be read on the page does not fit a
+     * search result, and one string cannot serve both. `check:messages` now
+     * enforces the length so this cannot regress a third time.
+     */
+    description: t("metaDescription"),
     alternates: buildAlternates("/solutions", locale),
   };
 }
@@ -31,10 +45,7 @@ export default async function SolutionsPage() {
   return (
     <div>
       <section className="max-w-content mx-auto px-4 pt-24 pb-12 sm:px-6 sm:pt-32">
-        <p
-          dir="ltr"
-          className="text-muted-foreground mb-4 font-mono text-xs tracking-widest uppercase"
-        >
+        <p className="text-muted-foreground mb-4 font-mono text-xs tracking-widest uppercase">
           {t("eyebrow")}
         </p>
         <h1 className="font-display text-foreground mb-4 max-w-3xl text-4xl font-bold tracking-tight text-balance sm:text-5xl lg:text-6xl">
@@ -66,10 +77,7 @@ export default async function SolutionsPage() {
             <span className="bg-spark text-spark-foreground w-fit rounded-full px-2.5 py-1 font-mono text-xs">
               {t("ddBadge")}
             </span>
-            <span
-              dir="ltr"
-              className="text-muted-foreground font-mono text-xs tracking-widest uppercase"
-            >
+            <span className="text-muted-foreground font-mono text-xs tracking-widest uppercase">
               drivedesk.ma
             </span>
           </div>
@@ -85,7 +93,7 @@ export default async function SolutionsPage() {
           </p>
 
           <ul className="mt-6 flex list-none flex-wrap gap-2 p-0">
-            {["ddF01", "ddF02", "ddF03", "ddF04", "ddF05", "ddF06"].map((k) => (
+            {DRIVEDESK.featureKeys.map((k) => (
               <li
                 key={k}
                 className="border-border text-foreground/80 rounded-full border px-3 py-1 font-mono text-xs"
@@ -101,6 +109,7 @@ export default async function SolutionsPage() {
               <a href={DRIVEDESK.url} target="_blank" rel="noopener noreferrer">
                 {t("ddCta")}
                 <ArrowUpRight aria-hidden="true" className="rtl:-scale-x-100" />
+                <NewTabHint />
               </a>
             </Button>
           </div>
@@ -108,10 +117,7 @@ export default async function SolutionsPage() {
       </section>
 
       <section className="max-w-content mx-auto px-4 pb-16 sm:px-6 sm:pb-24">
-        <p
-          dir="ltr"
-          className="text-muted-foreground mb-6 font-mono text-xs tracking-widest uppercase"
-        >
+        <p className="text-muted-foreground mb-6 font-mono text-xs tracking-widest uppercase">
           {t("patternsLabel")}
         </p>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">

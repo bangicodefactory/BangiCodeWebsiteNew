@@ -41,10 +41,7 @@ export async function HeroSection() {
       />
 
       <div className="max-w-content mx-auto px-4 pt-20 pb-10 text-center sm:px-6 sm:pt-28 sm:pb-14">
-        <p
-          dir="ltr"
-          className="text-muted-foreground flex items-center justify-center gap-3 font-mono text-xs tracking-widest uppercase"
-        >
+        <p className="text-muted-foreground flex items-center justify-center gap-3 font-mono text-xs tracking-widest uppercase">
           <span aria-hidden="true" className="bg-spark h-px w-6 sm:w-10" />
           {t("eyebrow")}
           <span aria-hidden="true" className="bg-spark h-px w-6 sm:w-10" />

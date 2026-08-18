@@ -21,16 +21,21 @@
  * zero user-visible change, in the same commit that introduces new product copy.
  */
 export const DRIVEDESK = {
-  slug: "drivedesk",
-  /** Canonical product site. Opened in a new tab — see SolutionsSection. */
+  /** Canonical product site. Opened in a new tab. */
   url: "https://drivedesk.ma",
   /**
-   * Message-key prefix inside `Home.solutions` and `Solutions`. The six feature
-   * chips are `${key}F01`–`${key}F06` and mirror drivedesk.ma's own feature
-   * grid; they live in the catalogs rather than here because they are
-   * translated copy, not configuration.
+   * Message keys for the six feature chips, in display order, mirroring
+   * drivedesk.ma's own feature grid. Shared so the home row and /solutions
+   * cannot drift — they were two hand-written lists of the same six keys.
+   *
+   * The copy itself lives in the `Home.solutions` and `Solutions` catalogs
+   * because it is translated, not configuration.
+   *
+   * NOTE: deliberately no `slug`. There is no /solutions/drivedesk route — the
+   * product lives on its own domain and the card links out. A slug here read as
+   * a promise of a route that returns 404.
    */
-  key: "dd",
+  featureKeys: ["ddF01", "ddF02", "ddF03", "ddF04", "ddF05", "ddF06"],
 } as const;
 
 export const SOLUTIONS = [

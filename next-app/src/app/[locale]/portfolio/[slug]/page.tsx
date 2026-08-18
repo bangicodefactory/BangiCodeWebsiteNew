@@ -144,10 +144,7 @@ export default async function CaseStudyPage({
 
           {/* Stack strip */}
           <div className="mb-8">
-            <p
-              dir="ltr"
-              className="text-muted-foreground mb-3 font-mono text-xs tracking-widest uppercase"
-            >
+            <p className="text-muted-foreground mb-3 font-mono text-xs tracking-widest uppercase">
               {t("stackLabel")}
             </p>
             <div className="flex flex-wrap gap-2">
@@ -165,10 +162,7 @@ export default async function CaseStudyPage({
 
           {/* Outcome */}
           <div className="border-secondary-container mb-12 border-s-2 ps-4">
-            <p
-              dir="ltr"
-              className="text-muted-foreground mb-1 font-mono text-xs tracking-widest uppercase"
-            >
+            <p className="text-muted-foreground mb-1 font-mono text-xs tracking-widest uppercase">
               {t("outcomeLabel")}
             </p>
             <p className="font-body text-foreground text-base font-medium">

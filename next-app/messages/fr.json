@@ -540,6 +540,7 @@
   "Solutions": {
     "eyebrow": "// plateformes",
     "h1": "Un produit à nous. Trois construits sur mesure.",
+    "metaDescription": "DriveDesk, notre plateforme de location de voitures, et trois modèles que nous construisons sur mesure : restauration, écoles, boutiques en ligne.",
     "subhead": "DriveDesk est notre propre plateforme de location de voitures — nous l’avons conçue, nous la publions, nous l’exploitons. En dessous, trois formes de plateformes qui reviennent dans nos projets clients ; chacune est un point de départ que nous adaptons à votre activité.",
     "placeholderNote": "Les trois modèles sous DriveDesk sont donnés à titre indicatif — des formes issues de projets passés, pas des produits en vente. Chaque réalisation est cadrée et chiffrée pour l’entreprise qui la commande.",
     "learnMore": "Ce que comprend une réalisation",
@@ -593,6 +594,9 @@
     "emptyCtaLink": "découvrez nos réalisations",
     "backToBlog": "Tous les articles",
     "publishedLabel": "Publié le"
+  },
+  "Common": {
+    "opensInNewTab": "(ouvre un nouvel onglet)"
   },
   "Meta": {
     "homeTitle": "Agence Web & Logiciels à Tétouan, Maroc | Bangicode",
