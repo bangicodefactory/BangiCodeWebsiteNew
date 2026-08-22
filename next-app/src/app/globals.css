@@ -691,4 +691,50 @@ html {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
   }
+
+  /*
+   * The sheet is the exception, and it needs to be.
+   *
+   * Reduced motion asks for a gentler, non-vestibular equivalent — NOT for no
+   * feedback at all. The blanket rule above zeroes every duration, so the
+   * mobile menu teleported: a full-height panel appeared and vanished between
+   * two frames with nothing to say where it came from. That is a harsher
+   * experience than the slide it replaced, which is the opposite of what the
+   * preference asked for.
+   *
+   * A cross-fade is the sanctioned substitute: it carries the appearance and
+   * dismissal without any translation, so there is no travel across the
+   * viewport to trigger vestibular discomfort. `translate: none` is what
+   * removes the movement; the keyframes still run, purely on opacity.
+   *
+   * These re-declare `animation` rather than only overriding duration, because
+   * the rule above uses `!important` and only a matching `!important` can beat
+   * it. The specificity here is higher, but `!important` outranks specificity.
+   */
+  .sheet-overlay[data-state="open"],
+  .sheet-panel-start[data-state="open"],
+  .sheet-panel-end[data-state="open"],
+  .sheet-panel-top[data-state="open"],
+  .sheet-panel-bottom[data-state="open"] {
+    animation: bc-fade-in 160ms var(--ease-out) both !important;
+    translate: none !important;
+  }
+
+  .sheet-overlay[data-state="closed"],
+  .sheet-panel-start[data-state="closed"],
+  .sheet-panel-end[data-state="closed"],
+  .sheet-panel-top[data-state="closed"],
+  .sheet-panel-bottom[data-state="closed"] {
+    animation: bc-fade-out 120ms var(--ease-in) both !important;
+    translate: none !important;
+  }
+
+  /*
+   * The cookie banner, same reasoning: it slid up from off-screen, which under
+   * the blanket rule became a full-width bar materialising at the bottom edge.
+   */
+  .cookie-banner {
+    animation: bc-fade-in 160ms var(--ease-out) both !important;
+    translate: none !important;
+  }
 }

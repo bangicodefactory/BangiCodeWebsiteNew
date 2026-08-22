@@ -28,10 +28,30 @@ export function SiteNav({ locale }: SiteNavProps) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
 
+  /*
+   * Two thresholds, not one — the bar floats past 24px and settles back below
+   * 8px, so the 16px band between them belongs to whichever state is already
+   * current.
+   *
+   * A single threshold was fine when it toggled a shadow. It now toggles a
+   * translucent fill, a 24px backdrop blur and a gradient edge, and a pointer
+   * resting near the boundary — a trackpad with inertia, a phone easing to a
+   * stop, a mouse wheel one notch shy — would flap all three every frame it
+   * crossed. Hysteresis is what stops a boundary from being a knife edge.
+   *
+   * Reads `scrolled` through the state updater rather than closing over it, so
+   * the listener stays mounted once with no stale value and no re-subscribe on
+   * every toggle.
+   */
   useEffect(() => {
     function onScroll() {
-      setScrolled(window.scrollY > 16);
+      const y = window.scrollY;
+      setScrolled((was) => (was ? y > 8 : y > 24));
     }
+    // Fire once on mount: a reload restores the previous scroll position, and
+    // without this the bar renders un-floated over content until the first
+    // scroll event.
+    onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);

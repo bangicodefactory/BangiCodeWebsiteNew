@@ -50,12 +50,31 @@ export async function FaqSection() {
            * pseudo-element is unsupported the rules never parse and this is the
            * plain <details> it has always been.
            *
-           * `reveal-stagger` on the same element as well: the rows are already
-           * a vertical list, so each one reaches its range at a different scroll
-           * position and the per-child offsets only sharpen a cadence the
-           * geometry is producing anyway.
+           * ⚠ NO `reveal-stagger` HERE, and it must stay that way.
+           *
+           * A scroll-driven reveal maps opacity to the element's position in
+           * the viewport, so an element that MOVES for any reason other than
+           * scrolling gets re-evaluated as though the page had scrolled. This
+           * list is the one place on the site whose height changes on
+           * interaction: opening a disclosure pushes every row beneath it down,
+           * those rows travel backwards through their own animation range, and
+           * they fade back out.
+           *
+           * Measured at scrollY 5810 with `reveal-stagger` present, opening the
+           * first row: row 2 moved +68px and dropped from opacity 1 to 0.796,
+           * row 3 moved +70px and dropped from 0.541 to 0.247. Clicking a
+           * question visibly dimmed the questions under it.
+           *
+           * Nothing is lost by removing it. The rows are a vertical list, so
+           * each already reaches the viewport at a different scroll position
+           * and arrives in sequence on its own; the offsets were only sharpening
+           * a cadence the geometry produces anyway.
+           *
+           * The same hazard applies to any future `reveal-stagger` container
+           * whose children can resize — every other one in this codebase is
+           * static, which is why this is the only section that showed it.
            */}
-          <div className="faq-list reveal-stagger border-border mt-10 border-t">
+          <div className="faq-list border-border mt-10 border-t">
             {items.map((item) => (
               <details key={item.q} className="group border-border border-b">
                 <summary className="focus-visible:ring-ring flex cursor-pointer list-none items-center justify-between gap-4 rounded-sm py-5 focus-visible:ring-2 focus-visible:outline-none [&::-webkit-details-marker]:hidden">
