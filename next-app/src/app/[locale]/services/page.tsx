@@ -75,7 +75,7 @@ export default async function ServicesPage() {
 
       {/* Practices grid */}
       <section className="max-w-content mx-auto px-4 pb-16 sm:px-6 sm:pb-24">
-        <div className="bg-border grid grid-cols-1 gap-px sm:grid-cols-2">
+        <div className="reveal-stagger bg-border grid grid-cols-1 gap-px sm:grid-cols-2">
           {PRACTICES.map(({ key, href, tags }) => (
             <Link key={key} href={href} className="group">
               <article className="bg-background group-hover:bg-surface-container group-focus-visible:bg-surface-container flex h-full flex-col gap-4 p-8 transition-colors">
@@ -136,7 +136,7 @@ export default async function ServicesPage() {
       </section>
 
       {/* CTA */}
-      <section className="bg-primary py-16 sm:py-24">
+      <section className="bg-primary py-20 sm:py-28 lg:py-32">
         <div className="max-w-content mx-auto px-4 text-center sm:px-6">
           <h2 className="font-display text-primary-foreground mb-4 text-3xl font-bold tracking-tight sm:text-4xl">
             {t("ctaHeadline")}
@@ -144,7 +144,7 @@ export default async function ServicesPage() {
           <p className="font-body text-primary-foreground/70 mb-8 text-lg">
             {t("ctaBody")}
           </p>
-          <Button asChild variant="secondary" size="lg">
+          <Button asChild variant="secondary" size="lg" shape="pill">
             <Link href="/contact">{t("ctaButton")}</Link>
           </Button>
         </div>

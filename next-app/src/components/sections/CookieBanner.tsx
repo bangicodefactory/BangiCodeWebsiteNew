@@ -61,7 +61,7 @@ export function CookieBanner() {
       aria-modal="false"
       aria-label={t("label")}
       dir={isRtl ? "rtl" : "ltr"}
-      className="border-border bg-background fixed start-0 end-0 bottom-0 z-50 border-t p-4 shadow-lg sm:start-4 sm:end-auto sm:bottom-4 sm:max-w-sm sm:rounded-sm sm:border"
+      className="cookie-banner border-border bg-background fixed start-0 end-0 bottom-0 z-50 border-t p-4 shadow-lg sm:start-4 sm:end-auto sm:bottom-4 sm:max-w-sm sm:rounded-lg sm:border"
     >
       <p className="font-body text-foreground mb-3 text-sm leading-relaxed">
         {t("body")}{" "}

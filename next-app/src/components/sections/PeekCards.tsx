@@ -12,14 +12,21 @@ interface PeekCard {
 
 function PeekCardItem({ card }: { card: PeekCard }) {
   return (
+    /*
+     * `hover:bg-surface-variant` is the dark-band answer to the shadow the
+     * light cards use. These sit on navy, where a navy-tinted shadow is
+     * invisible — so the card lifted 4px on hover with nothing else changing,
+     * and the lift alone reads as a jitter rather than as depth. Brightening
+     * the surface one step is how elevation is expressed on a dark ground.
+     */
     <Link
       href={card.href}
-      className="group border-border bg-card hover:border-secondary focus-visible:ring-ring transition-interactive flex flex-col gap-4 rounded-md border p-6 duration-200 ease-out hover:-translate-y-1 focus-visible:ring-2 focus-visible:outline-none"
+      className="group border-border bg-card hover:bg-surface-variant hover:border-secondary focus-visible:ring-ring transition-interactive flex flex-col gap-4 rounded-lg border p-6 duration-200 ease-out hover:-translate-y-1 focus-visible:ring-2 focus-visible:outline-none"
     >
-      <h3 className="font-display text-foreground text-lg font-bold">
+      <h3 className="font-display text-foreground text-lg font-bold text-balance">
         {card.client}
       </h3>
-      <p className="font-body text-muted-foreground grow text-sm leading-relaxed">
+      <p className="font-body text-muted-foreground grow text-sm leading-relaxed text-pretty">
         {card.description}
       </p>
       <div className="flex flex-wrap gap-2">
@@ -92,7 +99,7 @@ export async function PeekCards() {
           {t("eyebrow")}
         </h2>
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="reveal-stagger grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {cards.map((card) => (
             <PeekCardItem key={card.client} card={card} />
           ))}

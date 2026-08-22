@@ -31,7 +31,7 @@ export async function SolutionsSection() {
   return (
     <section
       id="solutions"
-      className="border-border bg-surface-container border-y py-16 sm:py-24"
+      className="border-border bg-surface-container border-y py-20 sm:py-28 lg:py-32"
     >
       <div className="max-w-content mx-auto px-4 sm:px-6">
         <p className="text-muted-foreground font-mono text-xs tracking-widest uppercase">
@@ -40,14 +40,25 @@ export async function SolutionsSection() {
         <h2 className="font-display text-foreground mt-4 max-w-3xl text-3xl font-bold tracking-tight text-balance sm:text-4xl">
           {t("headline")}
         </h2>
-        <p className="font-body text-muted-foreground mt-5 max-w-2xl text-base leading-relaxed">
+        <p className="font-body text-muted-foreground mt-5 max-w-2xl text-base leading-relaxed text-pretty">
           {t("body")}
         </p>
 
         {/* ── DriveDesk: the real one ─────────────────────────────────────── */}
+        {/*
+         * rounded-xl (28px). This is the largest single surface on the page and
+         * the only one carrying a badge, a headline, a tagline, a paragraph, six
+         * chips and a call to action — "large feature panel" in CLAUDE.md's own
+         * radius table.
+         *
+         * The chips inside are `rounded-full` against 32–40px of padding. That
+         * is past the point where concentric radius applies: at more than ~24px
+         * of separation the two are read as separate surfaces, not as one shape
+         * inside another, so each picks its own radius.
+         */}
         <article
           data-surface="dark"
-          className="border-secondary bg-background mt-12 rounded-lg border p-8 sm:p-10"
+          className="reveal border-secondary bg-background mt-12 rounded-xl border p-8 sm:p-10"
         >
           <div className="flex flex-wrap items-center gap-3">
             <span className="bg-spark text-spark-foreground w-fit rounded-full px-2.5 py-1 font-mono text-xs">
@@ -64,11 +75,17 @@ export async function SolutionsSection() {
           <p className="font-display text-secondary-container mt-2 text-lg font-bold tracking-tight text-balance sm:text-xl">
             {t("ddTagline")}
           </p>
-          <p className="font-body text-muted-foreground mt-4 max-w-2xl text-sm leading-relaxed sm:text-base">
+          <p className="font-body text-muted-foreground mt-4 max-w-2xl text-sm leading-relaxed text-pretty sm:text-base">
             {t("ddBody")}
           </p>
 
-          <ul className="mt-6 flex list-none flex-wrap gap-2 p-0">
+          {/*
+           * Staggered, because six chips landing at once is a wall and six
+           * landing in sequence is a feature list being read out. This is the
+           * one product on the page a visitor can go and verify, so the chips
+           * are worth the extra beat of attention.
+           */}
+          <ul className="reveal-stagger mt-6 flex list-none flex-wrap gap-2 p-0">
             {DRIVEDESK.featureKeys.map((k) => (
               <li
                 key={k}
@@ -85,7 +102,7 @@ export async function SolutionsSection() {
            * place on bangicode.ma, and rel=noopener is required with it.
            */}
           <div className="mt-8">
-            <Button asChild variant="spark">
+            <Button asChild variant="spark" shape="pill">
               <a href={DRIVEDESK.url} target="_blank" rel="noopener noreferrer">
                 {t("ddCta")}
                 <ArrowUpRight aria-hidden="true" className="rtl:-scale-x-100" />
@@ -100,12 +117,12 @@ export async function SolutionsSection() {
           {t("patternsLabel")}
         </p>
 
-        <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="reveal-stagger mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {patterns.map((p) => (
             <article
               key={p.name}
               data-placeholder="true"
-              className="border-border bg-card flex flex-col gap-3 rounded-md border p-6 shadow-xs"
+              className="border-border bg-card flex flex-col gap-3 rounded-lg border p-6 shadow-xs"
             >
               <span className="text-muted-foreground bg-muted w-fit rounded-full px-2.5 py-1 font-mono text-xs">
                 {p.tag}
@@ -113,7 +130,7 @@ export async function SolutionsSection() {
               <h3 className="font-display text-foreground text-lg font-bold tracking-tight">
                 {p.name}
               </h3>
-              <p className="font-body text-muted-foreground text-sm leading-relaxed">
+              <p className="font-body text-muted-foreground text-sm leading-relaxed text-pretty">
                 {p.body}
               </p>
             </article>
@@ -121,7 +138,7 @@ export async function SolutionsSection() {
         </div>
 
         <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3">
-          <Button asChild variant="outline">
+          <Button asChild variant="outline" shape="pill">
             <Link href="/contact">{t("cta")}</Link>
           </Button>
           <p className="text-muted-foreground font-mono text-xs">

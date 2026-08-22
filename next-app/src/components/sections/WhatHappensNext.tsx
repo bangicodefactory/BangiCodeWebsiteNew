@@ -40,7 +40,7 @@ export async function WhatHappensNext() {
   ];
 
   return (
-    <section id="process" className="py-16 sm:py-24">
+    <section id="process" className="py-20 sm:py-28 lg:py-32">
       <div className="max-w-content mx-auto px-4 sm:px-6">
         <p className="text-muted-foreground font-mono text-xs tracking-widest uppercase">
           {t("eyebrow")}
@@ -50,12 +50,24 @@ export async function WhatHappensNext() {
           {t("headline")}
         </h2>
 
-        <ol className="mt-12 grid list-none grid-cols-1 gap-8 p-0 sm:grid-cols-2 lg:grid-cols-4">
+        {/*
+         * The rules above each step already read as a progress track across the
+         * row at desktop width. `reveal-draw` makes that literal: each one
+         * scales in from its leading edge as the row arrives, so the track draws
+         * itself left to right (right to left on /ar — the transform-origin
+         * flips with [dir="rtl"] in globals.css).
+         *
+         * The rules are on their own timeline rather than inside reveal-stagger
+         * because they should lead: the track arrives, then the steps hang off
+         * it. Both on one timeline would have them appear together and the
+         * "track" idea would never land.
+         */}
+        <ol className="reveal-stagger mt-12 grid list-none grid-cols-1 gap-8 p-0 sm:grid-cols-2 lg:grid-cols-4">
           {steps.map((step, i) => (
             <li key={step.number} className="flex flex-col gap-4">
               <span
                 aria-hidden="true"
-                className={`block h-0.5 w-full ${i === 0 ? "bg-spark" : "bg-secondary/40"}`}
+                className={`reveal-draw block h-0.5 w-full ${i === 0 ? "bg-spark" : "bg-secondary/40"}`}
               />
               <span
                 dir="ltr"
@@ -71,7 +83,7 @@ export async function WhatHappensNext() {
                   {step.time}
                 </p>
               </div>
-              <p className="font-body text-muted-foreground text-sm leading-relaxed">
+              <p className="font-body text-muted-foreground text-sm leading-relaxed text-pretty">
                 {step.body}
               </p>
             </li>

@@ -27,7 +27,7 @@ export async function FounderCard() {
     <section
       id="contact"
       data-surface="dark"
-      className="bg-background relative isolate overflow-hidden py-16 sm:py-24"
+      className="bg-background relative isolate overflow-hidden py-20 sm:py-28 lg:py-32"
     >
       <div
         aria-hidden="true"
@@ -58,15 +58,15 @@ export async function FounderCard() {
             {t("headline")}
           </h2>
 
-          <p className="font-body text-muted-foreground mx-auto mt-5 max-w-lg text-base leading-relaxed">
+          <p className="font-body text-muted-foreground mx-auto mt-5 max-w-lg text-base leading-relaxed text-pretty">
             {t("body")}
           </p>
 
           <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
-            <Button asChild variant="spark" size="lg">
+            <Button asChild variant="spark" size="lg" shape="pill">
               <Link href="/book">{t("ctaPrimary")}</Link>
             </Button>
-            <Button asChild variant="secondary" size="lg">
+            <Button asChild variant="secondary" size="lg" shape="pill">
               <Link href="/contact">{t("ctaSecondary")}</Link>
             </Button>
           </div>

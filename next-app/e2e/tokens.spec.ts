@@ -433,17 +433,28 @@ test("@smoke a hover eases rather than snapping", async ({ page }) => {
    * transition jumps straight to its end value, so the samples collapse to two
    * distinct readings; a live one passes through intermediate positions.
    *
-   * This is timing-sensitive by construction — six samples 30ms apart across a
-   * 200ms transition. The threshold is deliberately loose (more than two
-   * distinct values, not a specific count) so a loaded CI runner that misses
-   * some samples still passes. If it ever flakes, raise the sample count
-   * rather than lowering the threshold: at two, the test stops distinguishing
-   * an easing transition from a snapping one, which is the whole point.
+   * This is timing-sensitive by construction — samples taken across a 200ms
+   * transition. The threshold is deliberately loose (more than two distinct
+   * values, not a specific count) so a loaded CI runner that misses some
+   * samples still passes.
+   *
+   * Raised from six samples at 30ms to twelve at 15ms on 2026-08-22, following
+   * this comment's own instruction: raise the SAMPLE COUNT, never lower the
+   * threshold — at two, the test stops distinguishing an easing transition
+   * from a snapping one, which is the whole point.
+   *
+   * Why it needed raising: six samples spanned 180ms of a 200ms transition, so
+   * a single slow round-trip could push the last sample past the end and
+   * collapse the set to two. Observed failing roughly one run in two on a
+   * loaded machine — and reproduced on the PRE-EXISTING version of this file,
+   * so it is the sampling that is fragile, not anything it measures. Twelve at
+   * 15ms covers the same window with twice the chances to catch an
+   * intermediate value.
    */
   const seen = new Set<string>();
-  for (let i = 0; i < 6; i++) {
+  for (let i = 0; i < 12; i++) {
     seen.add(await btn.evaluate((n) => getComputedStyle(n).translate));
-    await page.waitForTimeout(30);
+    await page.waitForTimeout(15);
   }
 
   expect(
@@ -625,4 +636,234 @@ test("@smoke hero glow stays dark when reduced motion is requested", async ({
   await page.waitForTimeout(500);
 
   await expect(page.locator(".hero-grid-glow")).toHaveCSS("opacity", "0");
+});
+
+/*
+ * ═══════════════════════════════════════════════════════════════════════════
+ *  Motion layer — added with the Apple-design pass
+ * ═══════════════════════════════════════════════════════════════════════════
+ *
+ * Three guards for three failures that all shipped silently, because that is
+ * the shape of every motion bug this project has had: the class name is
+ * present, the source reads correctly, and nothing animates.
+ */
+
+/*
+ * The mobile menu had NO animation for its entire life before this suite.
+ *
+ * sheet.tsx used `animate-in` / `fade-in-0` / `slide-in-from-right`, which are
+ * `tailwindcss-animate` utilities — a plugin that has never been in this
+ * project's package.json. Every one compiled to nothing, so the panel and its
+ * scrim appeared and vanished in a single frame while `duration-300` sat beside
+ * them setting a duration on an animation that did not exist.
+ *
+ * Asserting on `animationName` is what makes that class of bug loud: a utility
+ * that does not exist leaves it `none`.
+ */
+test("@smoke the mobile sheet actually animates in and out", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/en");
+
+  /*
+   * `.sheet-panel-end`, not `[role="dialog"]`. The cookie banner is also a
+   * role=dialog and renders on a first visit, so the bare role selector matches
+   * two elements and fails Playwright strict mode. Scoping to the sheet's own
+   * marker class also means this breaks loudly if the class is ever renamed —
+   * which is the thing the rest of the motion CSS keys off.
+   */
+  const panel = page.locator(".sheet-panel-end");
+  const overlay = page.locator(".sheet-overlay");
+
+  await page.getByRole("button", { name: /menu/i }).click();
+  await panel.waitFor();
+
+  for (const [label, locator] of [
+    ["panel", panel],
+    ["overlay", overlay],
+  ] as const) {
+    const name = await locator.evaluate(
+      (n) => getComputedStyle(n).animationName,
+    );
+    expect(
+      name,
+      `${label} must carry a real enter animation, not a class that compiled to nothing`,
+    ).not.toBe("none");
+  }
+
+  // The exit is the half that unmounts, so it is the half most likely to be
+  // quietly dropped by a future refactor.
+  await page.keyboard.press("Escape");
+  const exitName = await panel.evaluate(
+    (n) => getComputedStyle(n).animationName,
+  );
+  expect(exitName, "panel must carry a real exit animation").toContain(
+    "bc-slide-out",
+  );
+  await expect(panel).toHaveCount(0);
+});
+
+/*
+ * Interruptibility: reversing mid-flight must not teleport.
+ *
+ * A CSS keyframe's `from` is an absolute value, so swapping enter for exit
+ * restarted the panel at the exit keyframe's origin — measured 100% -> 0% in
+ * one frame, i.e. double-tapping the menu button flashed it fully open before
+ * it left. sheet.tsx now writes the live translate into `--sheet-from-x` at the
+ * instant the state flips.
+ *
+ * Driven through the Web Animations API rather than by sleeping: pausing the
+ * enter at a known currentTime makes the reading deterministic instead of
+ * depending on whether the runner painted a frame in time.
+ */
+test("@smoke the sheet reverses from where it was, without jumping", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/en");
+
+  await page.getByRole("button", { name: /menu/i }).click();
+  await page.locator(".sheet-panel-end").waitFor();
+
+  // Freeze the enter part-way, read the live position, then reverse.
+  const before = await page.evaluate(() => {
+    const el = document.querySelector(".sheet-panel-end") as HTMLElement;
+    const enter = el
+      .getAnimations()
+      .find((a) =>
+        (a as CSSAnimation).animationName?.startsWith("bc-slide-in"),
+      );
+    if (!enter) return null;
+    enter.pause();
+    enter.currentTime = 130;
+    return parseFloat(getComputedStyle(el).translate) || 0;
+  });
+  expect(
+    before,
+    "the enter animation must be findable and pausable",
+  ).not.toBeNull();
+
+  await page.keyboard.press("Escape");
+
+  const after = await page.evaluate(() => {
+    const el = document.querySelector(".sheet-panel-end") as HTMLElement | null;
+    if (!el) return null;
+    const exit = el
+      .getAnimations()
+      .find((a) =>
+        (a as CSSAnimation).animationName?.startsWith("bc-slide-out"),
+      );
+    if (!exit) return null;
+    exit.pause();
+    exit.currentTime = 0;
+    return parseFloat(getComputedStyle(el).translate) || 0;
+  });
+
+  expect(
+    after,
+    "the exit animation must exist while the panel is still mounted",
+  ).not.toBeNull();
+  /*
+   * 0.5% of the panel width. Not zero: the two readings come from separate
+   * evaluate() round-trips, so a sub-pixel difference is measurement noise.
+   * The bug this catches was a ~100% discontinuity, so the margin can be tight
+   * without being brittle.
+   */
+  expect(
+    Math.abs(after! - before!),
+    `exit must begin where the enter was interrupted — was ${before}%, resumed at ${after}%`,
+  ).toBeLessThan(0.5);
+});
+
+/*
+ * No scroll-driven reveal may strand content invisible.
+ *
+ * `.reveal` / `.reveal-stagger` set `opacity: 0` and animate it back on an
+ * `animation-timeline: view()`. The failure mode is not subtle — it is a blank
+ * section — and it has three separate causes worth guarding at once: a browser
+ * without view() support where the @supports guard was dropped, an
+ * animation-range that never completes at some viewport size, and an element
+ * whose height changes on interaction so it travels BACKWARDS through its own
+ * range.
+ */
+test("@smoke no scroll-driven reveal leaves content invisible", async ({
+  page,
+}) => {
+  const REVEAL_SELECTOR = ".reveal, .reveal-stagger > *, .reveal-draw";
+
+  for (const path of ["/en", "/en/solutions", "/en/about"]) {
+    await page.goto(path);
+
+    // Walk the page the way a reader would, rather than jumping to the bottom:
+    // a jump can skip an element's range entirely and pass for the wrong reason.
+    await page.evaluate(async () => {
+      const step = Math.round(window.innerHeight * 0.75);
+      for (let y = 0; y < document.body.scrollHeight; y += step) {
+        window.scrollTo(0, y);
+        await new Promise((r) => setTimeout(r, 60));
+      }
+      window.scrollTo(0, document.body.scrollHeight);
+      await new Promise((r) => setTimeout(r, 400));
+    });
+
+    const stranded = await page.evaluate((sel) => {
+      return [...document.querySelectorAll(sel)]
+        .filter((el) => Number(getComputedStyle(el).opacity) < 0.99)
+        .map((el) => (el.textContent || "").trim().slice(0, 40));
+    }, REVEAL_SELECTOR);
+
+    expect(stranded, `content left invisible after scrolling ${path}`).toEqual(
+      [],
+    );
+  }
+});
+
+/*
+ * The FAQ specifically: opening an answer must not dim its neighbours.
+ *
+ * Separate from the sweep above because it needs an interaction, and because
+ * this is the one list on the site whose height changes on click. A
+ * scroll-driven reveal maps opacity to viewport position, so rows pushed DOWN
+ * by an expanding disclosure travel backwards through their own range.
+ *
+ * Not hypothetical. With `reveal-stagger` on the list, measured at scrollY
+ * 5810: opening the first row pushed row 2 down 68px and faded it from opacity
+ * 1 to 0.796, and row 3 from 0.541 to 0.247. Clicking a question visibly
+ * dimmed the questions beneath it.
+ *
+ * The scroll offset matters — parked so the lower rows are still inside their
+ * range, which is the only position where the regression is visible at all.
+ */
+test("@smoke opening a FAQ answer does not fade the rows beneath it", async ({
+  page,
+}) => {
+  await page.goto("/en");
+
+  const rows = page.locator(".faq-list > details");
+  await rows.first().waitFor();
+
+  await page.locator("#faq").evaluate((el) => {
+    window.scrollTo(0, el.getBoundingClientRect().top + window.scrollY - 250);
+  });
+  await page.waitForTimeout(600);
+
+  const read = () =>
+    rows.evaluateAll((els) =>
+      els.map((el) => Number(getComputedStyle(el).opacity)),
+    );
+
+  const before = await read();
+  await rows.first().locator("summary").click();
+  await page.waitForTimeout(600);
+  const after = await read();
+
+  const dimmed = after
+    .map((op, i) => ({ row: i + 1, from: before[i], to: op }))
+    .filter((r) => r.to < r.from - 0.01);
+
+  expect(
+    dimmed,
+    "expanding a disclosure moved sibling rows backwards through their reveal range",
+  ).toEqual([]);
 });

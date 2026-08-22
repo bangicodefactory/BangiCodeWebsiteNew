@@ -100,13 +100,13 @@ export default function NotFound() {
              */}
             <Link
               href="/"
-              className="bg-spark text-primary-foreground focus-visible:ring-ring inline-flex h-11 items-center justify-center rounded-sm px-6 text-sm font-medium transition hover:opacity-90 focus-visible:ring-2 focus-visible:outline-none"
+              className="bg-spark text-primary-foreground focus-visible:ring-ring inline-flex h-11 items-center justify-center rounded-sm px-6 text-sm font-medium transition-[opacity,scale] duration-200 ease-out hover:opacity-90 focus-visible:ring-2 focus-visible:outline-none active:scale-[0.96]"
             >
               Back to the homepage
             </Link>
             <Link
               href="/portfolio"
-              className="border-secondary text-foreground focus-visible:ring-ring inline-flex h-11 items-center justify-center rounded-sm border px-6 text-sm font-medium transition hover:opacity-80 focus-visible:ring-2 focus-visible:outline-none"
+              className="border-secondary text-foreground focus-visible:ring-ring inline-flex h-11 items-center justify-center rounded-sm border px-6 text-sm font-medium transition-[opacity,scale] duration-200 ease-out hover:opacity-80 focus-visible:ring-2 focus-visible:outline-none active:scale-[0.96]"
             >
               See our work
             </Link>

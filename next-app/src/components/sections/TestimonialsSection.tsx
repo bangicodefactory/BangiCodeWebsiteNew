@@ -12,11 +12,18 @@ export async function TestimonialsSection() {
   return (
     <section
       id="testimonials"
-      className="border-border bg-surface-container border-y py-16 sm:py-24"
+      className="border-border bg-surface-container border-y py-20 sm:py-28 lg:py-32"
     >
       <div className="max-w-content mx-auto px-4 sm:px-6">
+        {/*
+         * rounded-xl (28px) and `reveal`. A single centred quote at up to
+         * 1056×360 is the largest isolated surface on the page, and at 20px it
+         * was the one panel whose corners read tighter than everything around
+         * it. One card, so a plain reveal rather than a stagger — there is
+         * nothing here to sequence against.
+         */}
         <figure
-          className="border-border bg-card mx-auto max-w-3xl rounded-lg border p-8 text-center shadow-sm sm:p-12"
+          className="reveal border-border bg-card mx-auto max-w-3xl rounded-xl border p-8 text-center shadow-sm sm:p-12"
           data-placeholder="true"
         >
           <span
