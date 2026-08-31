@@ -130,11 +130,11 @@ export default function SmokeCardPage() {
                   href="/smoke/card"
                   className="after:absolute after:inset-0 after:content-[''] focus-visible:outline-none"
                 >
-                  Friterie.ma case study
+                  RentCar.ma case study
                 </Link>
               </CardTitle>
               <CardDescription>
-                POS + inventory system — Tetouan, 2024.
+                Fleet management platform — Tetouan, 2024.
               </CardDescription>
             </CardHeader>
             <CardContent>
