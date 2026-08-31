@@ -10,7 +10,7 @@ and the GitHub Actions pipeline. This document is only about the switch.
 
 ## What is actually changing
 
-The live site (`bangicode-website/`) is a **single-page CRA app**. It has no
+The live site (`old-website/`) is a **single-page CRA app**. It has no
 router: every "page" is an anchor on one document.
 
 | Old URL                   | Reaches the server as | Notes                                      |
@@ -375,7 +375,7 @@ the switch.
 - **Watch for 404s** for a week. The old site had one URL, so there should be
   none, but check Search Console → _Pages_.
 - **Keep the backup** for at least a month.
-- Only once you are confident: retire `bangicode-website/` from the repo
+- Only once you are confident: retire `old-website/` from the repo
   (CLAUDE.md currently forbids deleting it — update that line when you do).
 - Delete the staging subdomain and its Node app, or keep it as a preview
   environment. If you keep it, leave `noindex` on: cPanel → _Domains_ →

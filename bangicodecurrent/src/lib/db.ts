@@ -70,7 +70,7 @@ export function getPool(): mysql.Pool {
   const result = loadDbConfig();
   if (!result.ok) {
     throw new Error(
-      `Database is not configured — missing ${result.missing.join(", ")}. See next-app/.env.example.`,
+      `Database is not configured — missing ${result.missing.join(", ")}. See bangicodecurrent/.env.example.`,
     );
   }
 

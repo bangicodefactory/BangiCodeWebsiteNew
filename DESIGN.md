@@ -2,10 +2,10 @@
 # ⚠️ SUPERSEDED 2026-08-05 — see docs/adr/0001-adopt-claude-design-system-tokens.md
 #
 # THE COLOUR VALUES BELOW ARE NO LONGER THE SOURCE OF TRUTH. They were never wired up:
-# next-app/src/app/globals.css shipped an empty @theme{} block waiting on a registry
+# bangicodecurrent/src/app/globals.css shipped an empty @theme{} block waiting on a registry
 # that was never deployed, so none of these values ever reached the browser.
 #
-# The live token set is next-app/src/styles/tokens.css, built on the Claude Design System
+# The live token set is bangicodecurrent/src/styles/tokens.css, built on the Claude Design System
 # palette — which is the brand logo's own palette:
 #     --navy-700 #114483   --sky-500 #2E91CE   --red-500 #D30F33
 # The values below (primary #002058, secondary-container #5cb8fd, tertiary #500000)
@@ -14,7 +14,7 @@
 # This file is kept for history. Do not consume it. Do not "reconcile" tokens.css back to it.
 #
 # ── original header ──────────────────────────────────────────────────────────
-# YAML frontmatter — machine-readable brand tokens consumed by next-app/src/app/globals.css.
+# YAML frontmatter — machine-readable brand tokens consumed by bangicodecurrent/src/app/globals.css.
 # Format: YAML map, not parsed by Jekyll/Hugo. A future design-token script may extract
 # these values directly. Keep the indentation consistent (2-space YAML).
 #
@@ -127,7 +127,7 @@ section-rhythm:
 
 # Bangicode DESIGN.md
 
-Brand source of truth for the redesign. All `@theme` values in `next-app/src/app/globals.css` must be ported from the YAML frontmatter above, not from `prototypes/v4-stitch.html`.
+Brand source of truth for the redesign. All `@theme` values in `bangicodecurrent/src/app/globals.css` must be ported from the YAML frontmatter above, not from `prototypes/v4-stitch.html`.
 
 ## Key rules
 
