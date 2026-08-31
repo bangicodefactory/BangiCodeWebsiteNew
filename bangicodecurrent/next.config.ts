@@ -172,6 +172,32 @@ const nextConfig: NextConfig = {
         destination: "/en/solutions",
         permanent: true,
       },
+      /*
+       * /portfolio/friterie-ma → /portfolio.
+       *
+       * The case study was withdrawn on 2026-09-01. It had been live long
+       * enough to be indexed — it appeared in the sitemap five times — so
+       * dropping it without a rule turns every one of those into a 404 for
+       * crawlers and for anyone holding the link.
+       *
+       * /portfolio rather than a similar project: a 301 should land somewhere
+       * we control and that still answers the visitor's question ("what have
+       * they built?"), and picking a substitute case study would imply an
+       * equivalence nobody asked for.
+       *
+       * Both the prefixed and bare forms, for the same middleware-ordering
+       * reason as the rules above.
+       */
+      {
+        source: "/:locale(en|fr|ar)/portfolio/friterie-ma",
+        destination: "/:locale/portfolio",
+        permanent: true,
+      },
+      {
+        source: "/portfolio/friterie-ma",
+        destination: "/en/portfolio",
+        permanent: true,
+      },
     ];
   },
 };
