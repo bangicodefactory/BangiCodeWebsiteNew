@@ -13,8 +13,8 @@
 |---|---|
 | Framework | **Next.js 16.2.6** (App Router, RSC, image optimization, ISR) |
 | Language | **TypeScript** (strict mode) |
-| Component library | ~~Company brand private shadcn registry~~ → **superseded 2026-08-05 ([ADR 0001](docs/adr/0001-adopt-claude-design-system-tokens.md)).** The registry at `design.bangicode.ma` was never deployed. Primitives live locally in `next-app/src/components/ui/`. |
-| Styling | **Tailwind CSS 4**, `@theme` **authored locally** in `next-app/src/styles/tokens.css` → superseded 2026-08-05, see ADR 0001. |
+| Component library | ~~Company brand private shadcn registry~~ → **superseded 2026-08-05 ([ADR 0001](docs/adr/0001-adopt-claude-design-system-tokens.md)).** The registry at `design.bangicode.ma` was never deployed. Primitives live locally in `bangicodecurrent/src/components/ui/`. |
+| Styling | **Tailwind CSS 4**, `@theme` **authored locally** in `bangicodecurrent/src/styles/tokens.css` → superseded 2026-08-05, see ADR 0001. |
 | Animation | **Refined, lightweight motion** — Framer Motion + Tailwind transitions. WebGL/Three.js components (Hyperspeed, LightRays, FloatingLines) **removed**. |
 | Copy | **Full rewrite** in EN / FR / AR, plus legal pages (Privacy, Terms, Cookies) |
 | i18n | **next-intl** with `[locale]` route segments; RTL for AR |
@@ -182,11 +182,11 @@ Locales: `/en`, `/fr`, `/ar` — AR auto-applies RTL via `dir="rtl"` on `<html>`
 > ⚠️ **SUPERSEDED 2026-08-05 — see [ADR 0001](docs/adr/0001-adopt-claude-design-system-tokens.md).**
 > The registry at `design.bangicode.ma` was never deployed (endpoint 404s; `registry-version.json`
 > is still `"status": "pending"` with no install timestamp). Tokens are now authored locally in
-> `next-app/src/styles/tokens.css` and primitives live in `next-app/src/components/ui/`.
+> `bangicodecurrent/src/styles/tokens.css` and primitives live in `bangicodecurrent/src/components/ui/`.
 > `pnpm check:registry-pin` guards a dead host and should be disabled or repointed.
 > Kept below for history only.
 
-**This section was rewritten 2026-05-22.** The redesign now consumes the Bangicode design system as a private shadcn registry. Tokens and primitives are no longer authored in `next-app/`; they ship in from the library.
+**This section was rewritten 2026-05-22.** The redesign now consumes the Bangicode design system as a private shadcn registry. Tokens and primitives are no longer authored in `bangicodecurrent/`; they ship in from the library.
 
 ### Where the design system lives
 
@@ -195,12 +195,12 @@ Locales: `/en`, `/fr`, `/ar` — AR auto-applies RTL via `dir="rtl"` on `<html>`
 - **Registry namespace in consumer:** `@bangicode`
 - **Registry URL:** `https://design.bangicode.ma/r/<name>.json`
 
-### How `next-app/` consumes it
+### How `bangicodecurrent/` consumes it
 
 1. `components.json` declares two registries: `@shadcn` (public) and `@bangicode` (private).
 2. Initial install pulls every component the redesign needs in one batch via `npx shadcn add @bangicode/...` (full list in IST-120).
 3. Token CSS arrives THROUGH the installed components — there is no local `@theme` block to maintain.
-4. `next-app/registry-version.json` pins the library's git SHA + `package.json` version. CI fails if it's stale > 14 days (IST-123 + IST-200).
+4. `bangicodecurrent/registry-version.json` pins the library's git SHA + `package.json` version. CI fails if it's stale > 14 days (IST-123 + IST-200).
 5. When the library publishes a new version, refresh per-component: `npx shadcn add @bangicode/<name>` again, read the diff, commit. Verify against `/_smoke` (IST-129).
 
 ### What's in the registry (v0.1.0)
@@ -223,7 +223,7 @@ Tracked in IST-127 (NavigationMenu) and IST-199 (bespoke sections — StudioStat
 
 ### Why this changed
 
-Originally (pre-2026-05-22), §4 documented a local `@theme` block and a shadcn variable bridge to be authored in `next-app/`. The Company brand library has since shipped v0.1.0 with 34 components plus the full DESIGN.md → Tailwind v4 token pipeline (per its own `CLAUDE.md` + `CHANGELOG.md`). Re-implementing that work in the consumer would duplicate it; consuming the registry keeps both projects in lockstep. IST-120 wires it; IST-200 documents the workflow; IST-198 (in the `bangicode component library` Linear project) tracks library-side version freshness.
+Originally (pre-2026-05-22), §4 documented a local `@theme` block and a shadcn variable bridge to be authored in `bangicodecurrent/`. The Company brand library has since shipped v0.1.0 with 34 components plus the full DESIGN.md → Tailwind v4 token pipeline (per its own `CLAUDE.md` + `CHANGELOG.md`). Re-implementing that work in the consumer would duplicate it; consuming the registry keeps both projects in lockstep. IST-120 wires it; IST-200 documents the workflow; IST-198 (in the `bangicode component library` Linear project) tracks library-side version freshness.
 
 ### Type scale, baseline grid, elevation, shapes
 
@@ -507,5 +507,5 @@ Tickets grouped by epic. Each story includes acceptance criteria.
 In order:
 1. Answer the open questions in §11.
 2. Push the Linear backlog into IST3 (if approved).
-3. Scaffold the Next.js project alongside the existing `bangicode-website/` folder so the old site stays running until cutover.
+3. Scaffold the Next.js project alongside the existing `old-website/` folder so the old site stays running until cutover.
 4. Start Phase 0 → 1 (foundation + design system) — these unblock everything.

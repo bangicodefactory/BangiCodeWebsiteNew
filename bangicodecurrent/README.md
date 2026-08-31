@@ -1,4 +1,4 @@
-# Bangicode — next-app
+# Bangicode — bangicodecurrent
 
 [![CI](https://github.com/bangicodefactory/BangiCodeWebsiteNew/actions/workflows/ci.yml/badge.svg)](https://github.com/bangicodefactory/BangiCodeWebsiteNew/actions/workflows/ci.yml)
 

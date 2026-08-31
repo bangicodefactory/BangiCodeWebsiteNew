@@ -1,2 +1,2 @@
 #!/usr/bin/env sh
-cd next-app && pnpm lint-staged
+cd bangicodecurrent && pnpm lint-staged

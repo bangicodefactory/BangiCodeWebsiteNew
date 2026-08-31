@@ -4,12 +4,12 @@ on:
   push:
     branches: [main]
     paths:
-      - "next-app/**"
+      - "bangicodecurrent/**"
       - ".github/workflows/ci.yml"
   pull_request:
     branches: [main]
     paths:
-      - "next-app/**"
+      - "bangicodecurrent/**"
       - ".github/workflows/ci.yml"
   # Manual runs, so the first deploy can be triggered without pushing a commit.
   workflow_dispatch:
@@ -43,7 +43,7 @@ env:
 
 defaults:
   run:
-    working-directory: ./next-app
+    working-directory: ./bangicodecurrent
 
 # ── Reusable setup ────────────────────────────────────────────────────────────
 # Each job that runs code repeats pnpm + Node setup.
@@ -69,7 +69,7 @@ jobs:
       # in the codebase silently compiled to nothing.
       - name: Check design tokens
         run: node scripts/check-tokens.mjs
-        working-directory: ./next-app
+        working-directory: ./bangicodecurrent
 
       # next-intl renders the key path itself when a key is missing, so a gap
       # ships silently — an Arabic page reading "Home.faq.q03" with every other
@@ -77,13 +77,13 @@ jobs:
       # sitting in fr/ar.
       - name: Check message catalog parity
         run: node scripts/check-messages-parity.mjs
-        working-directory: ./next-app
+        working-directory: ./bangicodecurrent
 
       # Registry was abandoned (ADR 0001); this now no-ops on status
       # "abandoned" and is kept only so the pin file cannot rot unnoticed.
       - name: Check registry pin
         run: node scripts/check-registry-pin.mjs
-        working-directory: ./next-app
+        working-directory: ./bangicodecurrent
 
   # ── Job 2: Type · Lint · Format ──────────────────────────────────────────
   quality:
@@ -101,7 +101,7 @@ jobs:
         with:
           node-version: 24.16.0
           cache: pnpm
-          cache-dependency-path: next-app/pnpm-lock.yaml
+          cache-dependency-path: bangicodecurrent/pnpm-lock.yaml
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -132,15 +132,15 @@ jobs:
         with:
           node-version: 24.16.0
           cache: pnpm
-          cache-dependency-path: next-app/pnpm-lock.yaml
+          cache-dependency-path: bangicodecurrent/pnpm-lock.yaml
 
       - name: Restore Next.js build cache
         uses: actions/cache@v4
         with:
-          path: next-app/.next/cache
-          key: nextjs-${{ runner.os }}-${{ hashFiles('next-app/pnpm-lock.yaml') }}-${{ hashFiles('next-app/src/**') }}
+          path: bangicodecurrent/.next/cache
+          key: nextjs-${{ runner.os }}-${{ hashFiles('bangicodecurrent/pnpm-lock.yaml') }}-${{ hashFiles('bangicodecurrent/src/**') }}
           restore-keys: |
-            nextjs-${{ runner.os }}-${{ hashFiles('next-app/pnpm-lock.yaml') }}-
+            nextjs-${{ runner.os }}-${{ hashFiles('bangicodecurrent/pnpm-lock.yaml') }}-
             nextjs-${{ runner.os }}-
 
       - name: Install dependencies
@@ -221,7 +221,7 @@ jobs:
         with:
           node-version: 24.16.0
           cache: pnpm
-          cache-dependency-path: next-app/pnpm-lock.yaml
+          cache-dependency-path: bangicodecurrent/pnpm-lock.yaml
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -270,7 +270,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: playwright-report
-          path: next-app/playwright-report/
+          path: bangicodecurrent/playwright-report/
           retention-days: 7
 
   # ── Job 5: Lighthouse budget ──────────────────────────────────────────────
@@ -314,7 +314,7 @@ jobs:
         with:
           node-version: 24.16.0
           cache: pnpm
-          cache-dependency-path: next-app/pnpm-lock.yaml
+          cache-dependency-path: bangicodecurrent/pnpm-lock.yaml
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
@@ -343,7 +343,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: lhci-results
-          path: next-app/.lighthouseci/
+          path: bangicodecurrent/.lighthouseci/
           retention-days: 7
 
   # ── Job 6: Deploy to Namecheap shared hosting ────────────────────────────
@@ -374,10 +374,10 @@ jobs:
       # that DEPLOY_HOST was never set.
       - name: Check deploy secrets are configured
         # Runs BEFORE checkout, so it cannot use the workflow's
-        # `working-directory: ./next-app` default — that directory does not
+        # `working-directory: ./bangicodecurrent` default — that directory does not
         # exist yet and bash refuses to start in it:
         #   "An error occurred trying to start process '/usr/bin/bash' with
-        #    working directory '.../next-app'. No such file or directory"
+        #    working directory '.../bangicodecurrent'. No such file or directory"
         # The first time this job ever ran, that is how it failed. The
         # workspace root always exists, so pin to it.
         working-directory: .
@@ -435,7 +435,7 @@ jobs:
         with:
           node-version: 24.16.0
           cache: pnpm
-          cache-dependency-path: next-app/pnpm-lock.yaml
+          cache-dependency-path: bangicodecurrent/pnpm-lock.yaml
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile

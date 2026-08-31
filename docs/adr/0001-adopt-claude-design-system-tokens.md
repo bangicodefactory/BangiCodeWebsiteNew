@@ -12,7 +12,7 @@ Three facts forced this decision.
 
 **1. The site has no colour system at runtime.**
 
-`next-app/src/app/globals.css` contains a deliberately empty `@theme {}` block:
+`bangicodecurrent/src/app/globals.css` contains a deliberately empty `@theme {}` block:
 
 ```css
 /*
@@ -30,7 +30,7 @@ Every brand class used across the codebase — `bg-primary`, `text-foreground`, 
 **2. The registry that was supposed to supply those tokens does not exist.**
 
 - `components.json` points `@bangicode` at `https://design.bangicode.ma/r/{name}.json`.
-- That endpoint 404s. `next-app/registry-version.json` records it: `"status": "pending"`, `"reason": "Registry endpoint … returns 404 — design.bangicode.ma not yet deployed."`, `libraryVersion: null`, `installedAt: null`.
+- That endpoint 404s. `bangicodecurrent/registry-version.json` records it: `"status": "pending"`, `"reason": "Registry endpoint … returns 404 — design.bangicode.ma not yet deployed."`, `libraryVersion: null`, `installedAt: null`.
 - No `@bangicode` package is installed in `node_modules`.
 
 The rule "do not author tokens locally, they ship in from the registry" has been blocking all styling work for as long as the registry has been undeployed, with no delivery date.
@@ -60,7 +60,7 @@ does, and which removes the drift entirely rather than preserving it.
 
 ## Decision
 
-1. **Author `@theme` locally**, in a new `next-app/src/styles/tokens.css` imported by
+1. **Author `@theme` locally**, in a new `bangicodecurrent/src/styles/tokens.css` imported by
    `globals.css`. Drop the "never author tokens locally" rule.
 2. **Adopt the Claude Design System palette** (navy / sky / red / ink ramps) as the token
    source of truth, replacing the `DESIGN.md` colour values (`#002058` primary,

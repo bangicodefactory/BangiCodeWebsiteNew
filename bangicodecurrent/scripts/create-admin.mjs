@@ -66,7 +66,9 @@ function connectionConfig() {
   );
   if (missing.length > 0) {
     console.error(`admin: missing ${missing.join(", ")}.`);
-    console.error("Set them in next-app/.env.local — see .env.example.");
+    console.error(
+      "Set them in bangicodecurrent/.env.local — see .env.example.",
+    );
     process.exit(1);
   }
   return {

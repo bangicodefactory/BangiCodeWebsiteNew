@@ -6,5 +6,5 @@
   "printWidth": 80,
   "plugins": ["prettier-plugin-tailwindcss"],
   "$schema": "https://json.schemastore.org/prettierrc",
-  "$comment": "prettier-plugin-tailwindcss is in next-app/devDependencies — run prettier from within next-app/ (CI and lint-staged both do this via 'defaults: run: working-directory: ./next-app' and 'cd next-app && pnpm lint-staged')"
+  "$comment": "prettier-plugin-tailwindcss is in bangicodecurrent/devDependencies — run prettier from within bangicodecurrent/ (CI and lint-staged both do this via 'defaults: run: working-directory: ./bangicodecurrent' and 'cd bangicodecurrent && pnpm lint-staged')"
 }

@@ -26,11 +26,11 @@ Read **`## Component library — Company brand registry`** below before doing an
 
 ### 3. Confirm token source of truth
 
-Tokens are authored **locally** in `next-app/src/styles/tokens.css`, imported by `globals.css`. See "Token source of truth" below and [ADR 0001](docs/adr/0001-adopt-claude-design-system-tokens.md).
+Tokens are authored **locally** in `bangicodecurrent/src/styles/tokens.css`, imported by `globals.css`. See "Token source of truth" below and [ADR 0001](docs/adr/0001-adopt-claude-design-system-tokens.md).
 
 ---
 
-## Token source of truth — `next-app/src/styles/tokens.css`
+## Token source of truth — `bangicodecurrent/src/styles/tokens.css`
 
 **Changed 2026-08-05 — see [ADR 0001](docs/adr/0001-adopt-claude-design-system-tokens.md).**
 
@@ -66,8 +66,8 @@ Shape / depth / motion:
 ## Tech stack rules (don't deviate without writing an ADR)
 
 - **Next.js 16.2.6**, App Router, TypeScript strict.
-- **Tailwind v4** with CSS-first `@theme`. NOT Tailwind v3 JS config. NOT the Play CDN. The `@theme` block **IS authored locally**, in `next-app/src/styles/tokens.css` (imported by `globals.css`) — see ADR 0001.
-- **Components:** shadcn-style primitives live in `next-app/src/components/ui/`. The `@bangicode` registry at `design.bangicode.ma` was never deployed; do not wait on it. See `## Component library` below.
+- **Tailwind v4** with CSS-first `@theme`. NOT Tailwind v3 JS config. NOT the Play CDN. The `@theme` block **IS authored locally**, in `bangicodecurrent/src/styles/tokens.css` (imported by `globals.css`) — see ADR 0001.
+- **Components:** shadcn-style primitives live in `bangicodecurrent/src/components/ui/`. The `@bangicode` registry at `design.bangicode.ma` was never deployed; do not wait on it. See `## Component library` below.
 - **Icons:** **lucide-react** only, 2px stroke. 16px inline with text, 20px in buttons/nav, 24px feature. NOT Material Symbols Outlined (that's what the prototype uses; it loads a 700KB+ font and pulls by string name).
 - **i18n:** next-intl with `[locale]` route segments. RTL for AR via `dir="rtl"` on `<html>`.
 - **Fonts:** **Chakra Petch** (display), **Manrope** (body), **JetBrains Mono** (technical) via `next/font`. For `ar`, **IBM Plex Sans Arabic** replaces BOTH display and body — Chakra Petch and Manrope have no Arabic coverage. One family covers both roles to keep `/ar` to a single extra download.
@@ -82,15 +82,15 @@ Shape / depth / motion:
 
 **Changed 2026-08-05 — see [ADR 0001](docs/adr/0001-adopt-claude-design-system-tokens.md).**
 
-The `@bangicode` private shadcn registry at `https://design.bangicode.ma/r/<name>.json` **was never deployed** — the endpoint 404s, and `next-app/registry-version.json` records `"status": "pending"` with no install timestamp. Do not block work on it.
+The `@bangicode` private shadcn registry at `https://design.bangicode.ma/r/<name>.json` **was never deployed** — the endpoint 404s, and `bangicodecurrent/registry-version.json` records `"status": "pending"` with no install timestamp. Do not block work on it.
 
-Primitives live locally in `next-app/src/components/ui/`: badge · button · card · checkbox · form (RHF+Zod) · input · label · radio-group · select · separator · sheet · switch · textarea. Add new ones in the same style, on tokens from `src/styles/tokens.css`.
+Primitives live locally in `bangicodecurrent/src/components/ui/`: badge · button · card · checkbox · form (RHF+Zod) · input · label · radio-group · select · separator · sheet · switch · textarea. Add new ones in the same style, on tokens from `src/styles/tokens.css`.
 
 **Rules:**
 
-1. **Author tokens in `next-app/src/styles/tokens.css`.** Keep them in that file rather than inline in `globals.css`, so there's a single seam to remove if a real registry ever ships. Define every token in **both** semantic vocabularies (shadcn + Material-3) — see "Token source of truth" above.
+1. **Author tokens in `bangicodecurrent/src/styles/tokens.css`.** Keep them in that file rather than inline in `globals.css`, so there's a single seam to remove if a real registry ever ships. Define every token in **both** semantic vocabularies (shadcn + Material-3) — see "Token source of truth" above.
 2. **Prefer editing a primitive over forking it.** A page-level wrapper that composes primitives is fine; a near-duplicate of `ui/<name>.tsx` is not.
-3. **Consumer-specific sections** (ThesisLineStats, FeaturedCase, PeekCards, WhatHappensNext, FounderCard, TrustedByRow, WhyBangicode, SolutionsSection, FaqSection) live in `next-app/src/components/sections/`. They use **only** token classes — **no raw hex**. StudioStatusPanel was removed on 2026-08-14 along with its `● online` dot and `LocalClock`, which had no other consumer; the retired `#ffb4a9` exception went with it.
+3. **Consumer-specific sections** (ThesisLineStats, FeaturedCase, PeekCards, WhatHappensNext, FounderCard, TrustedByRow, WhyBangicode, SolutionsSection, FaqSection) live in `bangicodecurrent/src/components/sections/`. They use **only** token classes — **no raw hex**. StudioStatusPanel was removed on 2026-08-14 along with its `● online` dot and `LocalClock`, which had no other consumer; the retired `#ffb4a9` exception went with it.
 4. **The smoke gallery** (`src/app/smoke/`, gated by `SMOKE_GALLERY=1`) is the per-section verification surface. Add a page when you add a section, register it in the `SECTIONS` list in `src/app/smoke/page.tsx`, and remove both when you drop one. Note it is a **separate root layout** — it inherits nothing from `[locale]/layout.tsx`, so `smoke/layout.tsx` must keep its own `globals.css` import and font variables (ADR 0001, bug 5).
 5. **`pnpm check:registry-pin`** guards a registry we no longer consume. Disable or repoint it — tracked separately.
 6. **Still to build consumer-side:** NavigationMenu (IST-127, already bespoke in `components/nav/`) and any page-specific composition. An `Accordion` primitive is **not** needed — `FaqSection` uses native `<details>`/`<summary>`, which gives the disclosure semantics and keyboard handling for free and keeps the section off the client bundle (ADR 0001).
@@ -125,7 +125,7 @@ multi-locale writes matter; its storage and auth decisions are superseded.
 | Client components import `@/lib/portfolio-schema`, never a loader. | Loaders reach the database and fail the client build. |
 | `content/portfolio/*.json` and `content/blog/**` are **seed fixtures**, not the live source. | CI and local dev seed from them; the site reads the database. |
 
-Env vars are documented in `next-app/.env.example`; `/admin/login` names any that
+Env vars are documented in `bangicodecurrent/.env.example`; `/admin/login` names any that
 are missing rather than crashing. Tests: `pnpm test:cms` (a real MySQL, seeded
 per run — never a production database).
 
@@ -147,8 +147,8 @@ per run — never a production database).
 - **Branch naming:** `ahmedchioua/ist-<NN>` (Linear suggests this automatically per ticket).
 - **Commit messages:** include the ticket reference, e.g., `IST-119: scaffold Next.js + Tailwind v4 + shadcn`.
 - **PRs:** link back to the Linear ticket. Linear's GitHub integration auto-moves the ticket state.
-- **Don't delete `bangicode-website/`** (the old CRA app). It stays runnable until E8 cutover (IST-163).
-- **New project lives at `next-app/`** (or similar) at the repo root, not inside `bangicode-website/`.
+- **Don't delete `old-website/`** (the old CRA app). It stays runnable until E8 cutover (IST-163).
+- **New project lives at `bangicodecurrent/`** (or similar) at the repo root, not inside `old-website/`.
 
 ---
 
@@ -164,18 +164,33 @@ per run — never a production database).
 
 ## What lives where
 
+**Renamed 2026-08-31.** `next-app/` → **`bangicodecurrent/`** and
+`bangicode-website/` → **`old-website/`**. Both moved with `git mv`, so
+`git log --follow` still reaches the full history of every file.
+
+If you are reading an older doc, a Linear ticket or a commit message that says
+`next-app/`, it means `bangicodecurrent/`. Anything that says
+`bangicode-website/` means `old-website/`.
+
+> The archived app is `old-website`, hyphenated, **not** `old website` with a
+> space. Directory names are consumed by shell (`cd bangicodecurrent && pnpm
+> lint-staged` in `.husky/pre-commit`), by YAML (`working-directory:` and the
+> `paths:` trigger in `ci.yml`) and by `rsync` in the deploy. A space in any of
+> those is a quoting bug waiting to happen, and the deploy runs
+> `rsync --delete`.
+
 - `REDESIGN_PLAN.md` — full plan. Read the sections each ticket references.
 - `DESIGN.md` — brand tokens. Source of truth for `@theme`.
 - `brand/` — brand assets (logo, future icon variants). See "Brand assets" below.
 - `prototypes/v4-stitch.html` — structure reference. NOT a code source.
-- `bangicode-website/` — current production site (CRA build, runs until cutover).
-- `next-app/` — new production site (build target — create in IST-119).
+- `old-website/` — the retired CRA build. Kept runnable as the cutover rollback.
+- `bangicodecurrent/` — the production Next.js app. This is the build target.
 
 ---
 
 ## Brand assets — `brand/`
 
-The canonical brand source lives at `brand/` in the repo root. When IST-119 scaffolds `next-app/`, copy these into `next-app/public/brand/` and reference them from there in components.
+The canonical brand source lives at `brand/` in the repo root. When IST-119 scaffolds `bangicodecurrent/`, copy these into `bangicodecurrent/public/brand/` and reference them from there in components.
 
 ### `brand/logo.svg`
 

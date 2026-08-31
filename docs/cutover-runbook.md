@@ -57,12 +57,12 @@ no rebuild:
 | `SITE_URL`             | `https://bangicode.ma`                       |
 | `RESEND_API_KEY`       | (set when email delivery is wired, BAN-146) |
 | `NODE_ENV`             | `production`                                |
-| `DB_*`, `ADMIN_SESSION_SECRET` | see `next-app/.env.example`         |
+| `DB_*`, `ADMIN_SESSION_SECRET` | see `bangicodecurrent/.env.example`         |
 
 ### Build + start commands
 
 ```bash
-# On the server, from the next-app/ directory:
+# On the server, from the bangicodecurrent/ directory:
 npm ci --omit=dev
 npm run build
 pm2 start npm --name bangicode-next -- start
@@ -100,7 +100,7 @@ Complete **at least 48 hours before** the DNS swap:
 
 - [ ] Node.js 20+ installed on host (`node -v`)
 - [ ] PM2 installed globally (`npm install -g pm2`)
-- [ ] `next-app/` deployed to server, dependencies installed, `npm run build` succeeds
+- [ ] `bangicodecurrent/` deployed to server, dependencies installed, `npm run build` succeeds
 - [ ] All env vars set in `.env.production`
 - [ ] `pm2 start` running and `curl http://localhost:3000` returns 200
 - [ ] Apache/Nginx reverse proxy configured and tested via IP or staging domain
@@ -168,7 +168,7 @@ Roll back immediately if **any** of the following:
 
 ### CRA app preservation
 
-The old CRA app (`bangicode-website/`) must remain **deployable for 30 days post-launch**:
+The old CRA app (`old-website/`) must remain **deployable for 30 days post-launch**:
 
 - Do not shut down the old hosting until T+30 days
 - Keep the old host's A record noted below:
@@ -195,7 +195,7 @@ These catch any path-based URLs that may have been shared:
 
 ### Client-side hash redirect (homepage)
 
-A `LegacyHashRedirect` component on the homepage detects legacy `#section` anchors and pushes to the correct new route. Implemented in `next-app/src/components/LegacyHashRedirect.tsx`.
+A `LegacyHashRedirect` component on the homepage detects legacy `#section` anchors and pushes to the correct new route. Implemented in `bangicodecurrent/src/components/LegacyHashRedirect.tsx`.
 
 | Old hash      | New route   |
 | ------------- | ----------- |
