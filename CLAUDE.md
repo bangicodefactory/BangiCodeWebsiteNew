@@ -136,7 +136,7 @@ per run — never a production database).
 - **Legal entity:** Bangicode SARL.
 - **Copyright line:** `© 2020–2026 Bangicode SARL. Crafted with Moroccan precision.`
 - **Footer services list:** Custom software / E-commerce / Technical training / Social presence. (NOT the generic "Web Development / Mobile Solutions / UI/UX Strategy / Cloud Systems" that Stitch hallucinated.)
-- **Testimonials:** keep the Youssef B. / Friterie.ma placeholder. Mark it `data-placeholder="true"` so it's grep-able.
+- **Testimonials:** one card, attributed to **Imane B. / Direct Onderweg**, linking to `https://directonderweg.com/`. (Was Youssef B. / Friterie.ma until 2026-09-01.) Keep `data-placeholder="true"` — it marks the **quote wording** as unconfirmed, not the person, and the sentence is now signed by a named individual at a real company. Drop the attribute only once someone confirms she said it. Do not invent a second quote to fill out a grid.
 - **Case studies:** short 1-screen summaries with "Full case study available on request — contact us" CTA. NOT long-form.
 - **Hero CTA naming:** "Start a project" everywhere (in both nav and body). NOT "Let's Build" (Stitch swap).
 
