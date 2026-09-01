@@ -254,7 +254,21 @@ the old site.
 
 ---
 
-## Phase 4 — The switch
+## Phase 4 — The switch ✅ DONE 2026-08-31
+
+> Carried out on 2026-08-31. `bangicode.ma` now serves the Next.js app on the
+> Passenger app at `~/bangicode-app`; the CRA build was moved (not deleted) to
+> `~/public_html-cra-retired/`, with a fresh tarball alongside the Phase 1 one.
+>
+> One correction worth recording, because the obvious fix does not work: the
+> apex kept serving `new.bangicode.ma` canonicals even after `SITE_URL` was
+> repointed and the app rebuilt, and even though the prebuilt HTML on disk was
+> correct. The `.htaccess` is GENERATED from the CloudLinux Node selector
+> registration, which still named the staging domain and injected its own
+> `SITE_URL` at process spawn — so editing `.htaccess` changed nothing. The fix
+> was `cloudlinux-selector set --new-domain bangicode.ma --env-vars …`.
+>
+> **§4.2b is still outstanding** — see the note there.
 
 This is the part that affects visitors. Pick a quiet hour. Budget 20 minutes.
 
@@ -319,7 +333,7 @@ ls -la
 
 `public_html` should now contain `.htaccess` and nothing else.
 
-### 4.2b Clear the stale Node app registration
+### 4.2b Clear the stale Node app registration ⚠️ STILL OUTSTANDING
 
 `~/nodevenv/` on this account contains an entry for `public_html/server`, but
 no such directory exists — a Node app was registered there once and removed
