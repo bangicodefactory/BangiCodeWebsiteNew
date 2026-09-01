@@ -1,8 +1,13 @@
 import { getTranslations } from "next-intl/server";
 
+/*
+ * Friterie.ma was removed on 2026-09-02, completing the withdrawal that took
+ * its case study out on 2026-09-01 (project row, seed fixture and a 301 for the
+ * old URL). The name still appears in git history and in older docs — that is
+ * history, not a list to restore from.
+ */
 const CLIENTS = [
   "Cafe Imperial",
-  "Friterie.ma",
   "Aqarchamal",
   "Classkom",
   "Coinluminaire",
