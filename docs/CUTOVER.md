@@ -333,13 +333,36 @@ ls -la
 
 `public_html` should now contain `.htaccess` and nothing else.
 
-### 4.2b Clear the stale Node app registration ⚠️ STILL OUTSTANDING
+### 4.2b Clear the stale Node app registration ✅ DONE 2026-09-01
 
-`~/nodevenv/` on this account contains an entry for `public_html/server`, but
-no such directory exists — a Node app was registered there once and removed
-without cleaning up. Check _Setup Node.js App_ for an application whose root no
-longer exists and delete it, so it cannot fight the new one for the same
-document root.
+`~/nodevenv/` on this account contained an entry for `public_html/server` with
+no such directory on disk — a Node app registered there once and removed
+without cleaning up. It was a Node 18 app, `app_uri: api/send-email`, status
+`started`, and it was registered against **bangicode.ma**: a second
+registration claiming the apex.
+
+Removed with:
+
+```bash
+cloudlinux-selector destroy --interpreter nodejs --app-root public_html/server
+```
+
+Two things worth knowing if this is ever repeated:
+
+- **Back up `~/public_html/.htaccess` first.** That file _is_ the live apex
+  Passenger config, and cPanel rewrites `.htaccess` files when it tears an app
+  down. It came through untouched here — all 10 Passenger lines intact,
+  confirmed by `diff` against the backup — but that was worth verifying rather
+  than assuming, because the failure mode is the apex going down.
+- **The command prints an error and still succeeds.** It logged
+  `ERROR:[Errno 2] No such file or directory:
+  '/home/bangspbp/public_html/api/send-email/.htaccess'` — cleanup of an
+  `app_uri` subdirectory that never existed — and then returned
+  `{"result": "success"}`. The registration really was removed. Two apps remain:
+  `bangicode-app` on the apex, and `classkom.ma/frontend` (stopped).
+
+`~/nodevenv/public_html/` (4K) is left behind by the teardown. Harmless;
+removing it is optional.
 
 ### 4.3 Start the app
 
@@ -389,12 +412,42 @@ the switch.
 - **Watch for 404s** for a week. The old site had one URL, so there should be
   none, but check Search Console → _Pages_.
 - **Keep the backup** for at least a month.
-- Only once you are confident: retire `old-website/` from the repo
-  (CLAUDE.md currently forbids deleting it — update that line when you do).
-- Delete the staging subdomain and its Node app, or keep it as a preview
-  environment. If you keep it, leave `noindex` on: cPanel → _Domains_ →
-  `new.bangicode.ma` and add a `robots.txt` that disallows everything, so
-  staging never competes with production in search.
+- Only once you are confident: retire `old-website/` from the repo.
+- **`new.bangicode.ma` currently returns 404.** The app is registered to one
+  domain and that is now the apex, so the staging vhost has nothing behind it.
+  That is a clean retirement, but any bookmark or old link dead-ends — point it
+  at a 301 to the apex if you would rather they survive. If you ever re-attach
+  an app to it, put `noindex` on first so staging cannot compete with
+  production in search.
+
+---
+
+## Withdrawing a project (worked example: Friterie.ma, 2026-09-01)
+
+Deleting `content/portfolio/<slug>.json` does **not** remove a project from the
+site. The portfolio reads MySQL; that file is the seed fixture CI and local dev
+build a database from (ADR 0003). Both halves are needed, or the next
+`pnpm db:seed --reset` quietly restores what you removed.
+
+1. **Repo** — delete the fixture, and add a 301 in `next.config.ts` for the old
+   URL in both the locale-prefixed and bare forms. An indexed case study that
+   simply vanishes is a 404 for every crawler that already has it.
+2. **Database** — the supported path is `/admin/portfolio` → delete, typing the
+   slug to confirm. It runs the delete and the audit revision in one
+   transaction and calls `revalidateTag(PROJECTS_TAG)`, which is what actually
+   drops the cached list.
+3. **If you go direct to SQL instead**, replicate what `deleteProject()` does or
+   the audit trail silently loses the event — `DELETE FROM projects WHERE
+   slug = ?` plus an `INSERT INTO content_revisions` carrying a snapshot, in one
+   transaction. `project_translations` follows via `ON DELETE CASCADE`.
+4. **Then clear the cache**, which raw SQL cannot do. `rm -rf
+   ~/bangicode-app/.next/cache` and restart the app. Without this the listing
+   and the sitemap keep serving the removed project — measured: it still showed
+   in both until the cache was cleared, well after the row was gone.
+
+⚠️ The `date` column on seeded rows can contain a **cp1252 en-dash (0x96)**
+rather than UTF-8 `U+2013`, left by an old seed run. Anything reading those rows
+strictly as UTF-8 will crash on it. `mysqldump` is unaffected — it copies bytes.
 
 ---
 
