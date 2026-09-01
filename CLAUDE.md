@@ -147,8 +147,13 @@ per run — never a production database).
 - **Branch naming:** `ahmedchioua/ist-<NN>` (Linear suggests this automatically per ticket).
 - **Commit messages:** include the ticket reference, e.g., `IST-119: scaffold Next.js + Tailwind v4 + shadcn`.
 - **PRs:** link back to the Linear ticket. Linear's GitHub integration auto-moves the ticket state.
-- **Don't delete `old-website/`** (the old CRA app). It stays runnable until E8 cutover (IST-163).
-- **New project lives at `bangicodecurrent/`** (or similar) at the repo root, not inside `old-website/`.
+- **`old-website/` is an archive, not a rollback.** The E8 cutover happened on
+  2026-08-31 (IST-163) — `bangicode.ma` serves the Next.js app, and this
+  directory stopped being the live site then. Keep it for reference and for
+  git history, but do not treat it as the way back: the real rollback lives on
+  the server as `~/public_html-cra-retired/` plus the dated tarballs in
+  `~/`, which is what actually served the apex. See `docs/CUTOVER.md`.
+- **The production app is `bangicodecurrent/`**, at the repo root.
 
 ---
 
