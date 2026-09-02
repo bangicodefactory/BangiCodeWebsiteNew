@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import { cn } from "@/lib/utils";
 import { trackWhatsappClick } from "@/lib/analytics";
 
-const WA_NUMBER = process.env.NEXT_PUBLIC_WA_NUMBER ?? "212664571370";
+const WA_NUMBER = process.env.NEXT_PUBLIC_WA_NUMBER ?? "212664548867";
 
 export function WhatsAppCta() {
   const t = useTranslations("WhatsAppCta");

@@ -23,7 +23,7 @@ import { Separator } from "@/components/ui/separator";
  * `block` in the same class list, and the winner is decided by order in the
  * generated stylesheet, not order in the attribute — so the stacked phone /
  * email / WhatsApp links silently became inline and ran together as
- * "+212 664 571 370contact@bangicode.ma". Each base ships displayless and every
+ * "+212 664 548 867contact@bangicode.ma". Each base ships displayless and every
  * consumer picks its own.
  */
 const TARGET_SIZE = "inline-block w-fit py-1.5";
@@ -176,16 +176,20 @@ export async function SiteFooter() {
                  * dir="ltr" — a phone number is an LTR sequence in every
                  * locale. Without it the leading "+" is a neutral character at
                  * the start of an RTL paragraph, so bidi moves it to the other
-                 * end and /ar rendered "212 664 571 370+". Measured: the "+"
-                 * painted at x=357 and the final "0" at x=264, i.e. the whole
-                 * run laid out right-to-left.
+                 * end and /ar rendered the number with the "+" trailing.
+                 * Measured at the time on the previous number: the "+" painted
+                 * at x=357 and the final digit at x=264, i.e. the whole run
+                 * laid out right-to-left.
+                 *
+                 * Nothing about that depends on which digits these are, so it
+                 * applies unchanged to any number put here.
                  */}
                 <a
-                  href="tel:+212664571370"
+                  href="tel:+212664548867"
                   dir="ltr"
                   className={MONO_CONTACT_LINK_CLASS}
                 >
-                  +212 664 571 370
+                  +212 664 548 867
                 </a>
                 <a
                   href="mailto:contact@bangicode.ma"
@@ -194,7 +198,7 @@ export async function SiteFooter() {
                   contact@bangicode.ma
                 </a>
                 <a
-                  href="https://wa.me/212664571370"
+                  href="https://wa.me/212664548867"
                   target="_blank"
                   rel="noopener noreferrer"
                   className={MONO_CONTACT_LINK_CLASS}
