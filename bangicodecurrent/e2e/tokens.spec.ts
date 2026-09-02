@@ -322,7 +322,7 @@ test("@smoke /ar — eyebrows align with the section they label", async ({
  * the paragraph, not the run, so bidi moves it to the other side. Two shipped
  * that way:
  *
- *   the phone number rendered "212 664 571 370+"
+ *   the phone number rendered with its leading "+" trailing at the far end
  *   the copyright read ".Bangicode SARL. Crafted with Moroccan precision … ©"
  *
  * Both look like typos rather than layout bugs, which is why they survived: the

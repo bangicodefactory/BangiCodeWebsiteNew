@@ -3,7 +3,7 @@ import { NewTabHint } from "@/components/NewTabHint";
 import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 
-const WA_NUMBER = process.env.NEXT_PUBLIC_WA_NUMBER ?? "212664571370";
+const WA_NUMBER = process.env.NEXT_PUBLIC_WA_NUMBER ?? "212664548867";
 
 /*
  * Design D closes on a dark contact band. D puts a full form here; this does

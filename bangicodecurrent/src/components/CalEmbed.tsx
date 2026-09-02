@@ -11,7 +11,7 @@ export { CAL_EVENT_SLUG } from "@/lib/cal";
 import { CAL_EVENT_SLUG, CAL_GUESTS } from "@/lib/cal";
 
 const FALLBACK_EMAIL = "contact@bangicode.ma";
-const FALLBACK_WA = "https://wa.me/212664571370";
+const FALLBACK_WA = "https://wa.me/212664548867";
 
 // --- Error boundary -----------------------------------------------------------
 

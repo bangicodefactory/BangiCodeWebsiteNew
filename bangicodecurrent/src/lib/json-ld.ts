@@ -17,7 +17,7 @@ export function organizationSchema(description: string) {
     logo: `${BASE_URL}/brand/logo.svg`,
     description,
     email: "contact@bangicode.ma",
-    telephone: "+212664571370",
+    telephone: "+212664548867",
     address: {
       "@type": "PostalAddress",
       streetAddress:
@@ -54,7 +54,7 @@ export function localBusinessSchema(description: string) {
     url: BASE_URL,
     description,
     email: "contact@bangicode.ma",
-    telephone: "+212664571370",
+    telephone: "+212664548867",
     priceRange: "$$",
     address: {
       "@type": "PostalAddress",
