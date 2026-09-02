@@ -1,5 +1,7 @@
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
+import { NewTabHint } from "@/components/NewTabHint";
+import { DRIVEDESK } from "@/lib/solutions";
 
 const RENTCAR_STACK = ["React", "Laravel", "MySQL", "AWS"] as const;
 
@@ -48,6 +50,33 @@ export async function FeaturedCase() {
               </span>{" "}
               <span className="block text-balance">{t("headline")}</span>
             </h2>
+
+            {/*
+             * This case study and the DriveDesk panel on /solutions describe the
+             * SAME application. Without this line the page presented one piece
+             * of work twice — once as client work ("for a Moroccan car rental
+             * operator") and once as an in-house product ("we built it, we ship
+             * it, we run it") — which reads as two projects and quietly inflates
+             * the portfolio.
+             *
+             * Both framings are true in sequence: built for a client, then
+             * productised. Saying so is what makes the metrics below credible
+             * rather than double-counted.
+             *
+             * Plain <a>, not next-intl's <Link>: it leaves the site, so it must
+             * not take a locale prefix.
+             */}
+            <p className="font-body text-muted-foreground text-sm leading-relaxed text-pretty">
+              <a
+                href={DRIVEDESK.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-secondary-container focus-visible:ring-ring rounded-sm underline-offset-4 hover:underline focus-visible:ring-2 focus-visible:outline-none"
+              >
+                {t("productLine")}
+                <NewTabHint />
+              </a>
+            </p>
 
             <div className="flex flex-wrap gap-2">
               {[...RENTCAR_STACK, t("industry")].map((tag) => (
