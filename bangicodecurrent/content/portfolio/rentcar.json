@@ -14,17 +14,17 @@
   "content": {
     "en": {
       "name": "RentCar",
-      "summary": "A fleet management and online booking platform for a Moroccan car rental operator.",
+      "summary": "A fleet management and online booking platform for a Moroccan car rental operator. It became DriveDesk, the product we now ship and run.",
       "outcome": "-60% daily admin time. Three vendor systems replaced by one. 99.9% uptime over 14 months."
     },
     "fr": {
       "name": "RentCar",
-      "summary": "Plateforme de gestion de flotte et de réservation en ligne pour un loueur de voitures marocain.",
+      "summary": "Plateforme de gestion de flotte et de réservation en ligne pour un loueur de voitures marocain. Il est devenu DriveDesk, le produit que nous éditons et exploitons aujourd’hui.",
       "outcome": "-60 % de temps admin quotidien. Trois systèmes fournisseurs remplacés par un seul. 99,9 % de disponibilité sur 14 mois."
     },
     "ar": {
       "name": "RentCar",
-      "summary": "منصة إدارة أسطول وحجز إلكتروني لمشغّل تأجير سيارات مغربي.",
+      "summary": "منصة إدارة أسطول وحجز إلكتروني لمشغّل تأجير سيارات مغربي. أصبحت لاحقاً DriveDesk، المنتج الذي نطوّره ونشغّله اليوم.",
       "outcome": "انخفاض 60% في الوقت الإداري اليومي. ثلاثة أنظمة موردين أصبحت نظاماً واحداً. 99.9% وقت تشغيل على مدى 14 شهراً."
     }
   }
