@@ -157,9 +157,21 @@ production as its canonical.
 
 ⚠️ **`DEPLOY_PATH` must be exactly `/home/bangspbp/bangicode-app`.** This one
 cPanel account also hosts `garage/` (DirectAutoCare), `classkom.ma`,
-`rentcar.bangicode.ma`, `riha.bangicode.ma` and others. The deploy runs
-`rsync --delete`, so a wrong path here deletes another live site. The preflight
-rejects a relative path but cannot know you typed the wrong absolute one.
+`riha.bangicode.ma`, `tamago.bangicode.ma`, `art.bangicode.ma` and others. The
+deploy runs `rsync --delete`, so a wrong path here deletes another live site.
+The preflight rejects a relative path but cannot know you typed the wrong
+absolute one.
+
+`rentcar.bangicode.ma` is no longer in that list: its docroot is empty and the
+app it once served is now DriveDesk on its own domain. **Removing the subdomain
+needs the cPanel web UI** — Namecheap ships only `uapi` on this account, whose
+`SubDomain` module exposes `addsubdomain` and `changedocroot` and no delete, and
+the vhost definitions under `/var/cpanel/userdata/bangspbp/` are root-owned. So
+it cannot be scripted over SSH with the deploy key. cPanel → _Domains_ →
+Remove.
+
+`new.bangicode.ma` is likewise spent — the Passenger app is registered to the
+apex now, so staging returns 404. See `CUTOVER.md` Phase 5.
 
 The existing `~/.ssh/gha-deploy-dac` key is already authorised on this cPanel
 account (verified 2026-08-06), so no new key is needed — paste its contents into
