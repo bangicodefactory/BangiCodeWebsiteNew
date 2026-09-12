@@ -90,6 +90,24 @@ const nextConfig: NextConfig = {
       "./content/blog/**/*",
       "./content/portfolio/**/*",
       "./content/legal/**/*",
+      /*
+       * @swc/helpers is required at RUNTIME by the compiled Turbopack server
+       * chunks, through an external require the file tracer does not follow.
+       * It was therefore never copied into the standalone bundle, and every
+       * Passenger boot from 2026-09-08 onward died on:
+       *
+       *   Cannot find module '@swc/helpers/_/_interop_require_default'
+       *
+       * Nothing caught it for four days because the app was already running in
+       * memory and a live process never re-resolves its modules; the next
+       * restart is what took the site down. The build, the Playwright suite and
+       * Lighthouse all passed the whole time, because none of them ever boots
+       * the standalone bundle.
+       *
+       * The deploy job installs with --node-linker=hoisted, so this is a real
+       * directory rather than a symlink into .pnpm, and the glob matches.
+       */
+      "./node_modules/@swc/helpers/**/*",
     ],
   },
   compress: true,

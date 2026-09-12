@@ -437,23 +437,25 @@ jobs:
           cache: pnpm
           cache-dependency-path: bangicodecurrent/pnpm-lock.yaml
 
-      # pnpm's default isolated linker builds node_modules out of symlinks into
-      # .pnpm, and `next build` traces those links into .next/standalone. They
-      # do not survive the trip to shared hosting. The 2026-09-08 release landed
-      # on the server with @swc/helpers unresolvable, so every boot died on
-      # "Cannot find module '@swc/helpers/_/_interop_require_default'". Nothing
-      # caught it for four days because the app was already running in memory
-      # and a live process never re-resolves its modules — the next restart is
-      # what took bangicode.ma down. A hoisted install writes a flat, real
-      # node_modules, so the traced bundle ships no links that can break.
+      # bangicode.ma was unbootable from 2026-09-08 to 2026-09-12 because the
+      # deployed bundle could not resolve @swc/helpers. Two separate defects
+      # had to line up for that, and the fix needs both halves.
       #
-      # Scoped to this job on purpose: it is written on the runner and never
-      # committed, so local dev and the test jobs keep pnpm's normal layout.
-      - name: Use a hoisted node_modules for the deployable build
-        run: echo 'node-linker=hoisted' >> .npmrc
-
+      # 1. pnpm's default isolated linker builds node_modules out of symlinks
+      #    into .pnpm, and `next build` traces those links into the standalone
+      #    output. --node-linker=hoisted writes a flat, real tree instead, so
+      #    nothing link-shaped has to survive the rsync to shared hosting.
+      #    A CLI flag rather than an .npmrc line: this is pnpm 10, which reads
+      #    its settings from pnpm-workspace.yaml, so `node-linker=hoisted` in
+      #    .npmrc is accepted and silently ignored. The flag is also scoped to
+      #    this job, which leaves local dev and the test jobs untouched.
+      #
+      # 2. Hoisting alone was NOT enough, and the guard below proved it:
+      #    @swc/helpers is required at RUNTIME by the compiled Turbopack server
+      #    chunks, which the file tracer does not follow, so it was never
+      #    copied into the bundle at all. next.config.ts force-includes it.
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile --node-linker=hoisted
 
       - name: Build standalone bundle
         run: BUILD_STANDALONE=1 pnpm build
