@@ -28,56 +28,46 @@ jobs:
           fi
           chmod 600 ~/.ssh/known_hosts
 
-      # Every command below only reads. Environment variables are printed as
-      # NAMES ONLY -- values are never echoed, so no secret reaches the log.
-      - name: Collect diagnostics
+      # Every command below only reads. No secret values are printed.
+      - name: Trace the missing module
         run: |
           ssh -p "${{ secrets.DEPLOY_SSH_PORT }}" -i ~/.ssh/id_ed25519 \
             "${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}" \
             "APP='${{ secrets.DEPLOY_PATH }}'
 
-             echo '===== DISK ====='
-             df -h \"\$HOME\" 2>/dev/null | tail -2
-             quota -s 2>/dev/null | tail -3 || echo '(quota unavailable)'
+             echo '===== WHEN DID IT START ====='
+             echo -n 'stderr.log size: '; wc -c < \"\$APP/stderr.log\"
+             echo -n 'occurrences of the swc error: '
+             grep -c '_interop_require_default' \"\$APP/stderr.log\" 2>/dev/null || echo 0
              echo
-             echo '===== RELEASE SIZES ====='
-             du -sh \"\$APP\" \"\$APP.prev\" \"\$APP.broken\" 2>/dev/null
+             echo '--- first 25 lines of stderr.log ---'
+             head -25 \"\$APP/stderr.log\" 2>/dev/null
              echo
-             echo '===== APP ROOT ====='
-             ls -la \"\$APP\" 2>&1 | head -40
+             echo '--- first line number mentioning the swc error ---'
+             grep -n '_interop_require_default' \"\$APP/stderr.log\" 2>/dev/null | head -2
              echo
-             echo -n 'server.js present: '
-             if [ -f \"\$APP/server.js\" ]; then echo yes; else echo NO; fi
-             echo -n '.htaccess present: '
-             if [ -f \"\$APP/.htaccess\" ]; then echo yes; else echo NO; fi
+             echo '===== IS @swc/helpers ON DISK (restored release) ====='
+             ls -la \"\$APP/node_modules/@swc/\" 2>&1 | head -10
+             echo '--- helpers dir ---'
+             ls -la \"\$APP/node_modules/@swc/helpers/\" 2>&1 | head -15
+             echo '--- helpers/_ subpath (the one that fails) ---'
+             ls \"\$APP/node_modules/@swc/helpers/_/\" 2>&1 | head -10
+             echo '--- helpers package.json exports ---'
+             head -40 \"\$APP/node_modules/@swc/helpers/package.json\" 2>&1
              echo
-             echo '===== .htaccess (Passenger directives) ====='
-             cat \"\$APP/.htaccess\" 2>/dev/null | head -30 || echo '(none)'
+             echo '===== SAME CHECK ON THE FAILED BUILD ====='
+             ls -la \"\$APP.broken/node_modules/@swc/\" 2>&1 | head -10
+             ls \"\$APP.broken/node_modules/@swc/helpers/_/\" 2>&1 | head -5
              echo
-             echo '===== NODE ====='
-             which node 2>/dev/null; node -v 2>/dev/null || echo '(node not on PATH)'
-             ls -d \$HOME/nodevenv/* 2>/dev/null | head
+             echo '===== SYMLINK SHAPE OF node_modules ====='
+             ls -la \"\$APP/node_modules/\" 2>&1 | head -15
+             echo -n 'has .pnpm store: '
+             if [ -d \"\$APP/node_modules/.pnpm\" ]; then echo yes; else echo NO; fi
+             echo -n 'broken symlinks under node_modules (first 10): '
              echo
-             echo '===== APP ENV VAR NAMES ONLY (no values) ====='
-             for f in \"\$APP/.env\" \"\$HOME/.env\"; do
-               if [ -f \"\$f\" ]; then
-                 echo \"found \$f:\"
-                 grep -oE '^[A-Za-z_][A-Za-z0-9_]*=' \"\$f\" | tr -d '='
-               fi
-             done
+             find \"\$APP/node_modules\" -maxdepth 3 -xtype l 2>/dev/null | head -10
              echo
-             echo '===== RECENT LOGS ====='
-             ls -la \$HOME/logs/ 2>/dev/null | head -20
-             find \$HOME -maxdepth 3 -name '*.log' -mtime -3 2>/dev/null | head -20
-             echo
-             echo '----- stderr.log (last 60) -----'
-             tail -60 \"\$APP/stderr.log\" 2>/dev/null || tail -60 \$HOME/stderr.log 2>/dev/null || echo '(no stderr.log)'
-             echo
-             echo '----- passenger / error log (last 60) -----'
-             for L in \$HOME/logs/*error*log \$HOME/logs/*bangicode*log; do
-               if [ -f \"\$L\" ]; then echo \"== \$L ==\"; tail -60 \"\$L\"; fi
-             done
-             echo
-             echo '===== LISTENING PROCESSES ====='
-             ps -u \"\$(whoami)\" -o pid,etime,rss,cmd 2>/dev/null | grep -iE 'node|passenger' | head -15 || echo '(none)'
+             echo '===== WHAT NODE DOES PASSENGER USE ====='
+             ls -la \$HOME/nodevenv/bangicode-app/ 2>/dev/null
+             \$HOME/nodevenv/bangicode-app/22/bin/node -v 2>&1 || echo '(nodevenv node not runnable)'
             "
