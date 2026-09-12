@@ -437,6 +437,21 @@ jobs:
           cache: pnpm
           cache-dependency-path: bangicodecurrent/pnpm-lock.yaml
 
+      # pnpm's default isolated linker builds node_modules out of symlinks into
+      # .pnpm, and `next build` traces those links into .next/standalone. They
+      # do not survive the trip to shared hosting. The 2026-09-08 release landed
+      # on the server with @swc/helpers unresolvable, so every boot died on
+      # "Cannot find module '@swc/helpers/_/_interop_require_default'". Nothing
+      # caught it for four days because the app was already running in memory
+      # and a live process never re-resolves its modules — the next restart is
+      # what took bangicode.ma down. A hoisted install writes a flat, real
+      # node_modules, so the traced bundle ships no links that can break.
+      #
+      # Scoped to this job on purpose: it is written on the runner and never
+      # committed, so local dev and the test jobs keep pnpm's normal layout.
+      - name: Use a hoisted node_modules for the deployable build
+        run: echo 'node-linker=hoisted' >> .npmrc
+
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
@@ -479,6 +494,39 @@ jobs:
           mkdir -p .next/standalone/tmp
           touch .next/standalone/tmp/restart.txt
           du -sh .next/standalone
+
+      # The outage above shipped a bundle that built cleanly, passed every test
+      # and could not boot, because the missing module is required at RUNTIME by
+      # the compiled server chunks and nothing before the live check ever tried
+      # to resolve it. This resolves the exact specifiers that failed, from the
+      # bundle's own root, and fails the deploy here rather than on the server.
+      - name: Verify the bundle resolves its runtime externals
+        working-directory: ./bangicodecurrent/.next/standalone
+        run: |
+          node -e "
+            const { createRequire } = require('module');
+            const req = createRequire(process.cwd() + '/server.js');
+            const needed = [
+              '@swc/helpers/_/_interop_require_default',
+              'next/dist/compiled/next-server/app-page-turbo.runtime.prod.js',
+              'next',
+            ];
+            let failed = 0;
+            for (const m of needed) {
+              try {
+                console.log('ok   ' + m + ' -> ' + req.resolve(m));
+              } catch (e) {
+                console.error('FAIL ' + m + ' : ' + e.message);
+                failed++;
+              }
+            }
+            if (failed) {
+              console.error('::error::' + failed + ' runtime external(s) unresolvable in the standalone bundle. This is the 2026-09-08 failure mode — do not ship it.');
+              process.exit(1);
+            }
+          "
+          echo -n 'symlinks left in the bundle: '
+          find node_modules -type l | wc -l
 
       # DEPLOY_SSH_HOST_KEY is optional. Set it (the server's line from
       # `ssh-keyscan -p PORT HOST`) and the host is pinned; leave it unset and
