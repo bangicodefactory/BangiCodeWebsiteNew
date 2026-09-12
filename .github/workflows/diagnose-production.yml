@@ -1,0 +1,83 @@
+name: Diagnose production
+
+# Read-only. Manually triggered. Never writes to the server, never restarts the
+# app, never touches the database. Added 2026-09-12 while bangicode.ma was
+# returning 500 after a rolled-back deploy and neither SSH nor cPanel was
+# reachable from the operator's network. Delete this file once the incident is
+# closed.
+on:
+  workflow_dispatch:
+
+jobs:
+  diagnose:
+    name: "Read the server state"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Add SSH key
+        env:
+          HOST_KEY: ${{ secrets.DEPLOY_SSH_HOST_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s\n' "${{ secrets.DEPLOY_SSH_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          if [ -n "$HOST_KEY" ]; then
+            printf '%s\n' "$HOST_KEY" >> ~/.ssh/known_hosts
+          else
+            ssh-keyscan -p "${{ secrets.DEPLOY_SSH_PORT }}" -H "${{ secrets.DEPLOY_HOST }}" >> ~/.ssh/known_hosts
+          fi
+          chmod 600 ~/.ssh/known_hosts
+
+      # Every command below only reads. Environment variables are printed as
+      # NAMES ONLY -- values are never echoed, so no secret reaches the log.
+      - name: Collect diagnostics
+        run: |
+          ssh -p "${{ secrets.DEPLOY_SSH_PORT }}" -i ~/.ssh/id_ed25519 \
+            "${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}" \
+            "APP='${{ secrets.DEPLOY_PATH }}'
+
+             echo '===== DISK ====='
+             df -h \"\$HOME\" 2>/dev/null | tail -2
+             quota -s 2>/dev/null | tail -3 || echo '(quota unavailable)'
+             echo
+             echo '===== RELEASE SIZES ====='
+             du -sh \"\$APP\" \"\$APP.prev\" \"\$APP.broken\" 2>/dev/null
+             echo
+             echo '===== APP ROOT ====='
+             ls -la \"\$APP\" 2>&1 | head -40
+             echo
+             echo -n 'server.js present: '
+             if [ -f \"\$APP/server.js\" ]; then echo yes; else echo NO; fi
+             echo -n '.htaccess present: '
+             if [ -f \"\$APP/.htaccess\" ]; then echo yes; else echo NO; fi
+             echo
+             echo '===== .htaccess (Passenger directives) ====='
+             cat \"\$APP/.htaccess\" 2>/dev/null | head -30 || echo '(none)'
+             echo
+             echo '===== NODE ====='
+             which node 2>/dev/null; node -v 2>/dev/null || echo '(node not on PATH)'
+             ls -d \$HOME/nodevenv/* 2>/dev/null | head
+             echo
+             echo '===== APP ENV VAR NAMES ONLY (no values) ====='
+             for f in \"\$APP/.env\" \"\$HOME/.env\"; do
+               if [ -f \"\$f\" ]; then
+                 echo \"found \$f:\"
+                 grep -oE '^[A-Za-z_][A-Za-z0-9_]*=' \"\$f\" | tr -d '='
+               fi
+             done
+             echo
+             echo '===== RECENT LOGS ====='
+             ls -la \$HOME/logs/ 2>/dev/null | head -20
+             find \$HOME -maxdepth 3 -name '*.log' -mtime -3 2>/dev/null | head -20
+             echo
+             echo '----- stderr.log (last 60) -----'
+             tail -60 \"\$APP/stderr.log\" 2>/dev/null || tail -60 \$HOME/stderr.log 2>/dev/null || echo '(no stderr.log)'
+             echo
+             echo '----- passenger / error log (last 60) -----'
+             for L in \$HOME/logs/*error*log \$HOME/logs/*bangicode*log; do
+               if [ -f \"\$L\" ]; then echo \"== \$L ==\"; tail -60 \"\$L\"; fi
+             done
+             echo
+             echo '===== LISTENING PROCESSES ====='
+             ps -u \"\$(whoami)\" -o pid,etime,rss,cmd 2>/dev/null | grep -iE 'node|passenger' | head -15 || echo '(none)'
+            "
