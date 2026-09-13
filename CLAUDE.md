@@ -147,12 +147,14 @@ per run — never a production database).
 - **Branch naming:** `ahmedchioua/ist-<NN>` (Linear suggests this automatically per ticket).
 - **Commit messages:** include the ticket reference, e.g., `IST-119: scaffold Next.js + Tailwind v4 + shadcn`.
 - **PRs:** link back to the Linear ticket. Linear's GitHub integration auto-moves the ticket state.
-- **`old-website/` is an archive, not a rollback.** The E8 cutover happened on
-  2026-08-31 (IST-163) — `bangicode.ma` serves the Next.js app, and this
-  directory stopped being the live site then. Keep it for reference and for
-  git history, but do not treat it as the way back: the real rollback lives on
-  the server as `~/public_html-cra-retired/` plus the dated tarballs in
-  `~/`, which is what actually served the apex. See `docs/CUTOVER.md`.
+- **`old-website/` is gone — removed 2026-09-13.** The E8 cutover happened on
+  2026-08-31 (IST-163); `bangicode.ma` has served the Next.js app since, and
+  the retired CRA build was deleted from the repo once it had stopped earning
+  its place. Do not re-add it, and do not look for it on disk. The rollback
+  never lived here anyway: it is on the server as `~/public_html-cra-retired/`
+  plus the dated tarballs in `~/`, which is what actually served the apex. The
+  source is still in git history — `git log --follow -- old-website/` reaches
+  every file of it. See `docs/CUTOVER.md`.
 - **The production app is `bangicodecurrent/`**, at the repo root.
 
 ---
@@ -172,23 +174,27 @@ per run — never a production database).
 **Renamed 2026-08-31.** `next-app/` → **`bangicodecurrent/`** and
 `bangicode-website/` → **`old-website/`**. Both moved with `git mv`, so
 `git log --follow` still reaches the full history of every file.
+**`old-website/` was then deleted on 2026-09-13** — see "Workflow conventions"
+above. History still resolves through both names.
 
 If you are reading an older doc, a Linear ticket or a commit message that says
 `next-app/`, it means `bangicodecurrent/`. Anything that says
-`bangicode-website/` means `old-website/`.
+`bangicode-website/` or `old-website/` means a directory that no longer
+exists; reach it through git history rather than expecting it on disk.
 
-> The archived app is `old-website`, hyphenated, **not** `old website` with a
-> space. Directory names are consumed by shell (`cd bangicodecurrent && pnpm
-> lint-staged` in `.husky/pre-commit`), by YAML (`working-directory:` and the
-> `paths:` trigger in `ci.yml`) and by `rsync` in the deploy. A space in any of
-> those is a quoting bug waiting to happen, and the deploy runs
-> `rsync --delete`.
+> `bangicodecurrent` is one word, no spaces. Directory names are consumed by
+> shell (`cd bangicodecurrent && pnpm lint-staged` in `.husky/pre-commit`), by
+> YAML (`working-directory:` and the `paths:` trigger in `ci.yml`) and by
+> `rsync` in the deploy. A space in any of those is a quoting bug waiting to
+> happen, and the deploy runs `rsync --delete`.
+
+The repo root now holds exactly five things plus this file:
 
 - `REDESIGN_PLAN.md` — full plan. Read the sections each ticket references.
-- `DESIGN.md` — brand tokens. Source of truth for `@theme`.
+- `DESIGN.md` — superseded for colour by ADR 0001. Kept for history only.
 - `brand/` — brand assets (logo, future icon variants). See "Brand assets" below.
+- `docs/` — deployment, cutover and the ADRs.
 - `prototypes/v4-stitch.html` — structure reference. NOT a code source.
-- `old-website/` — the retired CRA build. Kept runnable as the cutover rollback.
 - `bangicodecurrent/` — the production Next.js app. This is the build target.
 
 ---

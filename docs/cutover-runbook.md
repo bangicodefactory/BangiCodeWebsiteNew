@@ -168,6 +168,13 @@ Roll back immediately if **any** of the following:
 
 ### CRA app preservation
 
+> **Superseded 2026-09-13.** `old-website/` was deleted from the repo before
+> the 30-day window closed (it ran to 2026-09-30), by decision of the repo
+> owner. The preservation requirement below is satisfied by the server-side
+> copies, not by the repo: `~/public_html-cra-retired/` plus the dated tarballs
+> in `~/`. That is what actually served the apex, and it is untouched. The
+> source also remains in git history via `git log --follow -- old-website/`.
+
 The old CRA app (`old-website/`) must remain **deployable for 30 days post-launch**:
 
 - Do not shut down the old hosting until T+30 days

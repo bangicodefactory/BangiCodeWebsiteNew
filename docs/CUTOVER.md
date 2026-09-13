@@ -412,7 +412,10 @@ the switch.
 - **Watch for 404s** for a week. The old site had one URL, so there should be
   none, but check Search Console → _Pages_.
 - **Keep the backup** for at least a month.
-- Only once you are confident: retire `old-website/` from the repo.
+- ~~Only once you are confident: retire `old-website/` from the repo.~~
+  **Done 2026-09-13.** The directory was deleted; `git log --follow --
+  old-website/` still reaches every file. The rollback was never the repo copy
+  — it is `~/public_html-cra-retired/` and the dated tarballs on the server.
 - **`new.bangicode.ma` currently returns 404.** The app is registered to one
   domain and that is now the apex, so the staging vhost has nothing behind it.
   That is a clean retirement, but any bookmark or old link dead-ends — point it
